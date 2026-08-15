@@ -1,0 +1,14 @@
+node_modules/
+package-lock.json
+.DS_Store
+
+# QA artefacts — 83MB of screenshots and audit JSON, regenerable with
+# `node qa-audit.mjs` and `node qa-shots.mjs`.
+qa/
+
+# A verbatim scrape of the client's current live site. Useful locally as a
+# reference, not something to republish on a public URL.
+_raw/
+
+# Internal working documents — never on the public Pages site.
+*.md

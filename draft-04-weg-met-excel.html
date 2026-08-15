@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<!--
+CONCEPT: De pagina opent als een echt werkblad — in HTML, niet als foto — en legt dat werkblad
+         stap voor stap af: het raster verdwijnt, het papier wordt warm, de cijfers komen tot rust.
+         De overgang van spreadsheet naar product ís het ontwerp.
+HERO LINE: "Van 27 Excel-bestanden naar één scherm." — Jana's "Weg met Excel" is het gevoel, maar
+         dit is hetzelfde gevoel mét een getal en een naam eronder, en het is de enige kop die de
+         hele pagina in vijf woorden uitlegt. Jana's regel staat er als eyebrow boven.
+THE BET: dat herkenning sneller werkt dan uitleg. Niet de toekomst (52% van de Belgische bedrijven
+         wacht af), maar de pijn die er vandaag al is. En dat je die pijn met respect kunt benoemen:
+         het bestand is knap werk dat uit zijn jasje is gegroeid, geen fout van de bouwer.
+DROPPED: (1) de chatmodule met Bart — een bot ondermijnt precies het argument van deze pagina, dat
+         een mens je dertig minuten geeft; (2) de schuivende logobalk van acht bedrijven — er zijn
+         er vier, en een marquee die zichtbaar herhaalt is erger dan vier logo's met lucht eromtrent;
+         (3) per-case "download de case"-knoppen — bestemming is nog niet beslist, staat als
+         zichtbare TODO in de casesrij zodat beide opties later passen.
+PALETTE: primary ("Evergreen & Signal"). Eén afwijking, bewust: het werkblad-artefact heeft geen
+         radius (0px) omdat spreadsheets vierkant zijn; alles wat Youbo is, gebruikt 6/12/20px.
+         Die breuk is het argument, niet een slordigheid.
+NEEDS FROM CLIENT: 1) bestemming van "lees de case" (pdf of pagina) + de vier pdf's;
+         2) hoe wordt Youbo geprijsd (per medewerker? per cyclus?) — we mogen geen bedrag noemen,
+         maar wel het model; 3) is de interface in het Frans beschikbaar, ja of nee;
+         4) een agenda-link van Bart (Calendly o.i.d.) voor het tweede CTA-spoor;
+         5) de genoemde integraties bij naam (nu alleen eBlox uit de Kaneka-case);
+         6) LinkedIn partner ID zodra de nieuwe bedrijfspagina bestaat.
+-->
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Loonsverhogingen en bonussen toekennen zonder Excel | Youbo</title>
+<meta name="description" content="Bij Kaneka gingen 27 Excel-bestanden naar één scherm. SD Worx bracht de loonronde terug van twee maanden naar drie weken. Youbo is Belgische software voor je merit- en bonuscyclus. Vraag een demo aan.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://www.youbo.io/nl/">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/180x180.png">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_BE">
+<meta property="og:site_name" content="Youbo">
+<meta property="og:title" content="Van 27 Excel-bestanden naar één scherm | Youbo">
+<meta property="og:description" content="Belgische software voor je loonronde. SD Worx: van twee maanden naar drie weken, voor 7.000 medewerkers in 18 landen. Vraag een demo aan bij Bart De Nil.">
+<meta property="og:image" content="assets/img/open_graph.png">
+<meta property="og:url" content="https://www.youbo.io/nl/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Van 27 Excel-bestanden naar één scherm | Youbo">
+<meta name="twitter:description" content="Belgische software voor je merit- en bonuscyclus. Van twee maanden naar drie weken bij SD Worx.">
+<meta name="twitter:image" content="assets/img/open_graph.png">
+
+<!-- ===================================================================
+     LinkedIn Insight Tag — PLACEHOLDER, NOG NIET ACTIEF
+     De Youbo-bedrijfspagina op LinkedIn is verwijderd en wordt opnieuw
+     aangemaakt. Zolang die niet bestaat, is er GEEN partner ID.
+     Vervang PARTNER_ID_HIER door het echte ID en verwijder de comment.
+     Let op: in België vereist deze tag opt-in. Laad hem pas na consent
+     (zie de consentbalk onderaan deze pagina, x-data "consent").
+     ===================================================================
+<script type="text/javascript">
+  _linkedin_partner_id = "PARTNER_ID_HIER";
+  window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+  window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+</script>
+<script type="text/javascript">
+  (function(l) {
+    if (!l){window.lintrk=function(a,b){window.lintrk.q.push([a,b])};window.lintrk.q=[]}
+    var s = document.getElementsByTagName("script")[0];
+    var b = document.createElement("script");
+    b.type = "text/javascript"; b.async = true;
+    b.src = "https://snap.licdn.com/li/insight.min.js";
+    s.parentNode.insertBefore(b, s);
+  })(window.lintrk);
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+  src="https://px.ads.linkedin.com/collect/?pid=PARTNER_ID_HIER&fmt=gif"></noscript>
+     =================================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/img/main-visual-nl.webp">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        surface:   { DEFAULT: '#FFFFFF', sub: '#F5F7F4', sand: '#F3EDE1', deep: '#0E2A21' },
+        ink:       { DEFAULT: '#0E2A21', muted: '#4F6B60', inv: '#FFFFFF', invmuted: '#B9CFC6' },
+        primary:   { 50: '#E7F9F1', DEFAULT: '#0B6B4F', 700: '#075740' },
+        mint:      { DEFAULT: '#0AF29F', 300: '#7FE9C4' },
+        amber:     { 50: '#FFF8EE', DEFAULT: '#A85C10' },
+        success:   '#106C4C',
+        alert:     '#B4451F',
+        line:      { DEFAULT: '#DDE4DE', strong: '#7E9A8E' },
+      },
+      fontFamily: {
+        display: ['"Bricolage Grotesque"', 'Georgia', 'serif'],
+        sans:    ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        micro:   ['0.75rem',   { lineHeight: '1.35' }],
+        eyebrow: ['0.8125rem', { lineHeight: '1.4',  letterSpacing: '0.08em', fontWeight: '600' }],
+        small:   ['0.9375rem', { lineHeight: '1.55' }],
+        body:    ['1.0625rem', { lineHeight: '1.65' }],
+        lead:    ['1.25rem',   { lineHeight: '1.55' }],
+        h4:      ['1.125rem',  { lineHeight: '1.35', letterSpacing: '0' }],
+        h3:      ['1.5rem',    { lineHeight: '1.2',  letterSpacing: '-0.01em' }],
+        h2:      ['2.25rem',   { lineHeight: '1.12', letterSpacing: '-0.02em' }],
+        h1:      ['3.25rem',   { lineHeight: '1.06', letterSpacing: '-0.025em' }],
+        display: ['4rem',      { lineHeight: '1.0',  letterSpacing: '-0.03em' }],
+        stat:    ['3.5rem',    { lineHeight: '1.0',  letterSpacing: '-0.02em' }],
+      },
+      maxWidth: { text: '34rem', container: '72rem', wide: '80rem' },
+      borderRadius: { sm: '6px', DEFAULT: '12px', lg: '20px' },
+      boxShadow: {
+        card: '0 1px 2px rgba(14,42,33,.06)',
+        lift: '0 1px 2px rgba(14,42,33,.06), 0 12px 32px -16px rgba(14,42,33,.22)',
+      },
+      transitionTimingFunction: { out: 'cubic-bezier(0.2, 0, 0, 1)' },
+    }
+  }
+}
+</script>
+
+<style type="text/tailwindcss">
+  @layer base {
+    html { scroll-behavior: smooth; }
+    body { @apply font-sans text-body text-ink bg-surface antialiased; }
+    h1,h2,h3,h4 { @apply font-display font-semibold text-ink; text-wrap: balance;
+                  hyphens: auto; overflow-wrap: break-word; }
+    p { text-wrap: pretty; }
+    :focus-visible { @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-surface; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important;
+        transition-duration: .01ms !important; }
+    }
+  }
+  @layer components {
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-sm px-6 py-3.5
+                  text-body font-semibold min-h-[48px] transition-colors duration-150 ease-out; }
+    .btn-primary { @apply btn bg-primary text-white hover:bg-primary-700 active:bg-primary-700; }
+    .btn-mint { @apply btn bg-mint text-ink hover:bg-mint-300
+                  focus-visible:ring-mint focus-visible:ring-offset-surface-deep; }
+    .btn-secondary { @apply btn bg-white text-ink border border-line-strong
+                  hover:bg-surface-sub hover:border-ink; }
+    .lnk { @apply text-primary font-medium underline underline-offset-4 decoration-line-strong
+                  decoration-1 hover:decoration-primary hover:decoration-2; }
+    .eyebrow { @apply text-eyebrow uppercase tracking-[0.08em] font-semibold text-ink-muted; }
+    .fld-label { @apply block text-small font-medium text-ink mb-1.5; }
+    .fld { @apply w-full rounded-sm border border-line-strong bg-white px-4 py-3 text-body
+                  placeholder:text-ink-muted/70 focus:border-primary focus:ring-2
+                  focus:ring-primary/25 focus:outline-none; }
+    /* De vier klantlogo's zijn aangeleverd als knockout (wit op transparant) en zijn
+       op een lichte ondergrond onzichtbaar. In plaats van ze te filteren — dat maakt
+       een merk altijd goedkoop — krijgen ze de donkere grond waarvoor ze getekend zijn.
+       Eén plaatje, overal even hoog, ook als er straks zes logo's zijn. */
+    .logo-chip { @apply inline-flex items-center justify-center rounded-sm bg-surface-deep px-4 py-2.5; }
+  }
+</style>
+
+<style>
+  [x-cloak] { display: none !important; }
+
+  /* ---------------------------------------------------------------
+     Het rasterpapier. Dit is het visuele systeem van de eerste helft
+     van de pagina en het dooft uit naarmate Youbo het overneemt:
+     100 -> 55 -> 25 -> weg. Statisch, geen beweging, geen parallax.
+     --------------------------------------------------------------- */
+  .paper { position: relative; }
+  .paper::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(126,154,142,var(--g)) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(126,154,142,var(--g)) 1px, transparent 1px);
+    background-size: 88px 30px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+  }
+  .paper-100 { --g: .34; }
+  .paper-55  { --g: .20; }
+  .paper-25  { --g: .10; }
+
+  /* --- Het werkblad-artefact ------------------------------------- */
+  .sheet { font-variant-numeric: tabular-nums; font-size: 12.5px; line-height: 1.15; }
+  .sheet table { border-collapse: separate; border-spacing: 0; }
+  .sheet th, .sheet td {
+    border-right: 1px solid #DDE4DE; border-bottom: 1px solid #DDE4DE;
+    padding: 5px 7px; white-space: nowrap; text-align: right;
+  }
+  .sheet th.hdr, .sheet td.rownum {
+    background: #EEF2EF; color: #4F6B60; font-weight: 500; text-align: center;
+    font-size: 11px; letter-spacing: .02em;
+  }
+  .sheet td.txt, .sheet th.txt { text-align: left; }
+  .sheet tbody tr:hover td { background: #FAFCFA; }
+  .sheet tbody tr:hover td.rownum { background: #E4EAE6; }
+  .cell-sel { outline: 2px solid #0B6B4F; outline-offset: -2px; position: relative; z-index: 1; }
+  .sheet-tab {
+    border: 1px solid #DDE4DE; border-bottom: none; padding: 5px 12px; font-size: 12px;
+    background: #EEF2EF; color: #4F6B60; white-space: nowrap;
+  }
+  .sheet-tab[aria-current="true"] { background: #FFFFFF; color: #0E2A21; font-weight: 600;
+    box-shadow: inset 0 2px 0 #0B6B4F; }
+
+  /* --- Scroll reveal: één keer, 240ms, alleen als JS draait ------- */
+  .js-on .reveal { opacity: 0; transform: translateY(8px); }
+  .js-on .reveal { transition: opacity 240ms cubic-bezier(0.2,0,0,1),
+                               transform 240ms cubic-bezier(0.2,0,0,1); }
+  .js-on .reveal.is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .js-on .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  /* Horizontaal scrollen mag alleen bínnen het werkblad, nooit op de pagina */
+  .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.youbo.io/#organization",
+      "name": "Youbo",
+      "legalName": "Teal Partners BV",
+      "url": "https://www.youbo.io/",
+      "logo": "https://www.youbo.io/assets/img/youbo_logo.svg",
+      "vatID": "BE0642824542",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Damplein 23",
+        "postalCode": "2060",
+        "addressLocality": "Antwerpen",
+        "addressCountry": "BE"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "name": "Bart De Nil",
+        "telephone": "+32476963340",
+        "email": "bart.denil@tealpartners.com",
+        "availableLanguage": ["nl-BE", "en"]
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Youbo Bonus & Merit",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "url": "https://www.youbo.io/",
+      "publisher": { "@id": "https://www.youbo.io/#organization" },
+      "inLanguage": ["nl-BE", "en"],
+      "description": "Belgische software om loonsverhogingen, bonussen en promoties toe te kennen volgens je eigen loonbeleid, met een audittrail per beslissing."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Hoe werkt het?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Je loonbeleid wordt in workshops omgezet in regels in de tool: loonvorken, anciënniteit, indexatie, promotie- en bonusregels. Daarna opent HR de cyclus, verdelen de leidinggevenden hun budget in hetzelfde systeem, kalibreert en keurt de directie goed, en gaan de nieuwe pakketten naar je core HR- en payrollsysteem." } },
+        { "@type": "Question", "name": "Hoe lang duurt het om het op te zetten?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Reken op drie maanden. Bij Aertssen Group viel de beslissing in september en stond de tool begin december live; bij Kaneka duurde het eveneens drie maanden, waarna de eerste cyclus zonder noemenswaardige problemen is afgerond." } },
+        { "@type": "Question", "name": "Voor wie is Youbo geschikt?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Voor organisaties die de loonronde vandaag in Excel doen en waar meerdere leidinggevenden budget verdelen. De vier bekende klanten gaan van 370 tot 7.000 medewerkers, in chemie, media, bouw en HR-dienstverlening." } },
+        { "@type": "Question", "name": "Hoeveel kost het?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Er staat geen prijs op deze pagina. In de demo van dertig minuten krijg je een prijsindicatie op basis van je aantal medewerkers en de complexiteit van je loonbeleid." } },
+        { "@type": "Question", "name": "Vervangt dit ons sociaal secretariaat?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Nee. Youbo beslist de bedragen, je sociaal secretariaat betaalt ze uit. De goedgekeurde pakketten gaan naar je bestaande core HR- en payrollsysteem." } },
+        { "@type": "Question", "name": "Onze loondata in de cloud — hoe zit dat?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Youbo is ISO 27001-gecertificeerd en GDPR-conform, en elke leidinggevende ziet alleen zijn eigen team. Elke toegang en elke wijziging wordt gelogd." } },
+        { "@type": "Question", "name": "Wie zit er achter Youbo?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Youbo is een product van Teal Partners BV, een Belgisch bedrijf met zetel aan het Damplein 23 in Antwerpen, ondernemingsnummer 0642.824.542. Meerderheidsaandeelhouder is SD Worx, dat Youbo ook zelf gebruikt voor 7.000 medewerkers in 18 landen." } }
+      ]
+    }
+  ]
+}
+</script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50
+   focus:rounded-sm focus:bg-primary focus:px-5 focus:py-3 focus:text-white focus:font-semibold">
+  Ga naar de inhoud
+</a>
+
+<!-- ============================== HEADER ============================== -->
+<header class="border-b border-line bg-white">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <div class="flex items-center justify-between gap-6 py-4">
+      <a href="#main" class="flex items-center" data-cta="header-logo" aria-label="Youbo, naar boven">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-7 w-auto">
+      </a>
+      <nav aria-label="Hoofdnavigatie" class="hidden md:flex items-center gap-8">
+        <a href="#januari" class="text-small font-medium text-ink-muted hover:text-ink transition-colors duration-150 ease-out min-h-[44px] flex items-center">Het probleem</a>
+        <a href="#cases" class="text-small font-medium text-ink-muted hover:text-ink transition-colors duration-150 ease-out min-h-[44px] flex items-center">Cases</a>
+        <a href="#preview" class="text-small font-medium text-ink-muted hover:text-ink transition-colors duration-150 ease-out min-h-[44px] flex items-center">Preview</a>
+        <a href="#faq" class="text-small font-medium text-ink-muted hover:text-ink transition-colors duration-150 ease-out min-h-[44px] flex items-center">Vragen</a>
+      </nav>
+      <a href="#demo" class="btn-primary !px-5 !py-2.5 !min-h-[44px] !text-small" data-cta="header-demo">
+        Vraag een demo aan
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================== 1. HERO ============================== -->
+<section class="paper paper-100 bg-surface pt-8 pb-16 sm:pt-14 md:pt-20 md:pb-24">
+  <div class="relative mx-auto max-w-wide px-5 md:px-8 xl:px-10">
+
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+
+      <!-- copy -->
+      <div class="min-w-0 lg:col-span-5">
+        <p class="eyebrow">Weg met Excel. Het kan écht beter.</p>
+
+        <h1 class="mt-4 text-[2.5rem] leading-[1.04] tracking-[-0.03em] sm:text-h1 lg:text-display">
+          Van 27 Excel-bestanden naar één scherm.
+        </h1>
+
+        <!-- bewijs boven de vouw: naam + getal + logo -->
+        <div class="mt-4 sm:mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 border-l-2 border-primary pl-4">
+          <span class="logo-chip"><img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-5 w-auto"></span>
+          <p class="text-small text-ink">
+            <span class="font-semibold tabular">Van 2 maanden naar 3 weken</span>
+            <span class="text-ink-muted">— 7.000 medewerkers, 18 landen</span>
+          </p>
+        </div>
+
+        <p class="mt-5 sm:mt-6 max-w-text text-[1.125rem] leading-[1.55] sm:text-lead text-ink-muted">
+          Bij Kaneka splitste HR elk jaar één masterbestand in 27 werkbladen. Vandaag verdelen
+          die 27 afdelingshoofden hun budget op dezelfde plaats — en achteraf is elke beslissing
+          uit te leggen.
+        </p>
+
+        <!-- inline e-mailcapture in de hero -->
+        <form class="mt-5 sm:mt-8 max-w-text" data-form="hero-capture" novalidate
+              x-data="{ ok:false, mail:'', err:'',
+                        submit() {
+                          this.err = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.mail)
+                            ? '' : 'Vul een geldig e-mailadres in, bijvoorbeeld jouw@bedrijf.be.';
+                          if (!this.err) this.ok = true;
+                        } }"
+              @submit.prevent="submit()">
+          <div x-show="!ok">
+            <div class="flex flex-col sm:flex-row gap-3">
+              <label class="sr-only" for="hero-email">Werk-e-mailadres</label>
+              <input id="hero-email" name="email" type="email" required autocomplete="email"
+                     inputmode="email" placeholder="jouw@bedrijf.be" class="fld flex-1"
+                     x-model="mail" :class="err && 'border-alert'"
+                     :aria-invalid="err ? 'true' : 'false'" aria-describedby="hero-email-err">
+              <button type="submit" class="btn-primary shrink-0" data-cta="hero-inline-demo">
+                Vraag een demo aan
+              </button>
+            </div>
+            <p id="hero-email-err" role="alert" x-show="err" x-cloak
+               class="mt-2 text-small text-alert" x-text="err"></p>
+            <p class="mt-3 text-small text-ink-muted">
+              30 minuten, met Bart De Nil. Je ziet je eigen loonregels in de tool.
+            </p>
+          </div>
+          <div x-show="ok" x-cloak role="status"
+               class="rounded border border-primary bg-primary-50 p-5">
+            <p class="text-body font-semibold text-ink">Bedankt — je aanvraag staat genoteerd.</p>
+            <p class="mt-1 text-small text-ink-muted">
+              Bart De Nil neemt binnen twee werkdagen contact op om een moment te prikken.
+              <a href="#demo" class="lnk">Vul hier je gegevens verder aan</a>, dan kan hij zich voorbereiden.
+            </p>
+          </div>
+        </form>
+
+        <p class="mt-8">
+          <a href="#cases" class="lnk text-small" data-cta="hero-scroll-cases">
+            Bekijk de cijfers van vier Belgische klanten
+          </a>
+        </p>
+      </div>
+
+      <!-- het werkblad -->
+      <div class="min-w-0 lg:col-span-7">
+        <figure class="border border-line-strong bg-white shadow-lift">
+          <figcaption class="sr-only">
+            Een loonronde in Excel: een werkblad met loongegevens per medewerker, waarin één cel
+            een verwijzingsfout toont en het totaal het budget met 3,1 procent overschrijdt.
+          </figcaption>
+
+          <!-- lint / naamvak + formulebalk -->
+          <div class="sheet border-b border-line bg-surface-sub px-2 py-1.5 flex items-center gap-2">
+            <span class="min-w-[54px] border border-line bg-white px-2 py-1 text-ink-muted">F4</span>
+            <span aria-hidden="true" class="px-1 font-display italic text-ink-muted">fx</span>
+            <span class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap border border-line bg-white px-2 py-1 text-ink">
+              =ALS(D4&gt;Budget!$B$4;"OVER";SOM(#REF!)*1,0221)
+            </span>
+          </div>
+
+          <div class="sheet scroll-x">
+            <table class="w-full min-w-[640px]">
+              <caption class="sr-only">loonronde_2026_DEF_finaal_v2.xlsx — blad Productie</caption>
+              <thead>
+                <tr>
+                  <th scope="col" class="hdr w-9"><span class="sr-only">Rij</span></th>
+                  <th scope="col" class="hdr txt">A</th>
+                  <th scope="col" class="hdr txt">B</th>
+                  <th scope="col" class="hdr">C</th>
+                  <th scope="col" class="hdr">D</th>
+                  <th scope="col" class="hdr">E</th>
+                  <th scope="col" class="hdr">F</th>
+                  <th scope="col" class="hdr">G</th>
+                  <th scope="col" class="hdr">H</th>
+                </tr>
+                <tr>
+                  <td class="rownum">1</td>
+                  <th scope="col" class="txt font-semibold text-ink">Medewerker</th>
+                  <th scope="col" class="txt font-semibold text-ink">Functie</th>
+                  <th scope="col" class="font-semibold text-ink">Anc.</th>
+                  <th scope="col" class="font-semibold text-ink">Bruto</th>
+                  <th scope="col" class="font-semibold text-ink">Index</th>
+                  <th scope="col" class="font-semibold text-ink">Merit</th>
+                  <th scope="col" class="font-semibold text-ink">Nieuw</th>
+                  <th scope="col" class="font-semibold text-ink">Compa</th>
+                </tr>
+              </thead>
+              <tbody class="text-ink">
+                <tr>
+                  <td class="rownum">2</td>
+                  <td class="txt">M. Peeters</td><td class="txt">Teamleider</td>
+                  <td>12 j</td><td>4.180</td><td>92</td><td>105</td><td>4.377</td><td>1,04</td>
+                </tr>
+                <tr>
+                  <td class="rownum">3</td>
+                  <td class="txt">S. Vermeulen</td><td class="txt">Operator A</td>
+                  <td>7 j</td><td>3.240</td><td>72</td><td>60</td><td>3.372</td><td>0,97</td>
+                </tr>
+                <tr>
+                  <td class="rownum">4</td>
+                  <td class="txt">K. De Smet</td><td class="txt">Planner</td>
+                  <td>3 j</td><td>3.560</td><td>79</td>
+                  <td class="cell-sel font-semibold text-alert">#REF!</td>
+                  <td class="font-semibold text-alert">#REF!</td><td class="text-ink-muted">—</td>
+                </tr>
+                <tr>
+                  <td class="rownum">5</td>
+                  <td class="txt">A. Willems</td><td class="txt">Kwaliteitscontrole</td>
+                  <td>18 j</td><td>3.910</td><td>86</td><td>0</td><td>3.996</td><td>1,11</td>
+                </tr>
+                <tr>
+                  <td class="rownum">6</td>
+                  <td class="txt">N. Jacobs</td><td class="txt">Ploegbaas</td>
+                  <td>9 j</td><td>4.020</td><td>89</td><td>140</td><td>4.249</td><td>1,02</td>
+                </tr>
+                <tr>
+                  <td class="rownum">7</td>
+                  <td class="txt">L. Van Damme</td><td class="txt">Technieker</td>
+                  <td>5 j</td><td>3.480</td><td>77</td><td>85</td><td>3.642</td><td>0,94</td>
+                </tr>
+                <tr>
+                  <td class="rownum">8</td>
+                  <td class="txt">H. Mertens</td><td class="txt">Operator B</td>
+                  <td>2 j</td><td>3.105</td><td>69</td><td>45</td><td>3.219</td><td>0,91</td>
+                </tr>
+                <tr>
+                  <td class="rownum">9</td>
+                  <td class="txt">D. Claes</td><td class="txt">Procesingenieur</td>
+                  <td>14 j</td><td>4.640</td><td>103</td><td>150</td><td>4.893</td><td>1,08</td>
+                </tr>
+                <tr class="bg-surface-sub">
+                  <td class="rownum">10</td>
+                  <td class="txt font-semibold text-ink">Totaal toegekend</td>
+                  <td class="txt text-ink-muted">8 van 14</td>
+                  <td></td><td class="font-semibold">25.895</td><td class="font-semibold">576</td>
+                  <td class="font-semibold text-alert">585</td>
+                  <td class="font-semibold text-alert">27.056</td>
+                  <td></td>
+                </tr>
+                <tr class="bg-surface-sub">
+                  <td class="rownum">11</td>
+                  <td class="txt font-semibold text-ink">Budget afdeling</td>
+                  <td class="txt text-ink-muted">Budget!$B$4</td>
+                  <td></td><td></td><td></td><td>567</td><td>26.243</td>
+                  <td class="font-semibold text-alert">+3,1%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- bladtabs -->
+          <div class="scroll-x border-t border-line bg-surface-sub pt-2">
+            <div class="flex items-end gap-0.5 px-2">
+              <span class="sheet-tab" aria-current="true">Productie</span>
+              <span class="sheet-tab">Logistiek</span>
+              <span class="sheet-tab">Onderhoud</span>
+              <span class="sheet-tab">Kwaliteit</span>
+              <span class="sheet-tab">Labo</span>
+              <span class="sheet-tab">Finance</span>
+              <span class="sheet-tab">HR</span>
+              <span class="sheet-tab text-ink-muted">+ 20 bladen</span>
+            </div>
+          </div>
+          <div class="sheet border-t border-line bg-surface-sub px-3 py-1.5 text-ink-muted">
+            Gereed · Gemiddelde 3.767 · Aantal 370 · 27 bladen · Laatst bewaard door HR om 23:14
+          </div>
+        </figure>
+
+        <!-- legende bij het werkblad, in plaats van zwevende callouts -->
+        <ul class="mt-5 grid gap-3 sm:grid-cols-3">
+          <li class="flex gap-3">
+            <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-alert" aria-hidden="true"></span>
+            <p class="text-small text-ink-muted">
+              Eén verwijzing brak toen het blad werd gesplitst. <span class="tabular">#REF!</span>
+              in F4 rekent nu stilletjes met nul.
+            </p>
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-alert" aria-hidden="true"></span>
+            <p class="text-small text-ink-muted">
+              Het toegekende bedrag staat <span class="tabular">3,1%</span> boven het budget.
+              Dat merk je pas bij het samenvoegen.
+            </p>
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-line-strong" aria-hidden="true"></span>
+            <p class="text-small text-ink-muted">
+              Zesentwintig andere afdelingen zitten in zesentwintig andere bestanden.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- logobalk: vier, statisch, met context -->
+    <div class="mt-16 border-t border-line pt-10">
+      <p class="text-small text-ink-muted">Gebruikt door HR- en rewardteams bij</p>
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <span class="logo-chip"><img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-6 w-auto"></span>
+        <span class="logo-chip"><img src="assets/img/dpg-logo-white.svg" alt="DPG Media" class="h-6 w-auto"></span>
+        <span class="logo-chip"><img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="h-4 w-auto"></span>
+        <span class="logo-chip"><img src="assets/img/aertssen-logo.svg" alt="Aertssen Group" class="h-8 w-auto"></span>
+      </div>
+      <p class="mt-4 text-small text-ink-muted">
+        Vier klanten, van 370 tot 7.000 medewerkers. Meer zijn het er vandaag niet, en we zetten
+        er ook geen bij.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 2. HERKENNING: JOUW JANUARI ====================== -->
+<section id="januari" class="paper paper-55 bg-surface-sub py-16 md:py-24 lg:py-32">
+  <div class="relative mx-auto max-w-container px-5 md:px-8 xl:px-10">
+
+    <p class="eyebrow">Januari</p>
+    <h2 class="mt-4 max-w-3xl text-[1.75rem] leading-tight sm:text-h2">
+      Het bestand is niet het probleem.
+    </h2>
+    <p class="mt-4 max-w-text text-lead text-ink-muted">
+      Iemand heeft die formules gebouwd. Jaar na jaar bijgehouden, elke reorganisatie erin verwerkt,
+      elke uitzondering netjes gedocumenteerd in een kolom ernaast. Dat is knap werk, en het heeft
+      jarenlang gewerkt. Het knelt pas wanneer er elf mensen tegelijk in werken, in vier
+      verschillende versies, met één deadline.
+    </p>
+
+    <div class="mt-14 grid lg:grid-cols-12 gap-10 lg:gap-16">
+
+      <!-- de estafette -->
+      <div class="min-w-0 lg:col-span-7">
+        <h3 class="text-h3">De estafette, stap voor stap</h3>
+        <ol class="mt-6 divide-y divide-line border-y border-line">
+          <li class="flex gap-5 py-4">
+            <span class="tabular w-6 shrink-0 text-small font-semibold text-primary">01</span>
+            <p class="text-body">Het masterbestand opbouwen: loonvorken, anciënniteit, indexatie, promotieregels.</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="tabular w-6 shrink-0 text-small font-semibold text-primary">02</span>
+            <p class="text-body">Splitsen in één bestand per afdeling. Zevenentwintig keer.</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="tabular w-6 shrink-0 text-small font-semibold text-primary">03</span>
+            <p class="text-body">Versturen naar de afdelingshoofden, met de uitleg erbij die vorig jaar ook al nodig was.</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="tabular w-6 shrink-0 text-small font-semibold text-primary">04</span>
+            <p class="text-body">Herinneren. En daarna nog eens herinneren.</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="tabular w-6 shrink-0 text-small font-semibold text-primary">05</span>
+            <p class="text-body">Terugkrijgen — in vier formaten, twee met eigen kolommen erbij, één als pdf.</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="tabular w-6 shrink-0 text-small font-semibold text-primary">06</span>
+            <p class="text-body">Manueel samenvoegen. En daarna alles nakijken, want samenvoegen is waar het misgaat.</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="tabular w-6 shrink-0 text-small font-semibold text-alert">07</span>
+            <p class="text-body">Vaststellen dat het budget <span class="tabular font-semibold">3%</span> over is.</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="tabular w-6 shrink-0 text-small font-semibold text-primary">08</span>
+            <p class="text-body">Herrekenen, herverdelen, opnieuw versturen. Terug naar stap 03.</p>
+          </li>
+          <li class="flex gap-5 py-4">
+            <span class="tabular w-6 shrink-0 text-small font-semibold text-primary">09</span>
+            <p class="text-body">De loons-, bonus- en verhogingsbrieven typen.</p>
+          </li>
+        </ol>
+        <p class="mt-6 max-w-text text-body text-ink-muted">
+          Twee weken werk. En dan is er nog geen enkel gesprek met een medewerker gevoerd.
+        </p>
+      </div>
+
+      <!-- versiegeschiedenis -->
+      <div class="min-w-0 lg:col-span-5">
+        <h3 class="text-h3">En zo heet het bestand tegen dan</h3>
+        <div class="sheet mt-6 border border-line-strong bg-white shadow-card">
+          <div class="border-b border-line bg-surface-sub px-3 py-2 text-ink-muted">
+            \\hr-share\reward\cyclus 2026
+          </div>
+          <ul class="divide-y divide-line [overflow-wrap:anywhere]">
+            <li class="flex items-baseline justify-between gap-4 px-3 py-2.5">
+              <span class="text-ink">loonronde_2026_master.xlsx</span>
+              <span class="shrink-0 text-ink-muted">04/01</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 px-3 py-2.5">
+              <span class="text-ink">loonronde_2026_master_v2.xlsx</span>
+              <span class="shrink-0 text-ink-muted">07/01</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 px-3 py-2.5">
+              <span class="text-ink">loonronde_2026_PRODUCTIE_terug.xlsx</span>
+              <span class="shrink-0 text-ink-muted">14/01</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 px-3 py-2.5">
+              <span class="text-ink">loonronde_2026_master_v2_MERGE.xlsx</span>
+              <span class="shrink-0 text-ink-muted">16/01</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 px-3 py-2.5">
+              <span class="text-ink">loonronde_2026_v3_na_budget.xlsx</span>
+              <span class="shrink-0 text-ink-muted">19/01</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 px-3 py-2.5">
+              <span class="text-ink">loonronde_2026_DEF.xlsx</span>
+              <span class="shrink-0 text-ink-muted">21/01</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 px-3 py-2.5">
+              <span class="text-ink">loonronde_2026_DEF_finaal.xlsx</span>
+              <span class="shrink-0 text-ink-muted">22/01</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-4 bg-amber-50 px-3 py-2.5">
+              <span class="font-semibold text-ink">loonronde_2026_DEF_finaal_v2.xlsx</span>
+              <span class="shrink-0 text-ink-muted">23/01</span>
+            </li>
+          </ul>
+        </div>
+        <p class="mt-5 max-w-text text-small text-ink-muted">
+          Niemand heeft dit slordig gedaan. Dit is wat een goed gebouwd bestand doet zodra het
+          door te veel handen gaat. Het bestand is niet uit zijn krachten gegroeid — het is uit
+          zijn omgeving gegroeid.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 3. WAAROM HET UITEINDELIJK BREEKT ====================== -->
+<section class="paper paper-25 bg-surface-sand py-16 md:py-24 lg:py-32">
+  <div class="relative mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+
+      <div class="lg:col-span-7">
+        <p class="eyebrow">DPG Media</p>
+        <h2 class="mt-4 text-[1.75rem] leading-tight sm:text-h2">
+          En dan vertrekt de persoon die het bestand kende.
+        </h2>
+        <div class="mt-6 max-w-text space-y-4 text-body text-ink-muted">
+          <p>
+            Bij DPG Media draaide het beloningsproces jarenlang op spreadsheets met eigen scripts,
+            gebouwd en onderhouden door één specialist. Die bestanden werden per afdeling gesplitst,
+            verdeeld en na de toekenning weer samengevoegd. Het werkte — tot die ene collega het
+            bedrijf verliet. De kennis vertrok mee, en HR had op korte termijn een oplossing nodig.
+          </p>
+          <p>
+            Dat is de reden die geen wetgeving, geen datum en geen interpretatie nodig heeft. Elke
+            C&amp;B-verantwoordelijke die dit leest, is die persoon — of heeft die persoon net
+            vervangen.
+          </p>
+          <p>
+            Vandaag kennen <span class="tabular font-semibold text-ink">130 leidinggevenden</span>
+            bij DPG Media hun loonsverhogingen en bonussen toe in Youbo, voor 1.500 Belgische
+            medewerkers. Sinds 2025 volgen ook meer dan 3.000 Nederlandse collega's.
+          </p>
+        </div>
+
+        <div class="mt-8 rounded border border-line bg-white p-5 md:p-6">
+          <p class="text-small text-ink-muted">
+            En het argument dat niemand graag hardop zegt: een spreadsheet met loondata beveilig je
+            met een paswoord. Paswoorden worden doorgestuurd. In Youbo ziet elke leidinggevende
+            alleen zijn eigen team, en wordt elke toegang en elke wijziging gelogd.
+          </p>
+        </div>
+      </div>
+
+      <figure class="lg:col-span-5 rounded-lg border border-line bg-white p-8 md:p-10">
+        <blockquote class="font-display text-h3 font-semibold leading-snug text-ink">
+          „Waar hr-medewerkers voorheen makkelijk twee weken bezig waren met het opstellen van de
+          spreadsheets, duurt dit nu hooguit twee dagen.”
+        </blockquote>
+        <figcaption class="mt-6 flex items-center gap-4">
+          <img src="assets/img/mieke-catthoor.webp" alt=""
+               width="56" height="56" loading="lazy"
+               class="h-14 w-14 rounded-full object-cover">
+          <div>
+            <p class="text-body font-semibold text-ink">Mieke Catthoor</p>
+            <p class="text-small text-ink-muted">Compensation &amp; Benefits Manager BeNe, DPG Media</p>
+          </div>
+          <span class="logo-chip ml-auto hidden sm:inline-flex"><img src="assets/img/dpg-logo-white.svg"
+                alt="DPG Media" loading="lazy" class="h-5 w-auto"></span>
+        </figcaption>
+        <p class="mt-8 border-t border-line pt-6 text-small text-ink-muted">
+          Twee weken naar twee dagen. Dat is de rekensom achter
+          <span class="tabular font-semibold text-ink">7× sneller</span>.
+        </p>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 4. DE OMSLAG (donkere band 1) ====================== -->
+<section class="bg-surface-deep py-16 md:py-24 lg:py-32">
+  <div class="mx-auto max-w-wide px-5 md:px-8 xl:px-10">
+    <div class="max-w-3xl">
+      <p class="text-eyebrow uppercase tracking-[0.08em] font-semibold text-mint">Dezelfde ronde, één systeem</p>
+      <h2 class="mt-4 text-[1.75rem] leading-tight text-ink-inv sm:text-h2">
+        Dit is wat er in de plaats komt.
+      </h2>
+      <p class="mt-4 max-w-text text-lead text-ink-invmuted">
+        Eén lijst per afdeling, met de loonvork, de anciënniteit en de compa-ratio van elke
+        medewerker ernaast. Het budget telt live mee terwijl de leidinggevende verdeelt. Overschrijdt
+        hij het, dan kleurt het cijfer rood. Meer uitleg heeft niemand nodig.
+      </p>
+    </div>
+
+    <figure class="reveal mt-12 overflow-hidden rounded-lg border border-line-strong bg-white shadow-lift">
+      <img src="assets/img/main-visual-nl.webp"
+           width="2400" height="1398" fetchpriority="high"
+           class="w-full"
+           alt="Youbo-scherm met per medewerker het brutoloon, de voorgestelde loonsverhoging, bonus en promotie, twee budgetmeters bovenaan en een detailpaneel met evaluatie en commentaar van de leidinggevende">
+    </figure>
+
+    <div class="mt-10 grid gap-8 sm:grid-cols-3">
+      <div>
+        <h3 class="text-h4 text-ink-inv">Het budget telt live mee</h3>
+        <p class="mt-2 text-small text-ink-invmuted">
+          Niet achteraf bij het samenvoegen, maar terwijl er verdeeld wordt. Er is geen ronde
+          waarin je op 21 januari ontdekt dat je 3% over zit.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-h4 text-ink-inv">Geen splitsen, geen samenvoegen</h3>
+        <p class="mt-2 text-small text-ink-invmuted">
+          Iedereen werkt in hetzelfde systeem, elk in zijn eigen stuk. De hele estafette van
+          hierboven — stap 02 tot 08 — bestaat niet meer.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-h4 text-ink-inv">Elke wijziging heeft een naam en een datum</h3>
+        <p class="mt-2 text-small text-ink-invmuted">
+          Wie kende wat toe, wanneer, en op welke regel uit je loonbeleid. Dat is het verschil
+          tussen een beslissing en een herinnering.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 5. CASES / CIJFERS ====================== -->
+<section id="cases" class="bg-surface py-16 md:py-24 lg:py-32">
+  <div class="mx-auto max-w-wide px-5 md:px-8 xl:px-10">
+    <p class="eyebrow">Vier Belgische organisaties</p>
+    <h2 class="mt-4 max-w-3xl text-[1.75rem] leading-tight sm:text-h2">
+      Wat het bij hen heeft opgeleverd.
+    </h2>
+    <p class="mt-4 max-w-text text-body text-ink-muted">
+      Van 370 tot 7.000 medewerkers, in chemie, media, bouw en HR-dienstverlening. Elk cijfer
+      hieronder komt uit hun eigen referentiecase.
+    </p>
+
+    <div class="mt-12 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="reveal flex flex-col gap-3 rounded-lg bg-surface-sand p-8 lg:p-6 xl:p-8">
+        <span class="logo-chip self-start"><img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-6 w-auto"></span>
+        <p class="tabular font-display text-[2.5rem] font-semibold leading-none text-ink lg:text-[2rem] xl:text-[2.5rem]">3 weken</p>
+        <p class="text-body text-ink-muted">
+          in plaats van meer dan 2 maanden — 7.000 medewerkers, 18 landen
+        </p>
+      </div>
+      <div class="reveal flex flex-col gap-3 rounded-lg bg-surface-sand p-8 lg:p-6 xl:p-8">
+        <span class="logo-chip self-start"><img src="assets/img/dpg-logo-white.svg" alt="DPG Media" class="h-6 w-auto"></span>
+        <p class="tabular font-display text-[2.5rem] font-semibold leading-none text-ink lg:text-[2rem] xl:text-[2.5rem]">7× sneller</p>
+        <p class="text-body text-ink-muted">
+          2 weken voorbereiding werd 2 dagen — 4.500 medewerkers, 130 leidinggevenden
+        </p>
+      </div>
+      <div class="reveal flex flex-col gap-3 rounded-lg bg-surface-sand p-8 lg:p-6 xl:p-8">
+        <span class="logo-chip self-start"><img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="h-4 w-auto"></span>
+        <p class="tabular font-display text-[2.5rem] font-semibold leading-none text-ink lg:text-[2rem] xl:text-[2.5rem]">2 weken</p>
+        <p class="text-body text-ink-muted">
+          bespaard per jaar — 370 medewerkers, 27 afdelingen
+        </p>
+      </div>
+      <div class="reveal flex flex-col gap-3 rounded-lg bg-surface-sand p-8 lg:p-6 xl:p-8">
+        <span class="logo-chip self-start"><img src="assets/img/aertssen-logo.svg" alt="Aertssen Group" class="h-8 w-auto"></span>
+        <p class="tabular font-display text-[2.5rem] font-semibold leading-none text-ink lg:text-[2rem] xl:text-[2.5rem]">3 maanden</p>
+        <p class="text-body text-ink-muted">
+          van beslissing tot live — 450 bedienden, beslist in september, live in december
+        </p>
+      </div>
+    </div>
+
+    <!-- zichtbare gap-markering -->
+    <p class="mt-8 inline-block rounded-sm border border-dashed border-amber bg-amber-50 px-4 py-2 text-small text-amber">
+      TODO — nodig van klant: bestemming van „lees de case” per blok (pdf-download of case-pagina),
+      plus de twee bijkomende klanten die op korte termijn zouden volgen. De rij is gebouwd op zes.
+    </p>
+  </div>
+</section>
+
+<!-- ====================== 6. INTERACTIEVE PREVIEW ====================== -->
+<section id="preview" class="bg-surface-sub py-16 md:py-24 lg:py-32">
+  <div class="mx-auto max-w-wide px-5 md:px-8 xl:px-10"
+       x-data="{ tab: 0, steps: [
+         { n:'Structuur &amp; budget',
+           img:'assets/img/merit-departments.webp',
+           alt:'Afdelingsstructuur in Youbo, met per afdeling de leidinggevende en het budget dat eraan hangt',
+           h:'Eerst staat de structuur vast, dan pas het geld',
+           p:'Je afdelingen, je leidinggevenden en wie wat mag zien. Index, merit, promoties en bonussen krijgen elk hun eigen pot, op het niveau waarop jij ze bewaakt. Vanaf dat moment rekent elke toekenning eronder mee.' },
+         { n:'Verdelen',
+           img:'assets/img/main-visual-nl.webp',
+           alt:'Afdelingslijst in Youbo met per medewerker loon, voorgestelde verhoging, bonus en promotie, en een detailpaneel rechts',
+           h:'Elke leidinggevende verdeelt in hetzelfde systeem',
+           p:'Hij ziet alleen zijn eigen team, met het voorstel dat uit jouw loonregels volgt. Overschrijdt hij zijn budget, dan kleurt het cijfer rood. HR ziet in één blik wie al verdeeld heeft en wie nog niet.' },
+         { n:'Kalibreren',
+           img:'assets/img/merit-compare-nl.webp',
+           alt:'Twee medewerkerskaarten naast elkaar in Youbo met brutoloon, flexinkomen, jaarbonus, mobiliteitsbudget en rewardscore',
+           h:'Twee collega\'s naast elkaar, met alles wat meespeelt',
+           p:'Huidig en historisch loonpakket, positie binnen de loonvork, compa-ratio en evolutie. Zo wordt een kalibratiegesprek een gesprek over gegevens in plaats van over indrukken.' },
+         { n:'Uitleggen',
+           img:'assets/img/merit-communication-nl.webp',
+           alt:'Youbo-scherm met het loonpakket oud, nieuw en verschil naast de functietopologie voor en na, met HAY-niveau en anciënniteitsgraad',
+           h:'Oud, nieuw en verschil — op één blad',
+           p:'Wat verandert er precies, en waarom. Dit is het scherm dat je meeneemt naar het evaluatiegesprek, en het is ook de basis van je dossier richting ondernemingsraad.' },
+         { n:'De medewerker',
+           img:'assets/img/merit-employee-exp-nl.webp',
+           alt:'Medewerkersscherm in Youbo met het eigen loonpakket en de evolutie ervan over meerdere jaren',
+           h:'En de medewerker ziet zijn eigen verhaal',
+           p:'Het loonpakket en de opbouw ervan door de jaren heen. Geen brief die één keer per jaar in een envelop zit, maar een overzicht dat klopt met wat er beslist is.' }
+       ] }">
+
+    <div class="max-w-3xl">
+      <p class="eyebrow">Preview — vijf schermen</p>
+      <h2 class="mt-4 text-[1.75rem] leading-tight sm:text-h2">Klik er zelf even doorheen.</h2>
+      <p class="mt-4 max-w-text text-body text-ink-muted">
+        Dit is geen demo — een demo krijg je van Bart, met je eigen loonregels erin. Dit zijn de
+        vijf schermen waar een cyclus doorheen loopt, in de volgorde waarin je ze tegenkomt.
+      </p>
+    </div>
+
+    <div class="mt-10 scroll-x">
+      <div role="tablist" x-ref="tabs" aria-label="De vijf stappen van een loonronde in Youbo"
+           class="flex min-w-max gap-2 border-b border-line snap-x">
+        <template x-for="(s,i) in steps" :key="i">
+          <button role="tab" type="button"
+                  :id="'tab-'+i" :aria-selected="tab === i ? 'true' : 'false'"
+                  :aria-controls="'panel-'+i" :tabindex="tab === i ? 0 : -1"
+                  @click="tab = i"
+                  @keydown.arrow-right.prevent="tab = (tab+1) % steps.length; $nextTick(() => $refs.tabs.querySelectorAll('[role=tab]')[tab].focus())"
+                  @keydown.arrow-left.prevent="tab = (tab-1+steps.length) % steps.length; $nextTick(() => $refs.tabs.querySelectorAll('[role=tab]')[tab].focus())"
+                  class="-mb-px snap-start whitespace-nowrap rounded-t-sm border-b-2 px-4 py-3 text-body font-medium transition-colors duration-150 ease-out min-h-[48px]"
+                  :class="tab === i ? 'border-primary text-ink' : 'border-transparent text-ink-muted hover:text-ink'"
+                  :data-cta="'preview-tab-'+(i+1)">
+            <span class="tabular mr-2 text-ink-muted" x-text="i+1"></span><span x-text="s.n"></span>
+          </button>
+        </template>
+      </div>
+    </div>
+
+    <div class="mt-10 grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-4">
+        <template x-for="(s,i) in steps" :key="'c'+i">
+          <div x-show="tab === i" :id="'panel-'+i" role="tabpanel" :aria-labelledby="'tab-'+i"
+               :tabindex="tab === i ? 0 : -1">
+            <p class="tabular text-small font-semibold text-primary" x-text="'Stap ' + (i+1) + ' van 5'"></p>
+            <h3 class="mt-3 text-h3" x-text="s.h"></h3>
+            <p class="mt-4 text-body text-ink-muted" x-text="s.p"></p>
+          </div>
+        </template>
+        <p class="mt-8 text-small text-ink-muted">
+          Wil je dit met je eigen loonvorken en regels zien?
+          <a href="#demo" class="lnk" data-cta="preview-to-demo">Vraag een demo aan</a>.
+        </p>
+      </div>
+
+      <div class="lg:col-span-8">
+        <figure class="grid place-items-center rounded-lg border border-line bg-white p-3 shadow-lift md:p-4">
+          <template x-for="(s,i) in steps" :key="'i'+i">
+            <img x-show="tab === i" :src="s.img" :alt="s.alt"
+                 :loading="i === 0 ? 'eager' : 'lazy'"
+                 class="mx-auto h-auto max-h-[300px] w-auto max-w-full rounded-sm object-contain lg:max-h-[520px]">
+          </template>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 7. JOUW LOONBELEID, INGEBOUWD ====================== -->
+<section class="bg-surface py-16 md:py-24 lg:py-32">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <p class="eyebrow">Maatwerk, geen sjabloon</p>
+    <h2 class="mt-4 max-w-3xl text-[1.75rem] leading-tight sm:text-h2">
+      Het loonbeleid dat je op papier hebt, ook echt toepassen.
+    </h2>
+    <p class="mt-4 max-w-text text-lead text-ink-muted">
+      Je loonbeleid bestaat al. In workshops zetten we het om in regels die de tool toepast —
+      loonvorken, anciënniteit, compa-ratio, indexatie, promotie- en bonusregels. Daarna start elke
+      cyclus met een voorstel dat uit jouw regels volgt, niet uit een standaardmodel.
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2">
+      <div class="rounded border border-line bg-white p-6 transition-colors duration-150 ease-out hover:border-line-strong md:p-8">
+        <p class="eyebrow">Kaneka</p>
+        <h3 class="mt-3 text-h3">Vijftig jaar geschiedenis, 27 afdelingen</h3>
+        <p class="mt-3 text-body text-ink-muted">
+          Kaneka's loonbeleid heeft vijftig jaar aan afspraken en uitzonderingen. Dat is in drie
+          maanden vertaald naar een logisch en werkbaar systeem, mét de strikte hiërarchie die er
+          bij hoort. De eerste cyclus is afgerond zonder noemenswaardige problemen.
+        </p>
+      </div>
+      <div class="rounded border border-line bg-white p-6 transition-colors duration-150 ease-out hover:border-line-strong md:p-8">
+        <p class="eyebrow">SD Worx</p>
+        <h3 class="mt-3 text-h3">Achttien landen, achttien reeksen regels</h3>
+        <p class="mt-3 text-body text-ink-muted">
+          Elk land heeft eigen wetgeving en eigen indexatieregels, en de cycli lopen niet gelijk:
+          België in april, het Verenigd Koninkrijk in juni, Noorwegen in juli. De eerste tool die
+          SD Worx testte, kon dat niet aan. Te statisch, zegt People Director Pieter-Jan Boden.
+        </p>
+      </div>
+    </div>
+
+    <!-- objectie: we hebben al een HR-suite -->
+    <div class="mt-12 grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <h3 class="text-h3">„We hebben toch al een HR-pakket?”</h3>
+        <p class="mt-4 max-w-text text-body text-ink-muted">
+          Dat is meestal zo, en Youbo vervangt het niet. Youbo koppelt met je core HR-, payroll- en
+          performancesystemen: de loongegevens komen binnen, de goedgekeurde pakketten gaan terug.
+          Bij Kaneka loopt die koppeling via eBlox.
+        </p>
+        <p class="mt-4 max-w-text text-body text-ink-muted">
+          Aertssen Group ging bewust op zoek naar een aparte tool. Maxime Van Gestel, HR:
+          <span class="text-ink">„Er zijn genoeg tools op de markt, maar die maken meestal deel uit
+          van een hr-softwarepakket. Wij zochten specifiek een tool puur voor het
+          compensatieproces.”</span>
+        </p>
+        <p class="mt-6 inline-block rounded-sm border border-dashed border-amber bg-amber-50 px-4 py-2 text-small text-amber">
+          TODO — nodig van klant: de lijst met integraties bij naam. Nu is alleen eBlox bevestigd.
+        </p>
+      </div>
+      <figure class="lg:col-span-5">
+        <img src="assets/img/merit-integreer.webp" loading="lazy" width="3135" height="1770"
+             class="w-full rounded-lg border border-line bg-white shadow-card"
+             alt="Schema van het HR-landschap waarin Youbo koppelt met core HR-, payroll- en performancesystemen">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 8. DE LEIDINGGEVENDEN ====================== -->
+<section class="bg-surface-sand py-16 md:py-24 lg:py-32">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <div class="grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">De echte drempel</p>
+        <h2 class="mt-4 text-[1.75rem] leading-tight sm:text-h2">
+          Je leidinggevenden openen het ook echt.
+        </h2>
+        <div class="mt-6 max-w-text space-y-4 text-body text-ink-muted">
+          <p>
+            Dat is de vraag waar dit soort trajecten op stukloopt: honderdtwintig afdelingshoofden
+            die één keer per jaar, onder tijdsdruk, iets moeten doen wat ze sinds vorige januari
+            niet meer hebben aangeraakt.
+          </p>
+          <p>
+            Bij Kaneka kregen alle leidinggevenden één uur opleiding. Bij Aertssen was er geen
+            handleiding nodig en kwamen er nauwelijks vragen. Bij DPG Media werken er vandaag 130
+            in.
+          </p>
+          <p>
+            Het scherm doet het meeste werk: het voorstel staat er al, gebaseerd op je loonbeleid,
+            met de loonvork en de anciënniteit van de medewerker ernaast. En als het budget
+            overschreden wordt, kleurt het cijfer rood.
+          </p>
+        </div>
+      </div>
+
+      <figure class="lg:col-span-5 rounded-lg border border-line bg-white p-8 md:p-10">
+        <blockquote class="font-display text-h3 font-semibold leading-snug text-ink">
+          „Als je met een computer kunt werken, kun je met Youbo overweg. Je moet je niet door een
+          dik handboek worstelen.”
+        </blockquote>
+        <figcaption class="mt-6 flex items-center gap-4">
+          <img src="assets/img/marlies.png" alt="" width="56" height="56" loading="lazy"
+               class="h-14 w-14 rounded-full object-cover">
+          <div>
+            <p class="text-body font-semibold text-ink">Marlies Bots</p>
+            <p class="text-small text-ink-muted">Compensation &amp; Benefits Manager, Aertssen Group</p>
+          </div>
+          <span class="logo-chip ml-auto"><img src="assets/img/aertssen-logo.svg" alt="Aertssen Group"
+                loading="lazy" class="h-7 w-auto"></span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <figure class="mt-12 overflow-hidden rounded-lg border border-line bg-white shadow-lift">
+      <!-- Bijgesneden tot de meritring: in het bronbeeld liggen de bonus- en promotiekaart
+           over elkaar, waardoor die twee bedragen half wegvallen. -->
+      <div class="relative overflow-hidden" style="aspect-ratio: 948 / 181;">
+        <img src="assets/img/merit-budget-nl.webp" loading="lazy" width="1550" height="463"
+             class="absolute bottom-0 left-0 w-[163.5%] max-w-none"
+             alt="Meritbudgetring in Youbo: 121.032,19 euro verdeeld van een budget van 100.000 euro, met het teveel als rood segment in de ring">
+      </div>
+      <figcaption class="border-t border-line px-5 py-3 text-small text-ink-muted">
+        Zolang de ring groen is, zit de afdeling binnen budget. Hier staat het meritbudget op
+        <span class="tabular">€ 121.032,19</span> van <span class="tabular">€ 100.000,00</span> —
+        het rode segment is het teveel. Dat is de hele opleiding.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ====================== 9. UITLEGBAARHEID / 2027 ====================== -->
+<section class="bg-surface py-16 md:py-24 lg:py-32">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <p class="eyebrow">Uitlegbaarheid</p>
+    <h2 class="mt-4 max-w-3xl text-[1.75rem] leading-tight sm:text-h2">
+      De cijfers waarop je in 2027 rapporteert, maak je in 2026.
+    </h2>
+    <p class="mt-4 max-w-text text-lead text-ink-muted">
+      Het eerste loonkloofrapport onder de Europese richtlijn is voor werkgevers vanaf 250
+      medewerkers verwacht tegen 7 juni 2027, en het rapporteert over het voorgaande kalenderjaar.
+      Dat betekent dat de verhogingen die je nu toekent, de cijfers zijn waarop je straks
+      rapporteert.
+    </p>
+
+    <div class="mt-12 grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-6">
+        <h3 class="text-h3">Wat vandaag al geldt in België</h3>
+        <dl class="mt-6 divide-y divide-line border-y border-line">
+          <div class="py-5">
+            <dt class="text-h4 font-semibold text-ink">Loonkloofwet van 22 april 2012</dt>
+            <dd class="mt-2 max-w-text text-body text-ink-muted">
+              Elke werkgever vanaf 50 werknemers maakt tweejaarlijks een analyseverslag van de
+              bezoldigingsstructuur op, opgesplitst per geslacht, anciënniteit, opleidingsniveau en
+              functieniveau, en bezorgt dat aan de ondernemingsraad.
+            </dd>
+          </div>
+          <div class="py-5">
+            <dt class="text-h4 font-semibold text-ink">CAO nr. 25ter</dt>
+            <dd class="mt-2 max-w-text text-body text-ink-muted">
+              Functieclassificatiesystemen moeten getoetst worden op sekseneutraliteit.
+            </dd>
+          </div>
+          <div class="py-5">
+            <dt class="text-h4 font-semibold text-ink">Loonnorm 0,0% voor 2025–2026</dt>
+            <dd class="mt-2 max-w-text text-body text-ink-muted">
+              Vastgelegd bij KB van 12 september 2025. Indexatie, baremieke anciënniteitsverhogingen
+              en promoties vallen erbuiten — maar je moet wel kunnen tonen in welke categorie elke
+              verhoging valt. PC 200 indexeerde op 1 januari 2026 met 2,21%, en de centenindex
+              geldt daar voor het eerst vanaf 1 januari 2027.
+            </dd>
+          </div>
+        </dl>
+        <p class="mt-6 max-w-text text-body text-ink-muted">
+          Alles samen: de discretionaire meritpot in België is structureel bijna nul, elke verhoging
+          moet in een uitgezonderde categorie passen, en je moet kunnen aantonen in welke.
+          Nauwkeurigheid is hier geen luxe — het is de enige ruimte die je hebt.
+        </p>
+      </div>
+
+      <div class="lg:col-span-6">
+        <figure class="rounded-lg border border-line bg-white p-8 md:p-10">
+          <blockquote class="font-display text-h3 font-semibold leading-snug text-ink">
+            „Je hebt altijd zicht op wie welke loonsverhogingen en bonussen heeft toegekend.
+            Aanpassingen worden vermeld met datum en verantwoordelijke, tot op het detailniveau.
+            Dat vermijdt discussies achteraf.”
+          </blockquote>
+          <figcaption class="mt-6 flex items-center gap-4">
+            <img src="assets/img/marlies.png" alt="" width="56" height="56" loading="lazy"
+                 class="h-14 w-14 rounded-full object-cover">
+            <div>
+              <p class="text-body font-semibold text-ink">Marlies Bots</p>
+              <p class="text-small text-ink-muted">Compensation &amp; Benefits Manager, Aertssen Group</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <div class="mt-6 rounded border border-line bg-surface-sub p-6 md:p-8">
+          <h3 class="text-h4">De loonkloofanalyse, in de woorden van een klant</h3>
+          <p class="mt-3 max-w-text text-body text-ink-muted">
+            Danny Haneveer, Compensation &amp; Benefits Manager bij Kaneka:
+            <span class="text-ink">„Die laat zien wat de loonkloof is, en welke verschillen er
+            statistisch verklaarbaar zijn.”</span>
+          </p>
+          <p class="mt-4 max-w-text text-body text-ink-muted">
+            DPG Media publiceert zijn eigen loonkloof — vandaag
+            <span class="tabular font-semibold text-ink">1,9%</span> — met de ambitie die binnen
+            enkele jaren volledig weg te werken. Youbo helpt daarbij.
+          </p>
+        </div>
+
+        <!-- eerlijk over de wet -->
+        <div class="mt-6 rounded border border-amber bg-amber-50 p-6 md:p-8">
+          <h3 class="text-h4 text-ink">En wat níet klopt</h3>
+          <p class="mt-3 max-w-text text-body text-ink-muted">
+            Je sociaal secretariaat heeft je waarschijnlijk al geschreven dat er vandaag niets moet.
+            Dat klopt. België heeft de Europese loontransparantierichtlijn niet omgezet voor de
+            privésector; de omzettingsdatum van 7 juni 2026 is gepasseerd, de gesprekken in de NAR
+            liggen sinds april 2026 stil en er zijn alleen decreten voor overheid en onderwijs.
+          </p>
+          <p class="mt-4 max-w-text text-body text-ink-muted">
+            Wij gaan je dus niet vertellen dat de wet je nu verplicht. Wat wél waar is: het
+            basisjaar loopt al, en de Belgische verplichtingen hierboven bestaan vandaag. Het wordt
+            strenger, niet losser.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 10. IMPLEMENTATIE & VEILIGHEID ====================== -->
+<section class="bg-surface-sub py-16 md:py-24 lg:py-32">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <div class="grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Implementatie</p>
+        <h2 class="mt-4 text-[1.75rem] leading-tight sm:text-h2">
+          Beslissing in september. Begin december live.
+        </h2>
+        <p class="mt-4 max-w-text text-body text-ink-muted">
+          Dat is geen belofte, dat is het schema van Aertssen Group. Bij Kaneka duurde het eveneens
+          drie maanden, waarna de eerste volledige cyclus is afgerond zonder noemenswaardige
+          problemen. Het traject bestaat uit workshops waarin je loonbeleid wordt omgezet in regels,
+          wekelijkse check-ins en één opleidingssessie voor de leidinggevenden.
+        </p>
+        <p class="mt-4 max-w-text text-body text-ink-muted">
+          Belgische loonrondes lopen doorgaans van januari tot april. Wil je klaar zijn voor de
+          cyclus van volgend jaar? Reken op drie maanden en begin in het najaar.
+        </p>
+
+        <ol class="mt-8 grid gap-4 sm:grid-cols-3">
+          <li class="rounded border border-line bg-white p-5">
+            <p class="tabular text-small font-semibold text-primary">Maand 1</p>
+            <p class="mt-2 text-body text-ink">Workshops: je loonbeleid wordt regelwerk.</p>
+          </li>
+          <li class="rounded border border-line bg-white p-5">
+            <p class="tabular text-small font-semibold text-primary">Maand 2</p>
+            <p class="mt-2 text-body text-ink">Data en koppelingen, testen met echte gegevens.</p>
+          </li>
+          <li class="rounded border border-line bg-white p-5">
+            <p class="tabular text-small font-semibold text-primary">Maand 3</p>
+            <p class="mt-2 text-body text-ink">Opleiding van de leidinggevenden, en live.</p>
+          </li>
+        </ol>
+        <p class="mt-5 max-w-text text-small text-ink-muted">
+          De tip van Mieke Catthoor voor wie begint: „Test zo snel mogelijk met echte data. Dan
+          komen anomalieën sneller aan het licht.”
+        </p>
+      </div>
+
+      <div class="lg:col-span-5">
+        <div class="rounded-lg border border-line bg-white p-8">
+          <h3 class="text-h3">Loondata in de cloud</h3>
+          <p class="mt-4 text-body text-ink-muted">
+            Youbo is ISO 27001-gecertificeerd en GDPR-conform. Elke leidinggevende krijgt toegang
+            tot precies zijn eigen team en niets daarbuiten. Elke toegang en elke wijziging wordt
+            gelogd.
+          </p>
+          <p class="mt-4 text-body text-ink-muted">
+            Zet dat naast het alternatief: een Excel-bestand met een paswoord erop, dat rondgaat
+            per mail.
+          </p>
+          <img src="assets/img/iso-eng.svg" loading="lazy" width="266" height="70"
+               class="mt-8 h-12 w-auto"
+               alt="ISO 27001-certificering en GDPR-conformiteit">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 11. DE SLOTREGEL (donkere band 2) ====================== -->
+<section class="bg-surface-deep py-20 md:py-28 lg:py-40">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <div class="max-w-3xl">
+      <h2 class="text-[2rem] leading-[1.08] text-ink-inv sm:text-h1">
+        Maak van verlonen het positieve proces dat het hoort te zijn.
+      </h2>
+      <p class="mt-6 max-w-text text-lead text-ink-invmuted">
+        Niet omdat het moet. Omdat de twee weken die naar splitsen, samenvoegen en herrekenen gingen,
+        beter naar de gesprekken zelf gaan.
+      </p>
+    </div>
+
+    <figure class="mt-12 max-w-3xl border-t border-line-strong/40 pt-10">
+      <blockquote class="font-display text-h3 font-semibold leading-snug text-ink-inv">
+        „Verlonen is nu eindelijk het positieve proces dat het hoort te zijn.”
+      </blockquote>
+      <figcaption class="mt-6 flex items-center gap-4">
+        <img src="assets/img/pieter-jan.webp" alt="" width="56" height="56" loading="lazy"
+             class="h-14 w-14 rounded-full object-cover">
+        <div>
+          <p class="text-body font-semibold text-ink-inv">Pieter-Jan Boden</p>
+          <p class="text-small text-ink-invmuted">People Director, SD Worx</p>
+        </div>
+        <img src="assets/img/sdworx-logo.svg" alt="SD Worx" loading="lazy" class="ml-auto h-7 w-auto">
+      </figcaption>
+    </figure>
+
+    <p class="mt-10 max-w-text text-small text-ink-invmuted">
+      Volledige openheid: SD Worx is ook de meerderheidsaandeelhouder van Teal Partners, het
+      Belgische bedrijf achter Youbo. Ze hadden dit dus zelf kunnen bouwen. Ze gebruiken Youbo,
+      voor 7.000 medewerkers in 18 landen.
+    </p>
+  </div>
+</section>
+
+<!-- ====================== 12. HET FORMULIER ====================== -->
+<section id="demo" class="bg-surface py-16 md:py-24 lg:py-32">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <div class="grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
+
+      <!-- Bart -->
+      <div class="lg:col-span-5">
+        <p class="eyebrow">De demo</p>
+        <h2 class="mt-4 text-[1.75rem] leading-tight sm:text-h2">
+          Dertig minuten, met Bart De Nil.
+        </h2>
+        <p class="mt-4 max-w-text text-body text-ink-muted">
+          Bart is de rewardexpert van Teal Partners en hij geeft de demo's zelf. Je stuurt hem
+          vooraf je loonregels door — loonvorken, anciënniteitsregels, hoe je index en promoties
+          behandelt — en hij zet ze in de tool. Wat je ziet, is dus je eigen loonronde, niet een
+          voorbeeldbedrijf.
+        </p>
+
+        <div class="mt-8 flex items-center gap-5">
+          <img src="assets/img/bart_de_nil.webp" width="96" height="96" loading="lazy"
+               class="h-24 w-24 rounded-full object-cover object-top"
+               alt="Bart De Nil, rewardexpert bij Teal Partners">
+          <div>
+            <p class="text-body font-semibold text-ink">Bart De Nil</p>
+            <p class="text-small text-ink-muted">Rewardexpert, Teal Partners</p>
+            <p class="mt-2 text-small">
+              <a href="tel:+32476963340" class="lnk" data-cta="bart-phone">+32 476 96 33 40</a>
+            </p>
+          </div>
+        </div>
+
+        <figure class="mt-10 rounded-lg bg-surface-sand p-8">
+          <blockquote class="font-display text-h3 font-semibold leading-snug text-ink">
+            „Toen ik een demo zag, wist ik: hier hebben we op gewacht.”
+          </blockquote>
+          <figcaption class="mt-6 flex items-center gap-4">
+            <span aria-hidden="true"
+                  class="grid h-14 w-14 place-items-center rounded-full bg-primary-50 font-display text-h4 font-semibold text-primary">BV</span>
+            <div>
+              <p class="text-body font-semibold text-ink">Bart Verhoeven</p>
+              <p class="text-small text-ink-muted">HR &amp; General Affairs Manager, Kaneka</p>
+            </div>
+            <span class="logo-chip ml-auto"><img src="assets/img/kaneka-logo.svg" alt="Kaneka"
+                  loading="lazy" class="h-5 w-auto"></span>
+          </figcaption>
+        </figure>
+
+        <p class="mt-6 text-small text-ink-muted">
+          Twee Barts in dit verhaal: Bart De Nil geeft de demo, Bart Verhoeven is klant bij Kaneka.
+        </p>
+      </div>
+
+      <!-- formulier -->
+      <div class="lg:col-span-7">
+        <div class="rounded-lg border border-line bg-white p-6 shadow-card md:p-10"
+             x-data="{ sent:false, errors:{}, values:{ voornaam:'', naam:'', email:'', bedrijf:'', omvang:'' },
+                       validate() {
+                         this.errors = {};
+                         if (!this.values.voornaam.trim()) this.errors.voornaam = 'Vul je voornaam in.';
+                         if (!this.values.naam.trim()) this.errors.naam = 'Vul je naam in.';
+                         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.values.email)) this.errors.email = 'Vul een geldig werk-e-mailadres in.';
+                         if (!this.values.bedrijf.trim()) this.errors.bedrijf = 'Vul de naam van je organisatie in.';
+                         if (!this.values.omvang) this.errors.omvang = 'Kies een grootteklasse.';
+                         return Object.keys(this.errors).length === 0;
+                       } }">
+
+          <form x-show="!sent" @submit.prevent="if (validate()) sent = true" novalidate
+                data-form="demo-request" aria-describedby="form-intro">
+            <h3 class="text-h3">Vraag een demo aan</h3>
+            <p id="form-intro" class="mt-3 text-body text-ink-muted">
+              Bart neemt binnen twee werkdagen contact op om een moment te prikken. Geen
+              verkoopspresentatie — je ziet je eigen loonregels in de tool.
+            </p>
+
+            <div class="mt-8 grid gap-5 sm:grid-cols-2">
+              <div>
+                <label class="fld-label" for="voornaam">Voornaam <span class="text-alert" aria-hidden="true">*</span></label>
+                <input id="voornaam" name="voornaam" type="text" required autocomplete="given-name"
+                       x-model="values.voornaam" class="fld"
+                       :class="errors.voornaam && 'border-alert'"
+                       :aria-invalid="errors.voornaam ? 'true' : 'false'"
+                       aria-describedby="err-voornaam">
+                <p id="err-voornaam" role="alert" x-show="errors.voornaam" x-cloak
+                   class="mt-1.5 text-small text-alert" x-text="errors.voornaam"></p>
+              </div>
+              <div>
+                <label class="fld-label" for="naam">Naam <span class="text-alert" aria-hidden="true">*</span></label>
+                <input id="naam" name="naam" type="text" required autocomplete="family-name"
+                       x-model="values.naam" class="fld"
+                       :class="errors.naam && 'border-alert'"
+                       :aria-invalid="errors.naam ? 'true' : 'false'"
+                       aria-describedby="err-naam">
+                <p id="err-naam" role="alert" x-show="errors.naam" x-cloak
+                   class="mt-1.5 text-small text-alert" x-text="errors.naam"></p>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="fld-label" for="werkmail">Werk-e-mailadres <span class="text-alert" aria-hidden="true">*</span></label>
+                <input id="werkmail" name="email" type="email" required autocomplete="email"
+                       inputmode="email" placeholder="jouw@bedrijf.be"
+                       x-model="values.email" class="fld"
+                       :class="errors.email && 'border-alert'"
+                       :aria-invalid="errors.email ? 'true' : 'false'"
+                       aria-describedby="help-mail err-mail">
+                <p id="help-mail" class="mt-1.5 text-small text-ink-muted">
+                  Liefst je werkadres — dan weet Bart met welke organisatie hij zich moet voorbereiden.
+                </p>
+                <p id="err-mail" role="alert" x-show="errors.email" x-cloak
+                   class="mt-1.5 text-small text-alert" x-text="errors.email"></p>
+              </div>
+
+              <div>
+                <label class="fld-label" for="bedrijf">Organisatie <span class="text-alert" aria-hidden="true">*</span></label>
+                <input id="bedrijf" name="bedrijf" type="text" required autocomplete="organization"
+                       x-model="values.bedrijf" class="fld"
+                       :class="errors.bedrijf && 'border-alert'"
+                       :aria-invalid="errors.bedrijf ? 'true' : 'false'"
+                       aria-describedby="err-bedrijf">
+                <p id="err-bedrijf" role="alert" x-show="errors.bedrijf" x-cloak
+                   class="mt-1.5 text-small text-alert" x-text="errors.bedrijf"></p>
+              </div>
+              <div>
+                <label class="fld-label" for="omvang">Aantal medewerkers <span class="text-alert" aria-hidden="true">*</span></label>
+                <select id="omvang" name="omvang" required x-model="values.omvang" class="fld"
+                        :class="errors.omvang && 'border-alert'"
+                        :aria-invalid="errors.omvang ? 'true' : 'false'"
+                        aria-describedby="err-omvang">
+                  <option value="">Kies een grootteklasse</option>
+                  <option value="&lt;200">minder dan 200</option>
+                  <option value="200-500">200 – 500</option>
+                  <option value="500-1500">500 – 1.500</option>
+                  <option value="1500-5000">1.500 – 5.000</option>
+                  <option value="5000+">meer dan 5.000</option>
+                </select>
+                <p id="err-omvang" role="alert" x-show="errors.omvang" x-cloak
+                   class="mt-1.5 text-small text-alert" x-text="errors.omvang"></p>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="fld-label" for="telefoon">
+                  Telefoon <span class="font-normal text-ink-muted">(optioneel)</span>
+                </label>
+                <input id="telefoon" name="telefoon" type="tel" autocomplete="tel"
+                       placeholder="+32 4.." class="fld">
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="flex items-start gap-3">
+                  <input type="checkbox" name="nieuwsbrief"
+                         class="mt-1 h-5 w-5 shrink-0 rounded-sm border border-line-strong text-primary
+                                focus:ring-2 focus:ring-primary/25">
+                  <span class="text-small text-ink-muted">
+                    Stuur me ook af en toe iets over loonbeleid en loontransparantie in België.
+                    Hooguit een paar keer per jaar.
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="form-submit-demo">
+              Vraag een demo aan
+            </button>
+
+            <p class="mt-4 text-small text-ink-muted">
+              Je gegevens worden alleen gebruikt om je demo-aanvraag te behandelen. Verwerkt door
+              Teal Partners BV, Damplein 23, 2060 Antwerpen. Meer in de
+              <a href="#" class="lnk" data-cta="form-privacy">privacyverklaring</a>.
+            </p>
+          </form>
+
+          <!-- succesboodschap -->
+          <div x-show="sent" x-cloak role="status" aria-live="polite" class="py-4">
+            <div class="flex items-start gap-4">
+              <span class="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-sm bg-primary-50"
+                    aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                     stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+                  <path d="M4 12.5l5 5L20 6.5"/>
+                </svg>
+              </span>
+              <div>
+                <h3 class="text-h3">Bedankt, je aanvraag is verstuurd.</h3>
+                <p class="mt-3 max-w-text text-body text-ink-muted">
+                  Bart De Nil neemt binnen twee werkdagen contact op om een moment van dertig
+                  minuten te prikken. Hij vraagt je dan om je loonregels vooraf door te sturen,
+                  zodat de demo over jouw loonronde gaat en niet over een voorbeeldbedrijf.
+                </p>
+                <p class="mt-4 text-body text-ink-muted">
+                  Kan het sneller? Bel gerust:
+                  <a href="tel:+32476963340" class="lnk" data-cta="success-phone">+32 476 96 33 40</a>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- tweede spoor, lage drempel -->
+        <div class="mt-6 rounded-lg bg-surface-deep p-6 md:p-8">
+          <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p class="text-body font-semibold text-ink-inv">Liever eerst even bellen?</p>
+              <p class="mt-1 text-small text-ink-invmuted">
+                Dertig minuten · vrijblijvend · je spreekt meteen Bart zelf
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a href="tel:+32476963340" class="btn-mint" data-cta="secondtrack-call">
+                Bel Bart direct
+              </a>
+              <a href="mailto:bart.denil@tealpartners.com"
+                 class="btn border border-mint-300 text-ink-inv hover:bg-white/10"
+                 data-cta="secondtrack-mail">
+                Mail Bart
+              </a>
+            </div>
+          </div>
+          <p class="mt-5 rounded-sm border border-dashed border-mint-300 px-4 py-2 text-small text-ink-invmuted">
+            TODO — nodig van klant: een agenda-link van Bart, zodat hier „boek direct in Barts
+            agenda” kan staan in plaats van een telefoonnummer.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== 13. FAQ ====================== -->
+<section id="faq" class="bg-surface-sand py-16 md:py-24 lg:py-32">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <p class="eyebrow">Vragen</p>
+    <h2 class="mt-4 text-[1.75rem] leading-tight sm:text-h2">Wat mensen ons voor de demo vragen.</h2>
+
+    <div x-data="{ open: null, items: [
+        { q: 'Hoe werkt het?',
+          a: 'Je loonbeleid wordt in workshops omgezet in regels in de tool: loonvorken, anciënniteit, indexatie, promotie- en bonusregels. Daarna opent HR de cyclus, verdelen de leidinggevenden hun budget in hetzelfde systeem, kalibreert en keurt de directie goed, en gaan de goedgekeurde pakketten naar je core HR- en payrollsysteem. Het splitsen en samenvoegen van bestanden verdwijnt volledig.' },
+        { q: 'Hoe lang duurt het om het op te zetten?',
+          a: 'Reken op drie maanden. Bij Aertssen Group viel de beslissing in september en stond de tool begin december live; bij Kaneka duurde het eveneens drie maanden, waarna de eerste cyclus zonder noemenswaardige problemen is afgerond. Omdat Belgische loonrondes doorgaans in januari starten, is het najaar het logische moment om te beslissen.' },
+        { q: 'Voor wie is Youbo geschikt?',
+          a: 'Voor organisaties die de loonronde vandaag in Excel doen en waar meerdere leidinggevenden budget verdelen. De vier klanten waarover we mogen vertellen gaan van 370 tot 7.000 medewerkers, in chemie, media, bouw en HR-dienstverlening. Onder ongeveer 200 medewerkers met één beslisser blijft een goed bestand vaak volstaan — dat zeggen we liever nu dan na de demo.' },
+        { q: 'Hoeveel kost het?',
+          a: 'Er staat geen prijs op deze pagina, en dat is geen ontwijking: de prijs hangt af van je aantal medewerkers en van hoeveel maatwerk je loonbeleid vraagt. In de demo krijg je een indicatie op basis van jouw cijfers, voordat er iets ondertekend wordt. <span class=&quot;mt-3 inline-block rounded-sm border border-dashed border-amber bg-amber-50 px-2 py-0.5 text-small text-amber&quot;>TODO — nodig van klant: het prijsmodel, zodat hier „per medewerker per jaar” of „per cyclus” kan staan.</span>' },
+        { q: 'Vervangt dit ons sociaal secretariaat?',
+          a: 'Nee. Youbo beslist de bedragen, je sociaal secretariaat betaalt ze uit. De goedgekeurde pakketten gaan naar je bestaande core HR- en payrollsysteem; bij Kaneka loopt die koppeling via eBlox.' },
+        { q: 'Onze loondata in de cloud — hoe zit dat?',
+          a: 'Youbo is ISO 27001-gecertificeerd en GDPR-conform, en elke leidinggevende ziet alleen zijn eigen team. Elke toegang en elke wijziging wordt gelogd. Vergelijk dat met het alternatief: een Excel-bestand met een paswoord erop, dat per mail rondgaat — en paswoorden worden doorgestuurd.' },
+        { q: 'Is de tool in het Nederlands? En in het Frans?',
+          a: 'De tool bestaat in het Nederlands en het Engels; de schermen op deze pagina zijn de Nederlandstalige versie. <span class=&quot;mt-3 inline-block rounded-sm border border-dashed border-amber bg-amber-50 px-2 py-0.5 text-small text-amber&quot;>TODO — nodig van klant: bevestiging of er een Franstalige interface is. Voor een tweetalig Belgisch bedrijf is dat een beslissende vraag en we willen er geen fout antwoord op geven.</span>' },
+        { q: 'Wie zit er achter Youbo?',
+          a: 'Youbo is een product van Teal Partners BV, een Belgisch bedrijf met zetel aan het Damplein 23 in Antwerpen, ondernemingsnummer 0642.824.542. Meerderheidsaandeelhouder is SD Worx, dat Youbo ook zelf gebruikt voor 7.000 medewerkers in 18 landen. Je hoeft geen klant van SD Worx te zijn om Youbo te gebruiken.' }
+      ] }"
+      class="mt-10 max-w-3xl divide-y divide-line border-y border-line">
+      <template x-for="(item,i) in items" :key="i">
+        <div>
+          <h3>
+            <button type="button" @click="open = open === i ? null : i"
+                    :aria-expanded="open === i ? 'true' : 'false'" :aria-controls="'faq-'+i"
+                    :data-cta="'faq-open-'+(i+1)"
+                    class="flex w-full items-start justify-between gap-6 py-5 text-left text-h4
+                           font-display font-semibold text-ink transition-colors duration-150
+                           ease-out hover:text-primary min-h-[48px]">
+              <span x-text="item.q"></span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                   stroke-linecap="round" aria-hidden="true"
+                   class="mt-1 h-5 w-5 shrink-0 transition-transform duration-200 ease-out"
+                   :class="open === i && 'rotate-45'">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+            </button>
+          </h3>
+          <div :id="'faq-'+i" x-show="open === i" x-collapse>
+            <div class="max-w-text pb-6 pr-6 text-body text-ink-muted" x-html="item.a"></div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <p class="mt-10 text-body text-ink-muted">
+      Staat je vraag er niet bij?
+      <a href="#demo" class="lnk" data-cta="faq-to-demo">Stel ze aan Bart in de demo</a>.
+    </p>
+  </div>
+</section>
+
+<!-- ====================== 14. WIE ZIT HIERACHTER ====================== -->
+<section class="bg-surface py-16 md:py-24">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <div class="grid items-start gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Over Youbo</p>
+        <h2 class="mt-4 text-[1.75rem] leading-tight sm:text-h2">Een Belgisch bedrijf, met een adres.</h2>
+        <p class="mt-4 max-w-text text-body text-ink-muted">
+          Youbo is een product van Teal Partners BV, Damplein 23 in Antwerpen, ondernemingsnummer
+          0642.824.542. Meerderheidsaandeelhouder is SD Worx. Vier klanten staan met naam en cijfers
+          op deze pagina; hun cases zijn in hun eigen woorden opgetekend.
+        </p>
+        <p class="mt-4 max-w-text text-body text-ink-muted">
+          Dat is een eerlijke vraag in deze markt: Assemble werd overgenomen door Deel, Barley door
+          Workleap, en het Belgische Officient is opgegaan in Exact. Wie er over vijf jaar nog is,
+          is geen paranoïde vraag maar een geïnformeerde.
+        </p>
+      </div>
+      <figure class="lg:col-span-5">
+        <img src="assets/img/werkvloerfotografie.webp" loading="lazy" width="2500" height="1667"
+             class="w-full rounded-lg object-cover"
+             alt="Collega's aan het werk op de werkvloer bij DPG Media">
+      </figure>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="border-t border-line bg-surface-sub py-12 md:py-16">
+  <div class="mx-auto max-w-container px-5 md:px-8 xl:px-10">
+    <div class="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+      <div>
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-7 w-auto">
+        <p class="mt-4 max-w-sm text-small text-ink-muted">
+          Belgische software om loonsverhogingen, bonussen en promoties toe te kennen volgens je
+          eigen loonbeleid — met een audittrail per beslissing.
+        </p>
+      </div>
+
+      <div class="grid gap-10 sm:grid-cols-3">
+        <div>
+          <h2 class="text-small font-semibold text-ink">Op deze pagina</h2>
+          <ul class="mt-3 space-y-2 text-small">
+            <li><a href="#januari" class="text-ink-muted hover:text-ink">Het probleem</a></li>
+            <li><a href="#cases" class="text-ink-muted hover:text-ink">Cases</a></li>
+            <li><a href="#preview" class="text-ink-muted hover:text-ink">Preview</a></li>
+            <li><a href="#faq" class="text-ink-muted hover:text-ink">Vragen</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-small font-semibold text-ink">Contact</h2>
+          <ul class="mt-3 space-y-2 text-small">
+            <li><a href="tel:+32476963340" class="text-ink-muted hover:text-ink" data-cta="footer-phone">+32 476 96 33 40</a></li>
+            <li><a href="mailto:bart.denil@tealpartners.com" class="text-ink-muted hover:text-ink" data-cta="footer-mail">bart.denil@tealpartners.com</a></li>
+            <li class="text-ink-muted">Damplein 23, 2060 Antwerpen</li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-small font-semibold text-ink">Juridisch</h2>
+          <ul class="mt-3 space-y-2 text-small">
+            <li><a href="#" class="text-ink-muted hover:text-ink">Cookiebeleid</a></li>
+            <li><a href="#" class="text-ink-muted hover:text-ink">Privacyverklaring</a></li>
+            <li><a href="#" class="text-ink-muted hover:text-ink">Gebruiksvoorwaarden</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-small text-ink-muted">© 2026 Youbo by Teal Partners BV</p>
+      <p class="text-small text-ink-muted">Nederlands · <a href="#" class="lnk">English</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ CONSENT + STICKY CTA (nooit tegelijk zichtbaar) ============ -->
+<div x-data="{
+       consent: false, scrolled: false, nearForm: false,
+       check() {
+         this.scrolled = window.scrollY > 700;
+         const f = document.getElementById('demo');
+         this.nearForm = f ? f.getBoundingClientRect().top < window.innerHeight : false;
+       }
+     }"
+     x-init="check()" @scroll.window.passive="check()" @resize.window.passive="check()">
+
+  <!-- consentbalk: compact, onderaan, en de sticky CTA verschijnt pas hierna -->
+  <div x-show="!consent" x-cloak
+       class="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-white/95 shadow-lift backdrop-blur"
+       role="region" aria-label="Toestemming voor cookies">
+    <div class="mx-auto flex max-w-container flex-col gap-2 px-5 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-4 md:px-8">
+      <p class="max-w-2xl text-small leading-snug text-ink-muted sm:leading-[1.55]">
+        <span class="sm:hidden">Analytische cookies laden pas als je ze aanvaardt.</span>
+        <span class="hidden sm:inline">We gebruiken analytische cookies en de LinkedIn Insight Tag om te zien welke
+        advertentie je hier bracht. Die laden pas als je ze aanvaardt.</span>
+        <a href="#" class="lnk" data-cta="consent-policy">Cookiebeleid</a>
+      </p>
+      <div class="flex shrink-0 gap-2 sm:gap-3">
+        <button type="button" @click="consent = true; check()"
+                class="btn-secondary !min-h-[44px] !px-3 !py-2 !text-small sm:!px-4" data-cta="consent-refuse">
+          <span class="sm:hidden">Weigeren</span>
+          <span class="hidden sm:inline">Alleen noodzakelijke</span>
+        </button>
+        <button type="button" @click="consent = true; check()"
+                class="btn-primary !min-h-[44px] !px-3 !py-2 !text-small sm:!px-4" data-cta="consent-accept">
+          Aanvaarden
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- sticky CTA -->
+  <div x-show="consent && scrolled && !nearForm" x-cloak
+       x-transition:enter="transition ease-out duration-200"
+       x-transition:enter-start="opacity-0 translate-y-2"
+       x-transition:enter-end="opacity-100 translate-y-0"
+       class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 shadow-lift backdrop-blur">
+    <div class="mx-auto flex max-w-container items-center justify-between gap-4 px-5 py-3 md:px-8">
+      <p class="hidden text-small text-ink-muted sm:block">
+        Zie in dertig minuten wat Youbo doet met jouw loonregels.
+      </p>
+      <a href="#demo" class="btn-primary shrink-0 !min-h-[44px] !py-2.5 !text-small"
+         data-cta="sticky-demo">Vraag een demo aan</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Scroll reveal: één keer, 240ms, max vier per groep. Valt terug op "gewoon zichtbaar"
+  // als JS niet draait, want de klasse wordt hier pas toegevoegd.
+  (function () {
+    document.documentElement.classList.add('js-on');
+    var items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('is-in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e, i) {
+        if (!e.isIntersecting) return;
+        e.target.style.transitionDelay = Math.min(i, 3) * 60 + 'ms';
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
+    items.forEach(function (el) { io.observe(el); });
+
+    // Vangnet. Bij snel scrollen (of een sprong naar een anker) passeert een blok soms
+    // tussen twee frames door en ziet de observer het nooit; dat blok blijft dan
+    // permanent onzichtbaar. Alles wat de vouw al voorbij is, wordt hier alsnog getoond.
+    function sweep() {
+      items.forEach(function (el) {
+        if (el.classList.contains('is-in')) return;
+        if (el.getBoundingClientRect().top < window.innerHeight) {
+          el.classList.add('is-in');
+          io.unobserve(el);
+        }
+      });
+    }
+    window.addEventListener('scroll', sweep, { passive: true });
+    window.addEventListener('resize', sweep, { passive: true });
+    window.addEventListener('load', sweep);
+  })();
+</script>
+
+</body>
+</html>
