@@ -22,7 +22,7 @@
   <div class="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center gap-4">
     <div>
       <h1 class="text-2xl font-semibold leading-none tracking-tight">Youbo — landing page drafts</h1>
-      <p class="text-sm text-neutral-500 mt-1">Ten directions for the demo-request landing page. Rate them, leave notes, copy the feedback back to Claude.</p>
+      <p class="text-sm text-neutral-500 mt-1">Ten directions for the demo-request landing page. Rate them, leave notes, then mail the feedback back to Sven.</p>
     </div>
 
     <div class="ml-auto flex items-center gap-2 text-sm">
@@ -31,8 +31,8 @@
       <button @click="filter='maybe'":class="filter==='maybe'? 'bg-amber-500 text-white'  : 'bg-white'"  class="px-3 py-1.5 rounded-full border border-neutral-300">Maybe <span class="opacity-60" x-text="countBy('maybe')"></span></button>
       <button @click="filter='none'" :class="filter==='none' ? 'bg-neutral-900 text-white' : 'bg-white'"  class="px-3 py-1.5 rounded-full border border-neutral-300">Unrated <span class="opacity-60" x-text="countBy('')"></span></button>
       <span class="w-px h-6 bg-neutral-300 mx-1"></span>
-      <button @click="copyFeedback()" class="px-4 py-1.5 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700">
-        <span x-text="copied ? 'Copied — paste to Claude' : 'Copy all feedback'"></span>
+      <button @click="emailFeedback()" class="px-4 py-1.5 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700">
+        <span x-text="sent ? 'Opening your mail app…' : 'Email all feedback'"></span>
       </button>
       <button @click="reset()" class="px-3 py-1.5 rounded-full border border-neutral-300 bg-white text-neutral-500" title="Clear all ratings and notes">Reset</button>
     </div>
@@ -121,7 +121,9 @@ function picker() {
     filter: 'all',
     current: null,
     vw: 1280,
-    copied: false,
+    sent: false,
+    TO: 'admin@be-tango.com',
+    SUBJECT: 'Youbo landing page — draft review',
     all: [
       { r:'r1', n:'01', file:'draft-01-zonder-kopzorgen.html', title:'Zonder kopzorgen',
         concept:'Jana’s own line taken seriously — calm, editorial, generous white space. The furthest possible move away from “tech”.',
@@ -166,23 +168,38 @@ function picker() {
     visible()  { return this.filter === 'all' ? this.drafts : this.drafts.filter(d => this.rating(d) === (this.filter === 'none' ? '' : this.filter)); },
     open(d) { this.current = d; },
     reset() { if (confirm('Clear all ratings and notes?')) { this.state = {}; this.save(); } },
-    copyFeedback() {
-      const lines = ['Youbo landing page — draft review\n'];
+    feedbackText() {
+      const lines = [];
       for (const d of this.all) {
         const r = this.rating(d), n = this.note(d);
         if (!r && !n) continue;
         lines.push(`${d.n} ${d.title} — ${r ? r.toUpperCase() : 'no rating'}${n ? '\n   ' + n : ''}`);
       }
-      if (lines.length === 1) lines.push('(nothing rated yet)');
-      const text = lines.join('\n');
-      const done = () => { this.copied = true; setTimeout(() => this.copied = false, 2000); };
+      if (!lines.length) lines.push('(nothing rated yet)');
+      return lines.join('\n\n');
+    },
+    emailFeedback() {
+      const text = this.feedbackText();
+      const href = `mailto:${this.TO}?subject=${encodeURIComponent(this.SUBJECT)}&body=${encodeURIComponent(text)}`;
 
-      // navigator.clipboard is unavailable when this file is opened straight
-      // from disk — file:// is not a secure context, so writeText throws
-      // "Write permission denied" and the button silently does nothing. Fall
-      // back to a hidden textarea + execCommand, which still works there, and
-      // to a prompt() if even that is blocked, so the text is never trapped.
-      const fallback = () => {
+      // Long notes can push the mailto: URL past what a mail client will accept,
+      // and an over-long one either silently truncates the body or does nothing
+      // at all. Above that length, hand the reviewer the text instead of losing it.
+      if (href.length > 1900) { this.copyFallback(text); return; }
+
+      this.sent = true;
+      setTimeout(() => this.sent = false, 2500);
+      window.location.href = href;
+    },
+    // navigator.clipboard is unavailable when this file is opened straight
+    // from disk — file:// is not a secure context, so writeText throws
+    // "Write permission denied" and the button silently does nothing. Fall
+    // back to a hidden textarea + execCommand, which still works there, and
+    // to a prompt() if even that is blocked, so the text is never trapped.
+    copyFallback(text) {
+      const note = `Too long to mail automatically — the feedback is copied, paste it into a mail to ${this.TO}.`;
+      const done = () => window.alert(note);
+      const manual = () => {
         const ta = document.createElement('textarea');
         ta.value = text;
         ta.setAttribute('readonly', '');
@@ -193,13 +210,13 @@ function picker() {
         try { ok = document.execCommand('copy'); } catch { ok = false; }
         document.body.removeChild(ta);
         if (ok) done();
-        else window.prompt('Copy the feedback below (Cmd+C, then Enter):', text);
+        else window.prompt(`Copy the feedback below (Cmd+C, then Enter) and mail it to ${this.TO}:`, text);
       };
 
       if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(done).catch(fallback);
+        navigator.clipboard.writeText(text).then(done).catch(manual);
       } else {
-        fallback();
+        manual();
       }
     },
   };
