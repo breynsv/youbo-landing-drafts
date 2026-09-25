@@ -187,6 +187,15 @@ tailwind.config = {
       --e-standard: ease-in-out;
       --e-decelerate: ease-out;
       --e-accelerate: cubic-bezier(0, 1, 0.3, 1);
+      /* De focusomlijning. Precies dezelfde splitsing als bij de links, en om
+         precies dezelfde reden: #00acd6 haalt 2,67:1 op wit en 2,51:1 op
+         #f6f8fa, terwijl een bedieningselement 3:1 moet halen — wie met de
+         Tab-toets werkt zag dus nauwelijks waar hij stond. Deze pagina begint
+         licht, dus staat hier de donkerder trap #00718c (5,61 en 5,27). Elke
+         donkere band zet de variabele verderop weer op het cyaan van de
+         huisstijl, waar die het ruim haalt. Eén variabele die per band
+         meekantelt, geen losse kleur per component. */
+      --c-focus: #00718c;
       /* afgeleiden van #ffffff voor de donkere banden — geen nieuwe hue */
       --inv-soft: rgba(255,255,255,.72);
       --inv-line: rgba(255,255,255,.16);
@@ -197,7 +206,7 @@ tailwind.config = {
     h1, h2, h3 { @apply font-sans font-bold text-ink; text-wrap: balance;
                  hyphens: auto; overflow-wrap: break-word; }
     p { text-wrap: pretty; }
-    :focus-visible { outline: 2px solid #00acd6; outline-offset: 2px; border-radius: 8px; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
     .tabular { font-variant-numeric: tabular-nums; }
     [x-cloak] { display: none !important; }
   }
@@ -241,7 +250,12 @@ tailwind.config = {
                 background: linear-gradient(180deg, #000000 0%, #154e3a 100%); }
 
     /* ---- productpanelen: wit, zodat ze oplichten op de donkere band -------- */
-    .panel { @apply rounded-md bg-paper shadow-panel overflow-hidden; }
+    /* Een paneel is wit papier, ook midden op een zwarte band. Alles erin
+       staat dus op licht en zet de focusomlijning terug op #00718c: de tabel
+       met loonvoorstellen is op telefoon een scrollvak, en Chromium maakt zo'n
+       vak met de Tab-toets bereikbaar. Daar kwam de ring anders in cyaan op wit
+       terecht — 2,67:1, precies de fout die deze ronde wegwerkt. */
+    .panel { @apply rounded-md bg-paper shadow-panel overflow-hidden; --c-focus: #00718c; }
     .panel-bar { @apply flex items-center gap-2 border-b border-line px-5 py-3; }
     .miniheader { @apply text-caption font-bold text-ink; }
     .scrollhide { scrollbar-width: none; }
@@ -281,7 +295,11 @@ tailwind.config = {
        waarop witte tekst onleesbaar staat, ook niet als JavaScript uitvalt.
        ===================================================================== */
 
-    .band { @apply relative isolate overflow-hidden; background-color: #000000; }
+    /* Elke donkere band kantelt de focusomlijning mee terug naar het cyaan van
+       de huisstijl: op #000000 haalt dat 7,87:1 en op het groen #154e3a waarop
+       het verloop eindigt nog 3,54:1. De variabele erft, dus alles in de band
+       krijgt hem, ook de kleefkaart van de rondleiding. */
+    .band { @apply relative isolate overflow-hidden; background-color: #000000; --c-focus: #00acd6; }
     .band > * { position: relative; z-index: 1; }
     .band::before { content: ""; position: absolute; inset: 0; z-index: 0;
                     opacity: 1;

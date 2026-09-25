@@ -186,6 +186,19 @@ tailwind.config = {
      mis mee. Goedgekeurd door Sven. */
   --c-link:#00718c;
   --c-link-hover:#006c87;
+
+  /* De focusomlijning volgt dezelfde regel als de linkkleur hierboven, en om
+     dezelfde reden: #00acd6 haalt 2,67:1 op wit en 2,51:1 op #f6f8fa, terwijl
+     een bedieningselement 3:1 moet halen. Wie met de Tab-toets werkt, ziet
+     anders nauwelijks waar hij staat. Op licht staat hier dus de donkerder
+     trap #00718c (5,61 op wit, 5,27 op #f6f8fa); op de donkere band blijft
+     het cyaan van de huisstijl gelden (7,87:1 op #000000, 3,54:1 op het groen
+     #154e3a waar de band op eindigt). Het is één token en geen losse kleur per
+     component, zodat de ring per band meekantelt en de oude waarde nergens kan
+     terugkruipen. --c-focus-halo is het tussenringetje dat de ring van het
+     element zelf losmaakt; dat is de grondkleur van de band waarop hij ligt. */
+  --c-focus:#00718c;
+  --c-focus-halo:var(--c-bg);
   --c-border:#e1ebf0;
   --c-border-button:#9dbcc2;
   --c-dark:#000000;
@@ -222,8 +235,17 @@ p{ text-wrap:pretty; }
 
 :focus-visible{
   outline:none;
-  box-shadow:0 0 0 2px var(--c-bg), 0 0 0 4px var(--c-link);
+  box-shadow:0 0 0 2px var(--c-focus-halo), 0 0 0 4px var(--c-focus);
   border-radius:var(--r-sm);
+}
+
+/* De ring groeit naar buiten, en dat kan niet als er buiten het element niets
+   is. De vraagknoppen in de faq vullen hun kaart volledig, en .card draagt
+   overflow:hidden voor zijn afgeronde hoeken — die snoeide de hele ring weg.
+   Gemeten bleef er 1,1:1 van over: zes vragen lang zie je niet waar je staat.
+   Voor dat geval staat de ring binnen het element, waar hij wel past. */
+.card.overflow-hidden > h3 > button:focus-visible{
+  box-shadow:inset 0 0 0 3px var(--c-focus);
 }
 
 /* ===================================================================
@@ -282,7 +304,13 @@ p{ text-wrap:pretty; }
              box-shadow var(--dur-base) var(--ease-standard);
 }
 .field::placeholder{ color:var(--c-text-2); }
-.field:focus{ border-color:var(--c-link); outline:none; box-shadow:0 0 0 3px rgba(0,113,140,.2); }
+/* Bij muisfocus blijft de zachte waas; met het toetsenbord neemt de ring het
+   over. Die waas is rgba(0,113,140,.2) en haalt gemeten 1,3:1 tegen wit — als
+   enige focusaanduiding was dat te weinig, en het trof elk veld van het
+   demoformulier. De rand van 1px deed het werk, en één lijn van 1px is te
+   dun om op te vallen. */
+.field:focus{ border-color:var(--c-focus); outline:none; box-shadow:0 0 0 3px rgba(0,113,140,.2); }
+.field:focus-visible{ box-shadow:0 0 0 2px var(--c-focus-halo), 0 0 0 4px var(--c-focus); }
 .field[aria-invalid="true"]{ border-color:#b4451f; box-shadow:0 0 0 3px rgba(180,69,31,.15); }
 .lbl{ display:block; font-size:17px; font-weight:500; color:var(--c-text); margin-bottom:8px; }
 
@@ -414,6 +442,10 @@ p{ text-wrap:pretty; }
    zonder oklab-interpolatie negeert de background-image en houdt de effen grond
    over, wat precies goed is. */
 .band-dark{
+  /* de enige donkere band op deze pagina: daar geldt het cyaan van de
+     huisstijl, en het tussenringetje is de grondkleur van de band zelf */
+  --c-focus:#00acd6;
+  --c-focus-halo:#154e3a;
   background-color:#154e3a;
   background-image:linear-gradient(180deg in oklab,
     #031317 0%, #05231c 38%, #0d3f2f 72%, rgba(21,78,58,0) 100%);

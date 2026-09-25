@@ -196,14 +196,27 @@ tailwind.config = {
       --e-std:  ease-in-out;
       --e-dec:  ease-out;
       --e-acc:  cubic-bezier(0, 1, 0.3, 1);
+      /* De focusomlijning, als één variabele die per ondergrond meekantelt —
+         dezelfde aanpak als de linkkleur. Deze pagina is grotendeels zwart, en
+         daar staat het mintgroen van de huisstijl: 14,21:1 op #000000 en
+         12,81:1 op het paneelgrijs #031317. Op de lichte blokken zou datzelfde
+         mint 1,3:1 halen, dus zet .on-light hem op het donkergroen #0a3327
+         (13,85:1 op wit en op #f6f8fa). Het cyaan #00acd6 uit het designsysteem
+         staat hier bewust niet in de ring: op zwart zou het 7,87:1 halen tegen
+         de 14,21 van mint, en op wit maar 2,67:1 — onder de 3:1 die voor een
+         bedieningselement geldt. De donkerder trap #00718c haalt het wel (5,61)
+         en staat daarom op de veldrand, maar als omlijning levert hij tegenover
+         #0a3327 alleen contrastverlies op. */
+      --c-focus: #0af29f;
     }
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body { @apply font-sans text-body font-medium bg-void text-onvoid-muted antialiased; }
     h1, h2, h3 { @apply font-bold; text-wrap: balance; overflow-wrap: break-word; }
     h3 { @apply font-medium; }
     p { text-wrap: pretty; }
-    :focus-visible { outline: 2px solid #0af29f; outline-offset: 2px; border-radius: 2px; }
-    .on-light :focus-visible { outline-color: #0a3327; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 2px; }
+    /* de variabele erft, dus ook het lichte blok zelf en alles erin */
+    .on-light { --c-focus: #0a3327; }
     .tabular { font-variant-numeric: tabular-nums; }
     [x-cloak] { display: none !important; }
   }
@@ -249,7 +262,11 @@ tailwind.config = {
     }
     .panel-lit:hover { border-color: rgba(10,242,159,0.45); box-shadow: 0 0 0 1px rgba(10,242,159,0.16); }
     /* een productscherm is een licht voorwerp op zwart — geen tilt, geen bezel, geen gloed */
-    .screen { @apply rounded-md bg-paper border border-edge overflow-hidden text-ink; }
+    /* Een voorbeeldscherm is wit papier, ook midden op het zwart: alles erin
+       staat op licht en krijgt daarom dezelfde omlijning als .on-light. Het
+       mint zou daar 1,3:1 halen. Vandaag zit er niets bedienbaars in, maar de
+       regel hoort bij het vlak en niet bij wat er toevallig in staat. */
+    .screen { @apply rounded-md bg-paper border border-edge overflow-hidden text-ink; --c-focus: #0a3327; }
     .cap { @apply mt-3 text-micro text-onvoid-dim; }
 
     /* ---- het verloop · als band, niet als vlek ----------------------------
@@ -346,7 +363,13 @@ tailwind.config = {
              min-h-[48px] placeholder:text-ink-soft;
       transition: border-color var(--t-base) var(--e-std), box-shadow var(--t-base) var(--e-std);
     }
-    .field-input:focus { @apply border-link outline-none; box-shadow: 0 0 0 2px rgba(0,113,140,0.2); }
+    /* outline-none stond hier, en daarmee was de bleke waas van
+       rgba(0,113,140,.2) de enige focusaanduiding die het veld nog had: gemeten
+       1,2 à 1,3:1 tegen het witte formulier, waar 3:1 de norm is. De omlijning
+       van de pagina mag er dus weer door, en bij toetsenbordfocus gaat de waas
+       eronderuit zodat er één duidelijke rand staat in plaats van twee vage. */
+    .field-input:focus { @apply border-link; box-shadow: 0 0 0 2px rgba(0,113,140,0.2); }
+    .field-input:focus-visible { box-shadow: none; }
 
     /* zolang de cookiebalk om een antwoord vraagt, is die de enige balk onderaan */
     .consent-open .stickybar { display: none !important; }
