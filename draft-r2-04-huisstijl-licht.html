@@ -45,7 +45,8 @@ OPEN CIJFERS — NOG UIT TE KLAREN MET BART: twee klantcijfers spreken elkaar te
      LET OP: in België vereist de Insight Tag opt-in. De cookiebalk
      onderaan deze pagina regelt dat: laadMarketingTags() draait pas na
      "Accepteren", en die functie is de plek waar dit blok hoort te komen.
-     De balk duwt de meelopende CTA-balk zolang hij openstaat netjes omhoog.
+     Zolang de balk openstaat is hij de enige balk onderaan: de meelopende
+     CTA-balk blijft dan weg.
 
 <script type="text/javascript">
   _linkedin_partner_id = "PARTNER_ID_HIER";
@@ -133,7 +134,15 @@ tailwind.config = {
       fontSize: {
         /* De zes rollen uit het designsysteem, plus de mobiele stappen als
            eigen tokens zodat de breakpoint-volgorde in de CDN-build klopt. */
-        micro:        ['13px', { lineHeight: '1.4' }],
+        /* 14 en niet 13: 13px lopende tekst zat onder de ondergrens waarop dit
+           nog comfortabel leest op een telefoon, en het trof juist zinnen die
+           iedereen te zien krijgt — de regel in de cookiebalk en de bijschriften
+           onder de voorbeeldschermen. De schaal van youbo.io zelf gaat niet lager
+           dan caption 15px; micro is een toevoeging van deze drafts, dus hier valt
+           niets van de huisstijl om. Labels en pillen in de nagetekende schermen
+           houden hun eigen 13px in de CSS hieronder: dat is chroom van een
+           afbeelding van een product, geen tekst die de bezoeker moet lezen. */
+        micro:        ['14px', { lineHeight: '1.4' }],
         caption:      ['15px', { lineHeight: '1.5' }],
         body:         ['17px', { lineHeight: '1.5' }],
         h3:           ['20px', { lineHeight: '1.5' }],
@@ -320,6 +329,14 @@ p{ text-wrap:pretty; }
    draft-r2-06 dat ook doet: balk, stapteller en knoppen horen bij elkaar en niet
    aan weerszijden van het paneel. */
 .tour-head{ border-bottom:1px solid var(--c-border); padding-bottom:16px; }
+/* De balk hoort bij het bijschrift, niet bij de knoppen. Samen zijn ze de
+   linkerhelft van de rij; de knoppen zijn de rechterhelft. Vroeger stond de
+   balk als los blok boven de rij, waardoor hij de volle breedte innam en zijn
+   laatste twee segmenten onder "Vorige" en "Volgende" doorliepen — de
+   rechterrand van de balk viel exact samen met die van "Volgende", en met maar
+   6px verschil in hoogte botsten ze zichtbaar. In .tour-status eindigt de balk
+   waar de linkerhelft eindigt, dus de afstand tot de knoppen is de rij-gap. */
+.tour-status{ min-width:0; }
 .tour-track{ display:flex; gap:6px; }
 .tour-track > i{
   flex:1; height:6px; border-radius:9999px; background:var(--c-border);
@@ -359,10 +376,19 @@ p{ text-wrap:pretty; }
   /* Vanaf tablet is de bediening één regel: links waar je bent, rechts waar je
      naartoe kan. Zo leest de groep als de kop van het paneel eronder in plaats
      van als een losse balk die boven de pagina zweeft. */
-  .tour-bar{ display:flex; align-items:center; justify-content:space-between; gap:24px; }
-  .tour-bar > .tour-meta{ margin-top:0; flex:0 1 auto; justify-content:flex-start; gap:12px; }
+  .tour-bar{ display:flex; align-items:center; justify-content:space-between; gap:32px; }
+  /* De linkerhelft krijgt de rest van de rij; de knoppen houden hun eigen maat.
+     De gap hierboven is dus letterlijk de ruimte tussen het einde van de balk en
+     de linkerrand van "Vorige" — niets kan er nog achter lopen. */
+  .tour-bar > .tour-status{ flex:1 1 auto; }
+  .tour-status > .tour-meta{ justify-content:flex-start; gap:12px; }
   .tour-bar > .tour-nav{ margin-top:0; flex:0 0 auto; }
   .tour-nav .btn{ flex:0 0 auto; min-width:168px; padding-left:16px; padding-right:16px; }
+}
+@media (min-width:1024px){
+  /* Op breed scherm mag de rij ademen: de balk is daar lang genoeg dat 32px als
+     een naad leest in plaats van als een scheiding. */
+  .tour-bar{ gap:48px; }
 }
 @media (min-width:1024px){
   /* De tekst is kort en de mockup hoog. Op breed scherm centreert de tekst
@@ -426,17 +452,33 @@ html:not(.js) .bar > i{ width:var(--w, 0%); }
 .panel-swap{ animation:swap var(--dur-base) var(--ease-decelerate) both; }
 @keyframes swap{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
 
-/* 5. De meelopende balk schuift op, niet in. Hij zit op --consent-offset, zodat
-      hij boven de cookiebalk komt zolang die openstaat in plaats van eronder te
-      verdwijnen. Vandaar ook geen bottom-0 op het element zelf. */
+/* 5. De meelopende balk schuift op, niet in.
+
+      Hij stond hier tot 25-09 op --consent-offset: dan schoof hij boven de
+      cookiebalk in plaats van eronder te verdwijnen. Netjes bedoeld, en de twee
+      dekten elkaar ook echt niet af, maar het resultaat was drie balken tegelijk
+      op een telefoon: vaste kop 77px, demobalk 69px en cookiebalk 71px is 217px,
+      een kwart van een scherm van 844px en 43% zodra het toetsenbord openstaat.
+      draft-r2-05 en draft-r2-06 doen het omgekeerd en dat is beter: zolang de
+      cookievraag openstaat is die de enige balk onderaan, en de demo-CTA komt
+      pas terug als er een keuze ligt. De CTA verdwijnt daarmee niet uit de
+      pagina — hij staat ook in de hero en in het formulier — en de cookievraag
+      is juist de vraag die eerst een antwoord verdient.
+
+      Vandaar bottom:0 in plaats van een offset: er is niets meer om boven te
+      gaan staan. */
 .sticky-bar{
-  bottom:var(--consent-offset, 0px);
+  bottom:0;
   transform:translateY(120%);
   transition:transform var(--dur-base) var(--ease-expressive),
-             opacity var(--dur-base) var(--ease-standard),
-             bottom var(--dur-base) var(--ease-standard);
+             opacity var(--dur-base) var(--ease-standard);
   opacity:0;
 }
+
+/* Zolang de cookiebalk om een antwoord vraagt, is die de enige balk onderaan.
+   display:none en niet opacity:0 — een onzichtbare balk die nog klikken opvangt
+   is erger dan een balk die er staat. */
+.consent-open .sticky-bar{ display:none !important; }
 
 /* 6. De cookiebalk. Jana: "De cookiewaarschuwing neemt wel veel te veel plek in,
       hoe minimaler hoe beter." Dus één smalle balk onderaan, alles op één rij,
@@ -709,7 +751,17 @@ document.addEventListener('alpine:init', () => {
      1 · Hero
      ============================================================ -->
 <section class="border-b border-line bg-white">
-  <div class="mx-auto grid max-w-container gap-10 px-6 py-12 md:px-12 md:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-16 lg:px-20">
+  <!-- grid-cols-1 staat hier niet voor de sier. Zonder die klasse is de enige
+       kolom op telefoon een auto-track, en een auto-track wordt minstens zo breed
+       als de min-content van wat erin staat. De voorbeeldschermen bevatten rijen
+       met een naam op nowrap, een pil op nowrap en een vaste kolom van 64px; op
+       360px is die min-content 337px terwijl de container 312px breed is
+       (360 - 2x24 padding). De track rekte dus op tot 337px, de sectie werd
+       breder dan het scherm en de hele pagina schoof zijwaarts mee.
+       grid-cols-1 is minmax(0,1fr): de track neemt de beschikbare 312px, de
+       rijen erin krimpen en de naam kort af zoals bedoeld. Vanaf lg neemt de
+       tweekolomsregel het weer over. -->
+  <div class="mx-auto grid max-w-container grid-cols-1 gap-10 px-6 py-12 md:px-12 md:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-16 lg:px-20">
 
     <div data-reveal>
       <h1 class="text-display-sm md:text-h1 lg:text-display">Compensatie zonder kopzorgen</h1>
@@ -836,7 +888,7 @@ document.addEventListener('alpine:init', () => {
     </div>
 
     <!-- 3.1 -->
-    <div class="mt-10 grid gap-8 md:mt-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+    <div class="mt-10 grid grid-cols-1 gap-8 md:mt-12 lg:grid-cols-2 lg:items-center lg:gap-16">
       <div data-reveal>
         <div class="flex items-center gap-3">
           <span class="grid h-10 w-10 place-items-center rounded-full bg-primary text-body font-bold text-primary-text tabular">1</span>
@@ -882,7 +934,7 @@ document.addEventListener('alpine:init', () => {
     </div>
 
     <!-- 3.2 -->
-    <div class="mt-12 grid gap-8 md:mt-16 lg:grid-cols-2 lg:items-center lg:gap-16">
+    <div class="mt-12 grid grid-cols-1 gap-8 md:mt-16 lg:grid-cols-2 lg:items-center lg:gap-16">
       <div data-reveal class="lg:order-2">
         <div class="flex items-center gap-3">
           <span class="grid h-10 w-10 place-items-center rounded-full bg-primary text-body font-bold text-primary-text tabular">2</span>
@@ -929,7 +981,7 @@ document.addEventListener('alpine:init', () => {
     </div>
 
     <!-- 3.3 -->
-    <div class="mt-12 grid gap-8 md:mt-16 lg:grid-cols-2 lg:items-center lg:gap-16">
+    <div class="mt-12 grid grid-cols-1 gap-8 md:mt-16 lg:grid-cols-2 lg:items-center lg:gap-16">
       <div data-reveal>
         <div class="flex items-center gap-3">
           <span class="grid h-10 w-10 place-items-center rounded-full bg-primary text-body font-bold text-primary-text tabular">3</span>
@@ -1112,23 +1164,32 @@ document.addEventListener('alpine:init', () => {
            draft-r2-06. -->
       <div class="tour-head">
 
-        <!-- De balk is de enige plek waar de vier stappen samen te zien zijn, dus
-             hij draagt ook de toegankelijke stand van de rondleiding. -->
-        <div class="tour-track" role="progressbar"
-             aria-label="Voortgang van de rondleiding"
-             aria-valuemin="1" aria-valuemax="4"
-             :aria-valuenow="step + 1"
-             :aria-valuetext="'Stap ' + (step + 1) + ' van ' + total + ': ' + steps[step].t">
-          <template x-for="(s, i) in steps" :key="i">
-            <i :class="i <= step ? 'is-on' : ''"></i>
-          </template>
-        </div>
-
+        <!-- Eén rij, twee helften: links waar je bent, rechts waar je naartoe
+             kan. De balk hoort bij het bijschrift en niet bij de knoppen, dus
+             ze zitten samen in .tour-status. Dat is ook wat de balk tegenhoudt:
+             als hij een eigen blok boven de rij is, spant hij de volle breedte
+             en lopen zijn laatste twee segmenten achter "Vorige" en "Volgende"
+             door. Binnen de linkerhelft eindigt hij waar die helft eindigt. -->
         <div class="tour-bar">
-          <p class="tour-meta">
-            <span>Een korte rondleiding door de loonronde</span>
-            <b class="tabular"><span x-text="step + 1"></span> / <span x-text="total"></span></b>
-          </p>
+          <div class="tour-status">
+
+            <!-- De balk is de enige plek waar de vier stappen samen te zien zijn,
+                 dus hij draagt ook de toegankelijke stand van de rondleiding. -->
+            <div class="tour-track" role="progressbar"
+                 aria-label="Voortgang van de rondleiding"
+                 aria-valuemin="1" aria-valuemax="4"
+                 :aria-valuenow="step + 1"
+                 :aria-valuetext="'Stap ' + (step + 1) + ' van ' + total + ': ' + steps[step].t">
+              <template x-for="(s, i) in steps" :key="i">
+                <i :class="i <= step ? 'is-on' : ''"></i>
+              </template>
+            </div>
+
+            <p class="tour-meta">
+              <span>Een korte rondleiding door de loonronde</span>
+              <b class="tabular"><span x-text="step + 1"></span> / <span x-text="total"></span></b>
+            </p>
+          </div>
 
           <div class="tour-nav">
             <button type="button" x-ref="prev" class="btn btn-secondary"
@@ -1394,7 +1455,15 @@ document.addEventListener('alpine:init', () => {
 
     <ul class="mt-8 grid list-none grid-cols-2 gap-4 md:mt-10 md:grid-cols-4">
       <li class="card card-hover grid min-h-[96px] place-items-center p-6 text-h3 font-bold text-ink-deep" data-reveal="stagger">eBlox</li>
-      <li class="card card-hover grid min-h-[96px] place-items-center p-6 text-center text-h3 font-bold text-ink-deep" data-reveal="stagger">SAP SuccessFactors</li>
+      <!-- De <wbr> is de tweede helft van de zijwaartse schuif op 360px, en de
+           helft die niet in de audit stond. "SuccessFactors" is op 20px bold 157px
+           breed en in twee kolommen houdt deze kaart daar 98px over; één woord dat
+           nergens mag afbreken duwde dus 34px voorbij de rechterrand van de lijst
+           en dat was de verste rand van de hele pagina. <wbr> geeft het woord een
+           afbreekplek op de naad die SAP zelf gebruikt — Success | Factors — in
+           plaats van het midden van een lettergreep. Op elke breedte waar het wél
+           past verandert er niets. -->
+      <li class="card card-hover grid min-h-[96px] place-items-center p-6 text-center text-h3 font-bold text-ink-deep" data-reveal="stagger">SAP Success<wbr>Factors</li>
       <li class="card card-hover grid min-h-[96px] place-items-center p-6 text-h3 font-bold text-ink-deep" data-reveal="stagger">AFAS</li>
       <li class="grid min-h-[96px] place-items-center rounded-sm border border-dashed border-line-button p-6 text-h3 font-medium text-ink-muted" data-reveal="stagger">+ jouw tools</li>
     </ul>
@@ -1805,7 +1874,8 @@ document.addEventListener('alpine:init', () => {
 <!-- ============================================================
      De meelopende balk met de demo-CTA. Nick staat er klein in,
      zodat hij op mobiel nooit naar onderen wegzakt. Hij komt op na
-     de hero en verdwijnt zodra het formulier in beeld staat.
+     de hero, verdwijnt zodra het formulier in beeld staat, en blijft
+     weg zolang de cookiebalk om een antwoord vraagt.
      ============================================================ -->
 <div id="meelopend" aria-hidden="true"
      class="sticky-bar fixed inset-x-0 z-50 border-t border-line bg-white/95 backdrop-blur"
@@ -1828,8 +1898,11 @@ document.addEventListener('alpine:init', () => {
      accepteren staan naast elkaar en zijn even makkelijk te raken.
      Geen echte toestemmingsdienst — die keuze staat nog open — maar
      wel werkend: de keuze wordt bewaard en de tags laden pas na
-     "Accepteren". Zolang de balk openstaat schuift de meelopende
-     CTA-balk erboven, zodat de twee elkaar nooit afdekken.
+     "Accepteren". Zolang de balk openstaat is hij de enige balk onderaan —
+     de meelopende CTA-balk blijft weg tot er een keuze ligt, want drie balken
+     tegelijk namen op telefoon een kwart van het scherm in. Hij reserveert ook
+     zijn eigen hoogte onder de pagina, zodat de laatste footerregel er niet
+     onder valt.
      ============================================================ -->
 <div id="cookiebalk" class="consent-bar" role="region" aria-label="Cookiemelding" hidden>
   <div class="mx-auto flex max-w-container items-center gap-3 px-4 py-2 md:gap-4 md:px-12 md:py-2.5 lg:px-20">
@@ -1886,12 +1959,29 @@ document.addEventListener('alpine:init', () => {
     }
   }
 
+  /* Twee dingen in één meting, en ze horen bij elkaar:
+
+     1. consent-open op <html> verbergt de meelopende demobalk (zie .sticky-bar
+        in de stijlen hierboven). Zolang de cookievraag openstaat is de cookiebalk
+        de enige balk onderaan, zoals in draft-r2-05 en draft-r2-06.
+     2. padding-bottom op <body> ter grootte van de balk. Zonder die ruimte valt
+        de laatste footerregel ("BE 0642.824.542") op de absolute onderkant van de
+        pagina onder de vaste balk — gemeten op scrollY == maxScroll, dus geen
+        kwestie van verder kunnen scrollen. De hoogte wordt gemeten en niet vast
+        opgegeven, want op een smal scherm wordt de balk twee regels. */
   function meten() {
-    root.style.setProperty('--consent-offset', bar.offsetHeight + 'px');
+    /* Deze regel is niet overbodig: de ResizeObserver hieronder vuurt ook wanneer
+       sluit() de balk verbergt (hoogte wordt 0), en zonder deze afslag zet meten()
+       de klasse er dan meteen weer op — de demobalk bleef daardoor verborgen ná
+       een keuze. Gemeten, niet bedacht. */
+    if (bar.hidden) { return; }
+    root.classList.add('consent-open');
+    document.body.style.paddingBottom = bar.offsetHeight + 'px';
   }
   function sluit() {
     bar.hidden = true;
-    root.style.setProperty('--consent-offset', '0px');
+    root.classList.remove('consent-open');
+    document.body.style.paddingBottom = '';
   }
 
   let keuze = null;
@@ -1903,6 +1993,11 @@ document.addEventListener('alpine:init', () => {
     bar.hidden = false;
     meten();
     window.addEventListener('resize', meten, { passive: true });
+    /* De balk wordt twee regels zodra de tekst niet meer op één past, en dat
+       gebeurt ook nog ná het laden (webfont, orientatie). Eén meting bij het
+       laden reserveert dan de verkeerde hoogte — vandaar dat de meting de balk
+       volgt in plaats van hem één keer op te nemen. */
+    if (window.ResizeObserver) { new window.ResizeObserver(meten).observe(bar); }
   }
 
   bar.addEventListener('click', function (e) {

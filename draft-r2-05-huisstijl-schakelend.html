@@ -359,8 +359,13 @@ tailwind.config = {
     }
 
     .sc-cue  { @apply flex items-center gap-3 mb-1; }
-    .sc-bars { @apply ml-auto flex items-center gap-1; }
-    .sc-bar  { @apply flex items-center px-2 cursor-pointer;
+    /* De vier stapknoppen waren 36x44px: hoog genoeg, te smal. px-3 maakt er
+       44x44 van (20px streepje plus 2x12px), de maat die als richtlijn geldt, en
+       de gap gaat van 4 naar 6px zodat vier knoppen naast elkaar niet meer als
+       één balk aanvoelen. Op 360px blijft de rij met "Scroll verder" ernaast
+       binnen de kaart. */
+    .sc-bars { @apply ml-auto flex items-center; gap: 6px; }
+    .sc-bar  { @apply flex items-center px-3 cursor-pointer;
                min-height: 44px; background: none; border: 0; }
     .sc-bar > span { display: block; height: 3px; width: 20px; border-radius: 9999px;
                      background: rgba(255,255,255,.35);
@@ -857,16 +862,27 @@ tailwind.config = {
       </li>
     </ul>
 
-    <!-- puntjes: werken ook wanneer er acht cases staan -->
-    <div class="mt-6 flex items-center justify-center gap-2 md:justify-start" role="group" aria-label="Ga naar case">
+    <!-- puntjes: werken ook wanneer er acht cases staan.
+
+         De knop is niet langer het bolletje zelf. Het bolletje was 8x8px en dat
+         is met een duim niet betrouwbaar te raken (de richtlijn is 44x44, het
+         minimum in WCAG 2.5.8 is 24x24). Nu is de knop een raakvlak van 24px
+         breed en 44px hoog met het bolletje erin getekend: even klein op het oog,
+         vijf keer zo groot onder de duim. De gap kan daarom naar nul — de
+         raakvlakken sluiten aan, dus er blijft geen dode ruimte tussen twee
+         knoppen waar een tik in niets verdwijnt, en de 16px die de knoppen zelf
+         aan weerszijden meebrengen houdt de bolletjes optisch los van elkaar. -->
+    <div class="mt-6 flex items-center justify-center md:justify-start" role="group" aria-label="Ga naar case">
       <template x-for="(c,i) in count" :key="i">
         <button type="button" @click="go(i)"
-                class="h-2 rounded-sm"
-                style="transition: width var(--m-fast) var(--e-standard), background-color var(--m-fast) var(--e-standard)"
-                :class="i === index ? 'w-8 bg-brand-ink' : 'w-2 bg-line-btn'"
+                class="grid min-h-[44px] place-items-center px-2"
                 :aria-label="'Ga naar case ' + (i+1)"
                 :aria-current="i === index ? 'true' : 'false'"
-                data-cta="cases-punt"></button>
+                data-cta="cases-punt">
+          <span aria-hidden="true" class="block h-2 rounded-sm"
+                style="transition: width var(--m-fast) var(--e-standard), background-color var(--m-fast) var(--e-standard)"
+                :class="i === index ? 'w-8 bg-brand-ink' : 'w-2 bg-line-btn'"></span>
+        </button>
       </template>
     </div>
 

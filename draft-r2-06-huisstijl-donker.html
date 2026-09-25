@@ -155,7 +155,15 @@ tailwind.config = {
       },
       fontSize: {
         /* de schaal uit het bestand: display 56 · h1 36 · h2 24 · h3 20 · body 17 · caption 15 */
-        micro:   ['13px', { lineHeight: '1.45' }],
+        /* 14 en niet 13: op 13px zat de lopende tekst onder de ondergrens waarop
+           dit op een telefoon nog comfortabel leest, en het trof juist de zinnen
+           die iedereen te zien krijgt — de bijschriften onder de voorbeeldschermen
+           (.cap), het footeradres en de regel over wat er met je gegevens gebeurt.
+           De schaal van youbo.io zelf gaat niet lager dan caption 15px; micro is
+           een toevoeging van deze drafts, dus hier valt niets van de huisstijl om.
+           eyebrow blijft 13px: dat zijn korte labels in kapitalen, geen tekst om
+           te lezen. */
+        micro:   ['14px', { lineHeight: '1.45' }],
         eyebrow: ['13px', { lineHeight: '1.4', letterSpacing: '0.08em' }],
         caption: ['15px', { lineHeight: '1.5' }],
         body:    ['17px', { lineHeight: '1.5' }],
@@ -1640,7 +1648,11 @@ tailwind.config = {
 
       <nav aria-labelledby="footer-over">
         <p id="footer-over" class="text-caption font-bold text-onvoid">Over Youbo</p>
-        <ul class="mt-4 grid">
+        <!-- gap-3: de links zijn elk 44px hoog, maar ze sloten met nul pixels op
+             elkaar aan, en dan is de rand tussen twee links een gok met de duim.
+             12px ertussen maakt van vijf aansluitende vlakken vijf losse knoppen
+             zonder dat de footer noemenswaardig langer wordt. -->
+        <ul class="mt-4 grid gap-3">
           <li><a href="https://www.youbo.io/nl/cases/" class="inline-flex items-center text-caption text-onvoid-muted min-h-[44px] hover:text-primary underline underline-offset-4 decoration-1" style="transition: color var(--t-fast) var(--e-std)">Referentie cases</a></li>
           <li><a href="https://www.youbo.io/nl/contact.html" class="inline-flex items-center text-caption text-onvoid-muted min-h-[44px] hover:text-primary underline underline-offset-4 decoration-1" style="transition: color var(--t-fast) var(--e-std)">Contact</a></li>
         </ul>
@@ -1648,7 +1660,9 @@ tailwind.config = {
 
       <nav aria-labelledby="footer-legal">
         <p id="footer-legal" class="text-caption font-bold text-onvoid">Legal</p>
-        <ul class="mt-4 grid">
+        <!-- zelfde reden als bij "Over Youbo" hierboven: vijf juridische links
+             die elkaar raken zijn vijf kansen om de verkeerde te openen. -->
+        <ul class="mt-4 grid gap-3">
           <li><a href="https://www.youbo.io/nl/legal/cookie-policy.html" class="inline-flex items-center text-caption text-onvoid-muted min-h-[44px] hover:text-primary underline underline-offset-4 decoration-1" style="transition: color var(--t-fast) var(--e-std)">Cookie policy</a></li>
           <li><a href="https://www.tealpartners.com/nl/legal/privacy-policy" rel="noopener" target="_blank" class="inline-flex items-center text-caption text-onvoid-muted min-h-[44px] hover:text-primary underline underline-offset-4 decoration-1" style="transition: color var(--t-fast) var(--e-std)">Privacy policy</a></li>
           <li><a href="https://www.youbo.io/nl/legal/responsible-disclosure-policy.html" class="inline-flex items-center text-caption text-onvoid-muted min-h-[44px] hover:text-primary underline underline-offset-4 decoration-1" style="transition: color var(--t-fast) var(--e-std)">Responsible disclosure policy</a></li>
