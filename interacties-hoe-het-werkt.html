@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ontdek hoe het werkt — vijf interactievormen | Youbo</title>
+<meta name="description" content="Vijf werkende manieren om het blok Ontdek hoe het werkt te tonen: tabs, meescrollend, doorloop, tijdlijn en accordeon. Zelfde vier stappen, zodat de vergelijking zuiver is.">
+<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------------------------------------------------------------------------
+   Youbo — designtokens (palet PRIMARY "Evergreen & Signal" uit DESIGN-SYSTEM.md)
+   Geen build, geen CDN: alles staat in dit bestand.
+   --------------------------------------------------------------------------- */
+:root{
+  --surface:#FFFFFF; --surface-sub:#F5F7F4; --surface-sand:#F3EDE1; --surface-deep:#0E2A21;
+  --ink:#0E2A21; --ink-muted:#4F6B60; --ink-inv:#FFFFFF; --ink-inv-muted:#B9CFC6;
+  --primary:#0B6B4F; --primary-700:#075740; --primary-50:#E7F9F1;
+  --mint:#0AF29F; --mint-300:#7FE9C4;
+  --amber:#A85C10; --amber-50:#FFF8EE;
+  --success:#106C4C; --alert:#B4451F;
+  --line:#DDE4DE; --line-strong:#7E9A8E;
+  --r-sm:6px; --r:12px; --r-lg:20px;
+  --shadow-card:0 1px 2px rgba(14,42,33,.06);
+  --shadow-lift:0 1px 2px rgba(14,42,33,.06), 0 12px 32px -16px rgba(14,42,33,.22);
+  --ease:cubic-bezier(0.2,0,0,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--surface-sub); color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:1.0625rem; line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:"Bricolage Grotesque",Georgia,serif; font-weight:600; color:var(--ink);
+  margin:0; text-wrap:balance; hyphens:auto; overflow-wrap:break-word;
+}
+p{margin:0; text-wrap:pretty}
+img,svg{display:block; max-width:100%}
+button{font:inherit; color:inherit}
+.tabular{font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid var(--primary); outline-offset:2px; border-radius:2px}
+
+/* ---------------------------------------------------------------- paginaframe */
+.wrap{max-width:72rem; margin-inline:auto; padding-inline:20px}
+@media (min-width:768px){ .wrap{padding-inline:32px} }
+
+.page-head{background:var(--surface); border-bottom:1px solid var(--line); padding:40px 0 32px}
+.eyebrow{
+  font-size:.8125rem; line-height:1.4; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--primary);
+}
+.page-head h1{font-size:2.25rem; line-height:1.06; letter-spacing:-.025em; margin-top:12px}
+@media (min-width:768px){ .page-head h1{font-size:3.25rem} }
+.page-head .lead{font-size:1.125rem; line-height:1.55; color:var(--ink-muted); max-width:34rem; margin-top:16px}
+@media (min-width:768px){ .page-head .lead{font-size:1.25rem} }
+
+.jump{display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; padding:0; list-style:none}
+.jump a{
+  display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:8px 14px;
+  border:1px solid var(--line-strong); border-radius:9999px; background:var(--surface);
+  color:var(--ink); text-decoration:none; font-size:.9375rem; font-weight:500;
+  transition:background-color .15s var(--ease), border-color .15s var(--ease);
+}
+.jump a:hover{background:var(--surface-sub); border-color:var(--ink)}
+.jump a span{color:var(--ink-muted); font-variant-numeric:tabular-nums}
+
+.phone-switch{
+  display:flex; align-items:flex-start; gap:12px; margin-top:24px; padding:14px 16px;
+  background:var(--primary-50); border:1px solid var(--line); border-radius:var(--r-sm);
+  max-width:34rem;
+}
+.phone-switch input{width:22px; height:22px; margin:2px 0 0; accent-color:var(--primary); flex:none}
+.phone-switch label{font-size:.9375rem; line-height:1.5}
+.phone-switch label b{display:block; font-weight:600}
+.phone-switch label span{color:var(--ink-muted)}
+
+/* ---------------------------------------------------------------- varianten */
+.variant{border-top:1px solid var(--line); padding:56px 0}
+.variant:nth-of-type(odd){background:var(--surface)}
+.variant:nth-of-type(even){background:var(--surface-sub)}
+@media (min-width:768px){ .variant{padding:80px 0} }
+
+.variant-head{max-width:44rem}
+.variant-head h2{font-size:1.75rem; line-height:1.12; letter-spacing:-.02em; margin-top:10px}
+@media (min-width:768px){ .variant-head h2{font-size:2.25rem} }
+.judgement{
+  margin-top:16px; padding:14px 16px 14px 18px; border-left:4px solid var(--mint);
+  background:var(--surface-sand); border-radius:0 var(--r-sm) var(--r-sm) 0;
+  font-size:1rem; line-height:1.6;
+}
+.judgement b{font-weight:600}
+
+/* De demo is een container: de varianten reageren op HUN breedte, niet op het venster.
+   Daardoor klopt de telefoonschakelaar hierboven echt. */
+.demo{
+  container-type:inline-size; container-name:demo;
+  margin-top:32px; background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r-lg); padding:20px; box-shadow:var(--shadow-card);
+}
+.variant:nth-of-type(even) .demo{background:var(--surface)}
+@media (min-width:768px){ .demo{padding:32px} }
+body.phone .demo{max-width:390px; padding:20px; margin-inline:0; box-shadow:var(--shadow-lift)}
+body.phone .demo::before{
+  content:"Telefoonweergave · 390 px"; display:block; margin:-4px 0 16px; font-size:.75rem; font-weight:600;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--ink-muted);
+}
+
+/* ---------------------------------------------------------------- bouwstenen */
+.step-copy h3{font-size:1.25rem; line-height:1.2; letter-spacing:-.01em}
+@media (min-width:768px){ .step-copy h3{font-size:1.5rem} }
+.step-copy p{margin-top:10px; color:var(--ink-muted); max-width:34rem}
+.step-num{
+  display:inline-grid; place-items:center; width:32px; height:32px; flex:none;
+  border-radius:9999px; background:var(--primary-50); color:var(--primary-700);
+  font-weight:600; font-size:.9375rem; font-variant-numeric:tabular-nums;
+}
+.step-copy .step-num{margin-bottom:12px}
+
+.split{display:grid; gap:24px}
+@container demo (min-width:760px){
+  .split{grid-template-columns:5fr 7fr; gap:40px; align-items:center}
+}
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:48px; padding:12px 20px; border-radius:var(--r-sm); font-weight:600;
+  font-size:1.0625rem; cursor:pointer; border:1px solid transparent;
+  transition:background-color .15s var(--ease), border-color .15s var(--ease);
+}
+.btn-pri{background:var(--primary); color:#fff}
+.btn-pri:hover:not(:disabled){background:var(--primary-700)}
+.btn-sec{background:#fff; color:var(--ink); border-color:var(--line-strong)}
+.btn-sec:hover:not(:disabled){background:var(--surface-sub); border-color:var(--ink)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+
+/* ------------------------------------------------- gestileerde UI-mockups */
+.mock{border-radius:var(--r); overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow-lift); background:#fff}
+.ui{font-size:.8125rem; line-height:1.45}
+.ui-bar{
+  display:flex; align-items:center; gap:10px; padding:10px 12px;
+  background:var(--surface-deep); color:var(--ink-inv);
+}
+.ui-bar .dot{width:8px; height:8px; border-radius:9999px; background:var(--mint); flex:none}
+.ui-bar .ttl{font-weight:600; font-size:.8125rem; letter-spacing:.01em}
+.ui-bar .pill{
+  margin-left:auto; padding:3px 10px; border-radius:9999px; background:rgba(255,255,255,.12);
+  color:var(--ink-inv-muted); font-size:.6875rem; font-weight:600; white-space:nowrap;
+}
+.ui-body{padding:12px; display:grid; gap:12px; background:#fff}
+
+.metrics{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px}
+.metrics div{border:1px solid var(--line); border-radius:var(--r-sm); padding:8px 9px; background:var(--surface-sub); min-width:0}
+.metrics span{display:block; min-height:2.6em; color:var(--ink-muted); font-size:.6875rem; line-height:1.3}
+.metrics b{display:block; margin-top:3px; font-size:1.0625rem; font-weight:600; font-variant-numeric:tabular-nums}
+
+.rows{list-style:none; margin:0; padding:0; border:1px solid var(--line); border-radius:var(--r-sm); overflow:hidden}
+.rows li{
+  display:flex; align-items:center; gap:10px; padding:9px 10px;
+  border-top:1px solid var(--line); background:#fff;
+}
+.rows li:first-child{border-top:0}
+.rows .who{min-width:0; flex:1 1 auto}
+.rows .who b{display:block; font-weight:600; font-size:.8125rem; overflow-wrap:anywhere}
+.rows .who span{display:block; color:var(--ink-muted); font-size:.6875rem}
+.rows .right{display:flex; flex-direction:column; align-items:flex-end; gap:3px; flex:none}
+.rows .money{font-variant-numeric:tabular-nums; font-weight:600; font-size:.8125rem; white-space:nowrap}
+.tag{padding:2px 8px; border-radius:9999px; font-size:.625rem; font-weight:600; white-space:nowrap}
+.tag-ok{background:var(--primary-50); color:var(--primary-700)}
+.tag-run{background:var(--surface-sub); color:var(--ink-muted)}
+.tag-warn{background:var(--amber-50); color:var(--amber)}
+.tag-flag{background:#FBEDE8; color:var(--alert)}
+
+.delta{
+  font-variant-numeric:tabular-nums; font-weight:600; font-size:.8125rem;
+  color:var(--primary-700); white-space:nowrap;
+}
+/* Personenlijst: twee regels per medewerker, zodat naam, functie, percentage en
+   bedrag ook op 310 px naast elkaar blijven staan in plaats van te vouwen. */
+.plist li{display:block; padding:9px 10px}
+.plist .l1,.plist .l2{display:flex; align-items:baseline; gap:8px}
+.plist .l1 b{font-weight:600; font-size:.8125rem; min-width:0; overflow-wrap:anywhere}
+.plist .l1 em{font-style:normal; color:var(--ink-muted); font-size:.6875rem; white-space:nowrap}
+.plist .l1 .delta{margin-left:auto}
+.plist .l2{margin-top:2px}
+.plist .l2 span:first-child{color:var(--ink-muted); font-size:.6875rem; min-width:0}
+.plist .l2 .money{margin-left:auto; font-variant-numeric:tabular-nums; font-weight:600; font-size:.75rem; white-space:nowrap}
+.ui-note{
+  display:flex; gap:8px; align-items:flex-start; padding:9px 10px; border-radius:var(--r-sm);
+  background:var(--primary-50); color:var(--primary-700); font-size:.6875rem; line-height:1.4;
+}
+.ui-note.warn{background:var(--amber-50); color:var(--amber)}
+
+.budgets{display:grid; gap:10px}
+.budget{border:1px solid var(--line); border-radius:var(--r-sm); padding:9px 10px}
+.budget .top{display:flex; justify-content:space-between; align-items:baseline; gap:8px}
+.budget .top b{font-weight:600; font-size:.8125rem}
+.budget .top span{font-variant-numeric:tabular-nums; font-size:.75rem; color:var(--ink-muted); white-space:nowrap}
+.track{margin-top:7px; height:8px; border-radius:9999px; background:var(--surface-sub); overflow:hidden}
+.track i{display:block; height:100%; background:var(--primary); border-radius:9999px}
+.track i.over{background:var(--alert)}
+.budget .foot{margin-top:5px; font-size:.6875rem; color:var(--ink-muted)}
+.budget .foot.over{color:var(--alert); font-weight:600}
+
+.letter{background:var(--surface-sand); padding:14px}
+.paper{background:#fff; border:1px solid var(--line); border-radius:var(--r-sm); padding:14px; box-shadow:var(--shadow-card)}
+.paper .brand{font-family:"Bricolage Grotesque",Georgia,serif; font-weight:600; font-size:.875rem; letter-spacing:-.01em}
+.paper .date{color:var(--ink-muted); font-size:.6875rem; margin-top:2px}
+.paper .hi{margin-top:10px; font-size:.8125rem; font-weight:600}
+.paper .body{margin-top:5px; font-size:.75rem; color:var(--ink-muted); line-height:1.55}
+.paper table{width:100%; border-collapse:collapse; margin-top:10px; font-size:.75rem}
+.paper th,.paper td{padding:5px 0; border-bottom:1px solid var(--line); text-align:left}
+.paper td{text-align:right; font-variant-numeric:tabular-nums; font-weight:600; white-space:nowrap}
+.paper th{font-weight:400; color:var(--ink-muted)}
+.paper tr:last-child th,.paper tr:last-child td{border-bottom:0}
+.paper .sign{margin-top:12px; padding-top:9px; border-top:1px dashed var(--line-strong); font-size:.6875rem; color:var(--ink-muted)}
+
+/* ------------------------------------------------------------ 1. tabs */
+.tabstrip{
+  display:flex; gap:4px; overflow-x:auto; scroll-snap-type:x proximity;
+  border-bottom:1px solid var(--line); padding-bottom:0; margin-bottom:0;
+  -webkit-overflow-scrolling:touch; scrollbar-width:thin;
+}
+.tabstrip::-webkit-scrollbar{height:4px}
+.tabstrip::-webkit-scrollbar-thumb{background:var(--line); border-radius:9999px}
+.tabstrip button{
+  scroll-snap-align:start; flex:none; display:inline-flex; align-items:center; gap:8px;
+  min-height:48px; padding:10px 14px; background:none; border:0; border-bottom:2px solid transparent;
+  margin-bottom:-1px; cursor:pointer; white-space:nowrap; font-size:1rem; font-weight:500;
+  color:var(--ink-muted); transition:color .15s var(--ease), border-color .15s var(--ease);
+}
+.tabstrip button:hover{color:var(--ink)}
+.tabstrip button[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--primary); font-weight:600}
+.tabstrip button i{
+  font-style:normal; font-variant-numeric:tabular-nums; font-size:.75rem; font-weight:600;
+  color:var(--ink-muted); background:var(--surface-sub); border-radius:9999px;
+  width:20px; height:20px; display:grid; place-items:center; flex:none;
+}
+.tabstrip button[aria-selected="true"] i{background:var(--primary-50); color:var(--primary-700)}
+.tabpanel{padding-top:24px}
+.tabhint{margin-top:10px; font-size:.8125rem; color:var(--ink-muted)}
+@container demo (min-width:760px){ .tabhint{display:none} }
+
+/* ------------------------------------------------- 2. meescrollend */
+/* Op telefoon blijft dit een blok, geen grid: een kleefbeeld in een grid mag enkel
+   binnen zijn eigen rij schuiven en laat daardoor bij stap 4 het scherm los. */
+.scrolly{display:block}
+.scrolly-visual{
+  position:sticky; top:0; z-index:2; background:var(--surface);
+  padding:12px 0 14px; margin-bottom:6px;
+}
+/* Korte uitvloeier onder de kleefkaart: zonder dit wordt de tekst die eronder
+   doorschuift halverwege een regel afgesneden en dat leest als een fout. */
+.scrolly-visual::after{
+  content:""; position:absolute; left:0; right:0; top:100%; height:24px; pointer-events:none;
+  background:linear-gradient(to bottom, var(--surface), rgba(255,255,255,0));
+}
+.scrolly-visual .stage{position:relative}
+.scrolly-visual .slide{display:none}
+.scrolly-visual .slide.on{display:block}
+.scrolly-cue{
+  display:flex; align-items:center; gap:6px; margin-bottom:10px;
+  font-size:.75rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-muted);
+}
+.scrolly-cue .bars{display:flex; gap:4px; margin-left:auto}
+.scrolly-cue .bars i{width:18px; height:3px; border-radius:9999px; background:var(--line); transition:background-color .2s var(--ease)}
+.scrolly-cue .bars i.on{background:var(--primary)}
+.scrolly-steps{display:grid; gap:0}
+.sc-step{
+  padding:28px 0; border-top:1px solid var(--line);
+  opacity:.6; transition:opacity .2s var(--ease);
+}
+.sc-step:first-child{border-top:0}
+.sc-step.on{opacity:1}
+.sc-step.on h3{color:var(--ink)}
+@container demo (min-width:760px){
+  .scrolly{display:grid; grid-template-columns:5fr 7fr; gap:40px; align-items:start}
+  .scrolly-steps{order:-1}
+  .scrolly-visual{top:32px; padding:0; margin-bottom:0}
+  .scrolly-visual::after{display:none}
+  .sc-step{padding:22vh 0; border-top:0}
+  .sc-step:first-child{padding-top:6vh}
+  .sc-step:last-child{padding-bottom:6vh}
+  .scrolly-cue{display:none}
+}
+
+/* ------------------------------------------------------ 3. doorloop */
+.tour-track{display:flex; gap:6px}
+.tour-track i{flex:1; height:6px; border-radius:9999px; background:var(--line); transition:background-color .2s var(--ease)}
+.tour-track i.on{background:var(--primary)}
+.tour-meta{
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  margin-top:10px; font-size:.8125rem; color:var(--ink-muted);
+}
+.tour-meta b{font-variant-numeric:tabular-nums; color:var(--ink); font-weight:600}
+.tour-panel{padding:24px 0}
+.tour-nav{display:flex; gap:12px; border-top:1px solid var(--line); padding-top:16px}
+.tour-nav .btn{flex:1}
+@container demo (min-width:560px){ .tour-nav .btn{flex:0 0 auto; min-width:150px} .tour-nav{justify-content:space-between} }
+
+/* ------------------------------------------------------- 4. tijdlijn */
+.timeline{list-style:none; margin:0; padding:0; position:relative}
+.timeline::before{
+  content:""; position:absolute; left:15px; top:14px; bottom:14px; width:2px;
+  background:var(--line); border-radius:9999px;
+}
+.tl-item{position:relative; padding-left:48px; padding-bottom:8px}
+.tl-item .node{
+  position:absolute; left:0; top:10px; width:32px; height:32px; border-radius:9999px;
+  display:grid; place-items:center; background:#fff; border:2px solid var(--line-strong);
+  color:var(--ink-muted); font-weight:600; font-size:.875rem; font-variant-numeric:tabular-nums;
+  transition:background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.tl-item.open .node{background:var(--primary); border-color:var(--primary); color:#fff}
+.tl-head{
+  width:100%; display:flex; align-items:flex-start; gap:12px; text-align:left;
+  background:none; border:0; padding:10px 0; cursor:pointer; min-height:48px;
+}
+.tl-head .txt{flex:1; min-width:0}
+.tl-head .txt strong{
+  display:block; font-family:"Bricolage Grotesque",Georgia,serif; font-weight:600;
+  font-size:1.125rem; line-height:1.3; color:var(--ink);
+}
+.tl-head .txt em{display:block; font-style:normal; font-size:.875rem; color:var(--ink-muted); margin-top:3px; hyphens:manual}
+.tl-head .sign{
+  flex:none; width:24px; height:24px; margin-top:4px; position:relative;
+  transition:transform .2s var(--ease); color:var(--primary);
+}
+.tl-head .sign::before,.tl-head .sign::after{
+  content:""; position:absolute; left:50%; top:50%; background:currentColor; border-radius:2px;
+}
+.tl-head .sign::before{width:14px; height:2px; transform:translate(-50%,-50%)}
+.tl-head .sign::after{width:2px; height:14px; transform:translate(-50%,-50%)}
+.tl-item.open .tl-head .sign{transform:rotate(45deg)}
+.tl-body{padding:4px 0 20px}
+.tl-body .mock{margin-top:14px}
+@container demo (min-width:760px){
+  .tl-body .split{grid-template-columns:5fr 7fr; align-items:start}
+  .tl-body .mock{margin-top:0}
+}
+
+/* ------------------------------------------------------ 5. accordeon */
+.acc{border-top:1px solid var(--line)}
+.acc-item{border-bottom:1px solid var(--line)}
+.acc-head{
+  width:100%; display:flex; align-items:flex-start; gap:12px; text-align:left;
+  background:none; border:0; padding:16px 0; cursor:pointer; min-height:56px;
+}
+.acc-head .step-num{width:28px; height:28px; font-size:.875rem; margin-top:1px}
+.acc-head .txt{
+  flex:1; min-width:0; font-family:"Bricolage Grotesque",Georgia,serif; font-weight:600;
+  font-size:1.125rem; line-height:1.35; color:var(--ink);
+  transition:color .15s var(--ease);
+}
+.acc-head:hover .txt{color:var(--primary)}
+.acc-head .sign{
+  flex:none; width:24px; height:24px; margin-top:3px; position:relative; color:var(--primary);
+  transition:transform .2s var(--ease);
+}
+.acc-head .sign::before,.acc-head .sign::after{
+  content:""; position:absolute; left:50%; top:50%; background:currentColor; border-radius:2px;
+}
+.acc-head .sign::before{width:14px; height:2px; transform:translate(-50%,-50%)}
+.acc-head .sign::after{width:2px; height:14px; transform:translate(-50%,-50%)}
+.acc-item.open .acc-head .sign{transform:rotate(45deg)}
+.acc-body{padding:0 0 24px}
+.acc-body p{color:var(--ink-muted); max-width:34rem}
+.acc-body .mock{margin-top:16px}
+@container demo (min-width:760px){
+  .acc-body .split{grid-template-columns:5fr 7fr; align-items:start}
+  .acc-body .mock{margin-top:0}
+}
+
+/* ---------------------------------------------------------------- voet */
+.page-foot{background:var(--surface-deep); color:var(--ink-inv-muted); padding:40px 0; font-size:.9375rem}
+.page-foot h2{color:var(--ink-inv); font-size:1.25rem}
+.page-foot p{margin-top:12px; max-width:34rem}
+.page-foot ul{margin:12px 0 0; padding-left:20px}
+.page-foot li{margin-top:6px}
+
+.noscript{
+  margin-top:24px; padding:16px; border:1px solid var(--alert); border-radius:var(--r-sm);
+  background:#FBEDE8; color:var(--alert); font-weight:600;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms !important; animation-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Interactie — keuzeblad</p>
+    <h1>Ontdek hoe het werkt, op vijf manieren</h1>
+    <p class="lead">Vijfmaal hetzelfde blok met dezelfde vier stappen, zodat de vergelijking over de
+      vorm gaat en niet over de tekst. Alle vijf werken echt: klik, scrol en probeer ze met het
+      toetsenbord. De schermen zijn gestileerde nabootsingen, geen echte screenshots — die hebben
+      we nog niet.</p>
+
+    <nav aria-label="Spring naar een vorm">
+      <ul class="jump">
+        <li><a href="#vorm-1"><span>1</span> Tabs</a></li>
+        <li><a href="#vorm-2"><span>2</span> Meescrollend</a></li>
+        <li><a href="#vorm-3"><span>3</span> Doorloop</a></li>
+        <li><a href="#vorm-4"><span>4</span> Tijdlijn</a></li>
+        <li><a href="#vorm-5"><span>5</span> Accordeon</a></li>
+      </ul>
+    </nav>
+
+    <div class="phone-switch">
+      <input type="checkbox" id="phone-toggle">
+      <label for="phone-toggle">
+        <b>Toon alles op telefoonbreedte</b>
+        <span>Knijpt elke demo tot 390 px. De vormen schakelen dan echt naar hun mobiele
+        uitvoering, ook op een groot scherm.</span>
+      </label>
+    </div>
+
+    <noscript><p class="noscript">Deze pagina toont werkende interactie en heeft daarvoor
+      JavaScript nodig. Zet het aan om de vijf vormen te vergelijken.</p></noscript>
+  </div>
+</header>
+
+<main>
+
+  <section class="variant" id="vorm-1" aria-labelledby="vorm-1-h">
+    <div class="wrap">
+      <div class="variant-head">
+        <p class="eyebrow">Vorm 1</p>
+        <h2 id="vorm-1-h">Tabs</h2>
+        <p class="judgement"><b>Sterk:</b> de vier stappen staan meteen als geheel in beeld en je
+          springt met één klik naar wat je wil zien, zonder iets te verliezen —
+          <b>maar</b> op 390 px wordt het een schuifbalkje met korte labels, dus wie niet naar
+          rechts veegt, ziet stap 3 en 4 nooit.</p>
+      </div>
+      <div class="demo"><div data-build="tabs"></div></div>
+    </div>
+  </section>
+
+  <section class="variant" id="vorm-2" aria-labelledby="vorm-2-h">
+    <div class="wrap">
+      <div class="variant-head">
+        <p class="eyebrow">Vorm 2</p>
+        <h2 id="vorm-2-h">Meescrollend</h2>
+        <p class="judgement"><b>Sterk:</b> het beeld blijft staan terwijl het verhaal zich afrolt,
+          dus iedereen krijgt de vier stappen in de juiste volgorde te zien zonder iets te moeten
+          aanklikken — <b>maar</b> de bezoeker heeft geen controle, en op telefoon valt de vorm
+          terug op een kleefkaart bovenaan met de tekst die eronder doorschuift, waardoor het
+          scherm merkbaar kleiner is dan op desktop.</p>
+      </div>
+      <div class="demo"><div data-build="scrolly"></div></div>
+    </div>
+  </section>
+
+  <section class="variant" id="vorm-3" aria-labelledby="vorm-3-h">
+    <div class="wrap">
+      <div class="variant-head">
+        <p class="eyebrow">Vorm 3</p>
+        <h2 id="vorm-3-h">Doorloop</h2>
+        <p class="judgement"><b>Sterk:</b> één ding tegelijk, met een voortgangsbalk die zegt
+          hoever je bent — de rustigste vorm op telefoon en de enige die echt aanvoelt als een
+          rondleiding — <b>maar</b> je moet vier keer klikken om alles te zien, en wie meteen naar
+          de rewardletters wil kan niet vooruitspringen.</p>
+      </div>
+      <div class="demo"><div data-build="tour"></div></div>
+    </div>
+  </section>
+
+  <section class="variant" id="vorm-4" aria-labelledby="vorm-4-h">
+    <div class="wrap">
+      <div class="variant-head">
+        <p class="eyebrow">Vorm 4</p>
+        <h2 id="vorm-4-h">Tijdlijn</h2>
+        <p class="judgement"><b>Sterk:</b> de lijn met vier genummerde momenten toont in één blik
+          dat dit een proces is met een begin en een eind, en elke stap houdt ook dicht al een
+          leesbare samenvatting — <b>maar</b> er mogen meerdere stappen tegelijk openstaan, en dat
+          maakt de sectie op telefoon snel lang.</p>
+      </div>
+      <div class="demo"><div data-build="timeline"></div></div>
+    </div>
+  </section>
+
+  <section class="variant" id="vorm-5" aria-labelledby="vorm-5-h">
+    <div class="wrap">
+      <div class="variant-head">
+        <p class="eyebrow">Vorm 5</p>
+        <h2 id="vorm-5-h">Accordeon</h2>
+        <p class="judgement"><b>Sterk:</b> het eenvoudigste en meest herkenbare patroon op
+          telefoon, altijd één stap open en nooit hoger dan één scherm —
+          <b>maar</b> dicht toont hij enkel vier titels, dus het product blijft onzichtbaar tot
+          iemand klikt.</p>
+      </div>
+      <div class="demo"><div data-build="accordion"></div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="page-foot">
+  <div class="wrap">
+    <h2>Waar je op let bij het kiezen</h2>
+    <p>Zeven op de tien bezoekers komt via een advertentie op telefoon binnen. De vraag is dus niet
+      welke vorm het mooist is op een breed scherm, maar welke op 390 px het product nog toont.</p>
+    <ul>
+      <li>Toont de vorm iets van het product zonder dat je iets moet doen? Dat pleit voor
+        meescrollend en doorloop.</li>
+      <li>Wil je dat de bezoeker zelf kiest waar hij begint? Dat pleit voor tabs en tijdlijn.</li>
+      <li>Wil je vooral kort en veilig? Dan accordeon.</li>
+    </ul>
+  </div>
+</footer>
+
+<!-- =====================================================================
+     Gestileerde UI-mockups — vier stuks, hergebruikt door alle vijf vormen.
+     Geen echte screenshots; wel echte Belgische opmaak: €&nbsp;42.100 en 81,6%.
+     ===================================================================== -->
+
+<template id="mock-1">
+  <div class="ui">
+    <div class="ui-bar"><span class="dot"></span><span class="ttl">Merit cycle 2027</span><span class="pill">76% afgerond</span></div>
+    <div class="ui-body">
+      <div class="metrics">
+        <div><span>Managers klaar</span><b class="tabular">38/50</b></div>
+        <div><span>Budget gebruikt</span><b class="tabular">81,6%</b></div>
+        <div><span>Open acties</span><b class="tabular">12</b></div>
+      </div>
+      <ul class="rows">
+        <li><div class="who"><b>Finance Belgium</b><span>8 van 8 managers klaar</span></div>
+            <div class="right"><span class="money">€&nbsp;42.100</span><span class="tag tag-ok">Klaar</span></div></li>
+        <li><div class="who"><b>Operations</b><span>12 van 16 managers klaar</span></div>
+            <div class="right"><span class="money">€&nbsp;58.440</span><span class="tag tag-run">Loopt</span></div></li>
+        <li><div class="who"><b>Commercial</b><span>9 van 14 managers klaar</span></div>
+            <div class="right"><span class="money">€&nbsp;49.210</span><span class="tag tag-run">Loopt</span></div></li>
+        <li><div class="who"><b>Technology</b><span>9 van 12 managers klaar</span></div>
+            <div class="right"><span class="money">€&nbsp;34.500</span><span class="tag tag-warn">Actie nodig</span></div></li>
+      </ul>
+      <p class="ui-note">Elke manager ziet enkel zijn eigen team en de lonen daarvan.</p>
+    </div>
+  </div>
+</template>
+
+<template id="mock-2">
+  <div class="ui">
+    <div class="ui-bar"><span class="dot"></span><span class="ttl">Team Operations</span><span class="pill">Voorstel gevolgd 13/16</span></div>
+    <div class="ui-body">
+      <ul class="rows plist">
+        <li>
+          <div class="l1"><b>M. Peeters</b><em>Teamlead</em><span class="delta">+2,4%</span></div>
+          <div class="l2"><span>compa-ratio 0,97</span><span class="money">€&nbsp;3.240 → €&nbsp;3.318</span></div>
+        </li>
+        <li>
+          <div class="l1"><b>S. Verlinden</b><em>Planner</em><span class="delta">+1,8%</span></div>
+          <div class="l2"><span>compa-ratio 1,04</span><span class="money">€&nbsp;2.960 → €&nbsp;3.013</span></div>
+        </li>
+        <li>
+          <div class="l1"><b>K. Dhondt</b><span class="tag tag-flag">Uitschieter</span><span class="delta">+4,1%</span></div>
+          <div class="l2"><span>compa-ratio 0,86</span><span class="money">€&nbsp;2.480 → €&nbsp;2.582</span></div>
+        </li>
+        <li>
+          <div class="l1"><b>A. Janssens</b><em>Operator</em><span class="delta">+0,0%</span></div>
+          <div class="l2"><span>compa-ratio 1,11</span><span class="money">€&nbsp;3.410 → €&nbsp;3.410</span></div>
+        </li>
+      </ul>
+      <p class="ui-note warn">Je wijkt af van het voorstel bij A. Janssens. Noteer kort waarom.</p>
+    </div>
+  </div>
+</template>
+
+<template id="mock-3">
+  <div class="ui">
+    <div class="ui-bar"><span class="dot"></span><span class="ttl">Budgetbeheer</span><span class="pill">3 potten apart</span></div>
+    <div class="ui-body">
+      <div class="budgets">
+        <div class="budget">
+          <div class="top"><b>Loonsverhoging</b><span>€&nbsp;58.440 / €&nbsp;60.000</span></div>
+          <div class="track"><i style="width:97%"></i></div>
+          <p class="foot">Nog €&nbsp;1.560 vrij — 97,4% toegekend</p>
+        </div>
+        <div class="budget">
+          <div class="top"><b>Bonus</b><span>€&nbsp;21.300 / €&nbsp;30.000</span></div>
+          <div class="track"><i style="width:71%"></i></div>
+          <p class="foot">Nog €&nbsp;8.700 vrij — 71,0% toegekend</p>
+        </div>
+        <div class="budget">
+          <div class="top"><b>Promotie</b><span>€&nbsp;12.900 / €&nbsp;12.000</span></div>
+          <div class="track"><i class="over" style="width:100%"></i></div>
+          <p class="foot over">€&nbsp;900 over budget — 107,5% toegekend</p>
+        </div>
+      </div>
+      <p class="ui-note">Deze beslissing kost €&nbsp;78 per maand, ofwel €&nbsp;1.014 op jaarbasis.</p>
+    </div>
+  </div>
+</template>
+
+<template id="mock-4">
+  <div class="ui">
+    <div class="ui-bar"><span class="dot"></span><span class="ttl">Rewardletters</span><span class="pill">142 klaar</span></div>
+    <div class="letter">
+      <div class="paper">
+        <p class="brand">Youbo</p>
+        <p class="date">Antwerpen, 12 januari 2027</p>
+        <p class="hi">Beste Marie</p>
+        <p class="body">Hieronder vind je je loonpakket voor 2027. We overlopen het graag samen
+          tijdens je volgende gesprek.</p>
+        <table>
+          <tbody>
+            <tr><th scope="row">Huidig maandloon</th><td>€&nbsp;3.240</td></tr>
+            <tr><th scope="row">Loonsverhoging</th><td>+ 2,4%</td></tr>
+            <tr><th scope="row">Nieuw maandloon</th><td>€&nbsp;3.318</td></tr>
+            <tr><th scope="row">Bonus 2026</th><td>€&nbsp;1.150</td></tr>
+          </tbody>
+        </table>
+        <p class="sign">An De Clerck · HR Director</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ------------------------------------------------------------------ inhoud */
+  var STEPS = [
+    {
+      n: 1,
+      short: 'Overzicht',
+      title: 'Hr houdt realtime het overzicht',
+      body: 'Zie welke managers klaar zijn en waar nog actie nodig is. Managers zien enkel hun eigen team.',
+      alt: 'Overzichtsscherm van de cyclus Merit 2027: 38 van de 50 managers zijn klaar, 81,6% van het budget is gebruikt, en van de vier afdelingen vraagt Technology nog actie.'
+    },
+    {
+      n: 2,
+      short: 'Beslissen',
+      title: 'Managers nemen onderbouwde loonbeslissingen',
+      body: 'Volg het voorstel of wijk gemotiveerd af, bekijk uitschieters, vergelijk medewerkers.',
+      alt: 'Teamscherm van een manager met vier medewerkers, per persoon het voorgestelde percentage en het nieuwe maandloon, één medewerker gemarkeerd als uitschieter en een vraag om de afwijking te motiveren.'
+    },
+    {
+      n: 3,
+      short: 'Budget',
+      title: 'Meer grip op elk budget',
+      body: 'Zie meteen de impact van elke beslissing, beheer loonsverhoging, bonus en promotie apart.',
+      alt: 'Budgetscherm met drie afzonderlijke potten — loonsverhoging, bonus en promotie — waarvan het promotiebudget met 900 euro overschreden is.'
+    },
+    {
+      n: 4,
+      short: 'Rewardletters',
+      title: 'Rewardletters in één klik',
+      body: 'Gepersonaliseerd, klaar om te versturen wanneer je wil. Geen mailmerge meer.',
+      alt: 'Een rewardletter als brief, met datum, aanspreking en een tabel met huidig maandloon, loonsverhoging, nieuw maandloon en bonus — 142 brieven staan klaar.'
+    }
+  ];
+
+  var uid = 0;
+  function id(prefix) { uid += 1; return prefix + '-' + uid; }
+
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        if (k === 'class') { node.className = attrs[k]; }
+        else if (k === 'text') { node.textContent = attrs[k]; }
+        else if (attrs[k] !== null && attrs[k] !== false) { node.setAttribute(k, attrs[k]); }
+      });
+    }
+    (children || []).forEach(function (c) { if (c) { node.appendChild(c); } });
+    return node;
+  }
+
+  /* Eén mockup als afbeelding: role="img" maakt de hele boom één object voor
+     schermlezers, zodat de namaak-UI niet cel per cel wordt voorgelezen. */
+  function mock(i) {
+    var tpl = document.getElementById('mock-' + STEPS[i].n);
+    var fig = el('div', { 'class': 'mock', role: 'img', 'aria-label': STEPS[i].alt });
+    fig.appendChild(tpl.content.cloneNode(true));
+    return fig;
+  }
+
+  function copy(i, withNumber) {
+    var kids = [];
+    if (withNumber) { kids.push(el('span', { 'class': 'step-num tabular', text: String(STEPS[i].n), 'aria-hidden': 'true' })); }
+    kids.push(el('h3', { text: STEPS[i].title }));
+    kids.push(el('p', { text: STEPS[i].body }));
+    return el('div', { 'class': 'step-copy' }, kids);
+  }
+
+  function split(i, withNumber) {
+    return el('div', { 'class': 'split' }, [copy(i, withNumber), mock(i)]);
+  }
+
+  /* ------------------------------------------------------------- 1 · tabs */
+  function buildTabs(host) {
+    var strip = el('div', { 'class': 'tabstrip', role: 'tablist', 'aria-label': 'Ontdek hoe het werkt' });
+    var tabs = [], panels = [];
+
+    STEPS.forEach(function (s, i) {
+      var tabId = id('tab'), panelId = id('tabpanel');
+
+      var tab = el('button', {
+        type: 'button', role: 'tab', id: tabId, 'aria-controls': panelId,
+        'aria-selected': i === 0 ? 'true' : 'false', tabindex: i === 0 ? '0' : '-1'
+      }, [
+        el('i', { text: String(s.n), 'aria-hidden': 'true' }),
+        el('span', { text: s.short })
+      ]);
+
+      var panel = el('div', {
+        'class': 'tabpanel', role: 'tabpanel', id: panelId, 'aria-labelledby': tabId, tabindex: '0'
+      }, [split(i, false)]);
+      if (i !== 0) { panel.hidden = true; }
+
+      tabs.push(tab); panels.push(panel);
+      strip.appendChild(tab);
+    });
+
+    function select(i, moveFocus) {
+      tabs.forEach(function (t, j) {
+        t.setAttribute('aria-selected', j === i ? 'true' : 'false');
+        t.tabIndex = j === i ? 0 : -1;
+        panels[j].hidden = j !== i;
+      });
+      if (moveFocus) { tabs[i].focus(); }
+      if (tabs[i].scrollIntoView) { tabs[i].scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
+    }
+
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(i, false); });
+      t.addEventListener('keydown', function (e) {
+        var last = tabs.length - 1, next = null;
+        if (e.key === 'ArrowRight') { next = i === last ? 0 : i + 1; }
+        else if (e.key === 'ArrowLeft') { next = i === 0 ? last : i - 1; }
+        else if (e.key === 'Home') { next = 0; }
+        else if (e.key === 'End') { next = last; }
+        if (next !== null) { e.preventDefault(); select(next, true); }
+      });
+    });
+
+    host.appendChild(strip);
+    panels.forEach(function (p) { host.appendChild(p); });
+    host.appendChild(el('p', { 'class': 'tabhint', text: 'Veeg over de stappen om er vier te zien.' }));
+  }
+
+  /* ----------------------------------------------------- 2 · meescrollend */
+  function buildScrolly(host) {
+    var slides = [], bars = [], stepNodes = [];
+
+    var stage = el('div', { 'class': 'stage' });
+    STEPS.forEach(function (s, i) {
+      var slide = el('div', { 'class': 'slide' + (i === 0 ? ' on' : '') }, [mock(i)]);
+      slides.push(slide);
+      stage.appendChild(slide);
+      bars.push(el('i', { 'class': i === 0 ? 'on' : '' }));
+    });
+
+    var cue = el('div', { 'class': 'scrolly-cue', 'aria-hidden': 'true' }, [
+      el('span', { text: 'Scroll verder' }),
+      el('span', { 'class': 'bars' }, bars)
+    ]);
+
+    /* De tekst hieronder is de leesbare versie; het kleefbeeld is illustratie. */
+    var visual = el('div', { 'class': 'scrolly-visual', 'aria-hidden': 'true' }, [cue, stage]);
+
+    var stepsCol = el('div', { 'class': 'scrolly-steps' });
+    var copyNodes = [];
+    STEPS.forEach(function (s, i) {
+      var c = copy(i, true);
+      var art = el('article', { 'class': 'sc-step' + (i === 0 ? ' on' : '') }, [c]);
+      stepNodes.push(art);
+      copyNodes.push(c);
+      stepsCol.appendChild(art);
+    });
+
+    host.appendChild(el('div', { 'class': 'scrolly' }, [visual, stepsCol]));
+
+    var current = -1;
+    function paint(i) {
+      if (i === current) { return; }
+      current = i;
+      slides.forEach(function (s, j) { s.classList.toggle('on', j === i); });
+      bars.forEach(function (b, j) { b.className = j === i ? 'on' : ''; });
+      stepNodes.forEach(function (s, j) { s.classList.toggle('on', j === i); });
+    }
+
+    var ticking = false;
+    function measure() {
+      ticking = false;
+      /* Meet de tekst zelf, niet het artikel met zijn grote witruimte eromheen —
+         anders wisselt het beeld al voor de bijbehorende tekst in beeld komt. */
+      var line = window.innerHeight * 0.62;
+      var active = 0;
+      copyNodes.forEach(function (c, i) {
+        if (c.getBoundingClientRect().top <= line) { active = i; }
+      });
+      paint(active);
+    }
+    function onScroll() {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(measure); }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    measure();
+  }
+
+  /* --------------------------------------------------------- 3 · doorloop */
+  function buildTour(host) {
+    var segs = STEPS.map(function (s, i) { return el('i', { 'class': i === 0 ? 'on' : '' }); });
+
+    var track = el('div', {
+      'class': 'tour-track', role: 'progressbar',
+      'aria-valuemin': '1', 'aria-valuemax': String(STEPS.length), 'aria-valuenow': '1',
+      'aria-valuetext': 'Stap 1 van ' + STEPS.length + ': ' + STEPS[0].title,
+      'aria-label': 'Voortgang van de rondleiding'
+    }, segs);
+
+    var counter = el('b', { 'class': 'tabular', text: '1 / ' + STEPS.length });
+    var meta = el('div', { 'class': 'tour-meta' }, [
+      el('span', { text: 'Een korte rondleiding' }), counter
+    ]);
+
+    var panel = el('div', { 'class': 'tour-panel', 'aria-live': 'polite' }, [split(0, true)]);
+
+    var prev = el('button', { type: 'button', 'class': 'btn btn-sec', text: 'Vorige' });
+    var next = el('button', { type: 'button', 'class': 'btn btn-pri', text: 'Volgende' });
+    var nav = el('div', { 'class': 'tour-nav' }, [prev, next]);
+
+    var i = 0;
+    function go(to, focusEl) {
+      i = Math.max(0, Math.min(STEPS.length - 1, to));
+      panel.textContent = '';
+      panel.appendChild(split(i, true));
+      segs.forEach(function (s, j) { s.className = j <= i ? 'on' : ''; });
+      counter.textContent = (i + 1) + ' / ' + STEPS.length;
+      track.setAttribute('aria-valuenow', String(i + 1));
+      track.setAttribute('aria-valuetext', 'Stap ' + (i + 1) + ' van ' + STEPS.length + ': ' + STEPS[i].title);
+      prev.disabled = i === 0;
+      next.disabled = i === STEPS.length - 1;
+      next.textContent = i === STEPS.length - 1 ? 'Einde' : 'Volgende';
+      /* Focus niet laten wegvallen wanneer de knop uitgeschakeld raakt. */
+      if (focusEl && focusEl.disabled) { (focusEl === next ? prev : next).focus(); }
+    }
+
+    prev.addEventListener('click', function () { go(i - 1, prev); });
+    next.addEventListener('click', function () { go(i + 1, next); });
+
+    host.appendChild(track);
+    host.appendChild(meta);
+    host.appendChild(panel);
+    host.appendChild(nav);
+    go(0);
+  }
+
+  /* --------------------------------------------------------- 4 · tijdlijn */
+  function buildTimeline(host) {
+    var list = el('ul', { 'class': 'timeline' });
+    var heads = [];
+
+    STEPS.forEach(function (s, i) {
+      var bodyId = id('tl-body'), headId = id('tl-head');
+      var open = i === 0;
+
+      var head = el('button', {
+        type: 'button', 'class': 'tl-head', id: headId,
+        'aria-expanded': open ? 'true' : 'false', 'aria-controls': bodyId
+      }, [
+        el('span', { 'class': 'txt' }, [
+          el('strong', { text: s.title }),
+          el('em', { text: s.body })
+        ]),
+        el('span', { 'class': 'sign', 'aria-hidden': 'true' })
+      ]);
+
+      var body = el('div', {
+        'class': 'tl-body', id: bodyId, role: 'region', 'aria-labelledby': headId
+      }, [el('div', { 'class': 'split' }, [mock(i)])]);
+      if (!open) { body.hidden = true; }
+
+      var item = el('li', { 'class': 'tl-item' + (open ? ' open' : '') }, [
+        el('span', { 'class': 'node tabular', text: String(s.n), 'aria-hidden': 'true' }),
+        el('h3', {}, [head]),
+        body
+      ]);
+
+      head.addEventListener('click', function () {
+        var now = head.getAttribute('aria-expanded') === 'true';
+        head.setAttribute('aria-expanded', now ? 'false' : 'true');
+        body.hidden = now;
+        item.classList.toggle('open', !now);
+      });
+
+      heads.push(head);
+      list.appendChild(item);
+    });
+
+    wireRoving(heads);
+    host.appendChild(list);
+  }
+
+  /* -------------------------------------------------------- 5 · accordeon */
+  function buildAccordion(host) {
+    var box = el('div', { 'class': 'acc' });
+    var heads = [], bodies = [], items = [];
+
+    STEPS.forEach(function (s, i) {
+      var bodyId = id('acc-body'), headId = id('acc-head');
+      var open = i === 0;
+
+      var head = el('button', {
+        type: 'button', 'class': 'acc-head', id: headId,
+        'aria-expanded': open ? 'true' : 'false', 'aria-controls': bodyId
+      }, [
+        el('span', { 'class': 'step-num tabular', text: String(s.n), 'aria-hidden': 'true' }),
+        el('span', { 'class': 'txt', text: s.title }),
+        el('span', { 'class': 'sign', 'aria-hidden': 'true' })
+      ]);
+
+      var body = el('div', {
+        'class': 'acc-body', id: bodyId, role: 'region', 'aria-labelledby': headId
+      }, [el('div', { 'class': 'split' }, [el('div', {}, [el('p', { text: s.body })]), mock(i)])]);
+      if (!open) { body.hidden = true; }
+
+      var item = el('div', { 'class': 'acc-item' + (open ? ' open' : '') }, [
+        el('h3', {}, [head]), body
+      ]);
+
+      heads.push(head); bodies.push(body); items.push(item);
+      box.appendChild(item);
+    });
+
+    heads.forEach(function (head, i) {
+      head.addEventListener('click', function () {
+        var wasOpen = head.getAttribute('aria-expanded') === 'true';
+        heads.forEach(function (h, j) {
+          var willOpen = !wasOpen && j === i;
+          h.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+          bodies[j].hidden = !willOpen;
+          items[j].classList.toggle('open', willOpen);
+        });
+      });
+    });
+
+    wireRoving(heads);
+    host.appendChild(box);
+  }
+
+  /* Pijltjes tussen de koppen van een accordeon of tijdlijn — WAI-ARIA APG. */
+  function wireRoving(heads) {
+    heads.forEach(function (h, i) {
+      h.addEventListener('keydown', function (e) {
+        var last = heads.length - 1, next = null;
+        if (e.key === 'ArrowDown') { next = i === last ? 0 : i + 1; }
+        else if (e.key === 'ArrowUp') { next = i === 0 ? last : i - 1; }
+        else if (e.key === 'Home') { next = 0; }
+        else if (e.key === 'End') { next = last; }
+        if (next !== null) { e.preventDefault(); heads[next].focus(); }
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------ start */
+  var BUILDERS = {
+    tabs: buildTabs, scrolly: buildScrolly, tour: buildTour,
+    timeline: buildTimeline, accordion: buildAccordion
+  };
+
+  document.querySelectorAll('[data-build]').forEach(function (host) {
+    var fn = BUILDERS[host.getAttribute('data-build')];
+    if (fn) { fn(host); }
+  });
+
+  var toggle = document.getElementById('phone-toggle');
+  toggle.checked = false;
+  toggle.addEventListener('change', function () {
+    document.body.classList.toggle('phone', toggle.checked);
+    window.dispatchEvent(new Event('resize'));
+  });
+})();
+</script>
+</body>
+</html>

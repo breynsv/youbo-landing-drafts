@@ -14,6 +14,14 @@
   body { font-family: 'Inter', system-ui, sans-serif; }
   .thumb-wrap { position:relative; overflow:hidden; background:#fff; }
   [x-cloak] { display:none !important; }
+  /* Own chevron instead of the browser's triangle, so the collapsed block reads
+     as a heading you can open rather than as a form control. */
+  summary::-webkit-details-marker { display:none; }
+  summary { list-style:none; }
+  .chev { transition: transform 150ms ease-in-out; }
+  details[open] .chev { transform: rotate(90deg); }
+  details[open] .when-closed { display:none; }
+  details:not([open]) .when-open { display:none; }
 </style>
 </head>
 <body class="bg-neutral-100 text-neutral-900" x-data="picker()" x-cloak>
@@ -22,10 +30,16 @@
   <div class="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center gap-4">
     <div>
       <h1 class="text-2xl font-semibold leading-none tracking-tight">Youbo — landing page drafts</h1>
-      <p class="text-sm text-neutral-500 mt-1">Ten directions for the demo-request landing page. Rate them, leave notes, then mail the feedback back to Sven.</p>
+      <p class="text-sm text-neutral-500 mt-1">Rate them, leave notes, then send the feedback back to Sven. Ronde 2 staat open — drie keuzes op de echte huisstijl; ronde 1 en de eerdere opzet blijven erbij als context.</p>
     </div>
 
-    <div class="ml-auto flex items-center gap-2 text-sm">
+    <div class="ml-auto flex flex-wrap items-center gap-2 text-sm">
+      <!-- Round switch. Ronde 2 is the default: that is what Jana has to look at
+           now. Ronde 1 stays reachable because those ten drafts are the context
+           her choice was made in. -->
+      <button @click="setRound('r2')" :class="round==='r2' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white'" class="px-3 py-1.5 rounded-full border border-neutral-300 font-medium">Ronde 2 <span class="opacity-60" x-text="countRound('r2')"></span></button>
+      <button @click="setRound('r1')" :class="round==='r1' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white'" class="px-3 py-1.5 rounded-full border border-neutral-300 font-medium">Ronde 1 <span class="opacity-60" x-text="countRound('r1')"></span></button>
+      <span class="w-px h-6 bg-neutral-300 mx-1"></span>
       <button @click="filter='all'"  :class="filter==='all'  ? 'bg-neutral-900 text-white' : 'bg-white'"  class="px-3 py-1.5 rounded-full border border-neutral-300">All <span class="opacity-60" x-text="drafts.length"></span></button>
       <button @click="filter='yes'"  :class="filter==='yes'  ? 'bg-emerald-600 text-white' : 'bg-white'"  class="px-3 py-1.5 rounded-full border border-neutral-300">Shortlist <span class="opacity-60" x-text="countBy('yes')"></span></button>
       <button @click="filter='maybe'":class="filter==='maybe'? 'bg-amber-500 text-white'  : 'bg-white'"  class="px-3 py-1.5 rounded-full border border-neutral-300">Maybe <span class="opacity-60" x-text="countBy('maybe')"></span></button>
@@ -34,6 +48,7 @@
       <button @click="emailFeedback()" class="px-4 py-1.5 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700">
         <span x-text="sent ? 'Opening your mail app…' : 'Email all feedback'"></span>
       </button>
+      <button @click="showFeedback()" class="px-3 py-1.5 rounded-full border border-neutral-300 bg-white text-neutral-700" title="Toon de volledige feedback als tekst">Toon tekst</button>
       <button @click="reset()" class="px-3 py-1.5 rounded-full border border-neutral-300 bg-white text-neutral-500" title="Clear all ratings and notes">Reset</button>
     </div>
   </div>
@@ -41,7 +56,27 @@
 
 <main class="max-w-[1600px] mx-auto px-6 py-8">
 
-  <div class="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(380px,1fr))]">
+  <!-- Waarom er drie nieuwe drafts staan. Dit is het verschil dat telt: de eerste
+       drie van ronde 2 stonden op een design system dat wij met de hand hadden
+       opgemeten; deze drie staan op de tokens die uit youbo.io zelf komen. -->
+  <section x-show="round==='r2'" class="mb-8 rounded-xl border border-neutral-200 bg-white p-6">
+    <h2 class="text-lg font-semibold tracking-tight">Ronde 2 — drie keuzes</h2>
+    <p class="text-sm text-neutral-700 mt-2 max-w-4xl">
+      Deze drie vervangen de eerste drie van ronde 2. Die waren gebouwd op een design system dat
+      wij met de hand van youbo.io hadden opgemeten. Deze drie gebruiken de <strong>échte
+      tokens</strong>, geëxtraheerd uit jullie eigen site: het groen <span class="font-mono text-xs px-1 py-0.5 rounded bg-neutral-100">#0af29f</span>,
+      Inter, jullie eigen verloop van <span class="font-mono text-xs px-1 py-0.5 rounded bg-neutral-100">#000000</span> naar
+      <span class="font-mono text-xs px-1 py-0.5 rounded bg-neutral-100">#154e3a</span>, en jullie motion-tokens.
+      Ze zijn dus getrouwer aan de huisstijl — en ze bewegen.
+    </p>
+    <p class="text-sm text-neutral-500 mt-2">
+      De eerste drie staan onderaan, ingeklapt. Ze blijven beoordeelbaar; ze horen alleen niet meer
+      in de keuze.
+    </p>
+  </section>
+
+  <!-- min() so a 380px card cannot push the page wider than a phone screen. -->
+  <div class="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(380px,100%),1fr))]">
     <template x-for="d in visible()" :key="d.file">
       <article class="bg-white rounded-xl border border-neutral-200 overflow-hidden flex flex-col shadow-sm"
                :class="{'ring-2 ring-emerald-500': rating(d)==='yes', 'ring-2 ring-amber-400': rating(d)==='maybe', 'opacity-55': rating(d)==='no'}">
@@ -54,6 +89,10 @@
           <img class="relative z-10 w-full block transition-transform duration-300 group-hover:scale-[1.02]"
                :src="'thumbs/' + d.file.replace('.html','.jpg')" :alt="d.title" loading="lazy"
                onerror="this.remove()">
+          <!-- Jana vroeg Sven expliciet om zijn voorkeur. Eén label en één zin —
+               de ja/misschien/nee-knoppen blijven op alle drie gewoon werken. -->
+          <span x-show="d.recommended"
+                class="absolute z-20 top-3 left-3 px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[11px] font-semibold tracking-wide shadow-sm">★ Onze aanbeveling</span>
         </div>
 
         <div class="p-4 flex-1 flex flex-col gap-3">
@@ -64,6 +103,7 @@
             </div>
             <p class="text-sm text-neutral-600 mt-1" x-text="d.concept"></p>
             <p class="text-xs text-neutral-400 mt-1.5" x-text="d.angle"></p>
+            <p x-show="d.why" class="text-xs leading-relaxed text-emerald-900 bg-emerald-50 border border-emerald-200 rounded-lg px-2.5 py-2 mt-2.5" x-text="d.why"></p>
           </div>
 
           <div class="flex gap-2">
@@ -85,7 +125,92 @@
     </template>
   </div>
 
-  <p x-show="!visible().length" class="text-center text-neutral-500 py-20">Nothing in this filter.</p>
+  <p x-show="!visible().length && !visibleLegacy().length" class="text-center text-neutral-500 py-20">Nothing in this filter.</p>
+
+  <!-- De eerste drie van ronde 2. Niet weg — ondergeschikt. Ingeklapt met een
+       native <details>, zodat er geen extra staat te onderhouden valt, en met een
+       kleinere kaart zodat het ook zonder tekst duidelijk is dat dit niet de
+       keuze is. Beoordelen werkt hier gewoon: dezelfde knoppen, hetzelfde
+       notitieveld, dezelfde feedbacktekst. -->
+  <section x-show="round==='r2'" class="mt-12">
+    <details class="rounded-xl border border-neutral-300 bg-neutral-50/80">
+      <summary class="cursor-pointer px-5 py-4 flex flex-wrap items-center gap-3">
+        <span class="chev text-neutral-400 text-sm leading-none">▶</span>
+        <span class="text-sm font-semibold text-neutral-700">Eerdere opzet — vóór we de echte huisstijl hadden</span>
+        <span class="text-xs text-neutral-500 rounded-full border border-neutral-300 bg-white px-2 py-0.5" x-text="countLegacy() + ' drafts'"></span>
+        <span class="text-xs text-neutral-500 ml-auto when-closed">Klik om te openen</span>
+        <span class="text-xs text-neutral-500 ml-auto when-open">Klik om te sluiten</span>
+      </summary>
+      <div class="px-5 pb-6">
+        <p class="text-sm text-neutral-600 max-w-4xl mb-5">
+          Dit zijn de eerste drie drafts van ronde 2. Ze zijn gebouwd op een design system dat wij
+          met de hand van youbo.io hadden opgemeten — niet op jullie echte tokens. De drie hierboven
+          vervangen ze. Je kan ze hier nog altijd beoordelen als je wil, maar de keuze ligt boven.
+        </p>
+
+        <div class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))]">
+          <template x-for="d in visibleLegacy()" :key="d.file">
+            <article class="bg-white rounded-xl border border-neutral-200 overflow-hidden flex flex-col"
+                     :class="{'ring-2 ring-emerald-500': rating(d)==='yes', 'ring-2 ring-amber-400': rating(d)==='maybe', 'opacity-55': rating(d)==='no'}">
+
+              <div class="thumb-wrap h-[160px] border-b border-neutral-200 cursor-pointer group" @click="open(d)">
+                <span class="absolute inset-0 z-0 grid place-items-center text-sm text-neutral-400 bg-neutral-100">still building…</span>
+                <img class="relative z-10 w-full block grayscale-[0.35] transition duration-300 group-hover:grayscale-0"
+                     :src="'thumbs/' + d.file.replace('.html','.jpg')" :alt="d.title" loading="lazy"
+                     onerror="this.remove()">
+              </div>
+
+              <div class="p-3 flex-1 flex flex-col gap-2.5">
+                <div class="flex items-baseline gap-2">
+                  <span class="text-xs font-semibold text-neutral-400" x-text="d.n"></span>
+                  <h3 class="text-base font-semibold leading-tight tracking-tight text-neutral-700" x-text="d.title"></h3>
+                </div>
+                <p class="text-xs text-neutral-500 -mt-1" x-text="d.concept"></p>
+
+                <div class="flex gap-1.5">
+                  <button @click="setRating(d,'yes')"   :class="rating(d)==='yes'   ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-neutral-300 hover:border-emerald-500'" class="flex-1 py-1.5 rounded-lg border text-xs font-medium">✓ Yes</button>
+                  <button @click="setRating(d,'maybe')" :class="rating(d)==='maybe' ? 'bg-amber-500 text-white border-amber-500'   : 'bg-white border-neutral-300 hover:border-amber-400'"  class="flex-1 py-1.5 rounded-lg border text-xs font-medium">? Maybe</button>
+                  <button @click="setRating(d,'no')"    :class="rating(d)==='no'    ? 'bg-neutral-800 text-white border-neutral-800': 'bg-white border-neutral-300 hover:border-neutral-500'" class="flex-1 py-1.5 rounded-lg border text-xs font-medium">✕ No</button>
+                </div>
+
+                <textarea rows="2" placeholder="What works, what doesn't…"
+                          class="w-full text-xs border border-neutral-300 rounded-lg p-2 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          :value="note(d)" @input="setNote(d, $event.target.value)"></textarea>
+
+                <div class="flex gap-1.5 text-xs">
+                  <button @click="open(d)" class="flex-1 py-1.5 rounded-lg bg-neutral-700 text-white font-medium">Open full</button>
+                  <a :href="d.file" target="_blank" class="py-1.5 px-2.5 rounded-lg border border-neutral-300 text-neutral-600">↗</a>
+                </div>
+              </div>
+            </article>
+          </template>
+        </div>
+
+        <p x-show="!visibleLegacy().length" class="text-sm text-neutral-500 py-6 text-center">Niets in dit filter.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- Keuzeblad, geen draft. Het krijgt daarom bewust geen ja/misschien/nee-knoppen:
+       er valt hier niets te beoordelen, er valt één vorm te kiezen. -->
+  <section x-show="round==='r2'" class="mt-10 rounded-xl border-2 border-dashed border-blue-300 bg-blue-50/60 p-6">
+    <div class="flex flex-wrap items-start gap-6">
+      <div class="flex-1 min-w-[280px]">
+        <p class="text-xs font-semibold uppercase tracking-wide text-blue-700">Apart te beoordelen — keuzeblad, geen draft</p>
+        <h2 class="text-xl font-semibold leading-tight tracking-tight mt-1">Ontdek hoe het werkt — vijf interactievormen</h2>
+        <p class="text-sm text-neutral-700 mt-2 max-w-2xl">
+          Vijf manieren om het blok <em>Ontdek hoe het werkt</em> te tonen — tabs, meescrollend,
+          doorloop, tijdlijn en accordeon — met dezelfde vier stappen, naast elkaar op één pagina.
+          Kies er één; die vorm gaat daarna in de gekozen draft.
+        </p>
+        <p class="text-xs text-neutral-500 mt-2">Geen ja/misschien/nee hier: dit is een keuze, geen beoordeling.</p>
+      </div>
+      <div class="flex gap-2 text-sm">
+        <button @click="open(INTERACTIES)" class="py-2 px-4 rounded-lg bg-blue-600 text-white font-medium">Open keuzeblad</button>
+        <a href="interacties-hoe-het-werkt.html" target="_blank" class="py-2 px-3 rounded-lg border border-blue-300 bg-white text-blue-700">↗</a>
+      </div>
+    </div>
+  </section>
 
   <p class="mt-10 text-sm text-neutral-500">
     De strategienota, het design system, de contentbriefing en de openstaande vragen voor Teal
@@ -113,17 +238,59 @@
   </div>
 </div>
 
+<!-- Feedback panel.
+     This replaces the old "copy + alert" fallback. An alert saying the feedback
+     was copied reads as "it has been sent", and last round that is exactly what
+     happened: the review was never mailed and nobody knew. So the text is put on
+     the page, visible, selectable, copyable and downloadable — nothing here can
+     fail silently and nothing here claims anything was sent. -->
+<div x-show="panel" class="fixed inset-0 z-[60] bg-neutral-900/70 flex items-center justify-center p-4" @keydown.escape.window="panel=false" x-cloak>
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden" @click.outside="panel=false">
+    <div class="p-5 border-b border-neutral-200">
+      <h2 class="text-lg font-semibold tracking-tight">Je feedback — nog niet verstuurd</h2>
+      <p class="text-sm text-neutral-600 mt-1" x-text="panelReason"></p>
+    </div>
+
+    <div class="p-5 flex-1 overflow-auto">
+      <textarea x-ref="fbText" rows="14" class="w-full text-sm font-mono border border-neutral-300 rounded-lg p-3 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500" :value="panelText"></textarea>
+      <p class="text-xs text-neutral-500 mt-2">
+        <span x-text="panelText.length"></span> tekens. Kopieer of download de tekst en stuur ze naar
+        <span class="font-medium" x-text="TO"></span>. Je kan ook gewoon alles selecteren in het vak hierboven.
+      </p>
+    </div>
+
+    <div class="p-5 border-t border-neutral-200 flex flex-wrap gap-2 items-center bg-neutral-50">
+      <button @click="copyText()" class="px-4 py-2 rounded-lg bg-neutral-900 text-white font-medium text-sm" x-text="copied ? '✓ Gekopieerd' : 'Kopieer'"></button>
+      <button @click="downloadText()" class="px-4 py-2 rounded-lg border border-neutral-300 bg-white font-medium text-sm" x-text="downloaded ? '✓ Gedownload' : 'Download .txt'"></button>
+      <span class="text-xs text-neutral-500" x-show="copyError" x-text="copyError"></span>
+      <button @click="panel=false" class="ml-auto px-4 py-2 rounded-lg border border-neutral-300 bg-white text-neutral-600 text-sm">Sluiten</button>
+    </div>
+  </div>
+</div>
+
 <script>
 function picker() {
   return {
     KEY: 'youbo-drafts-v1',
     state: {},
     filter: 'all',
+    // Ronde 2 is the default view — that is the round being decided now.
+    round: 'r2',
     current: null,
     vw: 1280,
     sent: false,
+    panel: false,
+    panelText: '',
+    panelReason: '',
+    copied: false,
+    downloaded: false,
+    copyError: '',
     TO: 'sven@membrero.com',
     SUBJECT: 'Youbo landing page — draft review',
+    // Not a draft: a sheet of five ways to present one block. It is opened in the
+    // same preview, but it is deliberately kept out of `all` so it never gets a
+    // rating, never counts in a filter and never shows up in the feedback text.
+    INTERACTIES: { r:'r2', n:'—', file:'interacties-hoe-het-werkt.html', title:'Ontdek hoe het werkt — vijf interactievormen' },
     all: [
       { r:'r1', n:'01', file:'draft-01-zonder-kopzorgen.html', title:'Zonder kopzorgen',
         concept:'Jana’s own line taken seriously — calm, editorial, generous white space. The furthest possible move away from “tech”.',
@@ -155,8 +322,43 @@ function picker() {
       { r:'r1', n:'10', file:'draft-10-in-control.html', title:'In control',
         concept:'Confident and product-forward — the software shown with pride, but designed properly this time. Rich, dark, precise.',
         angle:'Premium · the “programmer-made” look done right' },
+
+      // Ronde 2, de keuze van nu: drie drafts op de ECHTE tokens van youbo.io.
+      // Volgorde is bewust — de aanbeveling staat vooraan.
+      { r:'r2', n:'R2-05', file:'draft-r2-05-huisstijl-schakelend.html', title:'Schakelend',
+        concept:'Begint licht en kantelt per blok naar donker, in hun eigen verloop van #000000 naar #154e3a. Nick staat groot in de hero.',
+        angle:'Echte huisstijltokens · Inter, #0af29f, hun verloop en hun motion',
+        recommended:true,
+        why:'Waarom deze: het beantwoordt de vraag licht-of-donker in plaats van ze opnieuw te stellen, en het gebruikt hun eigen verloop — het enige echt kenmerkende element dat ze hebben.' },
+      { r:'r2', n:'R2-04', file:'draft-r2-04-huisstijl-licht.html', title:'Licht',
+        concept:'Het strakst en het dichtst bij hoe youbo.io er vandaag uitziet. Nick klein en permanent in de meelopende balk.',
+        angle:'Echte huisstijltokens · samen met Donker de enige met een echt voorbijglijdende logobalk, zoals Jana vroeg' },
+      { r:'r2', n:'R2-06', file:'draft-r2-06-huisstijl-donker.html', title:'Donker',
+        concept:'Visueel het sterkst: het verloop doet werk, de logo’s schuiven voorbij en de schermen liggen als papier op zwart.',
+        angle:'Echte huisstijltokens · contrast per tekstelement nagemeten, slechtste geval 5,1:1' },
+
+      // De eerste drie van ronde 2. Ze blijven beoordeelbaar, maar ze zakken naar
+      // het ingeklapte blok onderaan: ze staan op een design system dat wij met de
+      // hand van youbo.io hadden opgemeten, niet op hun echte tokens.
+      { r:'r2', legacy:true, n:'R2-01', file:'draft-r2-01-licht.html', title:'Licht',
+        concept:'De rustige variant, dicht bij hoe youbo.io er vandaag uitziet. Nick loopt klein mee in de balk.',
+        angle:'Veilig · het makkelijkst intern goedgekeurd' },
+      { r:'r2', legacy:true, n:'R2-02', file:'draft-r2-02-schakelend.html', title:'Schakelend',
+        concept:'Begint licht en schakelt per blok naar donker, zodat het ritme het verhaal draagt. Nick groot in de hero.',
+        angle:'De middenweg · licht waar het rustig moet, donker waar het product staat' },
+      { r:'r2', legacy:true, n:'R2-03', file:'draft-r2-03-donker.html', title:'Donker',
+        concept:'Donker en product-forward; de schermen komen hier het best uit. Nick klein maar door de hele pagina aanwezig.',
+        angle:'Premium · het dichtst bij draft 10 dat Jana mooi vond' },
     ],
-    get drafts() { return this.all; },
+    // Every list on the page — the grid, the filter counts, the empty state — is
+    // scoped to the round on screen. The feedback text is not: that stays the
+    // whole review, both rounds.
+    get drafts() { return this.all.filter(d => d.r === this.round); },
+    // Deliberately not remembered between visits: every open lands on ronde 2,
+    // so a detour into ronde 1 for context never becomes the page she is
+    // reviewing next time.
+    setRound(r) { this.round = r; this.current = null; },
+    countRound(r) { return this.all.filter(d => d.r === r).length; },
     init() { try { this.state = JSON.parse(localStorage.getItem(this.KEY)) || {}; } catch { this.state = {}; } },
     save()  { localStorage.setItem(this.KEY, JSON.stringify(this.state)); },
     row(d)  { return this.state[d.file] ||= { rating:'', note:'' }; },
@@ -165,59 +367,97 @@ function picker() {
     setRating(d, r) { const x = this.row(d); x.rating = (x.rating === r ? '' : r); this.save(); },
     setNote(d, v)   { this.row(d).note = v; this.save(); },
     countBy(r) { return this.drafts.filter(d => this.rating(d) === r).length; },
-    visible()  { return this.filter === 'all' ? this.drafts : this.drafts.filter(d => this.rating(d) === (this.filter === 'none' ? '' : this.filter)); },
+    matches(d) { return this.filter === 'all' || this.rating(d) === (this.filter === 'none' ? '' : this.filter); },
+    // Twee lijsten, één filter. `visible()` is de hoofdkeuze bovenaan;
+    // `visibleLegacy()` is het ingeklapte blok met de eerdere opzet. Ze blijven
+    // allebei beoordeelbaar — alleen de plaats op de pagina verschilt.
+    visible()       { return this.drafts.filter(d => !d.legacy && this.matches(d)); },
+    visibleLegacy() { return this.drafts.filter(d =>  d.legacy && this.matches(d)); },
+    countLegacy()   { return this.drafts.filter(d => d.legacy).length; },
     open(d) { this.current = d; },
     reset() { if (confirm('Clear all ratings and notes?')) { this.state = {}; this.save(); } },
+    // The feedback is always the WHOLE review, both rounds — the round switch
+    // only decides what is on screen, never what gets sent.
     feedbackText() {
-      const lines = [];
-      for (const d of this.all) {
-        const r = this.rating(d), n = this.note(d);
-        if (!r && !n) continue;
-        lines.push(`${d.n} ${d.title} — ${r ? r.toUpperCase() : 'no rating'}${n ? '\n   ' + n : ''}`);
+      const out = [];
+      for (const [key, label] of [['r2', 'RONDE 2'], ['r1', 'RONDE 1']]) {
+        const lines = [];
+        for (const d of this.all.filter(x => x.r === key)) {
+          const r = this.rating(d), n = this.note(d);
+          if (!r && !n) continue;
+          lines.push(`${d.n} ${d.title} — ${r ? r.toUpperCase() : 'no rating'}${n ? '\n   ' + n : ''}`);
+        }
+        if (lines.length) out.push(`== ${label} ==\n\n` + lines.join('\n\n'));
       }
-      if (!lines.length) lines.push('(nothing rated yet)');
-      return lines.join('\n\n');
+      if (!out.length) out.push('(nothing rated yet)');
+      return out.join('\n\n\n');
     },
     emailFeedback() {
       const text = this.feedbackText();
       const href = `mailto:${this.TO}?subject=${encodeURIComponent(this.SUBJECT)}&body=${encodeURIComponent(text)}`;
 
-      // Long notes can push the mailto: URL past what a mail client will accept,
-      // and an over-long one either silently truncates the body or does nothing
-      // at all. Above that length, hand the reviewer the text instead of losing it.
-      if (href.length > 1900) { this.copyFallback(text); return; }
+      // Long notes push the mailto: URL past what a mail client will accept, and
+      // an over-long one either silently truncates the body or does nothing at
+      // all. Below that length the mail app is still the quickest route; above
+      // it, the text goes on the page instead of into a mailto that would lose
+      // half of it.
+      if (href.length > 1900) {
+        this.showFeedback('Te lang om als e-mail te openen — een mailto van deze lengte kapt je tekst af. Hij is hieronder volledig bewaard en er is niets verstuurd.');
+        return;
+      }
 
       this.sent = true;
       setTimeout(() => this.sent = false, 2500);
       window.location.href = href;
     },
-    // navigator.clipboard is unavailable when this file is opened straight
-    // from disk — file:// is not a secure context, so writeText throws
-    // "Write permission denied" and the button silently does nothing. Fall
-    // back to a hidden textarea + execCommand, which still works there, and
-    // to a prompt() if even that is blocked, so the text is never trapped.
-    copyFallback(text) {
-      const note = `Too long to mail automatically — the feedback is copied, paste it into a mail to ${this.TO}.`;
-      const done = () => window.alert(note);
-      const manual = () => {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0';
-        document.body.appendChild(ta);
+    // Nothing in here can fail silently: the text is on the page before any
+    // clipboard or download is attempted, so even if both are blocked the
+    // feedback is visible and selectable. And nothing here says "sent".
+    showFeedback(reason) {
+      this.panelText = this.feedbackText();
+      this.panelReason = typeof reason === 'string' && reason
+        ? reason
+        : 'Dit is je volledige feedback. Er is niets verstuurd — kopieer of download ze en stuur ze door.';
+      this.copied = false;
+      this.downloaded = false;
+      this.copyError = '';
+      this.panel = true;
+    },
+    copyText() {
+      const ok = () => { this.copied = true; this.copyError = ''; setTimeout(() => this.copied = false, 2500); };
+      // navigator.clipboard is unavailable when this file is opened straight from
+      // disk — file:// is not a secure context, so writeText throws. execCommand
+      // on the visible textarea still works there. If even that is refused we say
+      // so and the reviewer selects the text herself; it is right in front of her.
+      const viaSelection = () => {
+        const ta = this.$refs.fbText;
+        if (!ta) { this.copyError = 'Kopiëren lukt niet — selecteer de tekst hierboven.'; return; }
+        ta.focus();
         ta.select();
-        let ok = false;
-        try { ok = document.execCommand('copy'); } catch { ok = false; }
-        document.body.removeChild(ta);
-        if (ok) done();
-        else window.prompt(`Copy the feedback below (Cmd+C, then Enter) and mail it to ${this.TO}:`, text);
+        let done = false;
+        try { done = document.execCommand('copy'); } catch { done = false; }
+        if (done) ok();
+        else this.copyError = 'Kopiëren lukt niet in deze browser — selecteer de tekst hierboven (Cmd+A, Cmd+C).';
       };
-
       if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(done).catch(manual);
+        navigator.clipboard.writeText(this.panelText).then(ok).catch(viaSelection);
       } else {
-        manual();
+        viaSelection();
       }
+    },
+    downloadText() {
+      const stamp = new Date().toISOString().slice(0, 10);
+      const blob = new Blob([this.panelText], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `youbo-feedback-${stamp}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      this.downloaded = true;
+      setTimeout(() => this.downloaded = false, 2500);
     },
   };
 }

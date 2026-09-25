@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<!--
+CONCEPT: De schakelende variant, nu in de échte huisstijl van youbo.io. Zelfde structuur en zelfde copy als draft-r2-02, maar elke kleur, maat, radius en overgangsduur komt letterlijk uit DESIGN-youbo-io.md: groen #0af29f met tekst #154e3a, tekst #0a3327 en #547068, oppervlak #f6f8fa, rand #e1ebf0, Inter, radius 8/12/24, en de spatiëringsschaal 8-128. De pagina begint licht en kantelt per blok naar donker en terug — en het donker is hier niet verzonnen: het is hun eigen verloop van #000000 naar #154e3a, het meest kenmerkende element dat ze hebben.
+SCHAKELING: de overgang tussen licht en donker is zelf de belangrijkste beweging, en hij doet negen keer exact hetzelfde: niets. De sectiegrens is scherp — geen lijn erop, geen vervaging eromheen. Het kleurverschil doet het werk al, en alles wat je ertussen zet leest als iets wat stukging: een gekleurde streep over de volle breedte leest als een vergeten rand, en een vervaging tussen zwart en wit loopt altijd door grijs en ziet er altijd vuil uit. Het verloop #000000 → #154e3a blijft, maar het leeft nu bínnen de donkere band: die is zwart aan boven- én onderkant, het groen zwelt op in een vaste zone van 400px (300px op telefoon) vlak boven de onderrand en zakt in de laatste 160px (120px) terug naar zwart. Vaste pixels en niet procenten, zodat een band van 435px dezelfde zwelling krijgt als een van 1545px — een tweestopsverloop over de volle bandhoogte is precies wat hier als vlek las. Vijf stops `in oklab`, zodat het middengebied groen blijft in plaats van te vergrijzen. Dezelfde vorm als de heroband in draft 06, zodat de twee drafts dit identiek behandelen. Het groen zakt bij het binnenscrollen nog altijd in 350ms in de band in plaats van hard aan te knippen. Alle beweging gaat uit bij prefers-reduced-motion: reduce.
+TITELS: één kop per sectie, nooit twee. De negen minititels boven de koppen zijn weg — Jana keurde die expliciet af en de briefing verbiedt ze. Wat overblijft is "Bonus & Merit" in de hero, dat in haar eigen concept staat, en de vier stapnummers in de rondleiding, die iets anders zijn dan een titel.
+FOOTER EN TOESTEMMING: de footer is die van youbo.io, link voor link overgenomen uit `_raw/components/nl/footer.html` — de juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. Onderaan staat één smalle cookiebalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan.
+HERO: Nick staat groot, en zijn gezicht is het eerste wat je ziet — ook op 390px, waar het portret bovenaan staat en de kop er binnen hetzelfde scherm onder valt.
+STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency · integraties · quotes · faq · formulier · footer).
+LOGO'S PER SECTIE: logobalk, cases en integraties staan op licht en dragen de -dark varianten. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk volgt dezelfde regel: youbo_logo.svg op licht, youbo_logo_white.svg in de zwarte footer.
+AFWIJKING VAN DE TOKENS: geen enkele nieuwe kleurwaarde. De enige afgeleiden zijn witte transparanties (72%, 16%, 6%) voor secundaire tekst, randen en vlakken op de donkere banden — het systeem documenteert daar geen aparte token voor, en #547068 op zwart haalt de contrastdrempel niet.
+TODO OP DE PAGINA: waar de drie bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer — Kaneka, DPG Media, het landental van Aertssen, de integratielijst en het antwoord op "hoeveel kost het".
+NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) de foto van Nick — hij staat hier groot in de hero en klein bij het formulier, nu als zichtbare fotoplek; (2) Nicks telefoonnummer, e-mailadres en agendalink; (3) foto's van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet, of het akkoord om alle vijf de quotes zonder foto te zetten; (4) de vijf case-pdf's; (5) de lijst klantnamen die in de logobalk getoond mogen worden, met zowel een donkere als een witte logoversie; (6) de juiste cijfers voor Kaneka, DPG Media en Aertssen; (7) de juiste integratielijst; (8) het antwoord op de prijsvraag; (9) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (10) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
+OPEN CIJFERS — NOG UIT TE KLAREN MET BART: twee klantcijfers spreken elkaar tegen en zijn op deze pagina bewust nog niet vastgezet. (1) SD Worx: deze draft zegt 21 landen, de gepubliceerde case op youbo.io zegt 18. (2) Kaneka: deze draft zegt 204 medewerkers, hun eigen gepubliceerde case zegt 370. Beide staan ook zichtbaar op de pagina als TODO-blokje bij de betreffende casekaart. Niet stilzwijgend een van de twee kiezen voordat Bart bevestigd heeft welk cijfer klopt.
+-->
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Loon, bonus en promotie beheren zonder Excel | Youbo</title>
+<meta name="description" content="Youbo beheert de lonen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.">
+<link rel="canonical" href="https://youbo.io/demo">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_BE">
+<meta property="og:site_name" content="Youbo">
+<meta property="og:title" content="Compensatie zonder kopzorgen | Youbo">
+<meta property="og:description" content="Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Boek een demo en zie het op jouw eigen looncyclus.">
+<meta property="og:image" content="assets/img/open_graph.png">
+<meta property="og:url" content="https://youbo.io/demo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0af29f">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<!-- ===========================================================================
+     LINKEDIN INSIGHT TAG — PLAATSHOUDER, BEWUST NOG NIET ACTIEF
+     ---------------------------------------------------------------------------
+     Er staat hier geen partner ID, omdat er nog geen bevestigd ID is. Vervang
+     PARTNER_ID_HIER door het echte nummer uit LinkedIn Campaign Manager en haal
+     dan pas het commentaar weg. Vul hier nooit een verzonnen nummer in: dat
+     stuurt data nergens naartoe en ziet er wél aangesloten uit.
+
+     De campagne is LinkedIn-first, dus dit is de eerste tag die live moet.
+     In België geldt opt-in, dus dit script hoort niet hier maar in
+     laadMeettags() onderaan de pagina — die functie draait pas nadat iemand in
+     de cookiebalk op Toestaan geklikt heeft. De balk en de meelopende demo-knop
+     delen bewust dezelfde plek onderaan: zolang er geen keuze gemaakt is, staat
+     de balk er en blijft de knop weg.
+
+     <script type="text/javascript">
+       _linkedin_partner_id = "PARTNER_ID_HIER";
+       window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+       window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+     </script>
+     <script type="text/javascript">
+       (function(l) {
+         if (!l){window.lintrk=function(a,b){window.lintrk.q.push([a,b])};window.lintrk.q=[]}
+         var s = document.getElementsByTagName("script")[0];
+         var b = document.createElement("script");
+         b.type = "text/javascript"; b.async = true;
+         b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+         s.parentNode.insertBefore(b, s);
+       })(window.lintrk);
+     </script>
+     <noscript>
+       <img height="1" width="1" style="display:none;" alt=""
+            src="https://px.ads.linkedin.com/collect/?pid=PARTNER_ID_HIER&fmt=gif" />
+     </noscript>
+     =========================================================================== -->
+
+<!-- ===========================================================================
+     TOESTEMMING EERST — CONSENT MODE v2
+     ---------------------------------------------------------------------------
+     Dit stukje draait wél, en het haalt niets op. Het zet de toestemming op
+     "geweigerd" nog voordat er ook maar één meettag bestaat, zodat een tag die
+     later ingeschakeld wordt onmogelijk vóór de keuze van de bezoeker kan meten.
+     De cookiebalk onderaan de pagina zet dit op "granted" zodra iemand toestemt,
+     en roept dan pas laadMeettags() aan — daar staan de twee tags hieronder.
+     =========================================================================== -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+</script>
+
+<!-- ===========================================================================
+     GOOGLE — PLAATSHOUDER, BEWUST NOG NIET ACTIEF
+     ---------------------------------------------------------------------------
+     De afspraak is tracking voor Google én LinkedIn. Op de huidige site staat
+     geen van beide: geen Tag Manager, geen Analytics, geen pixel.
+
+     Er staat hier met opzet geen tag. Google en LinkedIn worden allebei pas
+     ingeladen door laadMeettags(), onderaan deze pagina, en die functie draait
+     alleen nadat iemand in de cookiebalk op Toestaan geklikt heeft — in België
+     geldt opt-in. De drie id's staan daar als lege constanten:
+
+       GOOGLE_GTM_ID       een Tag Manager-container, bv. GTM-XXXXXXX
+       GOOGLE_GA4_ID       een GA4 meetstroom, bv. G-XXXXXXXXXX
+       LINKEDIN_PARTNER_ID het nummer uit LinkedIn Campaign Manager
+
+     Vul in wat je hebt en laat de rest leeg; wat leeg blijft, laadt niet. Kies
+     tussen GTM en GA4, niet allebei: dan telt elke paginaweergave dubbel.
+     Vul nooit een verzonnen id in — dat stuurt data nergens naartoe en ziet er
+     wél aangesloten uit.
+     =========================================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* ---------------------------------------------------------------------------
+   De tokens uit DESIGN-youbo-io.md, letterlijk. Geen enkele kleur is bijgestuurd,
+   het groen al helemaal niet.
+   --------------------------------------------------------------------------- */
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },   /* primary + primary-text   */
+        ink:     { DEFAULT: '#0a3327', soft: '#547068',    /* text-primary + secondary */
+                   inv: '#ffffff' },
+        paper:   '#ffffff',                                 /* background               */
+        surface: '#f6f8fa',                                 /* surface                  */
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
+        forest:  '#154e3a',                                 /* gradient-dark-end        */
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      /* de spatiëringsschaal 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 80 · 128 */
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionDuration: { fast: '150ms', base: '200ms', medium: '300ms', slow: '350ms' },
+      transitionTimingFunction: {
+        standard:   'ease-in-out',
+        decelerate: 'ease-out',
+        accelerate: 'cubic-bezier(0, 1, 0.3, 1)',
+      },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    :root {
+      /* motion-tokens, één keer gedeclareerd en overal hergebruikt */
+      --m-fast: 150ms;
+      --m-base: 200ms;
+      --m-medium: 300ms;
+      --m-slow: 350ms;
+      --e-standard: ease-in-out;
+      --e-decelerate: ease-out;
+      --e-accelerate: cubic-bezier(0, 1, 0.3, 1);
+      /* afgeleiden van #ffffff voor de donkere banden — geen nieuwe hue */
+      --inv-soft: rgba(255,255,255,.72);
+      --inv-line: rgba(255,255,255,.16);
+      --inv-fill: rgba(255,255,255,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { @apply font-sans text-body font-medium text-ink bg-paper antialiased; }
+    h1, h2, h3 { @apply font-sans font-bold text-ink; text-wrap: balance;
+                 hyphens: auto; overflow-wrap: break-word; }
+    p { text-wrap: pretty; }
+    :focus-visible { outline: 2px solid #00acd6; outline-offset: 2px; border-radius: 8px; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    [x-cloak] { display: none !important; }
+  }
+
+  @layer components {
+    /* ---- knoppen, exact de componentspecificatie uit de designbron ---------- */
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-sm text-body
+                  font-bold min-h-[48px] px-6 py-[14px] cursor-pointer;
+           transition: background-color var(--m-base) var(--e-standard),
+                       color var(--m-base) var(--e-standard),
+                       border-color var(--m-base) var(--e-standard); }
+    .btn-primary { @apply btn bg-brand text-brand-ink; }
+    .btn-primary:hover { background-color: #000000; color: #0af29f; }
+    .btn-primary:active { background-color: #031317; color: #0af29f; }
+    .btn-secondary { @apply btn bg-paper text-ink border border-line-btn px-3 py-2; }
+    .btn-secondary:hover { background-color: #f6f8fa; border-color: #e1ebf0; }
+
+    /* ---- tekst op donker ---------------------------------------------------- */
+    .on-dark        { color: #ffffff; }
+    .on-dark-soft   { color: var(--inv-soft); }
+    .rule-inv       { border-color: var(--inv-line); }
+
+    /* ---- kaarten ------------------------------------------------------------ */
+    .card { @apply rounded-sm bg-paper shadow-card;
+            transition: box-shadow var(--m-base) var(--e-standard); }
+    .card:hover { @apply shadow-lift; }
+    .card-inv { @apply rounded-sm; background: var(--inv-fill);
+                border: 1px solid var(--inv-line); }
+
+    /* ---- het zichtbare TODO-blokje, volledig binnen het palet --------------- */
+    .todo { @apply block rounded-sm border border-dashed border-line-btn bg-surface
+                   px-4 py-3 text-caption text-ink-soft; }
+    .todo b { @apply font-bold text-brand-ink; }
+    .todo-inv { @apply block rounded-sm border border-dashed px-4 py-3 text-caption;
+                border-color: var(--inv-line); background: var(--inv-fill);
+                color: var(--inv-soft); }
+    .todo-inv b { @apply font-bold text-brand; }
+
+    /* ---- fotoplek: een ontworpen gat, geen grijs silhouet ------------------- */
+    .fotoplek { @apply relative grid place-items-center overflow-hidden text-center;
+                background: linear-gradient(180deg, #000000 0%, #154e3a 100%); }
+
+    /* ---- productpanelen: wit, zodat ze oplichten op de donkere band -------- */
+    .panel { @apply rounded-md bg-paper shadow-panel overflow-hidden; }
+    .panel-bar { @apply flex items-center gap-2 border-b border-line px-5 py-3; }
+    .miniheader { @apply text-caption font-bold text-ink; }
+    .scrollhide { scrollbar-width: none; }
+    .scrollhide::-webkit-scrollbar { display: none; }
+
+    /* =====================================================================
+       DE SCHAKELING — de belangrijkste beweging van dit draft
+       ---------------------------------------------------------------------
+       De pagina kantelt negen keer tussen licht en donker. Alle negen keer op
+       precies dezelfde manier, en die manier is: NIETS ERTUSSEN.
+
+       · De sectiegrens is SCHERP. Geen lijn erop, geen vervaging eromheen.
+         Het kleurverschil doet het werk al — #000000 tegen #ffffff is de
+         hardste overgang die een scherm kan maken, en daar hoort geen hulp
+         bij. Alles wat je ertussen zet, leest als iets wat stukging: een
+         gekleurde streep over de volle breedte leest als een vergeten rand,
+         en een vervaging tussen zwart en wit gaat altijd door grijs en ziet
+         er altijd vuil uit. Beide stonden hier tot 2026-09-25; beide zijn weg.
+
+       · HET VERLOOP #000000 → #154e3a BLIJFT — het is het kenmerkende element
+         van youbo.io — maar het leeft nu BINNEN de donkere band en raakt de
+         rand niet meer. De band is zwart aan bovenkant én onderkant; het
+         groen zwelt op in een vaste zone van 400 px vlak boven de onderrand
+         en zakt in de laatste 160 px terug naar zwart. Dat is dezelfde vorm
+         als in draft 06, waar de heroband precies dezelfde zwelling en
+         dezelfde voet draagt: de twee drafts behandelen dit identiek.
+
+         Twee dingen maken dat die zwelling geen vlek is. Ze staat in PIXELS
+         en niet in procenten, dus ze is even lang in een band van 435 px als
+         in een van 1545 px — een tweestopsverloop over de volle bandhoogte
+         is precies wat hier eerst stond en wat als vlek las. En ze
+         interpoleert `in oklab` over vijf stops, zodat het middengebied groen
+         blijft in plaats van door een grijsgroene modderzone te lopen.
+
+       Daarbovenop laat .band-* het groen van #154e3a er in 350ms in zakken
+       zodra de band in beeld komt. De band start zwart, dus er is geen moment
+       waarop witte tekst onleesbaar staat, ook niet als JavaScript uitvalt.
+       ===================================================================== */
+
+    .band { @apply relative isolate overflow-hidden; background-color: #000000; }
+    .band > * { position: relative; z-index: 1; }
+    .band::before { content: ""; position: absolute; inset: 0; z-index: 0;
+                    opacity: 1;
+                    transition: opacity var(--m-slow) var(--e-decelerate); }
+
+    /* De zwelling, gemeten vanaf de ONDERRAND van de band omhoog:
+       0 … 160 px    terug naar zwart, zodat de rand zelf zwart is
+       160 px        vol #154e3a
+       160 … 560 px  de rise, vijf stops, dezelfde curve als in draft 06
+       daarboven     vlak zwart
+       De eerste regel is de terugval voor een browser zonder oklab-verlopen;
+       de tweede overschrijft hem waar dat wel kan. */
+    .band-gradient::before {
+      --band: 400px; --foot: 160px;
+      background-image: linear-gradient(to top,
+        #000000 0,
+        #06241a calc(var(--foot) * 0.37),
+        #0e3a29 calc(var(--foot) * 0.69),
+        #154e3a var(--foot),
+        #12452f calc(var(--foot) + var(--band) * 0.20),
+        #0c3323 calc(var(--foot) + var(--band) * 0.425),
+        #051c13 calc(var(--foot) + var(--band) * 0.70),
+        #000000 calc(var(--foot) + var(--band)));
+      background-image: linear-gradient(to top in oklab,
+        #000000 0,
+        #06241a calc(var(--foot) * 0.37),
+        #0e3a29 calc(var(--foot) * 0.69),
+        #154e3a var(--foot),
+        #12452f calc(var(--foot) + var(--band) * 0.20),
+        #0c3323 calc(var(--foot) + var(--band) * 0.425),
+        #051c13 calc(var(--foot) + var(--band) * 0.70),
+        #000000 calc(var(--foot) + var(--band)));
+    }
+    @media (max-width: 640px) { .band-gradient::before { --band: 300px; --foot: 120px; } }
+
+    /* De nachtband draagt haar eigen grondkleur #031317 en eindigt daar ook
+       op: het verloop is klaar op 62% en de onderste 38% is vlak. De rand is
+       dus de bandkleur zelf, niet een punt halverwege een verloop. */
+    .band-night { background-color: #031317; }
+    .band-night::before { background: linear-gradient(180deg, #000000 0%, #031317 62%); }
+    .band-black::before { background: #000000; }
+    html.js .band::before { opacity: 0; }
+    html.js .band.is-in::before { opacity: 1; }
+
+    /* ---- rustig inkomen van blokinhoud ------------------------------------- */
+    html.js [data-reveal] { opacity: 0; transform: translateY(16px);
+      transition: opacity var(--m-medium) var(--e-decelerate),
+                  transform var(--m-slow) var(--e-accelerate); }
+    html.js [data-reveal].is-in { opacity: 1; transform: none; }
+
+    /* =====================================================================
+       DE MEESCROLLENDE RONDLEIDING — blok 5 "Ontdek hoe het werkt"
+       ---------------------------------------------------------------------
+       Eén set schermen, niet twee. In de HTML staat elk scherm gewoon onder
+       zijn eigen stap: zonder JavaScript lees je vier stappen met vier
+       schermen onder elkaar, in volgorde. Zodra JavaScript draait verhuizen
+       diezelfde vier <figure>'s naar de kleefkaart — verhuizen, niet
+       kopiëren, dus geen tweede download en geen tweede alt-tekst.
+       Bij prefers-reduced-motion: reduce gebeurt die verhuizing niet en
+       blijft de leesbare stapel staan: alles meteen in eindtoestand.
+       ===================================================================== */
+    /* .band draagt overflow-hidden, en dat maakt de band zelf de scrollcontainer
+       van alles wat erin kleeft: position: sticky blijft dan gewoon meeschuiven.
+       Deze band heeft niets te snoeien — het verloop zit in ::before met inset: 0 —
+       dus zet hij de snoei uit in plaats van de kleefkaart te laten stukgaan. */
+    .band-kleef { overflow: visible; }
+
+    .scrolly-visual { display: none; }
+    html.js .scrolly-visual {
+      display: block; position: sticky; top: 0; z-index: 2;
+      background: #031317;                       /* de bandkleur zelf */
+      margin-left: -24px; margin-right: -24px;   /* tot de schermrand, px-6 van .shell */
+      padding: 12px 24px 8px;
+    }
+    /* Korte uitvloeier onder de kaart: zonder dit wordt de tekst die eronder
+       doorschuift halverwege een regel afgesneden, en dat leest als een fout. */
+    html.js .scrolly-visual::after {
+      content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 28px;
+      pointer-events: none;
+      background: linear-gradient(180deg, #031317 0%, rgba(3,19,23,0) 100%);
+    }
+
+    .sc-cue  { @apply flex items-center gap-3 mb-1; }
+    .sc-bars { @apply ml-auto flex items-center gap-1; }
+    .sc-bar  { @apply flex items-center px-2 cursor-pointer;
+               min-height: 44px; background: none; border: 0; }
+    .sc-bar > span { display: block; height: 3px; width: 20px; border-radius: 9999px;
+                     background: rgba(255,255,255,.35);
+                     transition: background-color var(--m-base) var(--e-standard),
+                                 width var(--m-base) var(--e-standard); }
+    .sc-bar[aria-current="true"] > span { background: #0af29f; width: 30px; }
+
+    /* --sc-h is een PLAFOND, geen vaste hoogte. Dat verschil is de hele bug:
+       een vak met een vaste hoogte en een tekening die haar verhouding houdt,
+       laat het verschil over als wit — op 1440 was de kaart 564 px hoog met een
+       tekening van 323 px erin, en wie op de verkeerde scrollhoogte keek, zag
+       alleen dat witte bovenstuk en dus een "lege kaart".
+       Nu bepaalt de tekening de hoogte (aspect-ratio) en knijpt het plafond de
+       kaart in de BREEDTE af als die hoogte niet past. De verhouding blijft dan
+       kloppen en er komt nooit wit bij. */
+    .sc-stage { position: relative; --sc-h: clamp(120px, 20vh, 190px);
+                max-width: calc(var(--sc-h) * 1200 / 680); margin-inline: auto; }
+    .sc-stage .sc-slide { display: none; margin: 0; }
+    .sc-stage .sc-slide.is-on { display: block; }
+    /* Eén verhouding voor alle vier de schermen, en het is die van het hoogste
+       (1200 × 680). Anders zou de kaart per stap 37 px op en neer gaan, en een
+       kleefkaart die tijdens het scrollen van maat verandert, leest als een fout.
+       De drie kortere tekeningen (600 en 640 hoog) houden daardoor 18 tot 37 px
+       over, gelijk verdeeld boven en onder — dat is kaartmarge, geen leeg vlak. */
+    .sc-stage .sc-shot { aspect-ratio: 1200 / 680; overflow: hidden;
+                         display: flex; align-items: center; justify-content: center; }
+    /* Een krappere balk in de kleefkaart: op telefoon is hoogte het schaarse goed,
+       en een schermtitel die bij stap 4 naar twee regels vouwt maakt de kaart
+       23 px hoger dan bij stap 1 — een kleefkaart die van maat verandert leest
+       als een fout, dus blijft de balk hier één regel. */
+    .sc-stage .panel-bar { @apply py-2; }
+    .sc-stage .panel-bar .miniheader { min-width: 0; white-space: nowrap;
+                                       overflow: hidden; text-overflow: ellipsis; }
+    /* De vier schermen zijn nu <svg>'s, geen bitmaps. Ze schalen dus mee en
+       passen altijd in de breedte — de "sleep opzij"-hint en de horizontale
+       schuifbalk die de schermafdrukken nodig hadden, zijn daarmee weg. */
+    .sc-stage .sc-shot svg { min-width: 0; width: 100%; height: auto;
+                             max-width: 100%; max-height: 100%; }
+    .sc-stage .sc-shot img { min-width: 0; width: 100%; height: 100%;
+                             object-fit: contain; }
+
+    .sc-step { padding: 28px 0; }
+    .sc-step:first-child { padding-top: 16px; }
+    .sc-mark { @apply block h-1 w-10 rounded-sm; background: var(--inv-line);
+               transition: background-color var(--m-base) var(--e-standard); }
+    .sc-step.is-actief .sc-mark { background: #0af29f; }
+    /* Geen opacity op de tekst: wit op #031317 zakt dan onder de contrastdrempel.
+       De stand zit in de kleur van de kop en in het mintstreepje ernaast. */
+    .sc-titel { color: var(--inv-soft);
+                transition: color var(--m-base) var(--e-standard); }
+    .sc-step.is-actief .sc-titel { color: #ffffff; }
+
+    @media (min-width: 1024px) {
+      .scrolly { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; }
+      .scrolly-steps { order: -1; }                 /* tekst links, beeld rechts */
+      /* Naast elkaar schuift er niets onder de kaart door, dus geen eigen vlak. */
+      html.js .scrolly-visual { top: 48px; background: none; margin: 0; padding: 0; }
+      html.js .scrolly-visual::after { display: none; }
+      /* Ook naast elkaar één maat, zodat de kaart niet per stap van hoogte wisselt.
+         Het plafond bijt hier alleen op een laag venster; normaal bepaalt de
+         breedte van de kolom de kaart. */
+      .sc-stage { --sc-h: clamp(20rem, 52vh, 34rem); }
+      .sc-stage .panel-bar { @apply py-3; }
+      .sc-step { padding: 18vh 0; }
+      .sc-step:first-child { padding-top: 12vh; }
+      .sc-step:last-of-type { padding-bottom: 42vh; }  /* niet :last-child — de CTA staat erachter */
+    }
+  }
+
+  @layer utilities {
+    /* de bloklengte: 80px verticaal op desktop, 48px op telefoon */
+    .band-pad { @apply py-12 md:py-20; }
+    .shell    { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+  }
+
+  /* ---- alle beweging uit wanneer het besturingssysteem daarom vraagt ------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+    html.js .band::before { opacity: 1 !important; }
+    html.js [data-reveal] { opacity: 1 !important; transform: none !important; }
+    /* De meescrollende rondleiding valt terug op de leesbare stapel: geen
+       kleefkaart, geen wisselend beeld, elke stap meteen in eindtoestand. */
+    html.js .scrolly-visual { display: none !important; }
+    .sc-mark  { background: #0af29f !important; }
+    .sc-titel { color: #ffffff !important; }
+  }
+</style>
+
+<script>document.documentElement.classList.add('js');</script>
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="pb-[76px] sm:pb-0">
+
+<!-- =========================================================================
+     1 · HERO — LICHT (#ffffff). Nick groot, gezicht eerst, ook op 390px.
+     ========================================================================= -->
+<header class="bg-paper">
+  <div class="shell pt-6 md:pt-10">
+
+    <!-- Lichte band, dus het donkere woordmerk. "Bonus & Merit" is de naam van de
+         module en stond eerst als minititel bóven de kop — precies de dubbele titel
+         die Jana afkeurde. Als productnaam naast het woordmerk zegt hij hetzelfde en
+         staat hij op de plek waar een productnaam hoort. -->
+    <div class="flex items-center gap-3">
+      <a href="#demo" class="inline-flex items-center" data-cta="hero-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+      <span class="h-5 w-px bg-line" aria-hidden="true"></span>
+      <span class="text-caption font-bold text-ink-soft">Bonus &amp; Merit</span>
+    </div>
+
+    <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
+
+      <!-- Nick. Op telefoon staat dit blok eerst: zijn gezicht is het eerste wat je ziet,
+           en de kop valt er binnen hetzelfde scherm direct onder. -->
+      <figure class="lg:col-span-5 lg:order-last m-0" data-reveal>
+        <div class="rounded-lg overflow-hidden border border-line shadow-card">
+          <!-- TODO — foto nodig: portret van Nick. Tot dan een ontworpen fotoplek in het
+               eigen verloop van de huisstijl, nadrukkelijk geen grijs silhouet. -->
+          <div class="fotoplek h-[240px] sm:h-[320px] lg:h-[460px]">
+            <div class="px-6">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-8 w-auto mx-auto">
+              <p class="mt-4 text-caption font-bold uppercase tracking-[0.08em] text-brand">TODO — foto nodig</p>
+              <p class="mt-2 text-caption max-w-[22rem] mx-auto on-dark-soft">
+                Hier komt het portret van Nick, staand formaat, natuurlijk licht.
+                Zolang die foto er niet is, blijft deze plek zichtbaar leeg
+              </p>
+            </div>
+          </div>
+          <figcaption class="flex items-center gap-4 bg-paper px-5 py-4 border-t border-line">
+            <span class="h-10 w-10 shrink-0 rounded-[50%] bg-brand text-brand-ink font-bold grid place-items-center" aria-hidden="true">N</span>
+            <span>
+              <span class="block text-body font-bold text-ink">Nick</span>
+              <span class="block text-caption text-ink-soft">Reward expert · geeft zelf de demo</span>
+            </span>
+          </figcaption>
+        </div>
+      </figure>
+
+      <div class="lg:col-span-7" data-reveal>
+        <h1 class="text-h1 lg:text-display">
+          Compensatie zonder kopzorgen
+        </h1>
+        <p class="mt-5 text-h3 text-ink-soft max-w-text">
+          Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+        </p>
+
+        <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+          <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="hero-boek-demo">Boek een demo</a>
+          <p class="text-caption text-ink-soft tabular">19.000 medewerkers · 21 landen · ISO 27001:2022</p>
+        </div>
+
+        <p class="mt-8 text-body text-ink-soft max-w-text border-l-4 border-brand pl-5">
+          Nick laat je zien wat Youbo voor jouw proces doet. Geen algemene verkooppitch,
+          wel een concrete blik op jouw looncyclus.
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- =========================================================================
+     2 · LOGOBALK — LICHT (#f6f8fa). Licht, dus de -dark logobestanden.
+     ========================================================================= -->
+<section class="bg-surface border-y border-line band-pad" aria-labelledby="klanten-titel">
+  <div class="shell text-center" data-reveal>
+    <h2 id="klanten-titel" class="text-caption font-bold uppercase tracking-[0.08em] text-ink-soft">
+      Deze bedrijven vertrouwen Youbo
+    </h2>
+
+    <ul class="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 list-none p-0">
+      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 md:h-[28px] w-auto"></li>
+      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 md:h-[28px] w-auto"></li>
+      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 md:h-6 w-auto"></li>
+      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-[28px] md:h-8 w-auto"></li>
+      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
+    </ul>
+
+    <p class="todo mt-8 mx-auto max-w-prose text-left">
+      <b>TODO — te bevestigen</b>: de lijst klantnamen die in deze balk getoond mogen worden. Van elke
+      nieuwe naam hebben we twee logoversies nodig: een donkere voor de lichte banden en een witte voor
+      de donkere
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================================
+     3 · DRIE KERNBLOKKEN — DONKER, het eigen verloop #000000 → #154e3a.
+     Eerste schakeling. Witte productpanelen lichten op tegen de band.
+     ========================================================================= -->
+<section class="band band-gradient band-pad" aria-labelledby="kern-titel">
+  <div class="shell">
+
+    <div data-reveal>
+      <h2 id="kern-titel" class="text-h2 md:text-h1 on-dark max-w-[22ch]">
+        Van versnipperde excels naar één helder proces
+      </h2>
+    </div>
+
+    <!-- 1 -->
+    <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
+      <div class="lg:col-span-5">
+        <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">1</span>
+        <h3 class="mt-5 text-h2 on-dark">
+          Hr en managers werken samen in één platform
+        </h3>
+        <p class="mt-4 text-body on-dark-soft max-w-text">
+          Gedaan met splitsen en consolideren van excels. Bye-bye versies en errors.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 min-w-0">
+        <!-- mockup: de meritcyclus als voortgang -->
+        <div class="panel">
+          <div class="panel-bar">
+            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+            <span class="miniheader">Merit cycle 2027 · voortgang</span>
+            <span class="ml-auto text-caption text-ink-soft tabular">76%</span>
+          </div>
+          <div class="p-5 md:p-6">
+            <ol class="grid grid-cols-3 gap-2 md:gap-3 list-none p-0 m-0">
+              <li class="rounded-sm border border-line bg-surface p-3 md:p-4 text-center">
+                <span class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-[50%] bg-brand text-brand-ink text-caption font-bold" aria-hidden="true">HR</span>
+                <span class="block text-caption font-bold text-ink">Start cyclus</span>
+                <span class="mt-1 block text-caption text-brand-ink font-bold">afgerond</span>
+              </li>
+              <li class="rounded-sm border-2 border-brand bg-paper p-3 md:p-4 text-center">
+                <span class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-[50%] bg-brand-ink text-paper text-caption font-bold" aria-hidden="true">M</span>
+                <span class="block text-caption font-bold text-ink">Manager review</span>
+                <span class="mt-1 block text-caption text-brand-ink font-bold tabular">38/50 klaar</span>
+              </li>
+              <li class="rounded-sm border border-line bg-surface p-3 md:p-4 text-center">
+                <span class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-[50%] bg-paper border border-line-btn text-ink-soft text-caption font-bold" aria-hidden="true">✓</span>
+                <span class="block text-caption font-bold text-ink">Goedkeuring</span>
+                <span class="mt-1 block text-caption text-ink-soft">wacht</span>
+              </li>
+            </ol>
+            <div class="mt-5 h-2 w-full rounded-sm bg-surface overflow-hidden">
+              <span class="block h-full rounded-sm bg-brand" style="width:76%"></span>
+            </div>
+            <p class="mt-3 text-caption text-ink-soft">Iedereen kijkt naar dezelfde stand van zaken, op hetzelfde moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
+      <div class="lg:col-span-5 lg:order-last">
+        <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">2</span>
+        <h3 class="mt-5 text-h2 on-dark">
+          Automatische verdeelsuggesties, makkelijk én eerlijker
+        </h3>
+        <p class="mt-4 text-body on-dark-soft max-w-text">
+          Datagedreven volgens je loonbeleid, loonbanden, prestatiescores en andere parameters.
+          Wat jij verkiest.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 min-w-0">
+        <!-- mockup: loonvoorstellen met percentages -->
+        <div class="panel">
+          <div class="panel-bar">
+            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+            <span class="miniheader">Loonvoorstellen · Team Operations</span>
+            <span class="ml-auto text-caption text-ink-soft">voorstel</span>
+          </div>
+          <div class="overflow-x-auto scrollhide">
+            <table class="w-full text-left">
+              <caption class="sr-only">Voorgestelde loonsverhoging per medewerker in Team Operations</caption>
+              <thead>
+                <tr class="text-caption uppercase tracking-[0.08em] text-ink-soft">
+                  <th scope="col" class="font-bold px-5 py-3">Medewerker</th>
+                  <th scope="col" class="font-bold px-2 py-3">Score</th>
+                  <th scope="col" class="font-bold px-5 py-3 text-right">Voorstel</th>
+                </tr>
+              </thead>
+              <tbody class="text-caption">
+                <tr class="border-t border-line">
+                  <td class="px-5 py-3 font-medium text-ink">Laura Jacobs</td>
+                  <td class="px-2 py-3"><span class="inline-block rounded-sm bg-brand px-3 py-1 font-bold text-brand-ink">Strong</span></td>
+                  <td class="px-5 py-3 text-right tabular font-bold text-ink">+ 3,4%</td>
+                </tr>
+                <tr class="border-t border-line bg-surface">
+                  <td class="px-5 py-3 font-medium text-ink">Rachid El Amrani</td>
+                  <td class="px-2 py-3"><span class="inline-block rounded-sm bg-paper border border-line-btn px-3 py-1 font-bold text-ink-soft">On track</span></td>
+                  <td class="px-5 py-3 text-right tabular font-bold text-ink">+ 2,1%</td>
+                </tr>
+                <tr class="border-t border-line">
+                  <td class="px-5 py-3 font-medium text-ink">Anne Peeters</td>
+                  <td class="px-2 py-3"><span class="inline-block rounded-sm bg-brand px-3 py-1 font-bold text-brand-ink">Strong</span></td>
+                  <td class="px-5 py-3 text-right tabular font-bold text-ink">+ 3,7%</td>
+                </tr>
+                <tr class="border-t border-line bg-surface">
+                  <td class="px-5 py-3 font-medium text-ink">Jonas De Smet</td>
+                  <td class="px-2 py-3"><span class="inline-block rounded-sm bg-paper border border-line-btn px-3 py-1 font-bold text-ink-soft">On track</span></td>
+                  <td class="px-5 py-3 text-right tabular font-bold text-ink">+ 2,0%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="border-t border-line px-5 py-3 text-caption text-ink-soft">
+            De manager volgt het voorstel of wijkt gemotiveerd af
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
+      <div class="lg:col-span-5">
+        <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">3</span>
+        <h3 class="mt-5 text-h2 on-dark">
+          Realtime inzicht in budgetten
+        </h3>
+        <p class="mt-4 text-body on-dark-soft max-w-text">
+          Minder overschrijdingen. Meer controle, per budget en in totaal. Geen budget slippage meer.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 min-w-0">
+        <!-- mockup: budgetbalken -->
+        <div class="panel">
+          <div class="panel-bar">
+            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+            <span class="miniheader">Budgetbeheer · cyclus 2027</span>
+          </div>
+          <div class="p-5 md:p-6">
+            <p class="text-caption text-ink-soft">Beschikbaar budget</p>
+            <p class="text-h1 font-bold text-ink tabular mt-1">€ 184.250</p>
+
+            <dl class="mt-6 space-y-5 m-0">
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-caption font-bold text-ink">Loonsverhoging</dt>
+                  <dd class="text-caption tabular text-ink-soft m-0">82%</dd>
+                </div>
+                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
+                  <span class="block h-full rounded-sm bg-brand" style="width:82%"></span>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-caption font-bold text-ink">Bonus</dt>
+                  <dd class="text-caption tabular text-ink-soft m-0">74%</dd>
+                </div>
+                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
+                  <span class="block h-full rounded-sm bg-brand" style="width:74%"></span>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-caption font-bold text-ink">Promotie</dt>
+                  <dd class="text-caption tabular text-ink-soft m-0">61%</dd>
+                </div>
+                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
+                  <span class="block h-full rounded-sm bg-brand" style="width:61%"></span>
+                </div>
+              </div>
+            </dl>
+
+            <p class="mt-6 text-caption text-ink-soft border-t border-line pt-4">
+              Elke beslissing van een manager telt hier meteen mee
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================================
+     4 · CASES — LICHT (#ffffff). Terug naar rust, dus -dark logo's.
+     Carrousel die van vier naar acht kan zonder herontwerp.
+     ========================================================================= -->
+<section class="bg-paper band-pad" aria-labelledby="cases-titel"
+         x-data="carrousel()" x-cloak>
+  <div class="shell">
+
+    <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+      <div>
+        <h2 id="cases-titel" class="text-h2 md:text-h1 max-w-[20ch]">
+          Bewezen bij complexe organisaties
+        </h2>
+      </div>
+      <div class="hidden md:flex items-center gap-2">
+        <button type="button" @click="prev()" :disabled="atStart"
+                class="grid h-12 w-12 place-items-center rounded-[50%] border border-line-btn bg-paper text-ink hover:bg-surface disabled:opacity-50 disabled:hover:bg-paper"
+                style="transition: background-color var(--m-fast) var(--e-standard), border-color var(--m-fast) var(--e-standard)"
+                data-cta="cases-vorige" aria-label="Vorige case">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-5 w-5" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" @click="next()" :disabled="atEnd"
+                class="grid h-12 w-12 place-items-center rounded-[50%] border border-line-btn bg-paper text-ink hover:bg-surface disabled:opacity-50 disabled:hover:bg-paper"
+                style="transition: background-color var(--m-fast) var(--e-standard), border-color var(--m-fast) var(--e-standard)"
+                data-cta="cases-volgende" aria-label="Volgende case">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-5 w-5" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <ul x-ref="track" @scroll.passive.debounce.100ms="sync()"
+        class="scrollhide mt-10 flex snap-x snap-mandatory gap-4 md:gap-6 overflow-x-auto list-none p-0 -mx-6 px-6 md:mx-0 md:px-0 pb-2">
+
+      <!-- SD Worx -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-48px)/3)]">
+        <article class="card h-full border border-line p-6 md:p-8 flex flex-col">
+          <img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="h-6 w-auto self-start">
+          <p class="mt-6 text-h1 font-bold text-ink">Van 2 maanden naar 3 weken</p>
+          <p class="mt-3 text-body text-ink-soft">
+            De looncyclus van 7.000 medewerkers in 21 landen, voor een deel van hun populatie.
+          </p>
+          <p class="mt-2 text-caption text-ink-soft">HR-dienstverlener</p>
+          <span class="todo mt-4"><b>TODO — te bevestigen</b>: 21 of 18 landen. Het campagneplan zegt 21, de
+          gepubliceerde case op youbo.io zegt 18</span>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+             style="transition: color var(--m-base) var(--e-standard)"
+             data-cta="case-pdf-sdworx">Download de case (pdf)</a>
+        </article>
+      </li>
+
+      <!-- Kaneka -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-48px)/3)]">
+        <article class="card h-full border border-line p-6 md:p-8 flex flex-col">
+          <img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="h-5 w-auto self-start">
+          <p class="mt-6 text-h1 font-bold text-ink">Twee werkweken tijdswinst</p>
+          <p class="mt-3 text-body text-ink-soft">
+            204 medewerkers, verdeeld over 27 afdelingen.
+          </p>
+          <p class="mt-2 text-caption text-ink-soft">Chemie &amp; technologie</p>
+          <span class="todo mt-4"><b>TODO — te bevestigen</b>: 204 of 370 medewerkers. Het campagneplan zegt 204, de
+          gepubliceerde case op youbo.io zegt 370</span>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+             style="transition: color var(--m-base) var(--e-standard)"
+             data-cta="case-pdf-kaneka">Download de case (pdf)</a>
+        </article>
+      </li>
+
+      <!-- DPG Media -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-48px)/3)]">
+        <article class="card h-full border border-line p-6 md:p-8 flex flex-col">
+          <img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="h-6 w-auto self-start">
+          <p class="mt-6 text-h1 font-bold text-ink">7× sneller</p>
+          <p class="mt-3 text-body text-ink-soft">
+            6.214 medewerkers in 2 landen, 130 managers in dezelfde cyclus.
+          </p>
+          <p class="mt-2 text-caption text-ink-soft">Mediagroep</p>
+          <span class="todo mt-4"><b>TODO — te bevestigen</b>: 7× sneller of van 2 weken naar 2 dagen, en 6.214 of 4.500 medewerkers</span>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+             style="transition: color var(--m-base) var(--e-standard)"
+             data-cta="case-pdf-dpg">Download de case (pdf)</a>
+        </article>
+      </li>
+
+      <!-- Aertssen -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-48px)/3)]">
+        <article class="card h-full border border-line p-6 md:p-8 flex flex-col">
+          <img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto self-start">
+          <p class="mt-6 text-h1 font-bold text-ink">Live op 3 maanden</p>
+          <p class="mt-3 text-body text-ink-soft">
+            450 bedienden, van eerste gesprek tot eerste cyclus.
+          </p>
+          <p class="mt-2 text-caption text-ink-soft">Infrastructuur &amp; logistiek</p>
+          <span class="todo mt-4"><b>TODO — te bevestigen</b>: in hoeveel landen</span>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+             style="transition: color var(--m-base) var(--e-standard)"
+             data-cta="case-pdf-aertssen">Download de case (pdf)</a>
+        </article>
+      </li>
+
+      <!-- Anchr — nog geen logobestand, dus typografisch gezet -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-48px)/3)]">
+        <article class="card h-full border border-line p-6 md:p-8 flex flex-col">
+          <span class="h-8 flex items-center text-h3 font-bold text-ink">Anchr</span>
+          <p class="mt-6 text-h1 font-bold text-ink">Meerdere werkdagen bespaard</p>
+          <p class="mt-3 text-body text-ink-soft">
+            300 medewerkers, verspreid over 8 bedrijven.
+          </p>
+          <p class="mt-2 text-caption text-ink-soft">Groep van ondernemingen</p>
+          <span class="todo mt-4"><b>TODO — te bevestigen</b>: logobestand van Anchr, in een donkere en een witte versie</span>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+             style="transition: color var(--m-base) var(--e-standard)"
+             data-cta="case-pdf-anchr">Download de case (pdf)</a>
+        </article>
+      </li>
+    </ul>
+
+    <!-- puntjes: werken ook wanneer er acht cases staan -->
+    <div class="mt-6 flex items-center justify-center gap-2 md:justify-start" role="group" aria-label="Ga naar case">
+      <template x-for="(c,i) in count" :key="i">
+        <button type="button" @click="go(i)"
+                class="h-2 rounded-sm"
+                style="transition: width var(--m-fast) var(--e-standard), background-color var(--m-fast) var(--e-standard)"
+                :class="i === index ? 'w-8 bg-brand-ink' : 'w-2 bg-line-btn'"
+                :aria-label="'Ga naar case ' + (i+1)"
+                :aria-current="i === index ? 'true' : 'false'"
+                data-cta="cases-punt"></button>
+      </template>
+    </div>
+
+    <p class="todo mt-8 max-w-prose">
+      <b>TODO — te bevestigen</b>: Jana levert de vijf case-pdf's aan. Tot dan wijzen de downloadlinks
+      nergens naartoe. De carrousel is gebouwd om van vier naar acht cases te gaan zonder herontwerp
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================================
+     5 · ONTDEK HOE HET WERKT — DONKER (#031317, dark-surface).
+     Meescrollend: het productscherm blijft staan, de stap wisselt terwijl je
+     scrolt. Vlak in plaats van verlopend, zodat de echte schermen de enige
+     kleur in het blok zijn.
+     Vanaf 1024px staat de tekst links en kleeft het beeld rechts mee. Daaronder
+     valt hij terug op een kleefkaart bovenaan met de tekst die eronder
+     doorschuift; het scherm past daar in de breedte, zodat de kaart ongeveer
+     een derde van een telefoonscherm inneemt in plaats van de helft.
+     Elk scherm staat in de HTML onder zijn eigen stap: zonder JavaScript staan
+     de vier stappen gewoon leesbaar onder elkaar, mét hun scherm. Het script
+     verhuist die figuren naar de kleefkaart — en doet dat niet bij
+     prefers-reduced-motion: reduce.
+     ========================================================================= -->
+<section class="band band-night band-kleef band-pad" aria-labelledby="hoe-titel">
+  <div class="shell">
+
+    <div data-reveal>
+      <h2 id="hoe-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]">
+        Ontdek hoe het werkt
+      </h2>
+    </div>
+
+    <div class="scrolly mt-8 md:mt-10" data-scrolly>
+
+      <!-- De kleefkaart. Leeg in de bron: het script hangt er de vier figuren
+           hieronder in. Zonder JavaScript bestaat dit blok niet. -->
+      <div class="scrolly-visual" data-scrolly-visual>
+        <div class="sc-cue">
+          <span class="text-caption on-dark-soft">Scroll verder</span>
+          <div class="sc-bars" role="group" aria-label="Spring naar een stap">
+            <button type="button" class="sc-bar" data-scrolly-jump="0" aria-current="true"
+                    aria-label="Ga naar stap 1: Hr houdt realtime het overzicht"
+                    data-cta="rondleiding-stap-1"><span aria-hidden="true"></span></button>
+            <button type="button" class="sc-bar" data-scrolly-jump="1" aria-current="false"
+                    aria-label="Ga naar stap 2: Managers beslissen onderbouwd"
+                    data-cta="rondleiding-stap-2"><span aria-hidden="true"></span></button>
+            <button type="button" class="sc-bar" data-scrolly-jump="2" aria-current="false"
+                    aria-label="Ga naar stap 3: Elk budget blijft onder controle"
+                    data-cta="rondleiding-stap-3"><span aria-hidden="true"></span></button>
+            <button type="button" class="sc-bar" data-scrolly-jump="3" aria-current="false"
+                    aria-label="Ga naar stap 4: Rewardletters in één klik"
+                    data-cta="rondleiding-stap-4"><span aria-hidden="true"></span></button>
+          </div>
+        </div>
+        <div class="sc-stage" data-scrolly-stage></div>
+      </div>
+
+      <div class="scrolly-steps">
+
+        <article class="sc-step is-actief" data-scrolly-step>
+          <span class="sc-mark" aria-hidden="true"></span>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">01</p>
+          <h3 class="sc-titel mt-3 text-h2">Hr houdt realtime het overzicht</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text">
+            Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.
+          </p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide>
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Cyclusoverzicht voor hr</span>
+              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular">1 / 4</span>
+            </div>
+            <!-- NAGETEKEND, GEEN SCHERMAFDRUK.
+                 Het bestaande hero-scherm van youbo.io (main-visual-nl.webp) stond hier, en
+                 dat mag niet: dezelfde medewerker staat daarin op € 3.142,81 in de tabel en
+                 op € 3.242,81 op de kaart ernaast, met een opslag van 4,08% die bij geen van
+                 beide hoort. Op marketing voor compensatiesoftware is een som die niet klopt
+                 het duurste detail dat bestaat.
+                 Dit is dus een vereenvoudigde hertekening in de huisstijl, met eigen cijfers
+                 die wél sluiten: 8 + 12 + 9 + 9 = 38 van 8 + 16 + 14 + 12 = 50 managers, en
+                 38/50 = 76% — hetzelfde getal als het afdelingendashboard onderaan dit blok.
+                 Er staat met opzet geen enkel bedrag in: zodra twee schermen euro's tonen,
+                 kan een bezoeker ze tegen elkaar natellen, en dan moeten ze ook kloppen.
+                 Het is een <svg> en geen bitmap, dus hij schaalt mee in de kleefkaart en
+                 hoeft op telefoon niet zijwaarts geschoven te worden. -->
+            <div class="sc-shot">
+              <svg viewBox="0 0 1200 680" class="block h-auto w-full" role="img"
+                   aria-label="Cyclusoverzicht voor hr: 38 van de 50 managers zijn klaar, 76 procent van de cyclus is afgerond. Finance Belgium is klaar met 8 van 8 beoordelingen, Operations staat op 12 van 16, Commercial op 9 van 14 en Technology op 9 van 12."
+                   style="font-family: Inter, system-ui, sans-serif">
+
+                <rect width="1200" height="680" fill="#ffffff"/>
+
+                <text x="40" y="60" font-size="30" font-weight="700" fill="#0a3327">Merit cycle 2027</text>
+                <text x="1160" y="60" font-size="23" font-weight="500" fill="#547068" text-anchor="end">Loopt tot 31 maart 2027</text>
+                <line x1="40" y1="94" x2="1160" y2="94" stroke="#e1ebf0" stroke-width="2"/>
+
+                <text x="40" y="154" font-size="38" font-weight="700" fill="#0a3327"
+                      style="font-variant-numeric: tabular-nums">38 van 50 managers klaar</text>
+
+                <rect x="40" y="180" width="1120" height="16" rx="8" fill="#f6f8fa"/>
+                <rect x="40" y="180" width="851"  height="16" rx="8" fill="#0af29f"/>
+                <text x="40" y="228" font-size="22" font-weight="500" fill="#547068"
+                      style="font-variant-numeric: tabular-nums">76% van de cyclus afgerond</text>
+
+                <text x="40"   y="290" font-size="19" font-weight="700" fill="#547068" letter-spacing="1.6">AFDELING</text>
+                <text x="640"  y="290" font-size="19" font-weight="700" fill="#547068" letter-spacing="1.6">BEOORDEELD</text>
+                <text x="1160" y="290" font-size="19" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">STATUS</text>
+                <line x1="40" y1="308" x2="1160" y2="308" stroke="#e1ebf0" stroke-width="2"/>
+
+                <text x="40"  y="352" font-size="24" font-weight="500" fill="#0a3327">Finance Belgium</text>
+                <text x="640" y="352" font-size="24" font-weight="700" fill="#154e3a" style="font-variant-numeric: tabular-nums">8 van 8</text>
+                <rect x="1020" y="326" width="140" height="36" rx="8" fill="#0af29f"/>
+                <text x="1090" y="351" font-size="20" font-weight="700" fill="#154e3a" text-anchor="middle">Klaar</text>
+                <line x1="40" y1="382" x2="1160" y2="382" stroke="#e1ebf0" stroke-width="2"/>
+
+                <text x="40"  y="426" font-size="24" font-weight="500" fill="#0a3327">Operations</text>
+                <text x="640" y="426" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">12 van 16</text>
+                <rect x="1020" y="400" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="1090" y="425" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
+                <line x1="40" y1="456" x2="1160" y2="456" stroke="#e1ebf0" stroke-width="2"/>
+
+                <text x="40"  y="500" font-size="24" font-weight="500" fill="#0a3327">Commercial</text>
+                <text x="640" y="500" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">9 van 14</text>
+                <rect x="1020" y="474" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="1090" y="499" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
+                <line x1="40" y1="530" x2="1160" y2="530" stroke="#e1ebf0" stroke-width="2"/>
+
+                <text x="40"  y="574" font-size="24" font-weight="500" fill="#0a3327">Technology</text>
+                <text x="640" y="574" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">9 van 12</text>
+                <rect x="1020" y="548" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="1090" y="573" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
+                <line x1="40" y1="604" x2="1160" y2="604" stroke="#e1ebf0" stroke-width="2"/>
+
+                <text x="40" y="648" font-size="21" font-weight="500" fill="#547068">Elke manager ziet enkel zijn eigen team en zijn eigen data.</text>
+              </svg>
+            </div>
+          </figure>
+        </article>
+
+        <article class="sc-step" data-scrolly-step>
+          <span class="sc-mark" aria-hidden="true"></span>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">02</p>
+          <h3 class="sc-titel mt-3 text-h2">Managers beslissen onderbouwd</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text">
+            Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele
+            situaties of vergelijk medewerkers.
+          </p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide>
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Medewerkers vergelijken</span>
+              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular">2 / 4</span>
+            </div>
+            <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
+                 in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
+            <div class="sc-shot">
+              <svg viewBox="0 0 1200 600" class="block h-auto w-full" role="img"
+                   aria-label="Twee medewerkers naast elkaar. Lore Janssens gaat van 4.180 euro naar 4.284 euro en 50 cent, een verschil van 104 euro en 50 cent of 2,5 procent, met een bonus van 8 procent. Tom Verlinden gaat van 3.950 euro naar 4.076 euro en 40 cent, een verschil van 126 euro en 40 cent of 3,2 procent, met een bonus van 7 procent en een promotie."
+                   style="font-family: Inter, system-ui, sans-serif">
+                <rect width="1200" height="600" fill="#ffffff"/>
+                <rect x="40" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="72" y="84" font-size="26" font-weight="700" fill="#0a3327">Lore Janssens</text>
+                <text x="72" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 6 jaar in dienst</text>
+                <line x1="72" y1="146" x2="553" y2="146" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="72" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
+                <text x="553" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.180,00</text>
+                <line x1="72" y1="218" x2="553" y2="218" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="72" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
+                <text x="553" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.284,50</text>
+                <line x1="72" y1="276" x2="553" y2="276" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="72" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
+                <text x="553" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 104,50</text>
+                <line x1="72" y1="334" x2="553" y2="334" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="72" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
+                <text x="553" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 2,5%</text>
+                <line x1="72" y1="392" x2="553" y2="392" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="72" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 8%</text>
+                <text x="553" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.012,80</text>
+                <line x1="72" y1="450" x2="553" y2="450" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="72" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
+                <text x="553" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Nee</text>
+                <rect x="615" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="647" y="84" font-size="26" font-weight="700" fill="#0a3327">Tom Verlinden</text>
+                <text x="647" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 3 jaar in dienst</text>
+                <line x1="647" y1="146" x2="1128" y2="146" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="647" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
+                <text x="1128" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.950,00</text>
+                <line x1="647" y1="218" x2="1128" y2="218" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="647" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
+                <text x="1128" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.076,40</text>
+                <line x1="647" y1="276" x2="1128" y2="276" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="647" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
+                <text x="1128" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 126,40</text>
+                <line x1="647" y1="334" x2="1128" y2="334" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="647" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
+                <text x="1128" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 3,2%</text>
+                <line x1="647" y1="392" x2="1128" y2="392" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="647" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 7%</text>
+                <text x="1128" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.318,00</text>
+                <line x1="647" y1="450" x2="1128" y2="450" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="647" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
+                <text x="1128" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Ja</text>
+                <text x="40" y="576" font-size="21" font-weight="500" fill="#547068">Youbo stelt voor, de manager beslist — en motiveert zodra hij van het voorstel afwijkt.</text>
+              </svg>
+            </div>
+          </figure>
+        </article>
+
+        <article class="sc-step" data-scrolly-step>
+          <span class="sc-mark" aria-hidden="true"></span>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">03</p>
+          <h3 class="sc-titel mt-3 text-h2">Elk budget blijft onder controle</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text">
+            Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en
+            promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.
+          </p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide>
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Budget per soort</span>
+              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular">3 / 4</span>
+            </div>
+            <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
+                 in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
+            <div class="sc-shot">
+              <svg viewBox="0 0 1200 640" class="block h-auto w-full" role="img"
+                   aria-label="Budget per soort: loonsverhoging 82 procent, 75.440 euro van 92.000 euro. Bonus 74 procent, 43.105 euro van 58.250 euro. Promotie 61 procent, 20.740 euro van 34.000 euro. Samen 139.285 euro van 184.250 euro, oftewel 75,6 procent."
+                   style="font-family: Inter, system-ui, sans-serif">
+                <rect width="1200" height="640" fill="#ffffff"/>
+                <text x="40" y="52" font-size="21" font-weight="700" fill="#547068" letter-spacing="1.6">BUDGET PER SOORT · MERIT CYCLE 2027</text>
+                <text x="40" y="96" font-size="25" font-weight="700" fill="#0a3327">Loonsverhoging</text>
+                <text x="1160" y="96" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">82%</text>
+                <rect x="40" y="118" width="1120" height="18" rx="9" fill="#f6f8fa"/>
+                <rect x="40" y="118" width="918" height="18" rx="9" fill="#0af29f"/>
+                <text x="40" y="174" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 75.440 toegekend van € 92.000</text>
+                <text x="40" y="244" font-size="25" font-weight="700" fill="#0a3327">Bonus</text>
+                <text x="1160" y="244" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">74%</text>
+                <rect x="40" y="266" width="1120" height="18" rx="9" fill="#f6f8fa"/>
+                <rect x="40" y="266" width="829" height="18" rx="9" fill="#0af29f"/>
+                <text x="40" y="322" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 43.105 toegekend van € 58.250</text>
+                <text x="40" y="392" font-size="25" font-weight="700" fill="#0a3327">Promotie</text>
+                <text x="1160" y="392" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">61%</text>
+                <rect x="40" y="414" width="1120" height="18" rx="9" fill="#f6f8fa"/>
+                <rect x="40" y="414" width="683" height="18" rx="9" fill="#0af29f"/>
+                <text x="40" y="470" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 20.740 toegekend van € 34.000</text>
+                <line x1="40" y1="498" x2="1160" y2="498" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="40" y="544" font-size="25" font-weight="700" fill="#0a3327">Samen</text>
+                <text x="1160" y="544" font-size="25" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 139.285 van € 184.250 · 75,6%</text>
+              </svg>
+            </div>
+          </figure>
+        </article>
+
+        <article class="sc-step" data-scrolly-step>
+          <span class="sc-mark" aria-hidden="true"></span>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">04</p>
+          <h3 class="sc-titel mt-3 text-h2">Rewardletters in één klik</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text">
+            Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.
+          </p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide>
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Loonpakket oud, nieuw en verschil</span>
+              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular">4 / 4</span>
+            </div>
+            <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
+                 in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
+            <div class="sc-shot">
+              <svg viewBox="0 0 1200 600" class="block h-auto w-full" role="img"
+                   aria-label="Rewardletter voor Lore Janssens. Brutoloon per maand gaat van 4.180 euro naar 4.284 euro en 50 cent, 104 euro en 50 cent meer. De jaarbonus gaat van 3.700 euro naar 4.012 euro en 80 cent, 312 euro en 80 cent meer. Maaltijdcheques blijven 8 euro per dag. Het totale brutoloon per jaar gaat van 53.860 euro naar 55.426 euro en 80 cent, 1.566 euro en 80 cent meer."
+                   style="font-family: Inter, system-ui, sans-serif">
+                <rect width="1200" height="600" fill="#ffffff"/>
+                <text x="40" y="56" font-size="28" font-weight="700" fill="#0a3327">Lore Janssens</text>
+                <text x="40" y="90" font-size="21" font-weight="500" fill="#547068">Operations · rewardletter, klaar om te versturen</text>
+                <line x1="40" y1="124" x2="1160" y2="124" stroke="#e1ebf0" stroke-width="2"/>
+
+                <text x="40"   y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6">ONDERDEEL</text>
+                <text x="720"  y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">VANDAAG</text>
+                <text x="950"  y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">VANAF 1 APRIL</text>
+                <text x="1160" y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">VERSCHIL</text>
+                <line x1="40" y1="190" x2="1160" y2="190" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="40" y="232" font-size="24" font-weight="500" fill="#0a3327">Brutoloon / maand</text>
+                <text x="720" y="232" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.180,00</text>
+                <text x="950" y="232" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.284,50</text>
+                <text x="1160" y="232" font-size="24" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 104,50</text>
+                <line x1="40" y1="260" x2="1160" y2="260" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="40" y="306" font-size="24" font-weight="500" fill="#0a3327">Bonus (jaar)</text>
+                <text x="720" y="306" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.700,00</text>
+                <text x="950" y="306" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.012,80</text>
+                <text x="1160" y="306" font-size="24" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 312,80</text>
+                <line x1="40" y1="334" x2="1160" y2="334" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="40" y="380" font-size="24" font-weight="500" fill="#0a3327">Maaltijdcheques</text>
+                <text x="720" y="380" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 8,00 / dag</text>
+                <text x="950" y="380" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 8,00 / dag</text>
+                <text x="1160" y="380" font-size="24" font-weight="700" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">ongewijzigd</text>
+                <line x1="40" y1="408" x2="1160" y2="408" stroke="#e1ebf0" stroke-width="2"/>
+
+                <rect x="40" y="440" width="1120" height="64" rx="8" fill="#f6f8fa"/>
+                <text x="72"  y="480" font-size="24" font-weight="700" fill="#0a3327">Totaal bruto / jaar</text>
+                <text x="720" y="480" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 53.860,00</text>
+                <text x="950" y="480" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 55.426,80</text>
+                <text x="1128" y="480" font-size="24" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 1.566,80</text>
+              </svg>
+            </div>
+          </figure>
+        </article>
+
+        <a href="#demo" class="btn-primary mt-8 w-full sm:w-auto" data-cta="rondleiding-boek-demo">Boek een demo</a>
+      </div>
+    </div>
+
+    <!-- het afdelingendashboard uit Jana's concept, hertekend in de huisstijl -->
+    <div class="panel mt-10 md:mt-12">
+      <div class="panel-bar">
+        <span class="miniheader">Merit cycle 2027</span>
+        <span class="ml-auto text-caption text-ink-soft tabular">76% afgerond</span>
+      </div>
+      <div class="p-5 md:p-6">
+        <dl class="grid grid-cols-3 gap-3 m-0">
+          <div class="rounded-sm border border-line p-3">
+            <dt class="text-caption text-ink-soft">Managers klaar</dt>
+            <dd class="m-0 mt-1 text-h2 font-bold text-ink tabular">38/50</dd>
+          </div>
+          <div class="rounded-sm border border-line p-3">
+            <dt class="text-caption text-ink-soft">Budget gebruikt</dt>
+            <dd class="m-0 mt-1 text-h2 font-bold text-ink tabular">75,6%</dd>
+          </div>
+          <div class="rounded-sm border border-line p-3">
+            <dt class="text-caption text-ink-soft">Open acties</dt>
+            <dd class="m-0 mt-1 text-h2 font-bold text-ink tabular">12</dd>
+          </div>
+        </dl>
+
+        <div class="mt-5 overflow-x-auto scrollhide">
+          <table class="w-full text-left text-caption">
+            <caption class="sr-only">Voortgang en budget per afdeling</caption>
+            <thead>
+              <tr class="uppercase tracking-[0.08em] text-ink-soft">
+                <th scope="col" class="font-bold py-2">Afdeling</th>
+                <th scope="col" class="font-bold py-2">Klaar</th>
+                <th scope="col" class="font-bold py-2 text-right">Budget</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t border-line">
+                <td class="py-3 font-medium text-ink">Finance Belgium</td>
+                <td class="py-3 tabular text-brand-ink font-bold">8/8</td>
+                <td class="py-3 text-right tabular text-ink">€ 42.100</td>
+              </tr>
+              <tr class="border-t border-line">
+                <td class="py-3 font-medium text-ink">Operations</td>
+                <td class="py-3 tabular text-ink-soft">12/16</td>
+                <td class="py-3 text-right tabular text-ink">€ 58.440</td>
+              </tr>
+              <tr class="border-t border-line">
+                <td class="py-3 font-medium text-ink">Commercial</td>
+                <td class="py-3 tabular text-ink-soft">9/14</td>
+                <td class="py-3 text-right tabular text-ink">€ 49.210</td>
+              </tr>
+              <tr class="border-t border-line">
+                <td class="py-3 font-medium text-ink">Technology</td>
+                <td class="py-3 tabular text-ink-soft">9/12</td>
+                <td class="py-3 text-right tabular text-ink">€ 34.500</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <p class="todo-inv mt-4">
+      <b>TODO — te bevestigen</b>: stap 1 is hertekend met eigen, sluitende voorbeeldcijfers, omdat het
+      bestaande hero-scherm van youbo.io dezelfde medewerker op twee verschillende bedragen zet. De
+      schermen bij stap 2, 3 en 4 komen nog wél uit de bestaande beeldbank. Zodra er toegang is tot de
+      app maken we alle vier de schermen opnieuw uit één demodataset
+    </p>
+
+  </div>
+</section>
+
+<!-- =========================================================================
+     6 · HET GROTE CIJFER — LICHT (#f6f8fa). Eén zin, geen decoratie.
+     ========================================================================= -->
+<section class="bg-surface band-pad" aria-labelledby="cijfer-titel">
+  <div class="shell text-center" data-reveal>
+    <h2 id="cijfer-titel" class="text-h2 md:text-h1 max-w-[26ch] mx-auto">
+      De lonen, bonussen en promoties van
+      <span class="tabular block mt-5 text-[40px] leading-[1.2] md:text-display text-brand-ink">19.000 medewerkers</span>
+      <span class="block mt-5">in 21 landen worden al met Youbo beheerd</span>
+    </h2>
+  </div>
+</section>
+
+<!-- =========================================================================
+     7 · EU PAY TRANSPARENCY — DONKER, het verloop. Paraatheid, nooit een plicht.
+     ========================================================================= -->
+<section class="band band-gradient band-pad" aria-labelledby="eu-titel">
+  <div class="shell grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+    <div class="lg:col-span-6" data-reveal>
+      <h2 id="eu-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]">
+        Wees klaar voor EU Pay Transparency
+      </h2>
+      <p class="mt-5 text-h3 on-dark-soft max-w-text">
+        Start nu: ontdek loonverschillen en werk ze tijdig weg. Bewijs dat elke loonbeslissing
+        consequent is.
+      </p>
+      <p class="mt-5 text-caption on-dark-soft max-w-text">
+        De Europese richtlijn is in België nog niet omgezet voor de privésector. Dit gaat dus over
+        paraatheid, niet over een verplichting die vandaag al geldt.
+      </p>
+    </div>
+
+    <div class="lg:col-span-6 min-w-0" data-reveal>
+      <div class="panel">
+        <div class="panel-bar">
+          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+          <span class="miniheader">Loonverschil per afdeling</span>
+          <span class="ml-auto text-caption text-ink-soft">voorbeeld</span>
+        </div>
+        <div class="p-5 md:p-6">
+          <dl class="space-y-5 m-0">
+            <div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-caption font-bold text-ink">Finance</dt>
+                <dd class="m-0 text-caption tabular font-bold text-ink">− 1,2%</dd>
+              </div>
+              <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
+                <span class="block h-full rounded-sm bg-line-btn" style="width:34%"></span>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-caption font-bold text-ink">Operations</dt>
+                <dd class="m-0 text-caption tabular font-bold text-brand-ink">+ 0,4%</dd>
+              </div>
+              <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
+                <span class="block h-full rounded-sm bg-brand" style="width:12%"></span>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-caption font-bold text-ink">Sales</dt>
+                <dd class="m-0 text-caption tabular font-bold text-ink">− 2,1%</dd>
+              </div>
+              <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
+                <span class="block h-full rounded-sm bg-line-btn" style="width:58%"></span>
+              </div>
+            </div>
+          </dl>
+          <p class="mt-6 border-t border-line pt-4 text-caption text-ink-soft">
+            Zie waar het verschil zit, voor iemand het je vraagt
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     8 · INTEGRATIES — LICHT (#ffffff).
+     ========================================================================= -->
+<section class="bg-paper band-pad" aria-labelledby="integraties-titel">
+  <div class="shell grid lg:grid-cols-12 gap-8 lg:gap-12 items-start" data-reveal>
+
+    <div class="lg:col-span-5">
+      <h2 id="integraties-titel" class="text-h2 md:text-h1 max-w-[20ch]">
+        Plug vlot in met al je hr-tools
+      </h2>
+      <p class="mt-5 text-body text-ink-soft max-w-text">
+        Youbo past in elk hr-landschap en connecteert met je systemen voor payroll, performance
+        en core hr.
+      </p>
+    </div>
+
+    <div class="lg:col-span-7">
+      <ul class="flex flex-wrap gap-3 list-none p-0">
+        <li class="rounded-sm border border-line-btn bg-paper px-4 py-3 text-body font-bold text-ink">eBlox</li>
+        <li class="rounded-sm border border-line-btn bg-paper px-4 py-3 text-body font-bold text-ink">SAP SuccessFactors</li>
+        <li class="rounded-sm border border-line-btn bg-paper px-4 py-3 text-body font-bold text-ink">AFAS</li>
+        <li class="rounded-sm border border-line bg-surface px-4 py-3 text-body font-medium text-ink-soft">+ jouw tools</li>
+      </ul>
+
+      <p class="todo mt-6 max-w-prose">
+        <b>TODO — te bevestigen</b>: welke lijst klopt. Het campagneplan noemt daarnaast Treality, het
+        concept noemt Protime en Workday. Hierboven staan enkel de drie die in beide bronnen voorkomen
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     9 · QUOTES — DONKER, het verloop. Dit is de enige band met klantenlogo's
+     op donker, en dus de enige plek waar de ORIGINELE witte uitsparingen
+     gebruikt worden (sdworx-logo.svg, kaneka-logo.svg, dpg-logo.svg).
+     ========================================================================= -->
+<section class="band band-gradient band-pad" aria-labelledby="quotes-titel">
+  <div class="shell">
+    <div data-reveal>
+      <h2 id="quotes-titel" class="text-h2 md:text-h1 on-dark max-w-[22ch]">
+        Waarom klanten voor Youbo kiezen
+      </h2>
+    </div>
+
+    <div class="mt-10 grid md:grid-cols-2 gap-4 md:gap-6 items-stretch" data-reveal>
+
+      <!-- Pieter-Jan Boden — foto aanwezig -->
+      <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
+        <blockquote class="m-0 text-h2 on-dark">
+          “Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <img src="assets/img/pieter-jan.webp" width="2000" height="1996" loading="lazy"
+               alt="Pieter-Jan Boden" class="h-12 w-12 rounded-[50%] object-cover">
+          <span>
+            <span class="block text-body font-bold on-dark">Pieter-Jan Boden</span>
+            <span class="block text-caption on-dark-soft">People director, SD Worx</span>
+          </span>
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="ml-auto h-5 w-auto">
+        </figcaption>
+      </figure>
+
+      <!-- Bart Verhoeven — geen foto -->
+      <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
+        <blockquote class="m-0 text-h2 on-dark">
+          “Toen ik een demo zag, wist ik: hier hebben we op gewacht.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <span class="h-12 w-12 shrink-0 rounded-[50%] border border-dashed border-brand grid place-items-center text-[10px] font-bold uppercase tracking-[0.08em] text-brand text-center leading-tight" aria-hidden="true">foto<br>nodig</span>
+          <span>
+            <span class="block text-body font-bold on-dark">Bart Verhoeven</span>
+            <span class="block text-caption on-dark-soft">Hr manager, Kaneka</span>
+          </span>
+          <img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="ml-auto h-4 w-auto">
+        </figcaption>
+      </figure>
+
+      <!-- Mieke Catthoor — foto aanwezig -->
+      <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
+        <blockquote class="m-0 text-h2 on-dark">
+          “Youbo helpt om de loonkloof weg te werken.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <img src="assets/img/mieke-catthoor.webp" width="795" height="858" loading="lazy"
+               alt="Mieke Catthoor" class="h-12 w-12 rounded-[50%] object-cover">
+          <span>
+            <span class="block text-body font-bold on-dark">Mieke Catthoor</span>
+            <span class="block text-caption on-dark-soft">Compensation &amp; benefits, DPG Media</span>
+          </span>
+          <img src="assets/img/dpg-logo.svg" alt="DPG Media" class="ml-auto h-5 w-auto">
+        </figcaption>
+      </figure>
+
+      <!-- Joris Valkenborgh — geen foto -->
+      <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
+        <blockquote class="m-0 text-h2 on-dark">
+          “Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu
+          betere inhoudelijke gesprekken met mijn team.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <span class="h-12 w-12 shrink-0 rounded-[50%] border border-dashed border-brand grid place-items-center text-[10px] font-bold uppercase tracking-[0.08em] text-brand text-center leading-tight" aria-hidden="true">foto<br>nodig</span>
+          <span>
+            <span class="block text-body font-bold on-dark">Joris Valkenborgh</span>
+            <span class="block text-caption on-dark-soft">Team manager, SD Worx</span>
+          </span>
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="ml-auto h-5 w-auto">
+        </figcaption>
+      </figure>
+
+      <!-- Evi Van der Vliet — geen foto, geen logobestand -->
+      <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col md:col-span-2">
+        <blockquote class="m-0 text-h2 on-dark max-w-prose">
+          “Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien
+          we de jaarkost en het totale loonpakket van de werknemer.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <span class="h-12 w-12 shrink-0 rounded-[50%] border border-dashed border-brand grid place-items-center text-[10px] font-bold uppercase tracking-[0.08em] text-brand text-center leading-tight" aria-hidden="true">foto<br>nodig</span>
+          <span>
+            <span class="block text-body font-bold on-dark">Evi Van der Vliet</span>
+            <span class="block text-caption on-dark-soft">Hr business partner, Anchr</span>
+          </span>
+          <span class="ml-auto text-h3 font-bold on-dark">Anchr</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="todo-inv mt-8 max-w-prose" data-reveal>
+      <b>TODO — foto nodig</b> van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet. Half met en
+      half zonder foto werkt niet: als die foto's er niet komen, gaan alle vijf de quotes zonder portret
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================================
+     10 · FAQ — LICHT (#f6f8fa). Lezen is makkelijker op licht, en het brengt
+     de bezoeker rustig naar het formulier.
+     ========================================================================= -->
+<section class="bg-surface band-pad" aria-labelledby="faq-titel"
+         x-data="{ open: null }" x-cloak>
+  <div class="shell">
+    <div data-reveal>
+      <h2 id="faq-titel" class="text-h2 md:text-h1 max-w-[20ch]">
+        Veelgestelde vragen
+      </h2>
+    </div>
+
+    <div class="mt-10 border-y border-line max-w-prose" data-reveal>
+
+      <div class="border-b border-line">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 0 ? null : 0" :aria-expanded="open === 0 ? 'true' : 'false'"
+                  aria-controls="faq-0" data-cta="faq-opzet"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
+                  style="transition: color var(--m-base) var(--e-standard)">
+            <span>Hoe lang duurt het om Youbo op te zetten?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 0 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-0" x-show="open === 0" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-soft">
+            Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De
+            precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je
+            loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder.
+          </p>
+        </div>
+      </div>
+
+      <div class="border-b border-line">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 1 ? null : 1" :aria-expanded="open === 1 ? 'true' : 'false'"
+                  aria-controls="faq-1" data-cta="faq-omvang"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
+                  style="transition: color var(--m-base) var(--e-standard)">
+            <span>Vanaf hoeveel medewerkers is Youbo relevant?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 1 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-1" x-show="open === 1" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-soft">
+            Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat
+            doorgaans vanaf 300 à 500 medewerkers, of zodra het Excelproces complex en
+            persoonsafhankelijk wordt.
+          </p>
+        </div>
+      </div>
+
+      <div class="border-b border-line">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 2 ? null : 2" :aria-expanded="open === 2 ? 'true' : 'false'"
+                  aria-controls="faq-2" data-cta="faq-prijs"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
+                  style="transition: color var(--m-base) var(--e-standard)">
+            <span>Hoeveel kost het?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 2 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-2" x-show="open === 2" x-collapse>
+          <div class="pb-6 pr-6">
+            <p class="text-body text-ink-soft">
+              Dit is de vraag die iedereen stelt, en ze hoort op de pagina. Wat hier komt te staan,
+              beslist Youbo zelf.
+            </p>
+            <p class="todo mt-4">
+              <b>TODO — te bevestigen</b>: het antwoord op de prijsvraag. Jana loopt dit na met de partners
+              en met Nicole. Een bereik of de logica achter de prijs is verdedigbaar, geen antwoord is dat niet
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-b border-line">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 3 ? null : 3" :aria-expanded="open === 3 ? 'true' : 'false'"
+                  aria-controls="faq-3" data-cta="faq-maatwerk"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
+                  style="transition: color var(--m-base) var(--e-standard)">
+            <span>Past Youbo zich aan onze manier van werken aan?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 3 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-3" x-show="open === 3" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-soft">
+            Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het
+            uitgangspunt. Youbo neemt ook complexe regels en formules over.
+          </p>
+        </div>
+      </div>
+
+      <div class="border-b border-line">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 4 ? null : 4" :aria-expanded="open === 4 ? 'true' : 'false'"
+                  aria-controls="faq-4" data-cta="faq-landen"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
+                  style="transition: color var(--m-base) var(--e-standard)">
+            <span>Is Youbo geschikt voor meerdere landen en niveaus?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 4 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-4" x-show="open === 4" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-soft">
+            Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo
+            inzetten in verschillende landen.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 5 ? null : 5" :aria-expanded="open === 5 ? 'true' : 'false'"
+                  aria-controls="faq-5" data-cta="faq-compliance"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
+                  style="transition: color var(--m-base) var(--e-standard)">
+            <span>Hoe helpt Youbo met compliance?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 5 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-5" x-show="open === 5" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-soft">
+            Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing
+            onderbouwd en traceerbaar.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     11 · FORMULIER — LICHT (#ffffff). Nick opnieuw, nu klein naast het formulier.
+     ========================================================================= -->
+<section id="demo" class="bg-paper band-pad" aria-labelledby="demo-titel">
+  <div class="shell grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+
+    <div class="lg:col-span-5" data-reveal>
+      <h2 id="demo-titel" class="text-h2 md:text-h1 max-w-[18ch]">
+        Met Youbo starten is makkelijk
+      </h2>
+      <p class="mt-5 text-body text-ink-soft max-w-text">
+        Reward expert Nick laat je zien hoe Youbo aansluit op jullie loonbeleid, structuur en
+        systemen. Hij neemt persoonlijk contact op.
+      </p>
+
+      <div class="mt-8 flex items-center gap-4">
+        <!-- TODO — foto nodig: dezelfde foto als in de hero, hier klein -->
+        <span class="fotoplek h-16 w-16 shrink-0 rounded-[50%]">
+          <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-brand leading-tight">foto<br>Nick</span>
+        </span>
+        <span>
+          <span class="block text-body font-bold text-ink">Nick</span>
+          <span class="block text-caption text-ink-soft">Reward expert</span>
+        </span>
+      </div>
+
+      <!-- de lagedrempeloptie: meteen iemand spreken -->
+      <div class="mt-8 rounded-md bg-surface border border-line p-6">
+        <p class="text-h3 font-bold text-ink">Liever meteen iemand spreken</p>
+        <ul class="mt-4 space-y-3 list-none p-0 text-body">
+          <li>
+            <a href="#" data-cta="agenda-boeken"
+               class="text-link underline underline-offset-4 hover:text-link-hover"
+               style="transition: color var(--m-base) var(--e-standard)">
+              Boek rechtstreeks in Nicks agenda
+            </a>
+          </li>
+          <li class="text-ink-soft">Bellen en mailen kan ook</li>
+        </ul>
+        <p class="todo mt-4">
+          <b>TODO — te bevestigen</b>: Nicks agendalink, telefoonnummer en e-mailadres. Zolang die er
+          niet zijn, staan hier geen verzonnen gegevens
+        </p>
+      </div>
+    </div>
+
+    <div class="lg:col-span-7" data-reveal>
+      <!-- Het endpoint moet nog gekoppeld worden; action blijft bewust leeg tot dan. -->
+      <form class="rounded-lg bg-paper border border-line p-6 md:p-8 shadow-card" novalidate>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="naam" class="block text-body font-medium text-ink mb-2">Naam <span class="text-brand-ink" aria-hidden="true">*</span></label>
+            <input id="naam" name="naam" type="text" autocomplete="name" required
+                   class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
+                   style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
+                   placeholder="Anne Peeters">
+          </div>
+          <div>
+            <label for="email" class="block text-body font-medium text-ink mb-2">E-mailadres <span class="text-brand-ink" aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" required
+                   aria-describedby="email-help"
+                   class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
+                   style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
+                   placeholder="anne@bedrijf.be">
+            <p id="email-help" class="mt-2 text-caption text-ink-soft">Bij voorkeur je werkadres</p>
+          </div>
+          <div class="sm:col-span-2">
+            <label for="telefoon" class="block text-body font-medium text-ink mb-2">Telefoon</label>
+            <input id="telefoon" name="telefoon" type="tel" autocomplete="tel"
+                   class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
+                   style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
+                   placeholder="+32 4xx xx xx xx">
+          </div>
+          <div class="sm:col-span-2">
+            <label for="bericht" class="block text-body font-medium text-ink mb-2">Bericht</label>
+            <textarea id="bericht" name="bericht" rows="4"
+                      class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
+                      style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
+                      placeholder="Hoeveel medewerkers zitten er in jullie looncyclus? Waar loopt het vandaag vast?"></textarea>
+          </div>
+        </div>
+
+        <div class="mt-6 flex items-start gap-3">
+          <input id="nieuwsbrief" name="nieuwsbrief" type="checkbox" value="ja"
+                 class="mt-1 h-5 w-5 shrink-0 rounded-sm border border-line-btn accent-brand">
+          <label for="nieuwsbrief" class="text-caption text-ink-soft">
+            Schrijf me in op de nieuwsbrief, met wat er in reward beweegt. Uitschrijven kan met één klik
+          </label>
+        </div>
+
+        <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo">
+          Vraag je demo aan
+        </button>
+
+        <p class="mt-4 text-caption text-ink-soft">
+          We gebruiken je gegevens enkel om je demo-aanvraag op te volgen. Lees hoe we daarmee omgaan in
+          de <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener"
+          class="text-link underline underline-offset-4 hover:text-link-hover"
+          style="transition: color var(--m-base) var(--e-standard)" data-cta="formulier-privacy">privacy policy</a>.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     12 · FOOTER — DONKER (#000000). Wit woordmerk, want zwarte ondergrond.
+     Dit is de footer van youbo.io, niet een zelfbedachte minifooter: Jana
+     vroeg er uitdrukkelijk om, zodat de bezoeker ziet op welke site hij staat,
+     en omdat een landingspagina die vanuit de sitefooter gelinkt wordt beter
+     gevonden wordt.
+
+     ELKE LINK HIERONDER IS OVERGENOMEN UIT `_raw/components/nl/footer.html`,
+     de opgehaalde footer van de site zelf. Niets is hier afgeleid of geraden.
+     Let op met de voor de hand liggende adressen: /cookies, /privacy en
+     /voorwaarden bestaan NIET. De echte NL-paden zijn
+     /nl/legal/cookie-policy.html, /nl/legal/responsible-disclosure-policy.html,
+     /nl/legal/disclaimer.html en /nl/legal/gebruiksvoorwaarden.html, en de
+     privacy policy staat niet op youbo.io maar op tealpartners.com.
+     "Nieuws" staat in de echte footer in commentaar en is hier dus weggelaten.
+     De links staan absoluut op https://www.youbo.io, want zo verwijst de site
+     naar zichzelf en zo werkt deze draft ook los van de site.
+     ========================================================================= -->
+<footer class="band band-black py-12 md:py-20">
+  <div class="shell">
+
+    <div class="grid gap-10 md:grid-cols-12 md:gap-12">
+
+      <div class="md:col-span-4">
+        <a href="https://www.youbo.io/nl/merit/" class="inline-flex" data-cta="footer-logo">
+          <img src="assets/img/youbo_logo_white.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+        </a>
+        <a href="https://www.linkedin.com/company/teal-partners/" target="_blank" rel="noopener"
+           class="mt-5 flex w-fit items-center gap-2 text-caption on-dark underline underline-offset-4 hover:text-brand"
+           style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-linkedin">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.64h.05A4.2 4.2 0 0 1 16.6 8.7c4 0 4.74 2.5 4.74 5.76V21h-4v-5.75c0-1.37-.03-3.13-1.96-3.13-1.96 0-2.26 1.49-2.26 3.03V21H9z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+
+      <nav class="md:col-span-4" aria-label="Over Youbo">
+        <p class="text-caption font-bold uppercase tracking-[0.08em] on-dark">Over Youbo</p>
+        <ul class="mt-4 space-y-3 list-none p-0">
+          <li><a href="https://www.youbo.io/nl/cases/" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-cases">Referentie cases</a></li>
+          <li><a href="https://www.youbo.io/nl/contact.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <nav class="md:col-span-4" aria-label="Legal">
+        <p class="text-caption font-bold uppercase tracking-[0.08em] on-dark">Legal</p>
+        <ul class="mt-4 space-y-3 list-none p-0">
+          <li><a href="https://www.youbo.io/nl/legal/cookie-policy.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-cookiebeleid">Cookie policy</a></li>
+          <li><a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-privacy">Privacy policy</a></li>
+          <li><a href="https://www.youbo.io/nl/legal/responsible-disclosure-policy.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-rdp">Responsible disclosure policy</a></li>
+          <li><a href="https://www.youbo.io/nl/legal/disclaimer.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-disclaimer">Disclaimer</a></li>
+          <li><a href="https://www.youbo.io/nl/legal/gebruiksvoorwaarden.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-voorwaarden">Gebruiksvoorwaarden</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="mt-12 border-t rule-inv pt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="text-caption on-dark-soft">
+          <span class="font-bold on-dark">Taal</span> · Nederlands
+        </p>
+        <p class="todo-inv mt-3 max-w-prose">
+          <b>TODO — te bevestigen</b>: de echte footer draagt een schakelaar Nederlands / English, en er
+          komt Frans bij. Deze pagina bestaat voorlopig alleen in het Nederlands, dus staat hier geen
+          link naar een vertaling die er nog niet is. Zodra de talen vastliggen hoort hier de schakelaar
+          plus hreflang in de head — dat bepaalt ook het adres van de pagina
+        </p>
+        <p class="mt-6 text-caption on-dark-soft">
+          © <span id="currentYear">2026</span> Youbo by
+          <a href="https://www.tealpartners.com/" target="_blank" rel="noopener"
+             class="on-dark underline underline-offset-4 hover:text-brand"
+             style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-tealpartners">Teal Partners</a>
+        </p>
+        <p class="mt-2 text-caption on-dark-soft">
+          Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542
+        </p>
+      </div>
+      <!-- De ISO-badge is donker getekend en zou op deze band verdwijnen, dus staat hij op een wit vlak -->
+      <div class="self-start md:self-auto">
+        <span class="inline-flex rounded-sm bg-paper px-4 py-3">
+          <img src="assets/img/iso-eng.svg" alt="ISO 27001:2022 en GDPR" class="h-12 w-auto">
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- =========================================================================
+     MEELOPENDE BALK — licht, dus het donkere woordmerk. Max 64px hoog,
+     verdwijnt zodra het formulier in beeld komt.
+     ========================================================================= -->
+<div x-data="meeloper()" x-show="toon && $store.toestemming.beantwoord"
+     x-transition.opacity.duration.200ms x-cloak
+     data-bodembalk
+     class="fixed bottom-0 inset-x-0 z-40 border-t border-line bg-paper/95 backdrop-blur shadow-lift">
+  <div class="max-w-shell mx-auto px-6 py-3 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3 min-w-0">
+      <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-6 w-auto hidden sm:block">
+      <p class="text-caption text-ink-soft truncate">Nick toont je Youbo op jouw eigen looncyclus</p>
+    </div>
+    <a href="#demo" class="btn-primary shrink-0 px-5 py-2 min-h-[44px] text-caption" data-cta="meelopende-balk-demo">
+      Boek een demo
+    </a>
+  </div>
+</div>
+
+<!-- =========================================================================
+     COOKIEBALK — één smalle strook onderaan, en niets meer
+     -------------------------------------------------------------------------
+     Jana: "de cookiewaarschuwing neemt veel te veel plek in, hoe minimaler hoe
+     beter". Dus: geen overlay, geen blok dat een halve telefoon vult, geen
+     voorkeurenpaneel met schuifjes voor categorieën die hier niet bestaan. Er
+     is precies één keuze te maken, want er is precies één soort cookie in het
+     spel — meten. De balk zegt dat in één zin en biedt twee gelijkwaardige
+     knoppen aan; weigeren mag niet moeilijker zijn dan toestaan.
+
+     De balk staat onderaan, op dezelfde plek als de meelopende demo-knop. Die
+     knop blijft weg zolang er geen keuze gemaakt is, zodat de twee elkaar
+     nooit afdekken.
+
+     Belangrijk: LinkedIn en Google laden niet in de <head>. Ze zitten in
+     laadMeettags(), en die draait alleen na Toestaan. Zolang niemand klikt,
+     vertrekt er geen enkel verzoek naar een meetdienst.
+     ========================================================================= -->
+<div x-data x-show="!$store.toestemming.beantwoord" x-transition.opacity.duration.200ms x-cloak
+     data-bodembalk
+     class="fixed bottom-0 inset-x-0 z-50 border-t border-line bg-paper/95 backdrop-blur shadow-lift"
+     role="region" aria-label="Cookies">
+  <div class="max-w-shell mx-auto px-6 py-2 sm:py-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
+    <p class="flex-1 text-caption text-ink-soft m-0">
+      We plaatsen meetcookies om te zien hoe deze pagina gebruikt wordt.
+    </p>
+    <div class="flex items-center gap-3 shrink-0">
+      <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
+         class="text-caption text-link underline underline-offset-4 hover:text-link-hover"
+         style="transition: color var(--m-base) var(--e-standard)" data-cta="cookiebalk-beleid">Cookie policy</a>
+      <button type="button" @click="$store.toestemming.zet('geweigerd')"
+              class="btn-secondary min-h-[40px] px-4 py-2 text-caption" data-cta="cookiebalk-weigeren">
+        Weigeren
+      </button>
+      <button type="button" @click="$store.toestemming.zet('toegestaan')"
+              class="btn-primary min-h-[40px] px-4 py-2 text-caption" data-cta="cookiebalk-toestaan">
+        Toestaan
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* -------------------------------------------------------------------------
+     De schakeling zelf. Eén IntersectionObserver zet .is-in op een band of een
+     blok zodra het in beeld komt; de CSS doet de rest in 300 à 350ms. Bij
+     prefers-reduced-motion: reduce staat alles meteen op zijn eindstand, dus de
+     observer hoeft dan niets te doen.
+     ------------------------------------------------------------------------- */
+  (function () {
+    var stil = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var doelen = document.querySelectorAll('.band, [data-reveal]');
+
+    if (stil || !('IntersectionObserver' in window)) {
+      doelen.forEach(function (el) { el.classList.add('is-in'); });
+      return;
+    }
+
+    var kijker = new IntersectionObserver(function (waarnemingen) {
+      waarnemingen.forEach(function (w) {
+        if (w.isIntersecting) {
+          w.target.classList.add('is-in');
+          kijker.unobserve(w.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+
+    doelen.forEach(function (el) { kijker.observe(el); });
+  })();
+
+  /* -------------------------------------------------------------------------
+     DE MEESCROLLENDE RONDLEIDING — blok 5
+     ---------------------------------------------------------------------------
+     In de HTML staat elk productscherm onder zijn eigen stap, zodat de sectie
+     zonder JavaScript gewoon vier stappen met vier schermen onder elkaar is.
+     Dit script verhuist die vier figuren naar de kleefkaart en wisselt ze
+     terwijl je scrolt. Verhuizen, niet kopiëren: geen tweede download, geen
+     tweede alt-tekst in de voorleesvolgorde.
+
+     Bij prefers-reduced-motion: reduce doet het script niets en verbergt de CSS
+     de kleefkaart — alles staat dan meteen in eindtoestand, zonder wisselend
+     beeld en zonder smooth scroll.
+
+     De vier streepjes bovenaan zijn echte knoppen. Dat is wat deze vorm met een
+     toetsenbord bedienbaar maakt: scrollen alleen is geen besturing.
+     ------------------------------------------------------------------------- */
+  (function () {
+    var wortel = document.querySelector('[data-scrolly]');
+    if (!wortel) { return; }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+
+    var visual  = wortel.querySelector('[data-scrolly-visual]');
+    var stage   = wortel.querySelector('[data-scrolly-stage]');
+    var stappen = [].slice.call(wortel.querySelectorAll('[data-scrolly-step]'));
+    var knoppen = [].slice.call(wortel.querySelectorAll('[data-scrolly-jump]'));
+    var dias    = stappen.map(function (s) { return s.querySelector('[data-scrolly-slide]'); });
+
+    if (!visual || !stage || !stappen.length ||
+        dias.some(function (d) { return !d; })) { return; }
+
+    dias.forEach(function (d, i) {
+      d.classList.add('sc-slide');
+      d.classList.toggle('is-on', i === 0);
+      d.classList.remove('mt-6');
+      stage.appendChild(d);
+    });
+
+    var breed = window.matchMedia('(min-width: 1024px)');
+    var huidig = -1;
+
+    function verf(i) {
+      if (i === huidig) { return; }
+      huidig = i;
+      dias.forEach(function (d, j) { d.classList.toggle('is-on', j === i); });
+      stappen.forEach(function (s, j) { s.classList.toggle('is-actief', j === i); });
+      knoppen.forEach(function (b, j) { b.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    }
+
+    function kaarthoogte() {
+      return (parseFloat(window.getComputedStyle(visual).top) || 0) + visual.offsetHeight;
+    }
+
+    /* De leeslijn ligt op telefoon net onder de kleefkaart en op desktop op 45%
+       van het scherm. Gemeten wordt de kop van de stap, niet het artikel met
+       zijn witruimte eromheen: anders wisselt het beeld al voor de bijbehorende
+       tekst in beeld komt. Op telefoon ligt de lijn 48 px onder de kaart: precies
+       ver genoeg dat de kop van de stap vrij staat wanneer het beeld wisselt. */
+    function lijn() {
+      return breed.matches ? window.innerHeight * 0.45 : kaarthoogte() + 48;
+    }
+
+    var bezig = false;
+    function meet() {
+      bezig = false;
+      var l = lijn(), actief = 0;
+      stappen.forEach(function (s, i) {
+        var kop = s.querySelector('.sc-titel') || s;
+        if (kop.getBoundingClientRect().top <= l) { actief = i; }
+      });
+      verf(actief);
+    }
+    function bij() { if (!bezig) { bezig = true; window.requestAnimationFrame(meet); } }
+
+    knoppen.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var i = parseInt(b.getAttribute('data-scrolly-jump'), 10) || 0;
+        var kop = stappen[i].querySelector('.sc-titel') || stappen[i];
+        var y = window.pageYOffset + kop.getBoundingClientRect().top -
+                (breed.matches ? window.innerHeight * 0.40 : kaarthoogte() + 40);
+        /* Acht pixel boven de leeslijn, niet erop: precies op de lijn is het
+           afronden van een subpixel het verschil tussen stap 3 en stap 4. */
+        /* Geen behavior meegeven: de CSS bepaalt smooth of niet, en die staat uit
+           bij prefers-reduced-motion. */
+        window.scrollTo({ top: Math.max(0, y) });
+      });
+    });
+
+    window.addEventListener('scroll', bij, { passive: true });
+    window.addEventListener('resize', bij);
+    if (window.ResizeObserver) { new window.ResizeObserver(bij).observe(visual); }
+    meet();
+  })();
+
+  /* -------------------------------------------------------------------------
+     LAADMEETTAGS — het enige punt waar een meettag de pagina binnenkomt
+     ---------------------------------------------------------------------------
+     Deze functie draait uitsluitend nadat iemand in de cookiebalk op Toestaan
+     geklikt heeft, en één keer per bezoek. Zolang er geen bevestigde id's zijn,
+     staan de twee tags in commentaar en doet de functie dus niets meer dan de
+     toestemming doorgeven aan Google. Dat is met opzet: een verzonnen id ziet
+     er aangesloten uit en stuurt data nergens naartoe.
+
+     Zet hier de twee blokken uit de <head> neer zodra de id's er zijn:
+     · Google  — GTM-XXXXXXX óf G-XXXXXXXXXX, niet allebei
+     · LinkedIn — het Insight-blok met het echte partner ID
+     ------------------------------------------------------------------------- */
+  var meettagsGeladen = false;
+  function laadMeettags() {
+    if (meettagsGeladen) { return; }
+    meettagsGeladen = true;
+
+    /* Google weet nu dat er toestemming is. Dit werkt ook als de tag zelf er
+       nog niet is: de push blijft in dataLayer staan tot hij opgepikt wordt. */
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+
+    /* De drie id's. Leeg = laadt niet. Vul in wat bevestigd is, kies tussen GTM
+       en GA4, en vul nooit een verzonnen nummer in.
+       TODO — nodig van klant: alle drie. Zolang ze leeg zijn, vertrekt er geen
+       enkel verzoek naar een meetdienst en doet deze functie verder niets. */
+    var GOOGLE_GTM_ID       = '';   /* bv. 'GTM-XXXXXXX'  */
+    var GOOGLE_GA4_ID       = '';   /* bv. 'G-XXXXXXXXXX' */
+    var LINKEDIN_PARTNER_ID = '';   /* het nummer uit LinkedIn Campaign Manager */
+
+    function laadScript(bron) {
+      var el = document.createElement('script');
+      el.async = true;
+      el.src = bron;
+      document.head.appendChild(el);
+    }
+
+    /* Google — Tag Manager áls er een container is, anders GA4 rechtstreeks. */
+    if (GOOGLE_GTM_ID) {
+      dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      laadScript('https://www.googletagmanager.com/gtm.js?id=' + GOOGLE_GTM_ID);
+    } else if (GOOGLE_GA4_ID) {
+      laadScript('https://www.googletagmanager.com/gtag/js?id=' + GOOGLE_GA4_ID);
+      gtag('js', new Date());
+      gtag('config', GOOGLE_GA4_ID);
+    }
+
+    /* LinkedIn Insight Tag — het blok uit de <head>, nu op het juiste moment. */
+    if (LINKEDIN_PARTNER_ID) {
+      window._linkedin_partner_id = LINKEDIN_PARTNER_ID;
+      window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+      window._linkedin_data_partner_ids.push(LINKEDIN_PARTNER_ID);
+      window.lintrk = window.lintrk || function (a, b) { window.lintrk.q.push([a, b]); };
+      window.lintrk.q = window.lintrk.q || [];
+      laadScript('https://snap.licdn.com/li.lms-analytics/insight.min.js');
+    }
+  }
+
+  /* -------------------------------------------------------------------------
+     RUIMTE ONDERAAN — één regel die twee balken bedient
+     ---------------------------------------------------------------------------
+     Onderaan staan twee vaste balken die elkaar afwisselen: de cookiebalk
+     zolang er geen keuze gemaakt is, daarna de meelopende demo-knop. Ze zijn
+     niet even hoog, en op telefoon wordt de cookiebalk twee regels. Een vaste
+     pb-[76px] dekt dus altijd het verkeerde geval af en laat de laatste regel
+     van de footer onder een balk verdwijnen. Dit meet wat er écht staat.
+     De klasse op <body> blijft als terugval voor wanneer JavaScript uitvalt.
+     ------------------------------------------------------------------------- */
+  (function () {
+    var balken = [].slice.call(document.querySelectorAll('[data-bodembalk]'));
+    if (!balken.length) { return; }
+    function ruimte() {
+      var hoog = 0;
+      balken.forEach(function (b) {
+        /* offsetParent is ALTIJD null bij position: fixed, dus die mag hier niet
+           gebruikt worden om zichtbaarheid te meten — dat leest elke balk als
+           verborgen en laat de padding op nul staan. x-show zet display: none. */
+        if (window.getComputedStyle(b).display === 'none') { return; }
+        hoog = Math.max(hoog, b.offsetHeight);
+      });
+      document.body.style.paddingBottom = hoog ? hoog + 'px' : '0px';
+    }
+    window.addEventListener('resize', ruimte);
+    balken.forEach(function (b) {
+      if (window.ResizeObserver) { new window.ResizeObserver(ruimte).observe(b); }
+      if (window.MutationObserver) {
+        new window.MutationObserver(ruimte).observe(b, { attributes: true, attributeFilter: ['style', 'class'] });
+      }
+    });
+    document.addEventListener('alpine:initialized', function () { window.setTimeout(ruimte, 60); });
+    ruimte();
+  })();
+
+  document.addEventListener('alpine:init', () => {
+
+    /* De toestemming. Eén sleutel in localStorage, drie standen: niets (nog geen
+       keuze, dus balk tonen), 'geweigerd' en 'toegestaan'. localStorage kan in
+       een privévenster gooien, dus elke lees- en schrijfactie staat in try. */
+    Alpine.store('toestemming', {
+      keuze: null,
+      init() {
+        try { this.keuze = localStorage.getItem('youbo-toestemming'); } catch (e) { this.keuze = null; }
+        if (this.keuze === 'toegestaan') { laadMeettags(); }
+      },
+      get beantwoord() {
+        return this.keuze === 'toegestaan' || this.keuze === 'geweigerd';
+      },
+      zet(keuze) {
+        this.keuze = keuze;
+        try { localStorage.setItem('youbo-toestemming', keuze); } catch (e) {}
+        if (keuze === 'toegestaan') { laadMeettags(); }
+      }
+    });
+
+
+    /* De carrousel schuift per kaart en werkt even goed met acht cases als met vijf. */
+    Alpine.data('carrousel', () => ({
+      index: 0,
+      count: 0,
+      atStart: true,
+      atEnd: false,
+      init() {
+        this.count = this.$refs.track.children.length;
+        this.$nextTick(() => this.sync());
+      },
+      go(i) {
+        const kaart = this.$refs.track.children[i];
+        if (kaart) this.$refs.track.scrollTo({ left: kaart.offsetLeft - this.$refs.track.offsetLeft, behavior: 'smooth' });
+      },
+      next() { this.go(Math.min(this.index + 1, this.count - 1)); },
+      prev() { this.go(Math.max(this.index - 1, 0)); },
+      sync() {
+        const track = this.$refs.track;
+        const breedte = track.children[0] ? track.children[0].offsetWidth : 1;
+        this.index = Math.round(track.scrollLeft / breedte);
+        this.atStart = track.scrollLeft < 8;
+        this.atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+      }
+    }));
+
+
+    /* De balk komt op na de hero en gaat weg zodra het formulier in beeld komt,
+       zodat hij nooit over de velden staat waar hij naartoe stuurt. */
+    Alpine.data('meeloper', () => ({
+      toon: false,
+      init() {
+        const kijk = () => {
+          const demo = document.getElementById('demo');
+          const bijnaInBeeld = demo && demo.getBoundingClientRect().top < window.innerHeight - 80;
+          this.toon = window.scrollY > 600 && !bijnaInBeeld;
+        };
+        kijk();
+        window.addEventListener('scroll', kijk, { passive: true });
+        window.addEventListener('resize', kijk, { passive: true });
+      }
+    }));
+  });
+</script>
+
+<script>
+  /* De echte footer van youbo.io vult het jaartal met JavaScript. Hetzelfde
+     hier, zodat er over twee jaar geen verkeerd jaartal in de voettekst staat. */
+  (function () {
+    var jaar = document.getElementById('currentYear');
+    if (jaar) { jaar.textContent = String(new Date().getFullYear()); }
+  })();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "nl-BE",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Hoe lang duurt het om Youbo op te zetten?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Vanaf hoeveel medewerkers is Youbo relevant?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat doorgaans vanaf 300 à 500 medewerkers, of zodra het Excelproces complex en persoonsafhankelijk wordt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Past Youbo zich aan onze manier van werken aan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het uitgangspunt. Youbo neemt ook complexe regels en formules over."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Youbo geschikt voor meerdere landen en niveaus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo inzetten in verschillende landen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hoe helpt Youbo met compliance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing onderbouwd en traceerbaar."
+      }
+    }
+  ]
+}
+</script>
+
+</body>
+</html>

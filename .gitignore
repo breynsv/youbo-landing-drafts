@@ -12,3 +12,11 @@ _raw/
 
 # Internal working documents — never on the public Pages site.
 *.md
+
+# Commerciële en vertrouwelijke stukken — deze repo publiceert naar GitHub Pages,
+# dus alles wat hier gecommit wordt staat publiek online.
+OFFERTE-YOUBO.html
+Offerte-landingspagina-Youbo.pdf
+Youbo docs/
+
+# Wegwerpscripts van bouwsessies staan in qa/, dat al genegeerd wordt.

@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<!--
+CONCEPT: De schakelende variant. De pagina begint licht en rustig en kantelt per blok naar donker en terug: licht waar het over rust, bewijs en overzicht gaat, donker waar het product zelf getoond wordt. Het ritme draagt zo het verhaal, en de productschermen krijgen op de donkere banden het contrast dat Jana in het gesprek benoemde ("dat geeft contrast ten opzichte van hun tool, en het is rustiger voor je ogen") zonder dat de hele pagina "bruter" wordt dan de site.
+HERO: Nick staat groot, en zijn gezicht is het eerste wat je ziet — ook op 390px, waar het portret bovenaan staat in een lage band en de kop er direct onder valt. De hero zelf blijft licht: een donkere hero zou de eerste schakeling al opgebruiken.
+STRUCTUUR: exact de volgorde van Jana's eigen ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency · integraties · quotes · faq · formulier · footer). De inhoud van haar UI-mockups is overgenomen — de meritcyclus als voortgang, de lijst loonvoorstellen met percentages, de budgetbalken, het afdelingendashboard — maar hertekend in de Youbo-huisstijl in plaats van gekopieerd.
+AFWIJKING VAN HET DESIGN SYSTEM: het systeem staat maximaal twee donkere banden per pagina toe. Deze pagina heeft er vijf (kernblokken, hoe het werkt, EU Pay Transparency, faq, footer). Dat is de opdracht van dit draft en het is bewust: nergens staan twee donkere banden naast elkaar, en elke donkere band bevat product of proces, nooit alleen tekst.
+LOGO'S: de klantenlogo's wisselen mee met de band. Op licht (logobalk, cases, quotes) staan de -dark varianten; de witte uitsparingen staan uitsluitend op donker. Het Youbo-woordmerk volgt dezelfde regel: youbo_logo.svg in de meelopende balk, youbo_logo_white.svg in de donkere footer.
+TODO OP DE PAGINA: waar de drie bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer — Kaneka, DPG Media, het landental van Aertssen, de integratielijst en het antwoord op "hoeveel kost het".
+NEEDS FROM CLIENT: (1) de foto van Nick — hij staat hier groot in de hero en in het formulierblok, nu als zichtbare fotoplek; (2) Nicks telefoonnummer, e-mailadres en agendalink; (3) foto's van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet, of het akkoord om alle vijf de quotes zonder foto te zetten; (4) de vijf case-pdf's; (5) de lijst klantnamen die in de logobalk getoond mogen worden, plus hun donkere logoversies; (6) de juiste cijfers voor Kaneka, DPG Media en Aertssen; (7) de juiste integratielijst; (8) het antwoord op de prijsvraag; (9) het LinkedIn partner ID en het endpoint waar het formulier naartoe post.
+-->
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Loon, bonus en promotie beheren zonder Excel | Youbo</title>
+<meta name="description" content="Youbo beheert de lonen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.">
+<link rel="canonical" href="https://youbo.io/demo">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_BE">
+<meta property="og:site_name" content="Youbo">
+<meta property="og:title" content="Compensatie zonder kopzorgen | Youbo">
+<meta property="og:description" content="Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Boek een demo en zie het op jouw eigen looncyclus.">
+<meta property="og:image" content="assets/img/open_graph.png">
+<meta property="og:url" content="https://youbo.io/demo">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<!-- ===========================================================================
+     LINKEDIN INSIGHT TAG — PLAATSHOUDER, BEWUST NOG NIET ACTIEF
+     ---------------------------------------------------------------------------
+     Er staat hier geen partner ID, omdat er nog geen bevestigd ID is. Vervang
+     PARTNER_ID_HIER door het echte nummer uit LinkedIn Campaign Manager en haal
+     dan pas het commentaar weg. Vul hier nooit een verzonnen nummer in: dat
+     stuurt data nergens naartoe en ziet er wél aangesloten uit.
+
+     De campagne is LinkedIn-first, dus dit is de eerste tag die live moet.
+     In België geldt opt-in: laad dit script pas na toestemming via de
+     consent-banner (Consent Mode v2), en zorg dat die banner op telefoon de
+     meelopende demo-knop onderaan niet afdekt.
+
+     <script type="text/javascript">
+       _linkedin_partner_id = "PARTNER_ID_HIER";
+       window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+       window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+     </script>
+     <script type="text/javascript">
+       (function(l) {
+         if (!l){window.lintrk=function(a,b){window.lintrk.q.push([a,b])};window.lintrk.q=[]}
+         var s = document.getElementsByTagName("script")[0];
+         var b = document.createElement("script");
+         b.type = "text/javascript"; b.async = true;
+         b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+         s.parentNode.insertBefore(b, s);
+       })(window.lintrk);
+     </script>
+     <noscript>
+       <img height="1" width="1" style="display:none;" alt=""
+            src="https://px.ads.linkedin.com/collect/?pid=PARTNER_ID_HIER&fmt=gif" />
+     </noscript>
+     =========================================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400..700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        surface:   { DEFAULT: '#FFFFFF', sub: '#F5F7F4', sand: '#F3EDE1', deep: '#0E2A21' },
+        ink:       { DEFAULT: '#0E2A21', muted: '#4F6B60', inv: '#FFFFFF', invmuted: '#B9CFC6' },
+        primary:   { 50: '#E7F9F1', DEFAULT: '#0B6B4F', 700: '#075740' },
+        mint:      { DEFAULT: '#0AF29F', 300: '#7FE9C4' },
+        amber:     { 50: '#FFF8EE', DEFAULT: '#A85C10' },
+        success:   '#106C4C',
+        alert:     '#B4451F',
+        line:      { DEFAULT: '#DDE4DE', strong: '#7E9A8E' },
+      },
+      fontFamily: {
+        display: ['"Bricolage Grotesque"', 'Georgia', 'serif'],
+        sans:    ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        eyebrow: ['0.8125rem', { lineHeight: '1.4',  letterSpacing: '0.08em', fontWeight: '600' }],
+        small:   ['0.9375rem', { lineHeight: '1.55' }],
+        body:    ['1.0625rem', { lineHeight: '1.65' }],
+        lead:    ['1.25rem',   { lineHeight: '1.55' }],
+        h4:      ['1.125rem',  { lineHeight: '1.35', letterSpacing: '0' }],
+        h3:      ['1.5rem',    { lineHeight: '1.2',  letterSpacing: '-0.01em' }],
+        h2:      ['2.25rem',   { lineHeight: '1.12', letterSpacing: '-0.02em' }],
+        h1:      ['3.25rem',   { lineHeight: '1.06', letterSpacing: '-0.025em' }],
+        display: ['4rem',      { lineHeight: '1.0',  letterSpacing: '-0.03em' }],
+        stat:    ['3.5rem',    { lineHeight: '1.0',  letterSpacing: '-0.02em' }],
+      },
+      maxWidth: { text: '34rem', container: '72rem', wide: '80rem' },
+      borderRadius: { sm: '6px', DEFAULT: '12px', lg: '20px' },
+      boxShadow: {
+        card: '0 1px 2px rgba(14,42,33,.06)',
+        lift: '0 1px 2px rgba(14,42,33,.06), 0 12px 32px -16px rgba(14,42,33,.22)',
+        deep: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionTimingFunction: { out: 'cubic-bezier(0.2, 0, 0, 1)' },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    html { scroll-behavior: smooth; }
+    body { @apply font-sans text-body text-ink bg-surface antialiased; }
+    h1,h2,h3,h4 { @apply font-display font-semibold text-ink; text-wrap: balance;
+                  hyphens: auto; overflow-wrap: break-word; }
+    p { text-wrap: pretty; }
+    :focus-visible { @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-surface; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    [x-cloak] { display: none !important; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important;
+                               transition-duration: .01ms !important; }
+    }
+  }
+  @layer components {
+    /* ------ knoppen ------------------------------------------------------- */
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-sm px-6 py-3.5
+                  text-body font-semibold min-h-[48px] transition-colors duration-150 ease-out; }
+    .btn-primary { @apply btn bg-primary text-white hover:bg-primary-700; }
+    .btn-mint    { @apply btn bg-mint text-ink hover:bg-mint-300
+                        focus-visible:ring-mint focus-visible:ring-offset-surface-deep; }
+    .btn-ghost   { @apply btn bg-white text-ink border border-line-strong
+                        hover:bg-surface-sub hover:border-ink; }
+
+    /* ------ labels en schakelmarkering ------------------------------------ */
+    .eyebrow     { @apply text-eyebrow uppercase tracking-[0.08em] font-semibold text-primary; }
+    .eyebrow-inv { @apply text-eyebrow uppercase tracking-[0.08em] font-semibold text-mint; }
+    /* De dunne mintlijn markeert elke schakeling naar donker. Eén device, overal hetzelfde. */
+    .switch-rule { @apply block h-1 w-16 rounded-full bg-mint; }
+
+    /* ------ het zichtbare TODO-blokje ------------------------------------- */
+    .todo { @apply block rounded-sm border border-dashed border-amber bg-amber-50
+                   px-4 py-3 text-small text-amber; }
+    .todo-inv { @apply block rounded-sm border border-dashed border-mint-300
+                       bg-white/5 px-4 py-3 text-small text-mint-300; }
+
+    /* ------ fotoplek: een ontworpen gat, geen grijs silhouet --------------- */
+    .fotoplek { @apply relative grid place-items-center overflow-hidden
+                       bg-surface-deep text-center; }
+
+    /* ------ mockup-onderdelen (witte panelen op een donkere band) --------- */
+    .panel { @apply rounded-lg bg-white shadow-deep overflow-hidden; }
+    .panel-bar { @apply flex items-center gap-2 border-b border-line px-5 py-3.5; }
+    .miniheader { @apply text-small font-semibold text-ink; }
+    .scrollhide { scrollbar-width: none; }
+    .scrollhide::-webkit-scrollbar { display: none; }
+  }
+</style>
+
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="pb-[76px] sm:pb-0">
+
+<!-- =========================================================================
+     1 · HERO — LICHT. Nick groot, gezicht eerst, ook op 390px.
+     ========================================================================= -->
+<header class="relative bg-surface-sand">
+  <div class="relative max-w-wide mx-auto px-5 md:px-8 xl:px-10 pt-6 md:pt-10">
+
+    <!-- woordmerk: lichte band, dus het donkere logobestand -->
+    <a href="#demo" class="inline-flex items-center" data-cta="hero-wordmerk">
+      <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-7 w-auto">
+    </a>
+
+    <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-16 md:pb-24">
+
+      <!-- Nick. Op mobiel staat dit blok eerst: zijn gezicht is het eerste wat je ziet,
+           en de kop valt er direct onder binnen hetzelfde scherm. -->
+      <figure class="lg:col-span-5 lg:order-last m-0">
+        <div class="relative rounded-lg overflow-hidden shadow-lift">
+          <!-- TODO — foto nodig: portret van Nick. Tot dan een ontworpen fotoplek,
+               nadrukkelijk geen grijs silhouet en geen gegenereerd gezicht. -->
+          <div class="fotoplek h-[240px] sm:h-[320px] lg:h-[460px]">
+            <div class="px-6">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-8 w-auto mx-auto opacity-90">
+              <p class="mt-4 text-eyebrow uppercase tracking-[0.08em] font-semibold text-mint">TODO — foto nodig</p>
+              <p class="mt-2 text-small text-ink-invmuted max-w-[22rem] mx-auto">
+                Hier komt het portret van Nick, staand formaat, natuurlijk licht.
+                Zolang die foto er niet is, blijft deze plek zichtbaar leeg
+              </p>
+            </div>
+          </div>
+          <figcaption class="flex items-center gap-4 bg-white px-5 py-4 border-t border-line">
+            <span class="h-10 w-10 shrink-0 rounded-full bg-primary-50 text-primary font-display font-semibold grid place-items-center" aria-hidden="true">N</span>
+            <span>
+              <span class="block text-body font-semibold text-ink">Nick</span>
+              <span class="block text-small text-ink-muted">Reward expert · geeft zelf de demo</span>
+            </span>
+          </figcaption>
+        </div>
+      </figure>
+
+      <div class="lg:col-span-7">
+        <p class="eyebrow">Bonus &amp; Merit</p>
+        <h1 class="mt-4 text-[2.5rem] leading-[1.02] tracking-[-0.03em] md:text-h1 lg:text-display">
+          Compensatie zonder kopzorgen
+        </h1>
+        <p class="mt-5 text-lead text-ink-muted max-w-text">
+          Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+        </p>
+
+        <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+          <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="hero-boek-demo">Boek een demo</a>
+          <p class="text-small text-ink-muted tabular">19.000 medewerkers · 21 landen · ISO 27001:2022</p>
+        </div>
+
+        <p class="mt-8 text-body text-ink-muted max-w-text border-l-2 border-mint pl-5">
+          Nick laat je zien wat Youbo voor jouw proces doet. Geen algemene verkooppitch,
+          wel een concrete blik op jouw looncyclus.
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- =========================================================================
+     2 · LOGOBALK — LICHT (surface-sub), dus de -dark logobestanden.
+     ========================================================================= -->
+<section class="bg-surface border-y border-line py-12 md:py-16" aria-labelledby="klanten-titel">
+  <div class="max-w-wide mx-auto px-5 md:px-8 xl:px-10 text-center">
+    <h2 id="klanten-titel" class="text-eyebrow uppercase tracking-[0.08em] font-semibold text-ink-muted font-sans">
+      Deze bedrijven vertrouwen Youbo
+    </h2>
+
+    <ul class="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 list-none p-0">
+      <li><img src="assets/img/sdworx-logo-dark.svg"  alt="SD Worx"        class="h-6 md:h-7 w-auto"></li>
+      <li><img src="assets/img/dpg-logo-dark.svg"     alt="DPG Media"      class="h-6 md:h-7 w-auto"></li>
+      <li><img src="assets/img/kaneka-logo-dark.svg"  alt="Kaneka"         class="h-5 md:h-6 w-auto"></li>
+      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-7 md:h-8 w-auto"></li>
+      <li><span class="font-display text-h4 font-semibold text-ink">Anchr</span></li>
+    </ul>
+
+    <p class="todo mt-8 mx-auto max-w-[36rem] text-left">
+      TODO — te bevestigen: de lijst klantnamen die getoond mogen worden. Het concept toonde ook
+      Protime; daarvan is er geen case en geen logobestand, dus staat het hier niet. Van nieuwe
+      namen hebben we telkens een donkere logoversie nodig.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================================
+     3 · DRIE KERNBLOKKEN — DONKER. Eerste schakeling.
+     De mockups zijn witte panelen: het product licht op tegen de donkere band.
+     ========================================================================= -->
+<section class="bg-surface-deep py-16 md:py-24 lg:py-32" aria-labelledby="kern-titel">
+  <div class="max-w-wide mx-auto px-5 md:px-8 xl:px-10">
+
+    <span class="switch-rule" aria-hidden="true"></span>
+    <p class="eyebrow-inv mt-6">Het platform</p>
+    <h2 id="kern-titel" class="mt-4 text-[1.75rem] leading-tight md:text-h2 text-ink-inv max-w-[22ch]">
+      Van versnipperde excels naar één helder proces
+    </h2>
+
+    <!-- 1 -->
+    <div class="mt-12 md:mt-16 grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+      <div class="lg:col-span-5">
+        <span class="inline-grid place-items-center h-9 w-9 rounded-full bg-mint text-ink font-display font-semibold tabular" aria-hidden="true">1</span>
+        <h3 class="mt-5 text-h3 md:text-[1.75rem] md:leading-tight text-ink-inv">
+          Hr en managers werken samen in één platform
+        </h3>
+        <p class="mt-4 text-body text-ink-invmuted max-w-text">
+          Gedaan met splitsen en consolideren van excels. Bye-bye versies en errors.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 min-w-0">
+        <!-- mockup: de meritcyclus als voortgang -->
+        <div class="panel">
+          <div class="panel-bar">
+            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+            <span class="miniheader">Merit cycle 2027 · voortgang</span>
+            <span class="ml-auto text-small text-ink-muted tabular">76%</span>
+          </div>
+          <div class="p-5 md:p-6">
+            <ol class="grid grid-cols-3 gap-2 md:gap-3 list-none p-0 m-0">
+              <li class="rounded-sm border border-line bg-surface-sub p-3 md:p-4 text-center">
+                <span class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-full bg-primary-50 text-primary text-small font-semibold" aria-hidden="true">HR</span>
+                <span class="block text-small font-semibold text-ink leading-tight">Start cyclus</span>
+                <span class="mt-1 block text-[0.75rem] text-success font-semibold">afgerond</span>
+              </li>
+              <li class="rounded-sm border border-primary bg-primary-50 p-3 md:p-4 text-center">
+                <span class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-full bg-primary text-white text-small font-semibold" aria-hidden="true">M</span>
+                <span class="block text-small font-semibold text-ink leading-tight">Manager review</span>
+                <span class="mt-1 block text-[0.75rem] text-primary font-semibold tabular">38/50 klaar</span>
+              </li>
+              <li class="rounded-sm border border-line bg-surface-sub p-3 md:p-4 text-center">
+                <span class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-full bg-white border border-line-strong text-ink-muted text-small font-semibold" aria-hidden="true">✓</span>
+                <span class="block text-small font-semibold text-ink leading-tight">Goedkeuring</span>
+                <span class="mt-1 block text-[0.75rem] text-ink-muted">wacht</span>
+              </li>
+            </ol>
+            <div class="mt-5 h-2 w-full rounded-full bg-surface-sub overflow-hidden">
+              <span class="block h-full rounded-full bg-primary" style="width:76%"></span>
+            </div>
+            <p class="mt-3 text-small text-ink-muted">Iedereen kijkt naar dezelfde stand van zaken, op hetzelfde moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="mt-14 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+      <div class="lg:col-span-5 lg:order-last">
+        <span class="inline-grid place-items-center h-9 w-9 rounded-full bg-mint text-ink font-display font-semibold tabular" aria-hidden="true">2</span>
+        <h3 class="mt-5 text-h3 md:text-[1.75rem] md:leading-tight text-ink-inv">
+          Automatische verdeelsuggesties, makkelijk én eerlijker
+        </h3>
+        <p class="mt-4 text-body text-ink-invmuted max-w-text">
+          Datagedreven volgens je loonbeleid, loonbanden, prestatiescores en andere parameters.
+          Wat jij verkiest.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 min-w-0">
+        <!-- mockup: loonvoorstellen met percentages -->
+        <div class="panel">
+          <div class="panel-bar">
+            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+            <span class="miniheader">Loonvoorstellen · Team Operations</span>
+            <span class="ml-auto text-small text-ink-muted">voorstel</span>
+          </div>
+          <div class="overflow-x-auto scrollhide">
+          <table class="w-full text-left">
+            <caption class="sr-only">Voorgestelde loonsverhoging per medewerker in Team Operations</caption>
+            <thead>
+              <tr class="text-[0.75rem] uppercase tracking-wide text-ink-muted">
+                <th scope="col" class="font-semibold px-5 py-2.5">Medewerker</th>
+                <th scope="col" class="font-semibold px-2 py-2.5">Score</th>
+                <th scope="col" class="font-semibold px-5 py-2.5 text-right">Voorstel</th>
+              </tr>
+            </thead>
+            <tbody class="text-small">
+              <tr class="border-t border-line">
+                <td class="px-5 py-3 font-medium text-ink">Laura Jacobs</td>
+                <td class="px-2 py-3"><span class="inline-block rounded-full bg-primary-50 px-2.5 py-1 text-[0.75rem] font-semibold text-primary-700">Strong</span></td>
+                <td class="px-5 py-3 text-right tabular font-semibold text-ink">+ 3,4%</td>
+              </tr>
+              <tr class="border-t border-line bg-surface-sub">
+                <td class="px-5 py-3 font-medium text-ink">Rachid El Amrani</td>
+                <td class="px-2 py-3"><span class="inline-block rounded-full bg-white border border-line px-2.5 py-1 text-[0.75rem] font-semibold text-ink-muted">On track</span></td>
+                <td class="px-5 py-3 text-right tabular font-semibold text-ink">+ 2,1%</td>
+              </tr>
+              <tr class="border-t border-line">
+                <td class="px-5 py-3 font-medium text-ink">Anne Peeters</td>
+                <td class="px-2 py-3"><span class="inline-block rounded-full bg-primary-50 px-2.5 py-1 text-[0.75rem] font-semibold text-primary-700">Strong</span></td>
+                <td class="px-5 py-3 text-right tabular font-semibold text-ink">+ 3,7%</td>
+              </tr>
+              <tr class="border-t border-line bg-surface-sub">
+                <td class="px-5 py-3 font-medium text-ink">Jonas De Smet</td>
+                <td class="px-2 py-3"><span class="inline-block rounded-full bg-white border border-line px-2.5 py-1 text-[0.75rem] font-semibold text-ink-muted">On track</span></td>
+                <td class="px-5 py-3 text-right tabular font-semibold text-ink">+ 2,0%</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <p class="border-t border-line px-5 py-3 text-small text-ink-muted">
+            De manager volgt het voorstel of wijkt gemotiveerd af
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="mt-14 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+      <div class="lg:col-span-5">
+        <span class="inline-grid place-items-center h-9 w-9 rounded-full bg-mint text-ink font-display font-semibold tabular" aria-hidden="true">3</span>
+        <h3 class="mt-5 text-h3 md:text-[1.75rem] md:leading-tight text-ink-inv">
+          Realtime inzicht in budgetten
+        </h3>
+        <p class="mt-4 text-body text-ink-invmuted max-w-text">
+          Minder overschrijdingen. Meer controle, per budget en in totaal. Geen budget slippage meer.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 min-w-0">
+        <!-- mockup: budgetbalken -->
+        <div class="panel">
+          <div class="panel-bar">
+            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+            <span class="miniheader">Budgetbeheer · cyclus 2027</span>
+          </div>
+          <div class="p-5 md:p-6">
+            <p class="text-small text-ink-muted">Beschikbaar budget</p>
+            <p class="font-display text-[2.25rem] leading-none font-semibold text-ink tabular mt-1">€ 184.250</p>
+
+            <dl class="mt-6 space-y-4 m-0">
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-small font-medium text-ink">Loonsverhoging</dt>
+                  <dd class="text-small tabular text-ink-muted m-0">82%</dd>
+                </div>
+                <div class="mt-1.5 h-2.5 w-full rounded-full bg-surface-sub overflow-hidden">
+                  <span class="block h-full rounded-full bg-primary" style="width:82%"></span>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-small font-medium text-ink">Bonus</dt>
+                  <dd class="text-small tabular text-ink-muted m-0">74%</dd>
+                </div>
+                <div class="mt-1.5 h-2.5 w-full rounded-full bg-surface-sub overflow-hidden">
+                  <span class="block h-full rounded-full bg-primary" style="width:74%"></span>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-small font-medium text-ink">Promotie</dt>
+                  <dd class="text-small tabular text-ink-muted m-0">61%</dd>
+                </div>
+                <div class="mt-1.5 h-2.5 w-full rounded-full bg-surface-sub overflow-hidden">
+                  <span class="block h-full rounded-full bg-primary" style="width:61%"></span>
+                </div>
+              </div>
+            </dl>
+
+            <p class="mt-6 text-small text-ink-muted border-t border-line pt-4">
+              Elke beslissing van een manager telt hier meteen mee
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================================
+     4 · CASES — LICHT (sand). Terug naar rust. Logo's dus -dark.
+     Carrousel die van vier naar acht kan zonder herontwerp.
+     ========================================================================= -->
+<section class="bg-surface-sand py-16 md:py-24 lg:py-32" aria-labelledby="cases-titel"
+         x-data="carrousel()" x-cloak>
+  <div class="max-w-wide mx-auto px-5 md:px-8 xl:px-10">
+
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <p class="eyebrow">Bewijs</p>
+        <h2 id="cases-titel" class="mt-4 text-[1.75rem] leading-tight md:text-h2 max-w-[20ch]">
+          Bewezen bij complexe organisaties
+        </h2>
+      </div>
+      <div class="hidden md:flex items-center gap-2">
+        <button type="button" @click="prev()" :disabled="atStart"
+                class="grid h-11 w-11 place-items-center rounded-full border border-line-strong bg-white text-ink transition-colors duration-150 ease-out hover:border-ink disabled:opacity-40 disabled:hover:border-line-strong"
+                data-cta="cases-vorige" aria-label="Vorige case">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-5 w-5" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" @click="next()" :disabled="atEnd"
+                class="grid h-11 w-11 place-items-center rounded-full border border-line-strong bg-white text-ink transition-colors duration-150 ease-out hover:border-ink disabled:opacity-40 disabled:hover:border-line-strong"
+                data-cta="cases-volgende" aria-label="Volgende case">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-5 w-5" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <ul x-ref="track" @scroll.passive.debounce.100ms="sync()"
+        class="scrollhide mt-10 flex snap-x snap-mandatory gap-4 md:gap-6 overflow-x-auto list-none p-0 -mx-5 px-5 md:mx-0 md:px-0 pb-2">
+
+      <!-- SD Worx -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-3rem)/3)]">
+        <article class="h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col">
+          <img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="h-6 w-auto self-start">
+          <p class="mt-6 font-display text-[2rem] leading-[1.1] font-semibold text-ink">Van 2 maanden naar 3 weken</p>
+          <p class="mt-3 text-body text-ink-muted">
+            De looncyclus van 7.000 medewerkers in 21 landen, voor een deel van hun populatie.
+          </p>
+          <p class="mt-2 text-small text-ink-muted">HR-dienstverlener</p>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 decoration-line-strong hover:decoration-primary hover:decoration-2"
+             data-cta="case-pdf-sdworx">Download de case (pdf)</a>
+        </article>
+      </li>
+
+      <!-- Kaneka -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-3rem)/3)]">
+        <article class="h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col">
+          <img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="h-5 w-auto self-start">
+          <p class="mt-6 font-display text-[2rem] leading-[1.1] font-semibold text-ink">Twee werkweken tijdswinst</p>
+          <p class="mt-3 text-body text-ink-muted">
+            204 medewerkers, verdeeld over 27 afdelingen.
+          </p>
+          <p class="mt-2 text-small text-ink-muted">Chemie &amp; technologie</p>
+          <span class="todo mt-4">TODO — te bevestigen: 204 of 370 medewerkers. De bronnen spreken elkaar tegen</span>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 decoration-line-strong hover:decoration-primary hover:decoration-2"
+             data-cta="case-pdf-kaneka">Download de case (pdf)</a>
+        </article>
+      </li>
+
+      <!-- DPG Media -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-3rem)/3)]">
+        <article class="h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col">
+          <img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="h-6 w-auto self-start">
+          <p class="mt-6 font-display text-[2rem] leading-[1.1] font-semibold text-ink">7× sneller</p>
+          <p class="mt-3 text-body text-ink-muted">
+            6.214 medewerkers in 2 landen, 130 managers in dezelfde cyclus.
+          </p>
+          <p class="mt-2 text-small text-ink-muted">Mediagroep</p>
+          <span class="todo mt-4">TODO — te bevestigen: 7× sneller of van 2 weken naar 2 dagen, en 6.214 of 4.500 medewerkers</span>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 decoration-line-strong hover:decoration-primary hover:decoration-2"
+             data-cta="case-pdf-dpg">Download de case (pdf)</a>
+        </article>
+      </li>
+
+      <!-- Aertssen -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-3rem)/3)]">
+        <article class="h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col">
+          <img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto self-start">
+          <p class="mt-6 font-display text-[2rem] leading-[1.1] font-semibold text-ink">Live op 3 maanden</p>
+          <p class="mt-3 text-body text-ink-muted">
+            450 bedienden, van eerste gesprek tot eerste cyclus.
+          </p>
+          <p class="mt-2 text-small text-ink-muted">Infrastructuur &amp; logistiek</p>
+          <span class="todo mt-4">TODO — te bevestigen: in hoeveel landen</span>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 decoration-line-strong hover:decoration-primary hover:decoration-2"
+             data-cta="case-pdf-aertssen">Download de case (pdf)</a>
+        </article>
+      </li>
+
+      <!-- Anchr — nog geen logobestand, dus typografisch gezet -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[60%] lg:w-[calc((100%-3rem)/3)]">
+        <article class="h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col">
+          <span class="h-8 flex items-center font-display text-h3 font-semibold text-ink">Anchr</span>
+          <p class="mt-6 font-display text-[2rem] leading-[1.1] font-semibold text-ink">Meerdere werkdagen bespaard</p>
+          <p class="mt-3 text-body text-ink-muted">
+            300 medewerkers, verspreid over 8 bedrijven.
+          </p>
+          <p class="mt-2 text-small text-ink-muted">Groep van ondernemingen</p>
+          <span class="todo mt-4">TODO — te bevestigen: logobestand van Anchr, in een donkere versie</span>
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 decoration-line-strong hover:decoration-primary hover:decoration-2"
+             data-cta="case-pdf-anchr">Download de case (pdf)</a>
+        </article>
+      </li>
+    </ul>
+
+    <!-- puntjes: werken ook wanneer er acht cases staan -->
+    <div class="mt-6 flex items-center justify-center gap-2 md:justify-start" role="group" aria-label="Ga naar case">
+      <template x-for="(c,i) in count" :key="i">
+        <button type="button" @click="go(i)"
+                class="h-2.5 rounded-full transition-all duration-150 ease-out"
+                :class="i === index ? 'w-8 bg-primary' : 'w-2.5 bg-line-strong'"
+                :aria-label="'Ga naar case ' + (i+1)"
+                :aria-current="i === index ? 'true' : 'false'"
+                data-cta="cases-punt"></button>
+      </template>
+    </div>
+
+    <p class="todo mt-8 max-w-[38rem]">
+      TODO — te bevestigen: Jana levert de vijf case-pdf's aan. Tot dan wijzen de downloadlinks
+      nergens naartoe. De carrousel is gebouwd om van vier naar acht cases te gaan zonder herontwerp.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================================
+     5 · ONTDEK HOE HET WERKT — DONKER. Echte productschermen op een donkere band.
+     ========================================================================= -->
+<section class="bg-surface-deep py-16 md:py-24 lg:py-32" aria-labelledby="hoe-titel"
+         x-data="rondleiding()" x-cloak>
+  <div class="max-w-wide mx-auto px-5 md:px-8 xl:px-10">
+
+    <span class="switch-rule" aria-hidden="true"></span>
+    <p class="eyebrow-inv mt-6">De cyclus</p>
+    <h2 id="hoe-titel" class="mt-4 text-[1.75rem] leading-tight md:text-h2 text-ink-inv max-w-[20ch]">
+      Ontdek hoe het werkt
+    </h2>
+
+    <!-- tabs: op telefoon een horizontaal schuivende rij, nooit een select -->
+    <div role="tablist" aria-label="De vier stappen in een looncyclus"
+         class="scrollhide mt-10 flex gap-2 overflow-x-auto snap-x border-b border-white/15 -mx-5 px-5 md:mx-0 md:px-0">
+      <template x-for="(s,i) in stappen" :key="i">
+        <button type="button" role="tab" :id="'tab-' + i" :aria-controls="'paneel-' + i"
+                :aria-selected="tab === i ? 'true' : 'false'" :tabindex="tab === i ? 0 : -1"
+                @click="tab = i"
+                @keydown.arrow-right.prevent="tab = (tab + 1) % stappen.length; focusTab()"
+                @keydown.arrow-left.prevent="tab = (tab - 1 + stappen.length) % stappen.length; focusTab()"
+                class="snap-start shrink-0 whitespace-nowrap px-4 py-3 text-body font-medium -mb-px border-b-2 transition-colors duration-150 ease-out"
+                :class="tab === i ? 'border-mint text-ink-inv' : 'border-transparent text-ink-invmuted hover:text-ink-inv'"
+                data-cta="rondleiding-stap">
+          <span class="tabular mr-2 opacity-70" x-text="i + 1"></span><span x-text="s.kort"></span>
+        </button>
+      </template>
+    </div>
+
+    <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <div class="lg:col-span-4 lg:sticky lg:top-12">
+        <template x-for="(s,i) in stappen" :key="i">
+          <div x-show="tab === i" :id="'paneel-' + i" role="tabpanel" :aria-labelledby="'tab-' + i" tabindex="0">
+            <h3 class="text-h3 text-ink-inv" x-text="s.titel"></h3>
+            <p class="mt-4 text-body text-ink-invmuted max-w-text" x-text="s.tekst"></p>
+          </div>
+        </template>
+
+        <a href="#demo" class="btn-mint mt-8 w-full sm:w-auto" data-cta="rondleiding-boek-demo">Boek een demo</a>
+      </div>
+
+      <div class="lg:col-span-8 min-w-0">
+        <figure class="panel m-0">
+          <div class="panel-bar">
+            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+            <span class="miniheader" x-text="stappen[tab].schermtitel"></span>
+            <span class="ml-auto text-small text-ink-muted"><span class="md:hidden">sleep opzij · </span><span class="tabular" x-text="(tab + 1) + ' / 4'"></span></span>
+          </div>
+
+          <!-- Op telefoon blijft het scherm op ware grootte en schuif je er horizontaal door:
+               een dashboard dat naar 350px geperst wordt, is geen bewijs meer. -->
+          <div class="overflow-x-auto scrollhide">
+          <img src="assets/img/main-visual-nl.webp" width="2400" height="1398" loading="eager" fetchpriority="high"
+               x-show="tab === 0" class="block h-auto w-full min-w-[620px] md:min-w-0"
+               alt="Overzicht van een lopende looncyclus: per afdeling wie al klaar is, met het verbruikte budget ernaast">
+          <img src="assets/img/merit-compare-nl.webp" width="1635" height="1293" loading="lazy"
+               x-show="tab === 1" class="block h-auto w-full min-w-[620px] md:min-w-0"
+               alt="Twee medewerkers naast elkaar, met brutoloon, bonus en promotie, zodat een manager zijn beslissing kan onderbouwen">
+          <img src="assets/img/merit-budget-nl.webp" width="1550" height="463" loading="lazy"
+               x-show="tab === 2" class="block h-auto w-full min-w-[620px] md:min-w-0"
+               alt="Budgetbalken die tonen hoeveel van het loonsverhogings-, bonus- en promotiebudget al vastligt">
+          <img src="assets/img/merit-communication-nl.webp" width="1960" height="1054" loading="lazy"
+               x-show="tab === 3" class="block h-auto w-full min-w-[620px] md:min-w-0"
+               alt="Het loonpakket oud, nieuw en het verschil, klaar om als persoonlijke rewardletter te versturen">
+          </div>
+        </figure>
+
+        <!-- het afdelingendashboard uit Jana's concept, hertekend in HTML -->
+        <div class="panel mt-4 md:mt-6">
+          <div class="panel-bar">
+            <span class="miniheader">Merit cycle 2027</span>
+            <span class="ml-auto text-small text-ink-muted tabular">76% afgerond</span>
+          </div>
+          <div class="p-5 md:p-6">
+            <dl class="grid grid-cols-3 gap-3 m-0">
+              <div class="rounded-sm border border-line p-3">
+                <dt class="text-[0.75rem] text-ink-muted">Managers klaar</dt>
+                <dd class="m-0 mt-1 font-display text-h3 font-semibold text-ink tabular">38/50</dd>
+              </div>
+              <div class="rounded-sm border border-line p-3">
+                <dt class="text-[0.75rem] text-ink-muted">Budget gebruikt</dt>
+                <dd class="m-0 mt-1 font-display text-h3 font-semibold text-ink tabular">81,6%</dd>
+              </div>
+              <div class="rounded-sm border border-line p-3">
+                <dt class="text-[0.75rem] text-ink-muted">Open acties</dt>
+                <dd class="m-0 mt-1 font-display text-h3 font-semibold text-ink tabular">12</dd>
+              </div>
+            </dl>
+
+            <div class="mt-5 overflow-x-auto scrollhide">
+            <table class="w-full text-left text-small">
+              <caption class="sr-only">Voortgang en budget per afdeling</caption>
+              <thead>
+                <tr class="text-[0.75rem] uppercase tracking-wide text-ink-muted">
+                  <th scope="col" class="font-semibold py-2">Afdeling</th>
+                  <th scope="col" class="font-semibold py-2">Klaar</th>
+                  <th scope="col" class="font-semibold py-2 text-right">Budget</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-line">
+                  <td class="py-2.5 font-medium text-ink">Finance Belgium</td>
+                  <td class="py-2.5 tabular text-success font-semibold">8/8</td>
+                  <td class="py-2.5 text-right tabular text-ink">€ 42.100</td>
+                </tr>
+                <tr class="border-t border-line">
+                  <td class="py-2.5 font-medium text-ink">Operations</td>
+                  <td class="py-2.5 tabular text-ink-muted">12/16</td>
+                  <td class="py-2.5 text-right tabular text-ink">€ 58.440</td>
+                </tr>
+                <tr class="border-t border-line">
+                  <td class="py-2.5 font-medium text-ink">Commercial</td>
+                  <td class="py-2.5 tabular text-ink-muted">9/14</td>
+                  <td class="py-2.5 text-right tabular text-ink">€ 49.210</td>
+                </tr>
+                <tr class="border-t border-line">
+                  <td class="py-2.5 font-medium text-ink">Technology</td>
+                  <td class="py-2.5 tabular text-ink-muted">9/12</td>
+                  <td class="py-2.5 text-right tabular text-ink">€ 34.500</td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+
+        <p class="todo-inv mt-4">
+          TODO — te bevestigen: dit zijn de bestaande productschermen van youbo.io, met voorbeeldcijfers.
+          Zodra er toegang is tot de app maken we schermen op maat van deze pagina
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     6 · HET GROTE CIJFER — LICHT. Eén zin, geen decoratie.
+     ========================================================================= -->
+<section class="bg-surface py-16 md:py-24 lg:py-32" aria-labelledby="cijfer-titel">
+  <div class="max-w-container mx-auto px-5 md:px-8 xl:px-10 text-center">
+    <p class="eyebrow">Vandaag in gebruik</p>
+    <h2 id="cijfer-titel" class="mt-6 text-[1.75rem] leading-tight md:text-h2 max-w-[26ch] mx-auto">
+      De lonen, bonussen en promoties van
+      <span class="font-display tabular block mt-4 text-[3rem] leading-none md:text-[4.5rem] text-primary">19.000 medewerkers</span>
+      <span class="block mt-4">in 21 landen worden al met Youbo beheerd</span>
+    </h2>
+    <span class="switch-rule mx-auto mt-10" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- =========================================================================
+     7 · EU PAY TRANSPARENCY — DONKER. Paraatheid, nooit een plicht.
+     ========================================================================= -->
+<section class="bg-surface-deep py-16 md:py-24 lg:py-32" aria-labelledby="eu-titel">
+  <div class="max-w-wide mx-auto px-5 md:px-8 xl:px-10 grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+
+    <div class="lg:col-span-6">
+      <span class="switch-rule" aria-hidden="true"></span>
+      <p class="eyebrow-inv mt-6">Vooruitkijken</p>
+      <h2 id="eu-titel" class="mt-4 text-[1.75rem] leading-tight md:text-h2 text-ink-inv max-w-[20ch]">
+        Wees klaar voor EU Pay Transparency
+      </h2>
+      <p class="mt-5 text-lead text-ink-invmuted max-w-text">
+        Start nu: ontdek loonverschillen en werk ze tijdig weg. Bewijs dat elke loonbeslissing
+        consequent is.
+      </p>
+      <p class="mt-5 text-small text-ink-invmuted max-w-text">
+        De Europese richtlijn is in België nog niet omgezet voor de privésector. Dit gaat dus over
+        paraatheid, niet over een verplichting die vandaag al geldt.
+      </p>
+    </div>
+
+    <div class="lg:col-span-6 min-w-0">
+      <div class="panel">
+        <div class="panel-bar">
+          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+          <span class="miniheader">Loonverschil per afdeling</span>
+          <span class="ml-auto text-small text-ink-muted">voorbeeld</span>
+        </div>
+        <div class="p-5 md:p-6">
+          <dl class="space-y-5 m-0">
+            <div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-small font-medium text-ink">Finance</dt>
+                <dd class="m-0 text-small tabular font-semibold text-amber">− 1,2%</dd>
+              </div>
+              <div class="mt-1.5 h-2.5 w-full rounded-full bg-surface-sub overflow-hidden">
+                <span class="block h-full rounded-full bg-amber" style="width:34%"></span>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-small font-medium text-ink">Operations</dt>
+                <dd class="m-0 text-small tabular font-semibold text-success">+ 0,4%</dd>
+              </div>
+              <div class="mt-1.5 h-2.5 w-full rounded-full bg-surface-sub overflow-hidden">
+                <span class="block h-full rounded-full bg-primary" style="width:12%"></span>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-small font-medium text-ink">Sales</dt>
+                <dd class="m-0 text-small tabular font-semibold text-amber">− 2,1%</dd>
+              </div>
+              <div class="mt-1.5 h-2.5 w-full rounded-full bg-surface-sub overflow-hidden">
+                <span class="block h-full rounded-full bg-amber" style="width:58%"></span>
+              </div>
+            </div>
+          </dl>
+          <p class="mt-6 border-t border-line pt-4 text-small text-ink-muted">
+            Zie waar het verschil zit, voor iemand het je vraagt
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     8 · INTEGRATIES — LICHT (surface-sub).
+     ========================================================================= -->
+<section class="bg-surface-sub py-16 md:py-24" aria-labelledby="integraties-titel">
+  <div class="max-w-wide mx-auto px-5 md:px-8 xl:px-10 grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+
+    <div class="lg:col-span-5">
+      <p class="eyebrow">Integraties</p>
+      <h2 id="integraties-titel" class="mt-4 text-[1.75rem] leading-tight md:text-h2 max-w-[20ch]">
+        Plug vlot in met al je hr-tools
+      </h2>
+      <p class="mt-5 text-body text-ink-muted max-w-text">
+        Youbo past in elk hr-landschap en connecteert met je systemen voor payroll, performance
+        en core hr.
+      </p>
+    </div>
+
+    <div class="lg:col-span-7">
+      <ul class="flex flex-wrap gap-3 list-none p-0">
+        <li class="rounded-sm border border-line-strong bg-white px-4 py-3 text-body font-medium">eBlox</li>
+        <li class="rounded-sm border border-line-strong bg-white px-4 py-3 text-body font-medium">SAP SuccessFactors</li>
+        <li class="rounded-sm border border-line-strong bg-white px-4 py-3 text-body font-medium">AFAS</li>
+        <li class="rounded-sm border border-line bg-surface-sand px-4 py-3 text-body font-medium text-ink-muted">+ jouw tools</li>
+      </ul>
+
+      <p class="todo mt-6 max-w-[38rem]">
+        TODO — te bevestigen: welke lijst klopt. Het campagneplan noemt daarnaast Treality, het
+        concept noemt Protime en Workday. Hierboven staan enkel de drie die in beide bronnen
+        voorkomen.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     9 · QUOTES — LICHT (sand). Logo's dus -dark. Foto of een zichtbare fotoplek.
+     ========================================================================= -->
+<section class="bg-surface-sand py-16 md:py-24 lg:py-32" aria-labelledby="quotes-titel">
+  <div class="max-w-wide mx-auto px-5 md:px-8 xl:px-10">
+    <p class="eyebrow">In hun eigen woorden</p>
+    <h2 id="quotes-titel" class="mt-4 text-[1.75rem] leading-tight md:text-h2 max-w-[22ch]">
+      Waarom klanten voor Youbo kiezen
+    </h2>
+
+    <div class="mt-10 grid md:grid-cols-2 gap-4 md:gap-6 items-stretch">
+
+      <!-- Pieter-Jan Boden — foto aanwezig -->
+      <figure class="m-0 h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col">
+        <blockquote class="m-0 font-display text-h3 leading-snug text-ink">
+          “Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <img src="assets/img/pieter-jan.webp" width="2000" height="1996" loading="lazy"
+               alt="Pieter-Jan Boden" class="h-12 w-12 rounded-full object-cover">
+          <span>
+            <span class="block text-body font-semibold text-ink">Pieter-Jan Boden</span>
+            <span class="block text-small text-ink-muted">People director, SD Worx</span>
+          </span>
+          <img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="ml-auto h-5 w-auto">
+        </figcaption>
+      </figure>
+
+      <!-- Bart Verhoeven — geen foto -->
+      <figure class="m-0 h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col">
+        <blockquote class="m-0 font-display text-h3 leading-snug text-ink">
+          “Toen ik een demo zag, wist ik: hier hebben we op gewacht.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <span class="h-12 w-12 shrink-0 rounded-full border border-dashed border-amber bg-amber-50 grid place-items-center text-[0.625rem] font-semibold uppercase tracking-wide text-amber text-center leading-tight" aria-hidden="true">foto<br>nodig</span>
+          <span>
+            <span class="block text-body font-semibold text-ink">Bart Verhoeven</span>
+            <span class="block text-small text-ink-muted">Hr manager, Kaneka</span>
+          </span>
+          <img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="ml-auto h-4 w-auto">
+        </figcaption>
+      </figure>
+
+      <!-- Mieke Catthoor — foto aanwezig -->
+      <figure class="m-0 h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col">
+        <blockquote class="m-0 font-display text-h3 leading-snug text-ink">
+          “Youbo helpt om de loonkloof weg te werken.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <img src="assets/img/mieke-catthoor.webp" width="795" height="858" loading="lazy"
+               alt="Mieke Catthoor" class="h-12 w-12 rounded-full object-cover">
+          <span>
+            <span class="block text-body font-semibold text-ink">Mieke Catthoor</span>
+            <span class="block text-small text-ink-muted">Compensation &amp; benefits, DPG Media</span>
+          </span>
+          <img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="ml-auto h-5 w-auto">
+        </figcaption>
+      </figure>
+
+      <!-- Joris Valkenborgh — geen foto -->
+      <figure class="m-0 h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col">
+        <blockquote class="m-0 font-display text-h3 leading-snug text-ink">
+          “Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu
+          betere inhoudelijke gesprekken met mijn team.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <span class="h-12 w-12 shrink-0 rounded-full border border-dashed border-amber bg-amber-50 grid place-items-center text-[0.625rem] font-semibold uppercase tracking-wide text-amber text-center leading-tight" aria-hidden="true">foto<br>nodig</span>
+          <span>
+            <span class="block text-body font-semibold text-ink">Joris Valkenborgh</span>
+            <span class="block text-small text-ink-muted">Team manager, SD Worx</span>
+          </span>
+          <img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="ml-auto h-5 w-auto">
+        </figcaption>
+      </figure>
+
+      <!-- Evi Van der Vliet — geen foto, geen logobestand -->
+      <figure class="m-0 h-full rounded-lg bg-white border border-line p-6 md:p-8 flex flex-col md:col-span-2">
+        <blockquote class="m-0 font-display text-h3 leading-snug text-ink max-w-[46rem]">
+          “Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien
+          we de jaarkost en het totale loonpakket van de werknemer.”
+        </blockquote>
+        <figcaption class="mt-auto pt-6 flex items-center gap-4">
+          <span class="h-12 w-12 shrink-0 rounded-full border border-dashed border-amber bg-amber-50 grid place-items-center text-[0.625rem] font-semibold uppercase tracking-wide text-amber text-center leading-tight" aria-hidden="true">foto<br>nodig</span>
+          <span>
+            <span class="block text-body font-semibold text-ink">Evi Van der Vliet</span>
+            <span class="block text-small text-ink-muted">Hr business partner, Anchr</span>
+          </span>
+          <span class="ml-auto font-display text-h4 font-semibold text-ink">Anchr</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <p class="todo mt-8 max-w-[38rem]">
+      TODO — foto nodig van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet. Half met en half
+      zonder foto werkt niet: als die foto's er niet komen, gaan alle vijf de quotes zonder portret.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================================
+     10 · FAQ — DONKER. Laatste schakeling voor het formulier.
+     ========================================================================= -->
+<section class="bg-surface-deep py-16 md:py-24" aria-labelledby="faq-titel"
+         x-data="{ open: null }" x-cloak>
+  <div class="max-w-container mx-auto px-5 md:px-8 xl:px-10">
+    <span class="switch-rule" aria-hidden="true"></span>
+    <p class="eyebrow-inv mt-6">Voor je het vraagt</p>
+    <h2 id="faq-titel" class="mt-4 text-[1.75rem] leading-tight md:text-h2 text-ink-inv max-w-[20ch]">
+      Veelgestelde vragen
+    </h2>
+
+    <div class="mt-10 border-y border-white/15">
+
+      <div class="border-b border-white/15 last:border-b-0">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 0 ? null : 0" :aria-expanded="open === 0 ? 'true' : 'false'"
+                  aria-controls="faq-0" data-cta="faq-opzet"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h4 font-semibold text-ink-inv font-display hover:text-mint transition-colors duration-150 ease-out">
+            <span>Hoe lang duurt het om Youbo op te zetten?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5 transition-transform duration-200 ease-out" :class="open === 0 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-0" x-show="open === 0" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-invmuted max-w-text">
+            Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De
+            precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je
+            loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder.
+          </p>
+        </div>
+      </div>
+
+      <div class="border-b border-white/15">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 1 ? null : 1" :aria-expanded="open === 1 ? 'true' : 'false'"
+                  aria-controls="faq-1" data-cta="faq-omvang"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h4 font-semibold text-ink-inv font-display hover:text-mint transition-colors duration-150 ease-out">
+            <span>Vanaf hoeveel medewerkers is Youbo relevant?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5 transition-transform duration-200 ease-out" :class="open === 1 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-1" x-show="open === 1" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-invmuted max-w-text">
+            Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat
+            doorgaans vanaf 300 à 500 medewerkers, of zodra het Excelproces complex en
+            persoonsafhankelijk wordt.
+          </p>
+        </div>
+      </div>
+
+      <div class="border-b border-white/15">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 2 ? null : 2" :aria-expanded="open === 2 ? 'true' : 'false'"
+                  aria-controls="faq-2" data-cta="faq-prijs"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h4 font-semibold text-ink-inv font-display hover:text-mint transition-colors duration-150 ease-out">
+            <span>Hoeveel kost het?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5 transition-transform duration-200 ease-out" :class="open === 2 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-2" x-show="open === 2" x-collapse>
+          <div class="pb-6 pr-6 max-w-text">
+            <p class="text-body text-ink-invmuted">
+              Dit is de vraag die iedereen stelt, en ze hoort op de pagina. Wat hier komt te staan,
+              beslist Youbo zelf.
+            </p>
+            <p class="todo-inv mt-4">
+              TODO — te bevestigen: het antwoord op de prijsvraag. Jana loopt dit na met de partners
+              en met Nicole. Een bereik of de logica achter de prijs is verdedigbaar, geen antwoord is dat niet
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-b border-white/15">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 3 ? null : 3" :aria-expanded="open === 3 ? 'true' : 'false'"
+                  aria-controls="faq-3" data-cta="faq-maatwerk"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h4 font-semibold text-ink-inv font-display hover:text-mint transition-colors duration-150 ease-out">
+            <span>Past Youbo zich aan onze manier van werken aan?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5 transition-transform duration-200 ease-out" :class="open === 3 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-3" x-show="open === 3" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-invmuted max-w-text">
+            Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het
+            uitgangspunt. Youbo neemt ook complexe regels en formules over.
+          </p>
+        </div>
+      </div>
+
+      <div class="border-b border-white/15">
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 4 ? null : 4" :aria-expanded="open === 4 ? 'true' : 'false'"
+                  aria-controls="faq-4" data-cta="faq-landen"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h4 font-semibold text-ink-inv font-display hover:text-mint transition-colors duration-150 ease-out">
+            <span>Is Youbo geschikt voor meerdere landen en niveaus?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5 transition-transform duration-200 ease-out" :class="open === 4 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-4" x-show="open === 4" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-invmuted max-w-text">
+            Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo
+            inzetten in verschillende landen.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="m-0">
+          <button type="button" @click="open = open === 5 ? null : 5" :aria-expanded="open === 5 ? 'true' : 'false'"
+                  aria-controls="faq-5" data-cta="faq-compliance"
+                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h4 font-semibold text-ink-inv font-display hover:text-mint transition-colors duration-150 ease-out">
+            <span>Hoe helpt Youbo met compliance?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5 transition-transform duration-200 ease-out" :class="open === 5 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+          </button>
+        </h3>
+        <div id="faq-5" x-show="open === 5" x-collapse>
+          <p class="pb-6 pr-6 text-body text-ink-invmuted max-w-text">
+            Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing
+            onderbouwd en traceerbaar.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     11 · FORMULIER — LICHT. Nick opnieuw, nu naast het formulier.
+     ========================================================================= -->
+<section id="demo" class="bg-surface-sand py-16 md:py-24 lg:py-32" aria-labelledby="demo-titel">
+  <div class="max-w-wide mx-auto px-5 md:px-8 xl:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+
+    <div class="lg:col-span-5">
+      <p class="eyebrow">Demo</p>
+      <h2 id="demo-titel" class="mt-4 text-[1.75rem] leading-tight md:text-h2 max-w-[18ch]">
+        Met Youbo starten is makkelijk
+      </h2>
+      <p class="mt-5 text-body text-ink-muted max-w-text">
+        Reward expert Nick laat je zien hoe Youbo aansluit op jullie loonbeleid, structuur en
+        systemen. Hij neemt persoonlijk contact op.
+      </p>
+
+      <div class="mt-8 flex items-center gap-4">
+        <!-- TODO — foto nodig: dezelfde foto als in de hero, hier klein -->
+        <span class="fotoplek h-16 w-16 shrink-0 rounded-full">
+          <span class="text-[0.5625rem] font-semibold uppercase tracking-wide text-mint leading-tight">foto<br>Nick</span>
+        </span>
+        <span>
+          <span class="block text-body font-semibold text-ink">Nick</span>
+          <span class="block text-small text-ink-muted">Reward expert</span>
+        </span>
+      </div>
+
+      <!-- de lagedrempeloptie: meteen iemand spreken -->
+      <div class="mt-8 rounded bg-white border border-line p-6">
+        <p class="text-h4 font-display font-semibold text-ink">Liever meteen iemand spreken</p>
+        <ul class="mt-4 space-y-3 list-none p-0 text-body">
+          <li>
+            <a href="#" data-cta="agenda-boeken"
+               class="text-primary font-medium underline underline-offset-4 decoration-line-strong hover:decoration-primary hover:decoration-2">
+              Boek rechtstreeks in Nicks agenda
+            </a>
+          </li>
+          <li class="text-ink-muted">Bellen en mailen kan ook</li>
+        </ul>
+        <p class="todo mt-4">
+          TODO — te bevestigen: Nicks agendalink, telefoonnummer en e-mailadres. Zolang die er niet
+          zijn, staan hier geen verzonnen gegevens
+        </p>
+      </div>
+    </div>
+
+    <div class="lg:col-span-7">
+      <!-- Het endpoint moet nog gekoppeld worden; action blijft bewust leeg tot dan. -->
+      <form class="rounded-lg bg-white border border-line p-6 md:p-8 shadow-card" novalidate>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="naam" class="block text-small font-medium text-ink mb-1.5">Naam <span class="text-alert" aria-hidden="true">*</span></label>
+            <input id="naam" name="naam" type="text" autocomplete="name" required
+                   class="w-full rounded-sm border border-line-strong bg-white px-4 py-3 text-body focus:border-primary focus:ring-2 focus:ring-primary/25 focus:outline-none"
+                   placeholder="Anne Peeters">
+          </div>
+          <div>
+            <label for="email" class="block text-small font-medium text-ink mb-1.5">E-mailadres <span class="text-alert" aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" required
+                   aria-describedby="email-help"
+                   class="w-full rounded-sm border border-line-strong bg-white px-4 py-3 text-body focus:border-primary focus:ring-2 focus:ring-primary/25 focus:outline-none"
+                   placeholder="anne@bedrijf.be">
+            <p id="email-help" class="mt-1.5 text-small text-ink-muted">Bij voorkeur je werkadres</p>
+          </div>
+          <div class="sm:col-span-2">
+            <label for="telefoon" class="block text-small font-medium text-ink mb-1.5">Telefoon</label>
+            <input id="telefoon" name="telefoon" type="tel" autocomplete="tel"
+                   class="w-full rounded-sm border border-line-strong bg-white px-4 py-3 text-body focus:border-primary focus:ring-2 focus:ring-primary/25 focus:outline-none"
+                   placeholder="+32 4xx xx xx xx">
+          </div>
+          <div class="sm:col-span-2">
+            <label for="bericht" class="block text-small font-medium text-ink mb-1.5">Bericht</label>
+            <textarea id="bericht" name="bericht" rows="4"
+                      class="w-full rounded-sm border border-line-strong bg-white px-4 py-3 text-body focus:border-primary focus:ring-2 focus:ring-primary/25 focus:outline-none"
+                      placeholder="Hoeveel medewerkers zitten er in jullie looncyclus? Waar loopt het vandaag vast?"></textarea>
+          </div>
+        </div>
+
+        <div class="mt-6 flex items-start gap-3">
+          <input id="nieuwsbrief" name="nieuwsbrief" type="checkbox" value="ja"
+                 class="mt-1 h-5 w-5 shrink-0 rounded-sm border border-line-strong text-primary focus:ring-2 focus:ring-primary/25">
+          <label for="nieuwsbrief" class="text-small text-ink-muted">
+            Schrijf me in op de nieuwsbrief, met wat er in reward beweegt. Uitschrijven kan met één klik
+          </label>
+        </div>
+
+        <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo">
+          Vraag je demo aan
+        </button>
+
+        <p class="mt-4 text-small text-ink-muted">
+          We gebruiken je gegevens enkel om je demo-aanvraag op te volgen.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     12 · FOOTER — DONKER. Wit woordmerk, want donkere ondergrond.
+     ========================================================================= -->
+<footer class="bg-surface-deep py-12 md:py-16">
+  <div class="max-w-wide mx-auto px-5 md:px-8 xl:px-10">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+      <div>
+        <img src="assets/img/youbo_logo_white.svg" alt="Youbo" width="102" height="28" class="h-7 w-auto">
+        <p class="mt-5 text-small text-ink-invmuted">
+          © Youbo · Een product van Teal Partners
+        </p>
+        <p class="mt-2 text-small text-ink-invmuted">
+          Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542
+        </p>
+      </div>
+      <!-- De ISO-badge is donker getekend en zou op deze band verdwijnen, dus staat hij op een wit plaatje -->
+      <div class="self-start md:self-auto flex items-center gap-4">
+        <span class="inline-flex rounded bg-white px-4 py-3">
+          <img src="assets/img/iso-eng.svg" alt="ISO 27001:2022 en GDPR" class="h-12 w-auto">
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- =========================================================================
+     MEELOPENDE BALK — licht, dus het donkere woordmerk. Max 64px hoog,
+     verdwijnt zodra het formulier in beeld komt.
+     ========================================================================= -->
+<div x-data="meeloper()" x-show="toon" x-transition.opacity.duration.200ms x-cloak
+     class="fixed bottom-0 inset-x-0 z-40 border-t border-line bg-white/95 backdrop-blur shadow-lift">
+  <div class="max-w-container mx-auto px-5 py-3 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3 min-w-0">
+      <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-6 w-auto hidden sm:block">
+      <p class="text-small text-ink-muted truncate">Nick toont je Youbo op jouw eigen looncyclus</p>
+    </div>
+    <a href="#demo" class="btn-primary shrink-0 px-5 py-2.5 min-h-[44px] text-small" data-cta="meelopende-balk-demo">
+      Boek een demo
+    </a>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('alpine:init', () => {
+
+    /* De carrousel schuift per kaart en werkt even goed met acht cases als met vijf. */
+    Alpine.data('carrousel', () => ({
+      index: 0,
+      count: 0,
+      atStart: true,
+      atEnd: false,
+      init() {
+        this.count = this.$refs.track.children.length;
+        this.$nextTick(() => this.sync());
+      },
+      go(i) {
+        const kind = this.$refs.track.children[i];
+        if (kind) this.$refs.track.scrollTo({ left: kind.offsetLeft - this.$refs.track.offsetLeft, behavior: 'smooth' });
+      },
+      next() { this.go(Math.min(this.index + 1, this.count - 1)); },
+      prev() { this.go(Math.max(this.index - 1, 0)); },
+      sync() {
+        const track = this.$refs.track;
+        const breedte = track.children[0] ? track.children[0].offsetWidth : 1;
+        this.index = Math.round(track.scrollLeft / breedte);
+        this.atStart = track.scrollLeft < 8;
+        this.atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+      }
+    }));
+
+    /* Vier stappen, geen automatisch doorschuiven. Pijltjes verplaatsen de focus mee. */
+    Alpine.data('rondleiding', () => ({
+      tab: 0,
+      stappen: [
+        { kort: 'Overzicht',   titel: 'Hr houdt realtime het overzicht',
+          tekst: 'Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.',
+          schermtitel: 'Cyclusoverzicht voor hr' },
+        { kort: 'Beslissen',   titel: 'Managers beslissen onderbouwd',
+          tekst: 'Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele situaties of vergelijk medewerkers.',
+          schermtitel: 'Medewerkers vergelijken' },
+        { kort: 'Budget',      titel: 'Elk budget blijft onder controle',
+          tekst: 'Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.',
+          schermtitel: 'Budget per soort' },
+        { kort: 'Rewardletters', titel: 'Rewardletters in één klik',
+          tekst: 'Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.',
+          schermtitel: 'Loonpakket oud, nieuw en verschil' }
+      ],
+      focusTab() {
+        this.$nextTick(() => {
+          const el = document.getElementById('tab-' + this.tab);
+          if (el) el.focus();
+        });
+      }
+    }));
+
+    /* De balk komt op na de hero en gaat weg zodra het formulier in beeld komt,
+       zodat hij nooit over de velden staat waar hij naartoe stuurt. */
+    Alpine.data('meeloper', () => ({
+      toon: false,
+      init() {
+        const kijk = () => {
+          const demo = document.getElementById('demo');
+          const bijnaInBeeld = demo && demo.getBoundingClientRect().top < window.innerHeight - 80;
+          this.toon = window.scrollY > 600 && !bijnaInBeeld;
+        };
+        kijk();
+        window.addEventListener('scroll', kijk, { passive: true });
+        window.addEventListener('resize', kijk, { passive: true });
+      }
+    }));
+  });
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "nl-BE",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Hoe lang duurt het om Youbo op te zetten?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Vanaf hoeveel medewerkers is Youbo relevant?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat doorgaans vanaf 300 à 500 medewerkers, of zodra het Excelproces complex en persoonsafhankelijk wordt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Past Youbo zich aan onze manier van werken aan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het uitgangspunt. Youbo neemt ook complexe regels en formules over."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Youbo geschikt voor meerdere landen en niveaus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo inzetten in verschillende landen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hoe helpt Youbo met compliance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing onderbouwd en traceerbaar."
+      }
+    }
+  ]
+}
+</script>
+
+</body>
+</html>
