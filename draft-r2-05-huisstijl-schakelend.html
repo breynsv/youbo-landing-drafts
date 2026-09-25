@@ -119,8 +119,9 @@ OPEN CIJFERS — NOG UIT TE KLAREN MET BART: twee klantcijfers spreken elkaar te
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 /* ---------------------------------------------------------------------------
-   De tokens uit DESIGN-youbo-io.md, letterlijk. Geen enkele kleur is bijgestuurd,
-   het groen al helemaal niet.
+   De tokens uit DESIGN-youbo-io.md, letterlijk. Het groen is niet bijgestuurd.
+   Eén toevoeging, geen wijziging: link.licht voor links op een lichte achtergrond
+   (zie de toelichting daar). De huisstijlkleur zelf blijft ongemoeid.
    --------------------------------------------------------------------------- */
 tailwind.config = {
   theme: {
@@ -132,7 +133,12 @@ tailwind.config = {
         paper:   '#ffffff',                                 /* background               */
         surface: '#f6f8fa',                                 /* surface                  */
         line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
-        link:    { DEFAULT: '#00acd6', hover: '#006c87' },
+        /* Het cyaanblauw van de huisstijl haalt op licht de leesnorm niet:
+           2,67:1 op wit en 2,51:1 op #f6f8fa, waar 4,5:1 nodig is. Op de
+           donkere banden werkt het wél, dus blijft het daar staan. Voor links
+           op een lichte achtergrond gebruikt deze pagina de goedgekeurde
+           donkerder variant #00718c: 5,61:1 op wit en 5,27:1 op #f6f8fa. */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
         night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
         forest:  '#154e3a',                                 /* gradient-dark-end        */
       },
@@ -790,7 +796,7 @@ tailwind.config = {
           <p class="mt-2 text-caption text-ink-soft">HR-dienstverlener</p>
           <span class="todo mt-4"><b>TODO — te bevestigen</b>: 21 of 18 landen. Het campagneplan zegt 21, de
           gepubliceerde case op youbo.io zegt 18</span>
-          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link-licht underline underline-offset-4 hover:text-link-hover"
              style="transition: color var(--m-base) var(--e-standard)"
              data-cta="case-pdf-sdworx">Download de case (pdf)</a>
         </article>
@@ -807,7 +813,7 @@ tailwind.config = {
           <p class="mt-2 text-caption text-ink-soft">Chemie &amp; technologie</p>
           <span class="todo mt-4"><b>TODO — te bevestigen</b>: 204 of 370 medewerkers. Het campagneplan zegt 204, de
           gepubliceerde case op youbo.io zegt 370</span>
-          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link-licht underline underline-offset-4 hover:text-link-hover"
              style="transition: color var(--m-base) var(--e-standard)"
              data-cta="case-pdf-kaneka">Download de case (pdf)</a>
         </article>
@@ -823,7 +829,7 @@ tailwind.config = {
           </p>
           <p class="mt-2 text-caption text-ink-soft">Mediagroep</p>
           <span class="todo mt-4"><b>TODO — te bevestigen</b>: 7× sneller of van 2 weken naar 2 dagen, en 6.214 of 4.500 medewerkers</span>
-          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link-licht underline underline-offset-4 hover:text-link-hover"
              style="transition: color var(--m-base) var(--e-standard)"
              data-cta="case-pdf-dpg">Download de case (pdf)</a>
         </article>
@@ -839,7 +845,7 @@ tailwind.config = {
           </p>
           <p class="mt-2 text-caption text-ink-soft">Infrastructuur &amp; logistiek</p>
           <span class="todo mt-4"><b>TODO — te bevestigen</b>: in hoeveel landen</span>
-          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link-licht underline underline-offset-4 hover:text-link-hover"
              style="transition: color var(--m-base) var(--e-standard)"
              data-cta="case-pdf-aertssen">Download de case (pdf)</a>
         </article>
@@ -855,7 +861,7 @@ tailwind.config = {
           </p>
           <p class="mt-2 text-caption text-ink-soft">Groep van ondernemingen</p>
           <span class="todo mt-4"><b>TODO — te bevestigen</b>: logobestand van Anchr, in een donkere en een witte versie</span>
-          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link underline underline-offset-4 hover:text-link-hover"
+          <a href="#" class="mt-auto pt-6 inline-flex items-center gap-2 text-link-licht underline underline-offset-4 hover:text-link-hover"
              style="transition: color var(--m-base) var(--e-standard)"
              data-cta="case-pdf-anchr">Download de case (pdf)</a>
         </article>
@@ -1645,7 +1651,7 @@ tailwind.config = {
         <ul class="mt-4 space-y-3 list-none p-0 text-body">
           <li>
             <a href="#" data-cta="agenda-boeken"
-               class="text-link underline underline-offset-4 hover:text-link-hover"
+               class="text-link-licht underline underline-offset-4 hover:text-link-hover"
                style="transition: color var(--m-base) var(--e-standard)">
               Boek rechtstreeks in Nicks agenda
             </a>
@@ -1710,7 +1716,7 @@ tailwind.config = {
         <p class="mt-4 text-caption text-ink-soft">
           We gebruiken je gegevens enkel om je demo-aanvraag op te volgen. Lees hoe we daarmee omgaan in
           de <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener"
-          class="text-link underline underline-offset-4 hover:text-link-hover"
+          class="text-link-licht underline underline-offset-4 hover:text-link-hover"
           style="transition: color var(--m-base) var(--e-standard)" data-cta="formulier-privacy">privacy policy</a>.
         </p>
       </form>
@@ -1851,7 +1857,7 @@ tailwind.config = {
     </p>
     <div class="flex items-center gap-3 shrink-0">
       <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
-         class="text-caption text-link underline underline-offset-4 hover:text-link-hover"
+         class="text-caption text-link-licht underline underline-offset-4 hover:text-link-hover"
          style="transition: color var(--m-base) var(--e-standard)" data-cta="cookiebalk-beleid">Cookie policy</a>
       <button type="button" @click="$store.toestemming.zet('geweigerd')"
               class="btn-secondary min-h-[40px] px-4 py-2 text-caption" data-cta="cookiebalk-weigeren">
@@ -1930,7 +1936,8 @@ tailwind.config = {
       stage.appendChild(d);
     });
 
-    var breed = window.matchMedia('(min-width: 1024px)');
+    var breed  = window.matchMedia('(min-width: 1024px)');
+    var koppen = stappen.map(function (s) { return s.querySelector('.sc-titel') || s; });
     var huidig = -1;
 
     function verf(i) {
@@ -1945,23 +1952,58 @@ tailwind.config = {
       return (parseFloat(window.getComputedStyle(visual).top) || 0) + visual.offsetHeight;
     }
 
-    /* De leeslijn ligt op telefoon net onder de kleefkaart en op desktop op 45%
-       van het scherm. Gemeten wordt de kop van de stap, niet het artikel met
-       zijn witruimte eromheen: anders wisselt het beeld al voor de bijbehorende
-       tekst in beeld komt. Op telefoon ligt de lijn 48 px onder de kaart: precies
-       ver genoeg dat de kop van de stap vrij staat wanneer het beeld wisselt. */
-    function lijn() {
-      return breed.matches ? window.innerHeight * 0.45 : kaarthoogte() + 48;
+    /* ----------------------------------------------------------------------
+       WELKE STAP LEES JE? DAT BEPAALT HET BEELD.
+       ----------------------------------------------------------------------
+       Niet "welke stap is een leeslijn voorbijgeschoven", maar: van welke stap
+       kun je op dit moment de titel lezen. Dat verschil was de hele fout.
+
+       Op telefoon kleeft de kaart bovenaan en schuift de tekst eronder door.
+       Alles boven de onderrand van die kaart is bedekt en wordt dus niet
+       gelezen. De leeszone begint daar, en de stap die je leest is de BOVENSTE
+       waarvan de titel vrij van de kaart staat. Zodra een titel achter de kaart
+       verdwijnt, is de volgende de bovenste die je nog kunt lezen — en precies
+       dan, niet later, hoort het beeld te wisselen.
+
+       De oude leeslijn lag 48 px ONDER de kaart en wisselde dus pas wanneer de
+       titel van de volgende stap die lijn raakte. Tot dat moment stond er een
+       beeld van een stap waarvan de titel al achter de kaart zat: gemeten per
+       40 px door het blok was dat 18 van de 46 posities op 390 px, 19 van de 47
+       op 360 px en 7 van de 66 op 1440 px. Nu nul op alle drie.
+
+       Naast elkaar (>= 1024 px) bedekt de kaart niets, dus is de leeszone
+       gewoon het venster en is de bovenste titel in beeld de stap die je leest.
+
+       Twee dingen die dit stabiel houden:
+       · De onderrand van de kaart komt uit haar rechthoek, niet uit top +
+         hoogte. Voordat ze vastplakt staat ze lager en bedekt ze niets, en dan
+         hoort de leeszone niet alvast te beginnen.
+       · Die onderrand wisselt niet per stap — de kaart heeft een vaste
+         verhouding en een balk van een vaste regel — dus beweegt de grens niet
+         mee met het beeld dat ze kiest. Zonder die vaste hoogte zou dit rond
+         een omslagpunt heen en weer kunnen klapperen.
+       ---------------------------------------------------------------------- */
+    function leeszoneTop() {
+      return breed.matches ? 0 : Math.max(0, visual.getBoundingClientRect().bottom);
     }
 
     var bezig = false;
     function meet() {
       bezig = false;
-      var l = lijn(), actief = 0;
-      stappen.forEach(function (s, i) {
-        var kop = s.querySelector('.sc-titel') || s;
-        if (kop.getBoundingClientRect().top <= l) { actief = i; }
-      });
+      var grens = leeszoneTop();
+      /* Een titel die nog net onder de onderrand van het venster hangt, lees je
+         niet; hij telt pas mee als hij er echt staat. */
+      var onderrand = window.innerHeight - 20;
+      var actief = -1, laatsteBedekt = -1;
+      for (var i = 0; i < koppen.length; i++) {
+        var t = koppen[i].getBoundingClientRect().top;
+        if (t < grens - 0.5) { laatsteBedekt = i; continue; }  /* bedekt of al voorbij */
+        if (t <= onderrand) { actief = i; }                    /* de bovenste die vrij staat */
+        break;                            /* wat hierna komt, staat nog lager */
+      }
+      /* Geen titel leesbaar: je bent voorbij de laatste stap (houd die), of de
+         sectie staat nog onder het venster (dan de eerste). */
+      if (actief === -1) { actief = laatsteBedekt === -1 ? 0 : laatsteBedekt; }
       verf(actief);
     }
     function bij() { if (!bezig) { bezig = true; window.requestAnimationFrame(meet); } }
@@ -1969,11 +2011,13 @@ tailwind.config = {
     knoppen.forEach(function (b) {
       b.addEventListener('click', function () {
         var i = parseInt(b.getAttribute('data-scrolly-jump'), 10) || 0;
-        var kop = stappen[i].querySelector('.sc-titel') || stappen[i];
+        var kop = koppen[i];
         var y = window.pageYOffset + kop.getBoundingClientRect().top -
-                (breed.matches ? window.innerHeight * 0.40 : kaarthoogte() + 40);
-        /* Acht pixel boven de leeslijn, niet erop: precies op de lijn is het
-           afronden van een subpixel het verschil tussen stap 3 en stap 4. */
+                (breed.matches ? window.innerHeight * 0.40 : kaarthoogte() + 8);
+        /* Acht pixel onder de onderrand van de kaart, niet precies erop: op de
+           rand is het afronden van een subpixel het verschil tussen twee
+           stappen. De titel staat dan vrij en de vorige zit er ruim achter,
+           dus is dit ook de stap die het script hierna aanwijst. */
         /* Geen behavior meegeven: de CSS bepaalt smooth of niet, en die staat uit
            bij prefers-reduced-motion. */
         window.scrollTo({ top: Math.max(0, y) });

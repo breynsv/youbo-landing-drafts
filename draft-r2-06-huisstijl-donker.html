@@ -144,7 +144,12 @@ tailwind.config = {
         subtle:    '#f6f8fa',
         ink:       { DEFAULT: '#0a3327', soft: '#547068' },
         edge:      { DEFAULT: '#e1ebf0', button: '#9dbcc2' },
-        link:      { DEFAULT: '#00acd6', hover: '#006c87' },
+        /* #00acd6 uit het designsysteem staat op deze pagina nergens op een lichte
+           ondergrond: hij wordt alleen gebruikt voor de focusrand van een invoerveld,
+           en dat formulier is wit papier. Daar haalt #00acd6 2,67:1 en dus niet de 3:1
+           die een focusaanduiding nodig heeft. Vandaar de donkerder trap #00718c
+           (5,61 op wit). De links op zwart zijn mint en blijven ongemoeid. */
+        link:      { DEFAULT: '#00718c', hover: '#006c87' },
         /* tekst op donker — beide gemeten op #000 én op #154e3a, allebei boven 4.5:1 */
         onvoid:    { DEFAULT: '#ffffff', muted: '#a9c4ba', dim: '#9fbcb0' },
         hair:      { DEFAULT: 'rgba(169,196,186,0.20)', strong: 'rgba(169,196,186,0.38)' },
@@ -341,7 +346,7 @@ tailwind.config = {
              min-h-[48px] placeholder:text-ink-soft;
       transition: border-color var(--t-base) var(--e-std), box-shadow var(--t-base) var(--e-std);
     }
-    .field-input:focus { @apply border-link outline-none; box-shadow: 0 0 0 2px rgba(0,172,214,0.2); }
+    .field-input:focus { @apply border-link outline-none; box-shadow: 0 0 0 2px rgba(0,113,140,0.2); }
 
     /* zolang de cookiebalk om een antwoord vraagt, is die de enige balk onderaan */
     .consent-open .stickybar { display: none !important; }
