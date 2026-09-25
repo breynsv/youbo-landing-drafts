@@ -191,27 +191,6 @@
     </details>
   </section>
 
-  <!-- Keuzeblad, geen draft. Het krijgt daarom bewust geen ja/misschien/nee-knoppen:
-       er valt hier niets te beoordelen, er valt één vorm te kiezen. -->
-  <section x-show="round==='r2'" class="mt-10 rounded-xl border-2 border-dashed border-blue-300 bg-blue-50/60 p-6">
-    <div class="flex flex-wrap items-start gap-6">
-      <div class="flex-1 min-w-[280px]">
-        <p class="text-xs font-semibold uppercase tracking-wide text-blue-700">Apart te beoordelen — keuzeblad, geen draft</p>
-        <h2 class="text-xl font-semibold leading-tight tracking-tight mt-1">Ontdek hoe het werkt — vijf interactievormen</h2>
-        <p class="text-sm text-neutral-700 mt-2 max-w-2xl">
-          Vijf manieren om het blok <em>Ontdek hoe het werkt</em> te tonen — tabs, meescrollend,
-          doorloop, tijdlijn en accordeon — met dezelfde vier stappen, naast elkaar op één pagina.
-          Kies er één; die vorm gaat daarna in de gekozen draft.
-        </p>
-        <p class="text-xs text-neutral-500 mt-2">Geen ja/misschien/nee hier: dit is een keuze, geen beoordeling.</p>
-      </div>
-      <div class="flex gap-2 text-sm">
-        <button @click="open(INTERACTIES)" class="py-2 px-4 rounded-lg bg-blue-600 text-white font-medium">Open keuzeblad</button>
-        <a href="interacties-hoe-het-werkt.html" target="_blank" class="py-2 px-3 rounded-lg border border-blue-300 bg-white text-blue-700">↗</a>
-      </div>
-    </div>
-  </section>
-
   <p class="mt-10 text-sm text-neutral-500">
     De strategienota, het design system, de contentbriefing en de openstaande vragen voor Teal
     Partners staan niet op deze pagina — die deel ik apart.
@@ -287,10 +266,6 @@ function picker() {
     copyError: '',
     TO: 'sven@membrero.com',
     SUBJECT: 'Youbo landing page — draft review',
-    // Not a draft: a sheet of five ways to present one block. It is opened in the
-    // same preview, but it is deliberately kept out of `all` so it never gets a
-    // rating, never counts in a filter and never shows up in the feedback text.
-    INTERACTIES: { r:'r2', n:'—', file:'interacties-hoe-het-werkt.html', title:'Ontdek hoe het werkt — vijf interactievormen' },
     all: [
       { r:'r1', n:'01', file:'draft-01-zonder-kopzorgen.html', title:'Zonder kopzorgen',
         concept:'Jana’s own line taken seriously — calm, editorial, generous white space. The furthest possible move away from “tech”.',
