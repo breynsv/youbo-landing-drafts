@@ -31,6 +31,12 @@ if (!drafts.length) {
   process.exit(1);
 }
 
+// Als dit faalt met "Executable doesn't exist", dan is Playwright bijgewerkt en
+// wijst het naar een buildnummer dat nog niet in ~/Library/Caches/ms-playwright
+// staat. Het antwoord is `npx playwright install chromium` — ~95MB, eenmalig.
+// Terugvallen op `channel: 'chrome'` is geprobeerd en werkt hier NIET: Chrome
+// start wel, maar page.screenshot loopt daarna af op de time-out, ook op een
+// eenvoudige draft. Niet opnieuw proberen.
 const browser = await chromium.launch();
 const page = await browser.newPage({
   viewport: { width: 1280, height: 1600 },
@@ -48,7 +54,11 @@ for (const file of drafts) {
   // Tailwind's CDN build and any webfont both land after load; give them a beat,
   // and let entry animations settle so we don't photograph a half-faded hero.
   await page.waitForTimeout(2500);
-  await page.screenshot({ path: out, type: 'jpeg', quality: 78 });
+  // `animations: 'disabled'` zet oneindige animaties op hun eerste beeld. Zonder dat
+  // wacht Playwright op een stabiel beeld dat nooit komt — de voorbijrollende
+  // logobalk van ronde 3 draait voor altijd door — en loopt de opname na 30s af.
+  // Het maakt de thumbnails meteen ook reproduceerbaar in plaats van toevallig.
+  await page.screenshot({ path: out, type: 'jpeg', quality: 78, animations: 'disabled' });
   console.log('✓', file);
 }
 

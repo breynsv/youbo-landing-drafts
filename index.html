@@ -30,13 +30,14 @@
   <div class="max-w-[1600px] mx-auto px-6 py-4 flex flex-wrap items-center gap-4">
     <div>
       <h1 class="text-2xl font-semibold leading-none tracking-tight">Youbo — landing page drafts</h1>
-      <p class="text-sm text-neutral-500 mt-1">Rate them, leave notes, then send the feedback back to Sven. Ronde 2 staat open — drie keuzes op de echte huisstijl; ronde 1 en de eerdere opzet blijven erbij als context.</p>
+      <p class="text-sm text-neutral-500 mt-1">Ronde 3 staat open: jouw feedback van 5 oktober is verwerkt in één pagina. Lees ze na, laat per punt een notitie achter en stuur de feedback terug naar Sven. Ronde 2 en 1 blijven erbij als context.</p>
     </div>
 
     <div class="ml-auto flex flex-wrap items-center gap-2 text-sm">
       <!-- Round switch. Ronde 2 is the default: that is what Jana has to look at
            now. Ronde 1 stays reachable because those ten drafts are the context
            her choice was made in. -->
+      <button @click="setRound('r3')" :class="round==='r3' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white'" class="px-3 py-1.5 rounded-full border border-neutral-300 font-medium">Ronde 3 <span class="opacity-60" x-text="countRound('r3')"></span></button>
       <button @click="setRound('r2')" :class="round==='r2' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white'" class="px-3 py-1.5 rounded-full border border-neutral-300 font-medium">Ronde 2 <span class="opacity-60" x-text="countRound('r2')"></span></button>
       <button @click="setRound('r1')" :class="round==='r1' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white'" class="px-3 py-1.5 rounded-full border border-neutral-300 font-medium">Ronde 1 <span class="opacity-60" x-text="countRound('r1')"></span></button>
       <span class="w-px h-6 bg-neutral-300 mx-1"></span>
@@ -59,6 +60,26 @@
   <!-- Waarom er drie nieuwe drafts staan. Dit is het verschil dat telt: de eerste
        drie van ronde 2 stonden op een design system dat wij met de hand hadden
        opgemeten; deze drie staan op de tokens die uit youbo.io zelf komen. -->
+  <section x-show="round==='r3'" class="mb-8 rounded-xl border border-neutral-200 bg-white p-6">
+    <h2 class="text-lg font-semibold tracking-tight">Ronde 3 — jouw feedback verwerkt</h2>
+    <p class="text-sm text-neutral-700 mt-2 max-w-4xl">
+      Dit is <strong>R2-05 Schakelend</strong>, de richting die je koos, met je feedback van
+      5 oktober erin verwerkt. R2-05 zelf staat onder Ronde 2 nog onaangeroerd, zodat je het
+      verschil kunt zien. Nicks foto's staan erin.
+    </p>
+    <p class="text-sm text-neutral-700 mt-3 max-w-4xl">
+      <strong>Twee dingen waar we niet bij konden.</strong> Het Google Doc met de nieuwe volgorde
+      van de cases is niet gedeeld, dus die volgorde is onze afleiding uit jullie sweetspot van
+      200 tot 500 medewerkers — ze staat met een vraagteken op de pagina. En de Dropbox-map met de
+      overige logo's levert geen bestanden op, dus er staan nog vier logo's in de balk.
+    </p>
+    <p class="text-sm text-neutral-500 mt-3">
+      Alles wat nog bij jullie ligt — de FAQ-antwoorden, de pdf's per case, de link naar Nicks
+      agenda, de twee extra hr-tools — staat zichtbaar als open vraag op de pagina zelf, niet
+      verstopt.
+    </p>
+  </section>
+
   <section x-show="round==='r2'" class="mb-8 rounded-xl border border-neutral-200 bg-white p-6">
     <h2 class="text-lg font-semibold tracking-tight">Ronde 2 — drie keuzes</h2>
     <p class="text-sm text-neutral-700 mt-2 max-w-4xl">
@@ -254,7 +275,7 @@ function picker() {
     state: {},
     filter: 'all',
     // Ronde 2 is the default view — that is the round being decided now.
-    round: 'r2',
+    round: 'r3',
     current: null,
     vw: 1280,
     sent: false,
@@ -297,6 +318,14 @@ function picker() {
       { r:'r1', n:'10', file:'draft-10-in-control.html', title:'In control',
         concept:'Confident and product-forward — the software shown with pride, but designed properly this time. Rich, dark, precise.',
         angle:'Premium · the “programmer-made” look done right' },
+
+      // Ronde 3: één pagina. Jana koos R2-05 en gaf er feedback op; dit is die
+      // feedback verwerkt. Niet meer kiezen, wel nalezen.
+      { r:'r3', n:'R3', file:'draft-r3-01-definitief.html', title:'Definitief',
+        concept:'R2-05 met jouw feedback van 5 oktober erin. Nick staat erop, de logo\u2019s rollen voorbij, de vijf cases staan er alle vijf, en de band met \u2018Boek een demo\u2019 blijft in beeld.',
+        angle:'Jouw gekozen richting, uitgewerkt \u00b7 geen nieuwe keuze, wel nalezen',
+        recommended:true,
+        why:'Wat er veranderd is: op telefoon eerst de tekst en dan pas Nick; \u2018Bonus & Merit\u2019 en de cijferregel uit de hero weg; de logo\u2019s rollen nu voorbij in plaats van stil te staan; geen tekstregel meer onder de visuals; de cases staan van klein naar groot met de cijfers als puntjes; \u201821 landen\u2019 even groot als \u201819.000 medewerkers\u2019; pay transparency en hr-tools naast elkaar op desktop; de quotes scrollen; en het formulier volgt jouw tekst letterlijk.' },
 
       // Ronde 2, de keuze van nu: drie drafts op de ECHTE tokens van youbo.io.
       // Volgorde is bewust — de aanbeveling staat vooraan.
