@@ -9,15 +9,15 @@ LOGOBALK: een doorlopende marquee in plaats van een statische rij, met maskers a
 CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px).
 RONDLEIDING: het meescrollende blok bestaat alleen nog naast elkaar, vanaf 1024px, met één leeslijn op precies de helft van de vensterhoogte. Op telefoon staat per stap eerst de tekst en dan het scherm — Jana's vraag — en dat kan niet samen met een kaart die bovenaan vastkleeft, want die staat altijd bóven de tekst. De knop Boek een demo midden in dat blok is op desktop weg, en het losse brede blok Merit cycle 2027 is geschrapt: het herhaalde de cijfers van stap 1 en stap 3.
 HET GROTE CIJFER: de aanpak van draft-r2-04 overgenomen. Één doorlopende zin op displayformaat met 19.000 en 21 inline in dezelfde maat, alleen in kleur onderscheiden. In ronde 2 stond 19.000 op een eigen regel van 40/56px en 21 in gewone koptekst; dat verschil was Jana's klacht. Het optellen van die twee getallen is er in deze ronde uit: gemeten stonden er tijdens die 900ms 107 verschillende volledige zinnen op de pagina die alle 107 feitelijk onjuist waren.
-QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. De oplossing uit draft-r2-04 is overgenomen waar Jana zei dat die beter zat: de lege fotoplek is een stippellijncirkel met het woord "foto" erin en de reden staat als leesbare regel ónder de naam, niet in de cirkel geperst. Portretten blijven 56px, want marlies.png is maar 360×360. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr heeft geen logobestand en staat er typografisch.
+QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. Alle vijf de quotes hebben sinds 2026-10-06 een echte foto: de klant leverde bart-verhoeven.webp, joris-valkenborgh.webp en evi-van-der-vliet.webp aan (alle drie 320×320, vierkant, hoofd gecentreerd), naast de bestaande pieter-jan.webp en mieke-catthoor.webp. De lege fotoplek en de fotoTODO zijn daarmee weg. Portretten blijven 56px, want marlies.png in het caseblok is maar 360×360 en breekt boven ±120px. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr heeft geen logobestand en staat er typografisch.
 FAQ: ongewijzigd. Jana vindt die goed en verfijnt de antwoorden zelf met Nick en Bart.
-FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, zonder zijn naam en functie er nóg eens onder. Het formulier komt eerst en "Of boek rechtstreeks in Nicks agenda" staat eronder in de kleine zetting — zonder knop, want die link bestaat nog niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef, met "1x kwartaal" en met de slotpunt — ronde 3 had daar ongemerkt "1× per kwartaal" van gemaakt.
+FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, en die intro draagt sinds 2026-10-06 zijn volledige naam en titel: Nick Van Langendonck, reward expert. Het formulier komt eerst; eronder staat in de kleine zetting één rustig blok met de drie alternatieven — "Of boek rechtstreeks in Nicks agenda", zijn e-mailadres als mailto: en zijn telefoonnummer als tel:. Die gegevens stonden er in ronde 1, verdwenen in ronde 2 samen met de geschrapte zin "Liever meteen met iemand spreken" en zijn nu door Jana bevestigd — de gegevens komen dus terug, die zin niet. Bij de agenda staat nog geen knop, want die link bestaat nog niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef, met "1x kwartaal" en met de slotpunt — ronde 3 had daar ongemerkt "1× per kwartaal" van gemaakt.
 VASTE BAND: terug, en nu écht permanent in beeld — ook vóór de cookiekeuze. In ronde 3 wachtte hij op die keuze, waardoor Jana's punt 10 onzichtbaar was voor élke nieuwe bezoeker; hij zet zelf geen cookie, dus is er ook geen reden om te wachten. De cookiebalk staat nu als smalle strook bovenóp hem in één vaste omhulling. Eén actie: Boek een demo. Hij verdwijnt zodra #demo in beeld komt — IntersectionObserver, met 96px marge zodat hij weg is vóórdat hij de kop van die sectie raakt — en ruimte() meet de hoogte van de omhulling (dus de som van wat er staat, niet het maximum van de twee) en zet die als padding-bottom op body, zodat geen van beide over de laatste regels van de footer valt. Gemeten op 390px: 45 + 69 = 114px samen, 69px zodra de cookiebalk weg is. x-show zet display:none, dus een knop in een balk die er niet staat, staat ook niet in de tabvolgorde. Bij prefers-reduced-motion verschijnen ze beide zonder overgang.
 STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency én de hr-tools · quotes · faq · formulier · footer). EU Pay Transparency en de hr-tools waren twee banden en zijn er in ronde 3 één: Jana noemt ze qua belang gelijkwaardig en wil ze op desktop naast elkaar, en naast elkaar bestaat niet over twee banden heen.
 LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk volgt dezelfde regel: youbo_logo.svg op licht, youbo_logo_white.svg in de zwarte footer.
 AFWIJKING VAN DE TOKENS: geen enkele nieuwe kleurwaarde. De enige afgeleiden zijn witte transparanties (72%, 16%, 6%) voor secundaire tekst, randen en vlakken op de donkere banden — het systeem documenteert daar geen aparte token voor, en #547068 op zwart haalt de contrastdrempel niet.
-TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Open blijven: het landental van Aertssen — dat staat als X in het campagneplan van de klant zelf en ligt dus bij Bart of Nick — de klantnamen voor de logobalk, de case-pdf's, de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
-NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) Nicks achternaam en zijn exacte functietitel — we kennen alleen de voornaam; (2) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (3) foto's van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet, of het akkoord om alle vijf de quotes zonder foto te zetten; (4) de vijf case-pdf's; (5) de lijst klantnamen die in de logobalk getoond mogen worden, met zowel een donkere als een witte logoversie; (6) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (7) de juiste integratielijst; (8) het antwoord op de prijsvraag; (9) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (10) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
+TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Op 2026-10-06 zijn er drie blokjes bij weggevallen, elk omdat de vraag een antwoord kreeg: Nicks achternaam en functietitel (Nick Van Langendonck, reward expert), de merklogo's bij de hr-tools (Jana: "Ik denk dat die icoontjes beter zijn, laten we het daar op houden") en de ontbrekende quotefoto's (alle drie aangeleverd). Open blijven: het landental van Aertssen — dat staat als X in het campagneplan van de klant zelf en ligt dus bij Bart of Nick — de klantnamen voor de logobalk, het logobestand van Anchr, de case-pdf's, de agendalink van Nick, de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
+NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (2) het logobestand van Anchr, in een donkere én een witte versie; (3) de vijf case-pdf's; (4) de lijst klantnamen die in de logobalk getoond mogen worden, met zowel een donkere als een witte logoversie; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
 OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 medewerkers in 2 landen, 7× sneller) staan zonder voorbehoud op de pagina — de eerste twee besliste Jana op 2026-10-05, de derde komt op 2026-10-06 letterlijk uit haar campagneplan, dat ook de kop "van 2 weken naar 2 dagen" en de 130 managers uit haar oudere concept niet kent. Wat nog open staat, staat zichtbaar als TODO-blokje bij de casekaart: alleen nog het landental van Aertssen Group.
 -->
 <html lang="nl-BE">
@@ -693,6 +693,11 @@ tailwind.config = {
      precies wat Jana in haar eigen concept afkeurde. Waarom hij leeg is staat
      als leesbare regel onder de naam en niet in de cirkel geperst: in ronde 2
      stond "foto nodig" in 10px binnen 48px en dat was niet te lezen.
+
+     SINDS 2026-10-06 STAAT .fotoplek-inv ONGEBRUIKT. De klant leverde de drie
+     ontbrekende portretten aan, dus hebben alle vijf de quotes een echte foto.
+     De regel blijft staan voor als er een zesde quote bijkomt zonder foto; hij
+     raakt op dit moment niets op de pagina.
      --------------------------------------------------------------------- */
   .pijl-inv { display: grid; place-items: center; height: 48px; width: 48px;
               border-radius: 9999px; color: #ffffff;
@@ -830,6 +835,63 @@ tailwind.config = {
      Twee regels is lelijker dan één, maar tekst die buiten zijn kaart hangt is
      stuk. */
   @media (min-width: 375px) { .case-foot .caselink { white-space: nowrap; } }
+
+  /* === r3: gegevens Nick === */
+
+  /* ---------------------------------------------------------------------
+     DE ALTERNATIEVEN ONDER HET FORMULIER — agenda, e-mail, telefoon
+     ---------------------------------------------------------------------
+     Drie regels die hetzelfde zeggen: je hoeft dit formulier niet in te
+     vullen. Ze staan dus als één blok en niet als drie losse alinea's met de
+     gewone alinea-afstand ertussen; `.alt-weg` is enkel die groepering, geen
+     eigen vlak. Een tweede getint vlak naast het TODO-blokje (dat al
+     bg-surface met een stippellijn is) zou als één vlek lezen — dezelfde
+     afweging als bij de voet van de casekaarten.
+
+     DE KLEUR. #00718c, dezelfde als `text-link-licht` elders op de pagina en
+     als de focusomlijning op licht: 5,61:1 op wit, dus ruim boven de 4,5:1
+     voor lopende tekst en boven de 3:1 voor een bedieningselement. Het cyaan
+     van de huisstijl (#00acd6) haalt op wit maar 2,67:1 en mag hier dus niet
+     staan — dat is precies de fout die deze ronde elders wegwerkte. De
+     onderstreping staat er van begin af aan: een link die alleen aan zijn
+     kleur te herkennen is, is voor wie kleuren slecht onderscheidt geen link.
+
+     DE FOCUSOMLIJNING. Niets aan deze constructie snijdt hem af. Er is geen
+     overflow: hidden tussen hier en de sectie, en de ring heeft 2px dikte plus
+     2px offset nodig: boven de e-mailregel zit 8px (mt-2) en onder het blok
+     12px (mt-3) voor het TODO-blokje, in beide gevallen meer dan de 4px die de
+     ring vraagt. De ring staat niet op de hele regel maar op de link zelf,
+     want dat is wat de focus heeft.
+
+     HET RAAKVLAK. Op telefoon is dit geen knop maar een tekstlink in lopende
+     tekst van 15px, en dat is bewust: hij is het alternatief, niet de
+     hoofdweg. De regelhoogte van 1,5 geeft hem 22px hoogte en de twee regels
+     staan 8px uit elkaar, dus een duim raakt er nooit twee tegelijk. Een
+     verticale padding erbij zou de regels juist naar elkaar toe duwen binnen
+     hetzelfde blok.
+
+     WAAROM HET ADRES NIET AFBREEKT MAAR WEL MAG WIKKELEN. Het e-mailadres is
+     28 tekens en 230px breed; op 390px (kolom 342px) past het niet naast "Of
+     mail hem op" en wikkelt het dus naar de volgende regel. Dat mag, middenin
+     het adres afbreken niet: een half e-mailadres aan het einde van een regel
+     is niet over te typen. Vandaar nowrap op de link zelf en niets anders.
+     --------------------------------------------------------------------- */
+  .alt-weg .alt-link {
+    color: #00718c;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color var(--m-base) var(--e-standard);
+    /* het adres en het nummer blijven in één stuk; de regel wikkelt ervoor */
+    white-space: nowrap;
+  }
+  .alt-weg .alt-link:hover { color: #006c87; }
+
+  /* Onder 390px is het adres breder dan de kolom. Daar wint afbreken van
+     buiten de kaart hangen, dus mag het nowrap daar los — dezelfde afweging,
+     en dezelfde ondergrens, als bij de voetlink van de casekaarten. */
+  @media (max-width: 374px) {
+    .alt-weg .alt-link { white-space: normal; overflow-wrap: anywhere; }
+  }
 </style>
 
 <script>document.documentElement.classList.add('js');</script>
@@ -876,7 +938,7 @@ tailwind.config = {
            eronder staat van het scherm. -->
       <figure class="lg:col-span-5 m-0 mx-auto w-full max-w-[20rem] lg:max-w-none" data-reveal>
         <img src="assets/img/nick-portret.webp" width="900" height="1140"
-             alt="Portret van Nick"
+             alt="Portret van Nick Van Langendonck"
              class="block w-full h-auto rounded-lg border border-line bg-paper">
         <figcaption class="mt-5 text-body text-ink-soft border-l-4 border-brand pl-5">
           Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch,
@@ -1814,13 +1876,12 @@ tailwind.config = {
         </li>
       </ul>
 
-      <p class="todo-inv mt-6">
-        <b>TODO &mdash; te bevestigen</b>: Jana levert nog twee functienamen aan en checkt bij Bart
-        of de merklogo&rsquo;s getoond mogen worden. Tot dan staan hier functies in plaats van
-        merknamen. De tools achter deze vier staan in de bronnen: eBlox, SAP SuccessFactors en AFAS
-        komen in beide lijsten voor, het campagneplan noemt daarnaast Treality en het concept Protime
-        en Workday
-      </p>
+      <!-- Hier stond tot 2026-10-06 een TODO over twee extra functienamen en de
+           vraag of de merklogo&rsquo;s getoond mogen worden. Jana heeft dat
+           beslecht: "Ik denk dat die icoontjes beter zijn, laten we het daar op
+           houden." Dus geen logo&rsquo;s, geen extra namen, en deze vier functies
+           blijven staan zoals ze staan. De TODO is weg omdat de vraag een
+           antwoord heeft. -->
     </section>
 
   </div>
@@ -1835,12 +1896,14 @@ tailwind.config = {
      design zat dit beter". Dat andere design is draft-r2-04-huisstijl-licht,
      en wat daar beter werkte is nagekeken voor hier iets nieuws verzonnen is:
 
-     · De fotoplek is daar GEEN bolletje met initialen en geen grijs silhouet,
-       maar een stippellijncirkel met het woord "foto" erin, en de reden staat
-       als leesbare regel ONDER de naam ("TODO — foto nodig"). Die splitsing
-       is overgenomen: de cirkel houdt de rij uitgelijnd, de regel eronder
-       zegt waarom hij leeg is. In ronde 2 stond "foto nodig" in de cirkel
-       geperst op 10px — onleesbaar, en het las als een ontwerpfout.
+     · De fotoplek was daar GEEN bolletje met initialen en geen grijs silhouet,
+       maar een stippellijncirkel met het woord "foto" erin, en de reden stond
+       als leesbare regel ONDER de naam ("TODO — foto nodig"). Dat is op
+       2026-10-06 overbodig geworden: de klant leverde bart-verhoeven.webp,
+       joris-valkenborgh.webp en evi-van-der-vliet.webp aan, dus staan er nu
+       vijf echte portretten en is er geen lege plek meer om te ontwerpen.
+       De CSS-regel .fotoplek-inv staat er nog, ongebruikt, voor een eventuele
+       zesde quote zonder foto.
      · De portretten zijn daar 56px. Dat is hier bewust ook 56 gebleven en
        niet groter: marlies.png is maar 360x360 en breekt boven ±120px, dus
        elke portretmaat op deze pagina moet onder dat plafond blijven.
@@ -1911,8 +1974,10 @@ tailwind.config = {
         </figure>
       </li>
 
-      <!-- Bart Verhoeven — geen foto. Niet te verwarren met Bart De Nil: deze
-           Bart is klant bij Kaneka, de andere gaf vroeger de demo's. -->
+      <!-- Bart Verhoeven — foto aangeleverd op 2026-10-06. Niet te verwarren met
+           Bart De Nil: deze Bart is klant bij Kaneka, de andere gaf vroeger de
+           demo's en staat met bart_de_nil.webp ongebruikt in assets/img/. Nooit
+           dezelfde foto of naam voor die twee. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
           <img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="h-4 w-auto self-start">
@@ -1920,11 +1985,11 @@ tailwind.config = {
             “Toen ik een demo zag, wist ik: hier hebben we op gewacht.”
           </blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
-            <span class="fotoplek-inv" aria-hidden="true">foto</span>
+            <img src="assets/img/bart-verhoeven.webp" width="56" height="56" loading="lazy" decoding="async"
+                 alt="Bart Verhoeven" class="h-14 w-14 shrink-0 rounded-[50%] object-cover">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark">Bart Verhoeven</span>
               <span class="block text-caption on-dark-soft">Hr manager</span>
-              <span class="mt-1 block text-[13px] font-bold text-brand">TODO — foto nodig</span>
             </span>
           </figcaption>
         </figure>
@@ -1948,7 +2013,7 @@ tailwind.config = {
         </figure>
       </li>
 
-      <!-- Joris Valkenborgh — geen foto -->
+      <!-- Joris Valkenborgh — foto aangeleverd op 2026-10-06 -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
           <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-5 w-auto self-start">
@@ -1957,17 +2022,18 @@ tailwind.config = {
             betere inhoudelijke gesprekken met mijn team.”
           </blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
-            <span class="fotoplek-inv" aria-hidden="true">foto</span>
+            <img src="assets/img/joris-valkenborgh.webp" width="56" height="56" loading="lazy" decoding="async"
+                 alt="Joris Valkenborgh" class="h-14 w-14 shrink-0 rounded-[50%] object-cover">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark">Joris Valkenborgh</span>
               <span class="block text-caption on-dark-soft">Team manager</span>
-              <span class="mt-1 block text-[13px] font-bold text-brand">TODO — foto nodig</span>
             </span>
           </figcaption>
         </figure>
       </li>
 
-      <!-- Evi Van der Vliet — geen foto, en Anchr heeft geen logobestand -->
+      <!-- Evi Van der Vliet — foto aangeleverd op 2026-10-06; Anchr heeft nog
+           steeds geen logobestand en staat hier dus typografisch -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
           <span class="h-5 flex items-center text-h3 font-bold on-dark">Anchr</span>
@@ -1976,11 +2042,11 @@ tailwind.config = {
             we de jaarkost en het totale loonpakket van de werknemer.”
           </blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
-            <span class="fotoplek-inv" aria-hidden="true">foto</span>
+            <img src="assets/img/evi-van-der-vliet.webp" width="56" height="56" loading="lazy" decoding="async"
+                 alt="Evi Van der Vliet" class="h-14 w-14 shrink-0 rounded-[50%] object-cover">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark">Evi Van der Vliet</span>
               <span class="block text-caption on-dark-soft">Hr business partner</span>
-              <span class="mt-1 block text-[13px] font-bold text-brand">TODO — foto nodig</span>
             </span>
           </figcaption>
         </figure>
@@ -2006,10 +2072,15 @@ tailwind.config = {
       </template>
     </div>
 
+    <!-- De fotoTODO is weg: de klant leverde op 2026-10-06 de portretten van
+         Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet aan, dus hebben
+         alle vijf de quotes nu een echte foto en is "half met, half zonder"
+         geen open punt meer. Wat hier wél open blijft is het logobestand van
+         Anchr; dat is dezelfde ontbrekende asset als op de casekaart, maar hier
+         is een WITTE uitsparing nodig en daar een donkere. -->
     <p class="todo-inv mt-8 max-w-prose" data-reveal>
-      <b>TODO — foto nodig</b> van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet. Half met en
-      half zonder foto werkt niet: als die foto's er niet komen, gaan alle vijf de quotes zonder portret.
-      Van Anchr is er ook geen logobestand, dus staat die naam hier in letters
+      <b>TODO — nodig van klant</b>: Anchr heeft nog geen logobestand, dus staat die naam hier in
+      letters in plaats van als logo. Op deze donkere band is een witte uitsparing nodig
     </p>
   </div>
 </section>
@@ -2187,18 +2258,13 @@ tailwind.config = {
 
       <div class="mt-6 flex items-start gap-5">
         <img src="assets/img/nick-rond.webp" width="96" height="96" loading="lazy" decoding="async"
-             alt="Nick, reward expert bij Teal Partners"
+             alt="Nick Van Langendonck, reward expert bij Teal Partners"
              class="h-24 w-24 shrink-0 rounded-[50%] object-cover">
         <p class="m-0 text-body text-ink-soft max-w-text">
-          Reward expert Nick laat je zien hoe Youbo aansluit op jullie loonbeleid, structuur en
-          systemen. Hij neemt persoonlijk contact op.
+          <b class="font-bold text-ink">Nick Van Langendonck</b>, reward expert, laat je zien hoe Youbo
+          aansluit op jullie loonbeleid, structuur en systemen. Hij neemt persoonlijk contact op.
         </p>
       </div>
-
-      <p class="todo mt-6 max-w-text">
-        <b>TODO — nodig van klant</b>: Nicks achternaam en zijn exacte functietitel. Hij staat hier
-        voorlopig met zijn voornaam, want dat is alles wat we met zekerheid weten
-      </p>
     </div>
 
     <div class="lg:col-span-7" data-reveal>
@@ -2255,16 +2321,57 @@ tailwind.config = {
         </p>
       </form>
 
-      <!-- Onder het formulier, klein: het alternatief. Geen knop, want de link
-           bestaat nog niet. -->
-      <p class="mt-6 text-caption text-ink-soft">
-        Of boek rechtstreeks in Nicks agenda
-      </p>
-      <p class="todo mt-3 max-w-prose">
-        <b>TODO — nodig van klant</b>: de link naar Nicks agenda is aangevraagd en bestaat nog niet.
-        Zolang die er niet is staat hier geen knop, want een knop die nergens naartoe gaat is in een
-        review niet van een werkende te onderscheiden
-      </p>
+      <!-- Onder het formulier, klein: de drie alternatieven voor wie het
+           formulier niet wil invullen — de agenda, zijn e-mailadres en zijn
+           telefoonnummer. Eén rustig blok, want het zijn drie varianten van
+           hetzelfde antwoord en niet drie losse aanbiedingen.
+
+           RONDE 3, GEGEVENS NICK. De contactgegevens staan er weer, en dat
+           heeft een geschiedenis die je moet kennen om ze niet opnieuw fout te
+           zetten. In ronde 1 vond Jana dit juist goed: "niet iedereen wil
+           direct demo's gaan boeken, da's ook een goeie". In ronde 2 vroeg ze
+           om de zin "Liever meteen met iemand spreken" te schrappen, en toen
+           verdwenen de gegevens mee — dat was te veel. Zij heeft de gegevens nu
+           bevestigd, dus komt het alternatief terug en die ZIN NIET. Zet hier
+           dus nooit opnieuw een kopregel in de trant van "Liever meteen met
+           iemand spreken".
+
+           Het telefoonnummer staat Belgisch gezet (0486 08 27 65) omdat de
+           bezoeker Belgisch is; de href draagt het internationale +32486082765,
+           want dat is wat een telefoon moet kiezen. Beide verwijzen naar
+           hetzelfde nummer, alleen in de notatie van hun eigen publiek.
+
+           ELK ALTERNATIEF STAAT OP ZIJN EIGEN REGEL, en dat is gemeten en niet
+           gekozen. De eerste opzet zette de twee links achter elkaar met een
+           scheidingspunt ertussen; op 390px past het adres niet meer naast de
+           aanloopzin, wikkelt het naar de volgende regel en begint de regel
+           dáárna met die punt. Een punt bovenaan een regel leest als vuil.
+           Drie regels met dezelfde aanloop ("Of …") lossen dat op zonder
+           uitzonderingsregel, en geven elke link bovendien zijn eigen
+           focusomlijning zonder dat die van de buur hem raakt.
+
+           De agendalink bestaat nog steeds niet, dus staat daar nog geen knop en
+           blijft die TODO staan. -->
+      <div class="alt-weg mt-6">
+        <p class="m-0 text-caption text-ink-soft">
+          Of boek rechtstreeks in Nicks agenda
+        </p>
+        <p class="m-0 mt-2 text-caption text-ink-soft">
+          Of mail hem op
+          <a class="alt-link" href="mailto:nick.vanlangendonck@youbo.io"
+             data-cta="formulier-mail-nick">nick.vanlangendonck@youbo.io</a>
+        </p>
+        <p class="m-0 mt-2 text-caption text-ink-soft">
+          Of bel hem op
+          <a class="alt-link" href="tel:+32486082765"
+             data-cta="formulier-telefoon-nick">0486 08 27 65</a>
+        </p>
+        <p class="todo mt-3 max-w-prose">
+          <b>TODO — nodig van klant</b>: de link naar Nicks agenda is aangevraagd en bestaat nog niet.
+          Zolang die er niet is staat hier geen knop, want een knop die nergens naartoe gaat is in een
+          review niet van een werkende te onderscheiden
+        </p>
+      </div>
     </div>
   </div>
 </section>
