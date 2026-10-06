@@ -3,22 +3,22 @@
 CONCEPT: Ronde 3, het definitieve ontwerp. Kopie van draft-r2-05 (de schakelende variant in de échte huisstijl van youbo.io), met Jana's feedback van 5 oktober 2026 verwerkt — zie BRIEF-R3.md. De schakelende variant, Zelfde structuur en zelfde copy als draft-r2-02, maar elke kleur, maat, radius en overgangsduur komt letterlijk uit DESIGN-youbo-io.md: groen #0af29f met tekst #154e3a, tekst #0a3327 en #547068, oppervlak #f6f8fa, rand #e1ebf0, Inter, radius 8/12/24, en de spatiëringsschaal 8-128. De pagina begint licht en kantelt per blok naar donker en terug — en het donker is hier niet verzonnen: het is hun eigen verloop van #000000 naar #154e3a, het meest kenmerkende element dat ze hebben.
 SCHAKELING: de overgang tussen licht en donker is zelf de belangrijkste beweging, en hij doet negen keer exact hetzelfde: niets. De sectiegrens is scherp — geen lijn erop, geen vervaging eromheen. Het kleurverschil doet het werk al, en alles wat je ertussen zet leest als iets wat stukging: een gekleurde streep over de volle breedte leest als een vergeten rand, en een vervaging tussen zwart en wit loopt altijd door grijs en ziet er altijd vuil uit. Het verloop #000000 → #154e3a blijft, maar het leeft nu bínnen de donkere band: die is zwart aan boven- én onderkant, het groen zwelt op in een vaste zone van 400px (300px op telefoon) vlak boven de onderrand en zakt in de laatste 160px (120px) terug naar zwart. Vaste pixels en niet procenten, zodat een band van 435px dezelfde zwelling krijgt als een van 1545px — een tweestopsverloop over de volle bandhoogte is precies wat hier als vlek las. Vijf stops `in oklab`, zodat het middengebied groen blijft in plaats van te vergrijzen. Dezelfde vorm als de heroband in draft 06, zodat de twee drafts dit identiek behandelen. Het groen zakt bij het binnenscrollen nog altijd in 350ms in de band in plaats van hard aan te knippen. Alle beweging gaat uit bij prefers-reduced-motion: reduce.
 TITELS: één kop per sectie, nooit twee. De negen minititels boven de koppen zijn weg — Jana keurde die expliciet af en de briefing verbiedt ze. "Bonus & Merit" naast het woordmerk is er in ronde 3 ook uit; wat overblijft zijn de vier stapnummers in de rondleiding, die iets anders zijn dan een titel.
-FOOTER EN TOESTEMMING: de footer is die van youbo.io, link voor link overgenomen uit `_raw/components/nl/footer.html` — de juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. Onderaan staat één smalle cookiebalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan.
-HERO: de tekst komt eerst — kop, intro, knop — en het portret van Nick staat eronder op telefoon en ernaast op desktop. Dat is Jana's uitdrukkelijke vraag in ronde 3; in ronde 2 stond de foto bovenaan. De cijferregel en het blokje "Bonus & Merit" zijn uit de hero weg, en de fotoplek is vervangen door de echte foto (assets/img/nick-portret.webp, 900×1140 — de briefing noemt 900×1900, het bestand zelf is 1140 hoog).
-LOGOBALK: een doorlopende marquee in plaats van een statische rij, met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de oude statische rij.
-CASES: geen carrousel meer op desktop maar een raster van vier, zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen · DPG Media · SD Worx, van klein naar groot.
+FOOTER EN TOESTEMMING: de footer is die van youbo.io, link voor link overgenomen uit `_raw/components/nl/footer.html` — de juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan.
+HERO: de tekst komt eerst — kop, intro, knop — en het portret van Nick staat eronder op telefoon en ernaast op desktop. Dat is Jana's uitdrukkelijke vraag in ronde 3; in ronde 2 stond de foto bovenaan. De cijferregel en het blokje "Bonus & Merit" zijn uit de hero weg, en de fotoplek is vervangen door de echte foto (assets/img/nick-portret.webp, 900×1140 — exact het formaat dat BRIEF-R3.md noemt).
+LOGOBALK: een doorlopende marquee in plaats van een statische rij, met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de oude statische rij. De tussenruimte is ruim en loopt per breekpunt op (56 → 260px), zodat er nooit een complete reeks tegelijk in beeld staat: gemeten raken er 3 van de 5 items de balk op 390px en 4 op 1440px, tegen 11 in ronde 3. Het tempo is gemeten 15,8 px/s op 390px en 15,9 op 1440px — de helft van ronde 3, en gelijk aan wat de briefing voorschreef; de duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo.
+CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — twee brede boven, drie smalle onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen · DPG Media · SD Worx, van klein naar groot. Jana noemt dit het meest overtuigende blok van de pagina; de rijen zijn daarom allebei vol in plaats van drie-plus-een-gat.
 RONDLEIDING: het meescrollende blok bestaat alleen nog naast elkaar, vanaf 1024px, met één leeslijn op precies de helft van de vensterhoogte. Op telefoon staat per stap eerst de tekst en dan het scherm — Jana's vraag — en dat kan niet samen met een kaart die bovenaan vastkleeft, want die staat altijd bóven de tekst. De knop Boek een demo midden in dat blok is op desktop weg, en het losse brede blok Merit cycle 2027 is geschrapt: het herhaalde de cijfers van stap 1 en stap 3.
-HET GROTE CIJFER: de aanpak van draft-r2-04 overgenomen. Één doorlopende zin op displayformaat met 19.000 en 21 inline in dezelfde maat, alleen in kleur onderscheiden, en ze tellen op zodra de zin in beeld komt. In ronde 2 stond 19.000 op een eigen regel van 40/56px en 21 in gewone koptekst; dat verschil was Jana's klacht.
+HET GROTE CIJFER: de aanpak van draft-r2-04 overgenomen. Één doorlopende zin op displayformaat met 19.000 en 21 inline in dezelfde maat, alleen in kleur onderscheiden. In ronde 2 stond 19.000 op een eigen regel van 40/56px en 21 in gewone koptekst; dat verschil was Jana's klacht. Het optellen van die twee getallen is er in deze ronde uit: gemeten stonden er tijdens die 900ms 107 verschillende volledige zinnen op de pagina die alle 107 feitelijk onjuist waren.
 QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. De oplossing uit draft-r2-04 is overgenomen waar Jana zei dat die beter zat: de lege fotoplek is een stippellijncirkel met het woord "foto" erin en de reden staat als leesbare regel ónder de naam, niet in de cirkel geperst. Portretten blijven 56px, want marlies.png is maar 360×360. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr heeft geen logobestand en staat er typografisch.
 FAQ: ongewijzigd. Jana vindt die goed en verfijnt de antwoorden zelf met Nick en Bart.
-FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, zonder zijn naam en functie er nóg eens onder. Het formulier komt eerst en "Of boek rechtstreeks in Nicks agenda" staat eronder in de kleine zetting — zonder knop, want die link bestaat nog niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef.
-VASTE BAND: terug, en nu permanent in beeld in plaats van pas na 600px scrollen. Eén actie: Boek een demo. Hij verdwijnt zodra #demo in beeld komt — IntersectionObserver, met 96px marge zodat hij weg is vóórdat hij de kop van die sectie raakt — en ruimte() meet zijn échte hoogte en zet die als padding-bottom op body, zodat hij nooit over de laatste regels van de footer valt. x-show zet display:none, dus de knop zit niet in de tabvolgorde zolang de balk er niet is. Bij prefers-reduced-motion verschijnt hij zonder overgang.
+FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, zonder zijn naam en functie er nóg eens onder. Het formulier komt eerst en "Of boek rechtstreeks in Nicks agenda" staat eronder in de kleine zetting — zonder knop, want die link bestaat nog niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef, met "1x kwartaal" en met de slotpunt — ronde 3 had daar ongemerkt "1× per kwartaal" van gemaakt.
+VASTE BAND: terug, en nu écht permanent in beeld — ook vóór de cookiekeuze. In ronde 3 wachtte hij op die keuze, waardoor Jana's punt 10 onzichtbaar was voor élke nieuwe bezoeker; hij zet zelf geen cookie, dus is er ook geen reden om te wachten. De cookiebalk staat nu als smalle strook bovenóp hem in één vaste omhulling. Eén actie: Boek een demo. Hij verdwijnt zodra #demo in beeld komt — IntersectionObserver, met 96px marge zodat hij weg is vóórdat hij de kop van die sectie raakt — en ruimte() meet de hoogte van de omhulling (dus de som van wat er staat, niet het maximum van de twee) en zet die als padding-bottom op body, zodat geen van beide over de laatste regels van de footer valt. Gemeten op 390px: 45 + 69 = 114px samen, 69px zodra de cookiebalk weg is. x-show zet display:none, dus een knop in een balk die er niet staat, staat ook niet in de tabvolgorde. Bij prefers-reduced-motion verschijnen ze beide zonder overgang.
 STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency én de hr-tools · quotes · faq · formulier · footer). EU Pay Transparency en de hr-tools waren twee banden en zijn er in ronde 3 één: Jana noemt ze qua belang gelijkwaardig en wil ze op desktop naast elkaar, en naast elkaar bestaat niet over twee banden heen.
 LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk volgt dezelfde regel: youbo_logo.svg op licht, youbo_logo_white.svg in de zwarte footer.
 AFWIJKING VAN DE TOKENS: geen enkele nieuwe kleurwaarde. De enige afgeleiden zijn witte transparanties (72%, 16%, 6%) voor secundaire tekst, randen en vlakken op de donkere banden — het systeem documenteert daar geen aparte token voor, en #547068 op zwart haalt de contrastdrempel niet.
 TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Open blijven: het landental van Aertssen, de volgorde van de cases, de klantnamen voor de logobalk, de case-pdf's, de integratielijst en het antwoord op "hoeveel kost het".
-NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) Nicks achternaam en zijn exacte functietitel — we kennen alleen de voornaam; (2) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (3) foto's van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet, of het akkoord om alle vijf de quotes zonder foto te zetten; (4) de vijf case-pdf's; (5) de lijst klantnamen die in de logobalk getoond mogen worden, met zowel een donkere als een witte logoversie; (6) de juiste cijfers voor Kaneka, DPG Media en Aertssen; (7) de juiste integratielijst; (8) het antwoord op de prijsvraag; (9) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (10) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
-OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 medewerkers, van 2 weken naar 2 dagen) zijn op 2026-10-05 door Jana beslecht en staan nu zonder voorbehoud op de pagina. Wat nog open staat, staat zichtbaar als TODO-blokje bij de casekaart: het landental van Aertssen, en de volgorde van de vier cases.
+NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) Nicks achternaam en zijn exacte functietitel — we kennen alleen de voornaam; (2) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (3) foto's van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet, of het akkoord om alle vijf de quotes zonder foto te zetten; (4) de vijf case-pdf's; (5) de lijst klantnamen die in de logobalk getoond mogen worden, met zowel een donkere als een witte logoversie; (6) het landental van Aertssen, en of de 130 managers bij DPG Media horen naast de 6.214 medewerkers — de cijfers van Kaneka en DPG zelf besliste Jana op 2026-10-05; (7) de juiste integratielijst; (8) het antwoord op de prijsvraag; (9) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (10) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
+OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 medewerkers, van 2 weken naar 2 dagen) zijn op 2026-10-05 door Jana beslecht en staan nu zonder voorbehoud op de pagina. Wat nog open staat, staat zichtbaar als TODO-blokje bij de casekaart: het landental van Aertssen, of de 130 managers bij DPG Media horen, en de volgorde van de vijf cases.
 -->
 <html lang="nl-BE">
 <head>
@@ -51,9 +51,10 @@ OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 
      De campagne is LinkedIn-first, dus dit is de eerste tag die live moet.
      In België geldt opt-in, dus dit script hoort niet hier maar in
      laadMeettags() onderaan de pagina — die functie draait pas nadat iemand in
-     de cookiebalk op Toestaan geklikt heeft. De balk en de meelopende demo-knop
-     delen bewust dezelfde plek onderaan: zolang er geen keuze gemaakt is, staat
-     de balk er en blijft de knop weg.
+     de cookiebalk op Toestaan geklikt heeft. De cookiebalk en de meelopende
+     demo-knop staan gestapeld in één vaste omhulling onderaan — de cookiebalk
+     als smalle strook bovenop, de demobalk eronder — dus hoeft de demobalk niet
+     op een cookiekeuze te wachten en wachten ze ook niet op elkaar.
 
      <script type="text/javascript">
        _linkedin_partner_id = "PARTNER_ID_HIER";
@@ -484,8 +485,27 @@ tailwind.config = {
     html.js .band::before { opacity: 1 !important; }
     html.js [data-reveal] { opacity: 1 !important; transform: none !important; }
     /* De meescrollende rondleiding valt terug op de leesbare stapel: geen
-       kleefkaart, geen wisselend beeld, elke stap meteen in eindtoestand. */
+       kleefkaart, geen wisselend beeld, elke stap meteen in eindtoestand.
+
+       EN DAN MOET DE STAPEL OOK DE VOLLE BREEDTE KRIJGEN. Tot ronde 3 bleef
+       .scrolly hier op twee kolommen staan terwijl de rechterkolom verborgen
+       werd: gemeten op 1440px gaf dat een tekstkolom van 407px met 569px
+       permanente leegte ernaast — 58% van de inhoudsbreedte — en de vier
+       productschermen (viewBox 1200×680) renderden op 407px, waardoor hun
+       20-24px SVG-tekst naar ±7px zakte. Daar bovenop hield .sc-step de
+       verticale maat van de kolomopzet (18vh boven en onder, 42vh onderaan),
+       zodat er grote zwarte gaten tussen de stappen vielen. Dit zet het blok
+       terug op één kolom met de maatvoering van de telefoonstapel: één gewone
+       leesbare lijst van vier stappen, over de volle breedte.
+       Niets hier staat buiten een laag, dus deze regels verslaan de
+       @media (min-width: 1024px)-regels uit @layer components ook zonder
+       !important; die staat er alleen waar hij het verhaal duidelijker maakt. */
     html.js .scrolly-visual { display: none !important; }
+    .scrolly { display: block; }
+    .sc-step { padding: 28px 0; }
+    .sc-step:first-child { padding-top: 16px; }
+    .sc-step:last-of-type { padding-bottom: 28px; }
+    .sc-stage { --sc-h: clamp(120px, 20vh, 190px); }
     .sc-mark  { background: #0af29f !important; }
     .sc-titel { color: #ffffff !important; }
   }
@@ -495,43 +515,71 @@ tailwind.config = {
   /* ---------------------------------------------------------------------
      2 · DE LOGOBALK ALS DOORLOPENDE MARQUEE
      ---------------------------------------------------------------------
-     Eén spoor dat dezelfde reeks zes keer bevat en in een lineaire animatie
-     naar translateX(-50%) loopt. Na die halve verschuiving staat kopie 4 op
-     de plek waar kopie 1 begon, dus het beeld op t=eind is pixel voor pixel
-     dat op t=0 en de lus is naadloos.
+     Jana, punt 2: de logo's mogen "aan hetzelfde tempo voorbijrollen als op
+     figures.hr en dus niet allemaal tegelijk in beeld".
 
-     Twee dingen maken dat het ook écht naadloos is en niet "bijna":
-     · De tussenruimte zit in de ITEMS (padding-inline), niet in een `gap`
-       op het spoor. Met een gap is de totale breedte 2·reeks + gap, en is
-       -50% dus een halve gap naast de sprongvrije plek — precies de zichtbare
-       schok die een naïeve marquee maakt.
-     · Tien kopieën in plaats van twee. Bij twee is de halve breedte één reeks
-       (±635px); zodra het venster breder is dan die halve breedte loopt het
-       spoor aan de rechterkant leeg en zie je een gat voorbij rollen. Gemeten:
-       een reeks is 635px, dus tien reeksen geven een halve breedte van ±3176px
-       en blijft de balk gevuld tot voorbij een 2560px-scherm. De duur schaalt
-       mee (100s), zodat het tempo het trage ±32px/s blijft dat de ±40s uit de
-       briefing op twee kopieën zou geven.
+     Eén spoor dat dezelfde reeks DRIE keer bevat en in een lineaire animatie
+     naar translateX(-33.3333%) loopt. Die verschuiving is precies één reeks,
+     dus staat kopie 2 op het eind op de plek waar kopie 1 begon: het beeld op
+     t=eind is pixel voor pixel dat op t=0 en de lus is naadloos. Drie kopieën
+     is genoeg zolang de balk niet breder is dan twee reeksen, en dat is bij de
+     ruimte hieronder zelfs op 2560px niet in de buurt.
+
+     De tussenruimte zit in de ITEMS (padding-inline), niet in een `gap` op het
+     spoor. Met een gap is de totale breedte 3·reeks + 2·gap en valt -33,3333%
+     een gap naast de sprongvrije plek — precies de zichtbare schok die een
+     naïeve marquee maakt.
+
+     NIET ALLEMAAL TEGELIJK IN BEELD — WAT DAARVOOR NODIG WAS.
+     In ronde 3 stond hier padding-inline: 36px, en dan is één reeks 635px
+     breed tegen een balk van 1440px: er stonden 2,2 complete reeksen in beeld,
+     alle vijf de namen twee à drie keer naast zichzelf. Dat is het omgekeerde
+     van wat ze vroeg. De tussenruimte is daarom ruim: de vijf items zijn samen
+     276px aan logo, dus één reeks meet 276 + 10 × de tussenruimte.
+
+       tussenruimte   één reeks   balk      items die de balk raken
+       56px (<768)      835px     390px     3 van de 5  (gemeten)
+       120px (≥768)    1476px     768px     3 van de 5  (gerekend)
+       190px (≥1280)   2175px    1440px     4 van de 5  (gemeten)
+       260px (≥1920)   2875px    1920px     4 van de 5  (gerekend)
+
+     Gemeten in Chromium, niet gerekend, waar het "gemeten" zegt: op 390px
+     raken er 3 items de balk, op 1440px 4 — tegen de 11 van ronde 3, waar
+     alle vijf de namen twee à drie keer naast zichzelf stonden. Omdat één
+     reeks nu altijd breder is dan de balk, kan er nooit een complete reeks in
+     beeld staan en nooit een naam twee keer. Met vijf namen is "echt niet
+     allemaal tegelijk" op een breed scherm niet verder te brengen dan dit;
+     daarvoor zijn de logo's uit Jana's Dropbox-map nodig.
+
+     HET TEMPO. De briefing schreef ±40s voor op twee kopieën: één reeks van
+     635px in 40s, dus 15,9 px/s. Ronde 3 bouwde tien kopieën in 100s — dat is
+     3176px in 100s, 31,8 px/s, het dubbele — en het commentaar rekende die
+     fout goed. Het tempo hangt af van de reeksbreedte, dus moet de duur per
+     breekpunt mee: duur = reeksbreedte ÷ 15,9. Gemeten in Chromium door de
+     transform over 6 seconden te bemonsteren, twee keer per breedte: 15,8 px/s
+     op 390px (835px reeks in 53s) en 15,9 px/s op 1440px (2175px in 137s).
 
      De maskers links en rechts laten de logo's vervagen in plaats van hard
      af te breken aan de rand.
      --------------------------------------------------------------------- */
-  .logo-balk { --fade: 48px; overflow: hidden;
+  .logo-balk { --fade: 48px; --logo-tussen: 56px; --logo-duur: 53s; overflow: hidden;
     -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade),
                         #000 calc(100% - var(--fade)), transparent 100%);
             mask-image: linear-gradient(to right, transparent 0, #000 var(--fade),
                         #000 calc(100% - var(--fade)), transparent 100%); }
-  @media (min-width: 768px) { .logo-balk { --fade: 96px; } }
+  @media (min-width: 768px)  { .logo-balk { --fade: 96px; --logo-tussen: 120px; --logo-duur: 93s; } }
+  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 190px; --logo-duur: 137s; } }
+  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 260px; --logo-duur: 181s; } }
 
   .logo-spoor { display: flex; width: max-content;
-                animation: logo-rol 100s linear infinite; }
+                animation: logo-rol var(--logo-duur) linear infinite; }
   .logo-reeks { display: flex; align-items: center; height: 40px;
                 list-style: none; margin: 0; padding: 0; }
-  .logo-reeks > li { flex: none; display: flex; align-items: center; padding-inline: 24px; }
-  @media (min-width: 768px) { .logo-reeks > li { padding-inline: 36px; } }
+  .logo-reeks > li { flex: none; display: flex; align-items: center;
+                     padding-inline: var(--logo-tussen); }
 
   @keyframes logo-rol { from { transform: translateX(0); }
-                        to   { transform: translateX(-50%); } }
+                        to   { transform: translateX(-33.3333%); } }
 
   /* Stilzetten om een logo te kunnen lezen. focus-within staat er voor het
      geval de namen later links worden — vandaag staat er geen knop in. */
@@ -569,7 +617,16 @@ tailwind.config = {
     /* De marquee valt terug op de statische, omwikkelde rij van ronde 2: één
        reeks, gecentreerd, zonder masker. Expliciet uitzetten is nodig — de
        algemene regel hierboven zet de duur op .01ms, en dát zou de animatie
-       juist meteen op haar EINDstand (-50%) zetten. */
+       juist meteen op haar EINDstand (-33,3333%) zetten.
+
+       EN DAT IS EEN KEUZE, GEEN GEVOLG: wie "beperk beweging" aan heeft staan,
+       ziet hier wél alle vijf de namen tegelijk — precies wat Jana voor de
+       rollende versie niet wilde. Er bestaat geen stilstaande rij die "niet
+       allemaal tegelijk in beeld" haalt, dus gaat leesbaarheid hier voor, en
+       daarom krimpt de ruime tussenruimte van de marquee hier terug naar de
+       24px van ronde 2: met 190px past de rij niet op één regel en breekt ze
+       in twee halve rijen, wat als een fout leest. */
+    .logo-balk { --logo-tussen: 24px !important; }
     .logo-spoor { animation: none !important; transform: none !important;
                   width: auto !important; flex-wrap: wrap; justify-content: center; }
     .logo-reeks { flex-wrap: wrap; justify-content: center; height: auto; }
@@ -607,7 +664,7 @@ tailwind.config = {
   .hrtool-naam { min-width: 0; overflow-wrap: anywhere;
                  font-size: 17px; line-height: 1.5; font-weight: 700; color: #ffffff; }
 
-  /* === r3: sectie 8-11 === */
+  /* === r3: sectie 8-12 === */
 
   /* ---------------------------------------------------------------------
      8 · DE QUOTERIJ — pijlen, puntjes en de lege fotoplek, op donker
@@ -655,17 +712,18 @@ tailwind.config = {
                   color: var(--inv-soft); font-size: 13px; line-height: 1; }
 
   /* ---------------------------------------------------------------------
-     11 · DE VASTE BAND — zonder animatie als het systeem daarom vraagt
+     11 · DE TWEE VASTE BALKEN — zonder animatie als het systeem dat vraagt
      ---------------------------------------------------------------------
      x-transition zet de duur als inline stijl, en de algemene
      reduced-motion-regel bovenaan zet elke duur al op .01ms met !important —
      wat inline stijl verslaat. Deze regel staat er omdat "praktisch nul" en
      "geen" niet hetzelfde zijn: met transition: none is er geen overgang om
      af te breken, en de balk staat er meteen. Zo is het ook te meten, want
-     getComputedStyle geeft dan 0s en niet 0,00001s.
+     getComputedStyle geeft dan 0s en niet 0,00001s. Hij geldt voor de
+     demobalk én voor de cookiebalk, want die staan nu samen onderaan.
      --------------------------------------------------------------------- */
   @media (prefers-reduced-motion: reduce) {
-    [data-vasteband] { transition: none !important; }
+    [data-vasteband], [data-cookiebalk] { transition: none !important; }
   }
 </style>
 
@@ -727,10 +785,13 @@ tailwind.config = {
 <!-- =========================================================================
      2 · LOGOBALK — LICHT (#f6f8fa). Licht, dus de -dark logobestanden.
      Een doorlopende marquee: de logo's rollen traag van rechts naar links
-     voorbij, niet allemaal tegelijk in beeld. Het spoor draagt tien keer
-     dezelfde reeks en schuift naar -50%, zodat de lus naadloos sluit; de
-     negen duplicaten staan op aria-hidden, dus in de toegankelijkheidsboom
-     staat de lijst precies één keer. Zie de toelichting in de stylesheet.
+     voorbij, met zoveel ruimte ertussen dat er nooit een complete reeks
+     tegelijk in beeld staat — gemeten 4 van de 5 items op 1440px, 3 op 390px,
+     en nooit een naam twee keer. Het spoor draagt drie keer dezelfde reeks en schuift naar
+     -33,3333%, zodat de lus naadloos sluit; de twee duplicaten staan op
+     aria-hidden, dus in de toegankelijkheidsboom staat de lijst precies één
+     keer. Het tempo is gemeten 15,8 à 15,9 px/s. Zie de toelichting in de
+     stylesheet.
      ========================================================================= -->
 <section class="bg-surface border-y border-line band-pad" aria-labelledby="klanten-titel">
   <div class="shell text-center" data-reveal>
@@ -742,55 +803,6 @@ tailwind.config = {
   <div class="logo-balk mt-8">
     <div class="logo-spoor">
     <ul class="logo-reeks">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
-    </ul>
-    <ul class="logo-reeks" aria-hidden="true">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
-    </ul>
-    <ul class="logo-reeks" aria-hidden="true">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
-    </ul>
-    <ul class="logo-reeks" aria-hidden="true">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
-    </ul>
-    <ul class="logo-reeks" aria-hidden="true">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
-    </ul>
-    <ul class="logo-reeks" aria-hidden="true">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
-    </ul>
-    <ul class="logo-reeks" aria-hidden="true">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
-    </ul>
-    <ul class="logo-reeks" aria-hidden="true">
       <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
       <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
       <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
@@ -1006,16 +1018,30 @@ tailwind.config = {
      4 · CASES — LICHT (#ffffff). Terug naar rust, dus -dark logo's.
 
      Geen carrousel meer op desktop: Jana wil daar alle items tegelijk zien.
-     Met vijf klanten is "alles tonen" een raster van drie plus twee, zonder
-     pijlen en zonder puntjes. Vijf kolommen naast elkaar zijn gemeten en
-     verworpen: op 1440 is een kaart dan 186px breed met 138px tekst erin, breekt
-     elke kop in drie tot vier regels, valt "204 medewerkers" uiteen over twee
-     regels en vouwt de downloadlink zelf om. Drie kolommen geven een kaart van
-     325px met 277px tekst en koppen van hoogstens twee regels — dat is waarom
-     dit raster drie breed is en niet vijf.
+     Vijf kolommen naast elkaar zijn gemeten en verworpen: op 1440 is een kaart
+     dan 186px breed met 138px tekst erin, breekt elke kop in drie tot vier
+     regels, valt "204 medewerkers" uiteen over twee regels en vouwt de
+     downloadlink zelf om.
+
+     RONDE 3, HERSTEL — TWEE VOLLE RIJEN IN PLAATS VAN DRIE PLUS EEN GAT.
+     Vijf kaarten in drie kolommen laat de cel rechtsonder leeg, en dat is
+     precies het blok waarvan Jana zegt: "ik vind dit het meest overtuigende
+     van de hele site, dus qua design mogen we hier zeker extra aandacht aan
+     geven." Een zichtbaar gat is het tegendeel van extra aandacht.
+
+     Het raster is daarom zes kolommen fijn, en de kaarten vullen het in twee
+     volle rijen: de eerste twee kaarten nemen elk drie kolommen (2 × 628px op
+     1440), de laatste drie elk twee (3 × 410px). Geen enkele cel blijft leeg.
+     Dat de brede twee vooraan staan is geen toeval maar dezelfde regel die de
+     volgorde bepaalt: Kaneka (204) en Anchr (300) zitten midden in de
+     sweetspot van 200-500 die Jana met Nick en Bart vastlegde, en krijgen hier
+     dus letterlijk meer ruimte dan DPG en SD Worx.
+
      Op telefoon blijft het een veegbare rij met scroll-snap, want vijf
      kaarten onder elkaar is daar een halve pagina scrollen.
-     Het raster absorbeert zes of negen cases zonder herontwerp.
+     Zes cases worden drie plus drie, acht worden twee rijen van vier: het
+     raster absorbeert dat zonder herontwerp, met één klassewijziging per
+     kaart.
 
      De kop "Bewezen bij complexe organisaties" is weg op Jana's vraag. De
      sectie houdt wel een naam in de toegankelijkheidsboom — anders is dit
@@ -1030,10 +1056,10 @@ tailwind.config = {
     <h2 id="cases-titel" class="sr-only">Cases</h2>
 
     <ul class="scrollhide flex snap-x snap-mandatory gap-4 overflow-x-auto list-none p-0 m-0 -mx-6 px-6 pb-2
-               lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible lg:mx-0 lg:px-0 lg:pb-0"
+               lg:grid lg:grid-cols-6 lg:gap-6 lg:overflow-visible lg:mx-0 lg:px-0 lg:pb-0"
         data-reveal>
 
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto">
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3">
         <article class="card h-full border border-line p-6 flex flex-col">
           <img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="h-5 w-auto self-start">
           <p class="mt-6 text-h2 font-bold text-ink">Twee werkweken tijdswinst</p>
@@ -1044,7 +1070,7 @@ tailwind.config = {
           <p class="mt-4 text-caption text-ink-soft">Chemie &amp; technologie</p>
           <div class="mt-auto pt-6">
             <a href="#cases-open" class="caselink" data-cta="case-pdf-kaneka">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
         </article>
@@ -1054,7 +1080,7 @@ tailwind.config = {
            plaatshouder en niets verzonnen: de naam staat hier typografisch, op
            dezelfde hoogte als de logo's ernaast en in dezelfde zetting als in de
            logobalk bovenaan, met een zichtbare TODO erbij. -->
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto">
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3">
         <article class="card h-full border border-line p-6 flex flex-col">
           <span class="h-8 flex items-center text-h3 font-bold text-ink">Anchr</span>
           <p class="mt-6 text-h2 font-bold text-ink">Meerdere werkdagen bespaard</p>
@@ -1063,16 +1089,16 @@ tailwind.config = {
             <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">8 bedrijven</span></li>
           </ul>
           <span class="todo mt-4"><b>TODO — nodig van klant</b>: het logobestand van Anchr, in een donkere en een witte versie</span>
-          <p class="mt-4 text-caption text-ink-soft">Groep van ondernemingen</p>
+          <p class="mt-4 text-caption text-ink-soft">Softwaregroep</p>
           <div class="mt-auto pt-6">
             <a href="#cases-open" class="caselink" data-cta="case-pdf-anchr">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
         </article>
       </li>
 
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto">
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
         <article class="card h-full border border-line p-6 flex flex-col">
           <img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto self-start">
           <p class="mt-6 text-h2 font-bold text-ink">Live op 3 maanden</p>
@@ -1084,31 +1110,31 @@ tailwind.config = {
           <p class="mt-4 text-caption text-ink-soft">Infrastructuur &amp; logistiek</p>
           <div class="mt-auto pt-6">
             <a href="#cases-open" class="caselink" data-cta="case-pdf-aertssen">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
         </article>
       </li>
 
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto">
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
         <article class="card h-full border border-line p-6 flex flex-col">
           <img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="h-6 w-auto self-start">
           <p class="mt-6 text-h2 font-bold text-ink">Van 2 weken naar 2 dagen</p>
           <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
             <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">6.214 medewerkers</span></li>
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">130 managers</span></li>
             <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
           </ul>
+          <span class="todo mt-4"><b>TODO — te bevestigen</b>: of de 130 managers uit Jana's concept hier bij horen. Geen bron noemt dat cijfer samen met de 6.214 medewerkers, dus staat het er voorlopig niet</span>
           <p class="mt-4 text-caption text-ink-soft">Mediagroep</p>
           <div class="mt-auto pt-6">
             <a href="#cases-open" class="caselink" data-cta="case-pdf-dpg">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
         </article>
       </li>
 
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto">
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
         <article class="card h-full border border-line p-6 flex flex-col">
           <img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="h-6 w-auto self-start">
           <p class="mt-6 text-h2 font-bold text-ink">Van 2 maanden naar 3 weken</p>
@@ -1120,7 +1146,7 @@ tailwind.config = {
           <p class="mt-4 text-caption text-ink-soft">Hr-dienstverlener</p>
           <div class="mt-auto pt-6">
             <a href="#cases-open" class="caselink" data-cta="case-pdf-sdworx">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
           </div>
         </article>
@@ -1262,7 +1288,6 @@ tailwind.config = {
                 <text x="1090" y="573" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
                 <line x1="40" y1="604" x2="1160" y2="604" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40" y="648" font-size="21" font-weight="500" fill="#547068">Elke manager ziet enkel zijn eigen team en zijn eigen data.</text>
               </svg>
             </div>
           </figure>
@@ -1331,7 +1356,6 @@ tailwind.config = {
                 <line x1="647" y1="450" x2="1128" y2="450" stroke="#e1ebf0" stroke-width="2"/>
                 <text x="647" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
                 <text x="1128" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Ja</text>
-                <text x="40" y="576" font-size="21" font-weight="500" fill="#547068">Youbo stelt voor, de manager beslist — en motiveert zodra hij van het voorstel afwijkt.</text>
               </svg>
             </div>
           </figure>
@@ -1466,8 +1490,11 @@ tailwind.config = {
 <!-- =========================================================================
      6 · HET GROTE CIJFER — LICHT (#f6f8fa). Eén zin, geen decoratie.
      RONDE 3 — DE AANPAK VAN DRAFT R2-04 OVERGENOMEN.
-     Jana: "21 landen moet even groot worden als 19.000 medewerkers", en over
-     dit onderdeel: "in het tweede voorbeeld is hiervan het design wel beter."
+     Jana schreef: "Die 21 landen is ook belangrijk en mag dus ook groter… In
+     het tweede voorbeeld is hiervan het design wel beter…" Dat is haar
+     letterlijke tekst; ronde 3 citeerde hier "21 landen moet even groot worden
+     als 19.000 medewerkers", wat zij nooit zo geschreven heeft — en haar "mag"
+     is iets anders dan ons "moet".
      Dat tweede voorbeeld is draft-r2-04. Daar is dit één doorlopende zin op
      displayformaat waarin BEIDE getallen inline staan, in dezelfde maat als de
      woorden eromheen en alleen in kleur onderscheiden, en waarin ze optellen
@@ -1477,13 +1504,37 @@ tailwind.config = {
      De getallen dragen #154e3a (9,5:1 op #f6f8fa), niet het mint: mint als
      tekst haalt op licht 1,3:1 en is onleesbaar. Dat is dezelfde keuze als bij
      de downloadlinks van de cases.
+
+     RONDE 3, HERSTEL — DE GETALLEN TELLEN NIET MEER OP.
+     Ze deden dat wel, 900ms lang, en dat is nagemeten: tussen het begin en het
+     eind stonden er in Chromium 107 verschillende, volledige, grammaticaal
+     correcte en feitelijk ONJUISTE zinnen op het grootste lettertype van de
+     pagina — van "van 0 medewerkers in 0 landen" via "in 1 landen" naar
+     "van 2.578 medewerkers in 3 landen". Elk van die frames is een bewering
+     over Youbo's klantenbestand die niet klopt.
+
+     FACTS.md schrijft: "Op marketing voor compensatiesoftware is een som die
+     niet klopt het duurste detail dat bestaat." Een getal dat een seconde lang
+     niet klopt valt daaronder. Een tussenstand mag nooit aan een definitieve
+     eenheid gekoppeld staan, en bij een getal dat midden in een lopende zin
+     staat kan dat niet anders: de zin staat er al compleet. Twee aparte
+     IntersectionObservers op threshold 0.6 maakten het erger, want dan lopen de
+     twee getallen ook nog uit de pas.
+
+     Wat Jana over dit blok schreef gaat niet over het tellen maar over de maat:
+     "Die 21 landen is ook belangrijk en mag dus ook groter…" Die maat blijft
+     precies zoals ze was — beide getallen inline, in dezelfde displaymaat als
+     de woorden eromheen, alleen in kleur onderscheiden. De beweging die
+     overblijft is de gewone opkomst van het blok (data-reveal), en die raakt de
+     getallen niet. Zeg dit wel tegen haar: het is een bewuste ingreep in iets
+     wat zij gezien heeft.
      ========================================================================= -->
 <section class="bg-surface band-pad" aria-labelledby="cijfer-titel">
   <div class="shell text-center" data-reveal>
     <h2 id="cijfer-titel" class="mx-auto max-w-[24ch] text-[28px] leading-[1.2] md:text-h1 lg:text-display">
       De lonen, bonussen en promoties van
-      <span class="tabular text-brand-ink" data-tel-naar="19000">19.000</span> medewerkers in
-      <span class="tabular text-brand-ink" data-tel-naar="21">21</span> landen worden al met Youbo beheerd
+      <span class="tabular text-brand-ink">19.000</span> medewerkers in
+      <span class="tabular text-brand-ink">21</span> landen worden al met Youbo beheerd
     </h2>
   </div>
 </section>
@@ -1493,8 +1544,8 @@ tailwind.config = {
      Paraatheid, nooit een plicht: nergens op deze pagina staat dat de wet
      vandaag iets verplicht.
      RONDE 3 — DRIE WIJZIGINGEN, EN ÉÉN BAND IN PLAATS VAN TWEE.
-     Jana: "op desktop staan Pay Transparency en Hr-tools naast elkaar, niet
-     onder elkaar — ze zijn qua belang gelijkwaardig." Naast elkaar staan kan
+     Jana schreef: "Op desktop mogen die pay transparancy en die hr-tools
+     eigenlijk wel naast elkaar ipv onder elkaar qua belang…." Naast elkaar staan kan
      alleen binnen één band, dus zijn de twee secties van ronde 2 hier samen
      twee gelijke kolommen van één verloopband. Op telefoon staan ze onder
      elkaar, in dezelfde volgorde. Elke kolom houdt haar eigen <section> en
@@ -1638,7 +1689,7 @@ tailwind.config = {
 </div>
 
 <!-- =========================================================================
-     9 · QUOTES — DONKER, het verloop. Dit is de enige band met klantenlogo's
+     8 · QUOTES — DONKER, het verloop. Dit is de enige band met klantenlogo's
      op donker, en dus de enige plek waar de ORIGINELE witte uitsparingen
      gebruikt worden (sdworx-logo.svg, kaneka-logo.svg, dpg-logo.svg).
 
@@ -1826,7 +1877,7 @@ tailwind.config = {
 </section>
 
 <!-- =========================================================================
-     10 · FAQ — LICHT (#f6f8fa). Lezen is makkelijker op licht, en het brengt
+     9 · FAQ — LICHT (#f6f8fa). Lezen is makkelijker op licht, en het brengt
      de bezoeker rustig naar het formulier.
      ========================================================================= -->
 <section class="bg-surface band-pad" aria-labelledby="faq-titel"
@@ -1961,7 +2012,7 @@ tailwind.config = {
 </section>
 
 <!-- =========================================================================
-     11 · FORMULIER — LICHT (#ffffff).
+     10 · FORMULIER — LICHT (#ffffff).
 
      RONDE 3, vier wijzigingen van Jana en de reden erbij:
 
@@ -1979,7 +2030,14 @@ tailwind.config = {
        naartoe gaat is in een review niet van een werkende te onderscheiden.
      · DE HINT "Bij voorkeur je werkadres" onder het e-mailveld is weg, het
        label "Bericht" is "Stel gerust al je vragen" geworden, en de
-       nieuwsbriefregel staat er letterlijk zoals Jana hem schreef.
+       nieuwsbriefregel staat er nu écht letterlijk zoals Jana hem schreef:
+       "Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je
+       rewardnieuws." — met "1x kwartaal" en met de punt op het eind. Ronde 3
+       maakte daar stilletjes "1× per kwartaal" van en beweerde op drie plekken
+       dat het letterlijk was. "Per" is grammaticaal beter en waarschijnlijk wat
+       zij bedoelde, maar het is haar tekst: dat vraag je, je verbetert het niet
+       ongemerkt. Eén stille correctie maakt elke andere "letterlijk overgenomen"
+       op deze pagina waardeloos.
      ========================================================================= -->
 <section id="demo" class="bg-paper band-pad" aria-labelledby="demo-titel">
   <div class="shell grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
@@ -2043,7 +2101,7 @@ tailwind.config = {
           <input id="nieuwsbrief" name="nieuwsbrief" type="checkbox" value="ja"
                  class="mt-1 h-5 w-5 shrink-0 rounded-sm border border-line-btn accent-brand">
           <label for="nieuwsbrief" class="text-caption text-ink-soft">
-            Schrijf me in op de nieuwsbrief. Ongeveer 1× per kwartaal sturen we je rewardnieuws
+            Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.
           </label>
         </div>
 
@@ -2074,7 +2132,7 @@ tailwind.config = {
 </section>
 
 <!-- =========================================================================
-     12 · FOOTER — DONKER (#000000). Wit woordmerk, want zwarte ondergrond.
+     11 · FOOTER — DONKER (#000000). Wit woordmerk, want zwarte ondergrond.
      Dit is de footer van youbo.io, niet een zelfbedachte minifooter: Jana
      vroeg er uitdrukkelijk om, zodat de bezoeker ziet op welke site hij staat,
      en omdat een landingspagina die vanuit de sitefooter gelinkt wordt beter
@@ -2160,94 +2218,97 @@ tailwind.config = {
 </footer>
 
 <!-- =========================================================================
-     12 · DE VASTE BAND — permanent in beeld, met één actie
+     12 · DE TWEE VASTE BALKEN ONDERAAN — GESTAPELD, NIET AFWISSELEND
      -------------------------------------------------------------------------
-     Jana, in ronde 1: "Ik vind het ook écht goed dat de band de hele tijd in
-     beeld blijft waarop je kan kiezen voor de demo." In ronde 2 was hij er
-     niet meer; ze mist hem, dus staat hij er weer — en nu echt de hele tijd,
-     niet pas na 600px scrollen zoals in ronde 2.
+     Twee dingen horen onderaan vast te staan, en ze horen er samen te staan:
 
-     Vier dingen die hem kapot kunnen maken, en wat er tegen gedaan is:
+     · DE DEMOBALK. Jana, in ronde 1: "Ik vind het ook écht goed dat de band de
+       hele tijd in beeld blijft waarop je kan kiezen voor de demo." In ronde 2
+       was hij er niet meer; ze mist hem (punt 10), dus staat hij er weer. Tot
+       deze ronde wachtte hij op een cookiekeuze, en dat haalde zijn hele punt
+       weg: wie uit de advertentie komt en de cookiebalk negeert — het normale
+       gedrag, en 70 à 80% van het verkeer — zag hem nooit. Hij zet zelf geen
+       enkele cookie, dus er is ook geen juridische reden om te wachten.
+     · DE COOKIEBALK, zolang er geen keuze gemaakt is. Jana: "de
+       cookiewaarschuwing neemt wel veel te veel plek in, hoe minimaler hoe
+       beter." Ze is daarom één regel: één zin met de link naar het beleid, en
+       twee gelijkwaardige knoppen — weigeren mag niet moeilijker zijn dan
+       toestaan. Op telefoon valt het staartje van de zin weg zodat de regel
+       één regel blijft; gemeten 45px hoog in plaats van de 111px van ronde 3.
 
-     · HIJ MAG GEEN INHOUD BEDEKKEN. Een vaste balk onderaan legt zich over de
-       laatste regels van de pagina. Daarom meet ruimte() verderop in dit
-       bestand de échte hoogte van de balk en zet die als padding-bottom op
-       <body>. Een vaste pb-[76px] zou het mis hebben zodra de cookiebalk op
-       telefoon twee regels wordt.
-     · HIJ MAG NIET OVER HET FORMULIER STAAN WAAR HIJ NAARTOE STUURT. Een
-       oproep naar iets dat al in beeld staat, is ruis. Een
+     Ze staan in ÉÉN vaste omhulling, de cookiebalk bovenaan en de demobalk
+     eronder. Dat is wat de stapeling betrouwbaar maakt:
+
+     · DE HOOGTE IS AUTOMATISCH GOED. ruimte() meet de omhulling, niet de twee
+       balken apart. Eerder nam die functie het maximum van de twee — juist
+       zolang er altijd precies één stond, en te laag zodra ze samen staan.
+       Nu is de gemeten hoogte per definitie de som van wat er écht staat, en
+       die gaat als padding-bottom op <body>. Een vaste pb-[76px] zou het mis
+       hebben zodra de cookiebalk verdwijnt of twee regels wordt.
+     · ZE KUNNEN ELKAAR NIET MEER BEDEKKEN. Er is geen tweede vast element meer
+       dat zijn eigen bottom: 0 opeist.
+     · DE TABVOLGORDE BLIJFT HEEL. De omhulling staat als laatste in de DOM, in
+       leesvolgorde: cookie policy · Weigeren · Toestaan · Boek een demo. x-show
+       zet display: none, dus een knop in een balk die er niet staat, staat ook
+       niet in de tabvolgorde. Niets vangt focus af en niets zet inert.
+     · DE DEMOBALK MAG NIET OVER HET FORMULIER STAAN WAAR HIJ NAARTOE STUURT.
+       Een oproep naar iets dat al in beeld staat, is ruis. Een
        IntersectionObserver op #demo zet hem uit; de rootMargin van -96px
-       onderaan zorgt dat hij weg is vóórdat hij de kop van die sectie raakt,
-       en niet pas als hij er al over ligt.
-     · HIJ MAG DE TABVOLGORDE NIET BREKEN. Hij staat daarom als laatste in de
-       DOM, en x-show zet display:none — een knop in een onzichtbare balk is
-       dan ook echt niet bereikbaar met de Tab-toets. Een balk die alleen
-       opacity:0 is, levert een focus die op niets landt.
-     · HIJ MAG NIET OVER DE COOKIEBALK VALLEN. Die staat op dezelfde plek, dus
-       deze balk wacht tot er een cookiekeuze gemaakt is. Precies één van de
-       twee staat er ooit.
+       onderaan zorgt dat hij weg is vóórdat hij de kop van die sectie raakt.
 
-     Bij prefers-reduced-motion verschijnt hij zonder overgang: zie de regel
-     in het r3-blok onderaan de stylesheet.
+     Bij prefers-reduced-motion verschijnen ze beide zonder overgang: zie de
+     regel in het r3-blok onderaan de stylesheet.
      ========================================================================= -->
-<div x-data="vasteband()" x-show="toon && $store.toestemming.beantwoord"
-     x-transition.opacity.duration.200ms x-cloak
-     data-bodembalk data-vasteband
-     class="fixed bottom-0 inset-x-0 z-40 border-t border-line bg-paper/95 backdrop-blur shadow-lift">
-  <div class="max-w-shell mx-auto px-6 py-3 flex items-center justify-between gap-4">
-    <!-- Op 390px is er naast de knop geen plaats voor een zin die niet
-         afgekapt wordt, en een afgekapte zin leest als een fout. Het woordmerk
-         en de zin beginnen dus pas op sm, en daaronder is de knop zelf de hele
-         balk — op telefoon is dit het waardevolste element van de pagina en
-         een knop over de volle breedte is daar het makkelijkst te raken. -->
-    <div class="hidden sm:flex items-center gap-3 min-w-0">
-      <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-6 w-auto">
-      <p class="text-caption text-ink-soft m-0">Nick toont je Youbo op jouw eigen looncyclus</p>
+<div class="fixed bottom-0 inset-x-0 z-50" data-bodembalk>
+
+  <!-- DE COOKIEBALK — één smalle strook, bovenop de demobalk.
+       Geen overlay, geen blok dat een halve telefoon vult, geen
+       voorkeurenpaneel met schuifjes voor categorieën die hier niet bestaan.
+       Er is precies één keuze te maken, want er is precies één soort cookie in
+       het spel: meten. LinkedIn en Google laden niet in de <head> maar in
+       laadMeettags(), en die draait alleen na Toestaan — zolang niemand klikt,
+       vertrekt er geen enkel verzoek naar een meetdienst. -->
+  <div x-data x-show="!$store.toestemming.beantwoord" x-transition.opacity.duration.200ms x-cloak
+       data-cookiebalk
+       class="border-t border-line bg-paper/95 backdrop-blur"
+       role="region" aria-label="Cookies">
+    <div class="max-w-shell mx-auto px-4 md:px-6 py-1 flex items-center gap-3">
+      <p class="flex-1 min-w-0 m-0 text-[13px] leading-[1.35] text-ink-soft">
+        We plaatsen <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
+           class="text-link-licht underline underline-offset-2 hover:text-link-hover"
+           style="transition: color var(--m-base) var(--e-standard)"
+           data-cta="cookiebalk-beleid">meetcookies</a><span class="hidden sm:inline"> om te zien hoe deze pagina gebruikt wordt</span>.
+      </p>
+      <div class="flex items-center gap-2 shrink-0">
+        <button type="button" @click="$store.toestemming.zet('geweigerd')"
+                class="btn-secondary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">
+          Weigeren
+        </button>
+        <button type="button" @click="$store.toestemming.zet('toegestaan')"
+                class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan">
+          Toestaan
+        </button>
+      </div>
     </div>
-    <a href="#demo" class="btn-primary w-full sm:w-auto shrink-0 px-5 py-2 min-h-[44px] text-caption" data-cta="vaste-band-demo">
-      Boek een demo
-    </a>
   </div>
-</div>
 
-<!-- =========================================================================
-     COOKIEBALK — één smalle strook onderaan, en niets meer
-     -------------------------------------------------------------------------
-     Jana: "de cookiewaarschuwing neemt veel te veel plek in, hoe minimaler hoe
-     beter". Dus: geen overlay, geen blok dat een halve telefoon vult, geen
-     voorkeurenpaneel met schuifjes voor categorieën die hier niet bestaan. Er
-     is precies één keuze te maken, want er is precies één soort cookie in het
-     spel — meten. De balk zegt dat in één zin en biedt twee gelijkwaardige
-     knoppen aan; weigeren mag niet moeilijker zijn dan toestaan.
-
-     De balk staat onderaan, op dezelfde plek als de meelopende demo-knop. Die
-     knop blijft weg zolang er geen keuze gemaakt is, zodat de twee elkaar
-     nooit afdekken.
-
-     Belangrijk: LinkedIn en Google laden niet in de <head>. Ze zitten in
-     laadMeettags(), en die draait alleen na Toestaan. Zolang niemand klikt,
-     vertrekt er geen enkel verzoek naar een meetdienst.
-     ========================================================================= -->
-<div x-data x-show="!$store.toestemming.beantwoord" x-transition.opacity.duration.200ms x-cloak
-     data-bodembalk
-     class="fixed bottom-0 inset-x-0 z-50 border-t border-line bg-paper/95 backdrop-blur shadow-lift"
-     role="region" aria-label="Cookies">
-  <div class="max-w-shell mx-auto px-6 py-2 sm:py-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
-    <p class="flex-1 text-caption text-ink-soft m-0">
-      We plaatsen meetcookies om te zien hoe deze pagina gebruikt wordt.
-    </p>
-    <div class="flex items-center gap-3 shrink-0">
-      <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
-         class="text-caption text-link-licht underline underline-offset-4 hover:text-link-hover"
-         style="transition: color var(--m-base) var(--e-standard)" data-cta="cookiebalk-beleid">Cookie policy</a>
-      <button type="button" @click="$store.toestemming.zet('geweigerd')"
-              class="btn-secondary min-h-[40px] px-4 py-2 text-caption" data-cta="cookiebalk-weigeren">
-        Weigeren
-      </button>
-      <button type="button" @click="$store.toestemming.zet('toegestaan')"
-              class="btn-primary min-h-[40px] px-4 py-2 text-caption" data-cta="cookiebalk-toestaan">
-        Toestaan
-      </button>
+  <!-- DE MEELOPENDE DEMOBALK — één actie, vanaf de eerste pixel. -->
+  <div x-data="vasteband()" x-show="toon" x-transition.opacity.duration.200ms x-cloak
+       data-vasteband
+       class="border-t border-line bg-paper/95 backdrop-blur shadow-lift">
+    <div class="max-w-shell mx-auto px-6 py-3 flex items-center justify-between gap-4">
+      <!-- Op 390px is er naast de knop geen plaats voor een zin die niet
+           afgekapt wordt, en een afgekapte zin leest als een fout. Het woordmerk
+           en de zin beginnen dus pas op sm, en daaronder is de knop zelf de hele
+           balk — op telefoon is dit het waardevolste element van de pagina en
+           een knop over de volle breedte is daar het makkelijkst te raken. -->
+      <div class="hidden sm:flex items-center gap-3 min-w-0">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-6 w-auto">
+        <p class="text-caption text-ink-soft m-0">Nick toont je Youbo op jouw eigen looncyclus</p>
+      </div>
+      <a href="#demo" class="btn-primary w-full sm:w-auto shrink-0 px-5 py-2 min-h-[44px] text-caption" data-cta="vaste-band-demo">
+        Boek een demo
+      </a>
     </div>
   </div>
 </div>
@@ -2427,60 +2488,16 @@ tailwind.config = {
   })();
 
   /* -------------------------------------------------------------------------
-     HET GROTE CIJFER TELT OP — blok 6
+     HET GROTE CIJFER TELT NIET OP — blok 6
      ---------------------------------------------------------------------------
-     Overgenomen uit draft-r2-04, samen met de typografie van dat blok: beide
-     getallen staan inline in dezelfde maat als de zin eromheen en tellen op
-     zodra de zin in beeld komt.
-
-     De EINDWAARDE staat in de HTML, niet in het script. Zonder JavaScript,
-     zonder IntersectionObserver en bij prefers-reduced-motion: reduce staat er
-     dus gewoon "19.000" en "21" — het script doet dan niets en hoeft niets op
-     te ruimen.
-
-     De breedte van het vak wordt vóór het tellen vastgezet op de breedte van
-     de eindwaarde. Zonder dat springt de hele zin opnieuw af bij elke extra
-     cijferpositie (0 → 19.000 is vier sprongen), en een kop die tijdens het
-     lezen van regelindeling verandert, leest als een fout.
+     Hier stond een telscript dat 19.000 en 21 in 900ms van nul lieten oplopen.
+     Het is weg, en dat is met opzet: gemeten in Chromium stonden er in die
+     900ms 107 verschillende volledige zinnen op het scherm die alle 107
+     feitelijk onjuist waren ("van 2.578 medewerkers in 3 landen", en zelfs
+     "in 1 landen"). Zie de uitleg boven sectie 6 in de HTML. De eindwaarden
+     staan in de HTML, dus er valt hier niets meer te doen: de zin klopt vanaf
+     het eerste frame, met of zonder JavaScript.
      ------------------------------------------------------------------------- */
-  (function () {
-    var cijfers = [].slice.call(document.querySelectorAll('[data-tel-naar]'));
-    if (!cijfers.length) { return; }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
-    if (!('IntersectionObserver' in window)) { return; }
-
-    var vorm = window.Intl && window.Intl.NumberFormat
-      ? new window.Intl.NumberFormat('nl-BE') : null;
-    if (!vorm) { return; }
-
-    function tel(el) {
-      var doel = parseInt(el.getAttribute('data-tel-naar'), 10);
-      if (!(doel > 0)) { return; }
-      var breedte = el.getBoundingClientRect().width;
-      el.style.display = 'inline-block';
-      el.style.minWidth = breedte + 'px';
-      var duur = 900, begin = null;
-      function stap(nu) {
-        if (begin === null) { begin = nu; }
-        var t = Math.min(1, (nu - begin) / duur);
-        var e = 1 - Math.pow(1 - t, 3);                 /* ease-out, zoals --e-decelerate */
-        el.textContent = vorm.format(Math.round(doel * e));
-        if (t < 1) { window.requestAnimationFrame(stap); }
-        else { el.textContent = vorm.format(doel); el.style.minWidth = ''; el.style.display = ''; }
-      }
-      window.requestAnimationFrame(stap);
-    }
-
-    var kijker = new IntersectionObserver(function (waarnemingen) {
-      waarnemingen.forEach(function (w) {
-        if (!w.isIntersecting) { return; }
-        kijker.unobserve(w.target);
-        tel(w.target);
-      });
-    }, { threshold: 0.6 });
-
-    cijfers.forEach(function (el) { kijker.observe(el); });
-  })();
 
   /* -------------------------------------------------------------------------
      LAADMEETTAGS — het enige punt waar een meettag de pagina binnenkomt
@@ -2548,13 +2565,20 @@ tailwind.config = {
   }
 
   /* -------------------------------------------------------------------------
-     RUIMTE ONDERAAN — één regel die twee balken bedient
+     RUIMTE ONDERAAN — de echte hoogte van wat er onderaan staat
      ---------------------------------------------------------------------------
-     Onderaan staan twee vaste balken die elkaar afwisselen: de cookiebalk
-     zolang er geen keuze gemaakt is, daarna de meelopende demo-knop. Ze zijn
-     niet even hoog, en op telefoon wordt de cookiebalk twee regels. Een vaste
-     pb-[76px] dekt dus altijd het verkeerde geval af en laat de laatste regel
-     van de footer onder een balk verdwijnen. Dit meet wat er écht staat.
+     Onderaan staat één vaste omhulling met twee balken erin, gestapeld: de
+     cookiebalk zolang er geen keuze gemaakt is, en daaronder de meelopende
+     demo-knop. Soms staan ze samen, soms staat alleen de demobalk er. Een
+     vaste pb-[76px] dekt dus altijd het verkeerde geval af en laat de laatste
+     regel van de footer onder een balk verdwijnen.
+
+     Daarom meet dit de omhulling zelf, niet de twee balken apart. Dat is het
+     hele punt van de omhulling: haar hoogte IS de som van wat er op dit moment
+     staat, dus kan hier geen max() of optelling fout gaan. Een ResizeObserver
+     op die omhulling vuurt zodra een van de twee balken op display: none gaat,
+     want dan krimpt de omhulling mee; de MutationObserver staat er met
+     subtree: true naast voor de browser zonder ResizeObserver.
      De klasse op <body> blijft als terugval voor wanneer JavaScript uitvalt.
      ------------------------------------------------------------------------- */
   (function () {
@@ -2575,7 +2599,9 @@ tailwind.config = {
     balken.forEach(function (b) {
       if (window.ResizeObserver) { new window.ResizeObserver(ruimte).observe(b); }
       if (window.MutationObserver) {
-        new window.MutationObserver(ruimte).observe(b, { attributes: true, attributeFilter: ['style', 'class'] });
+        new window.MutationObserver(ruimte).observe(b, {
+          attributes: true, attributeFilter: ['style', 'class'], subtree: true
+        });
       }
     });
     document.addEventListener('alpine:initialized', function () { window.setTimeout(ruimte, 60); });
@@ -2606,7 +2632,7 @@ tailwind.config = {
 
     /* De carrousel schuift per kaart en werkt even goed met acht quotes als met
        vijf. In ronde 2 dreef hij de cases; die staan nu in een raster, en in
-       ronde 3 is dit de quoterij van sectie 9. Hij is dus niet weggegooid en
+       ronde 3 is dit de quoterij van sectie 8. Hij is dus niet weggegooid en
        ook niet blijven liggen als dode code — hij is verhuisd. */
     Alpine.data('carrousel', () => ({
       index: 0,
