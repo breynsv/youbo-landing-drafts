@@ -6,7 +6,7 @@ TITELS: één kop per sectie, nooit twee. De negen minititels boven de koppen zi
 FOOTER EN TOESTEMMING: de footer is die van youbo.io, link voor link overgenomen uit `_raw/components/nl/footer.html` — de juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan.
 HERO: de tekst komt eerst — kop, intro, knop — en het portret van Nick staat eronder op telefoon en ernaast op desktop. Dat is Jana's uitdrukkelijke vraag in ronde 3; in ronde 2 stond de foto bovenaan. De cijferregel en het blokje "Bonus & Merit" zijn uit de hero weg, en de fotoplek is vervangen door de echte foto (assets/img/nick-portret.webp, 900×1140 — exact het formaat dat BRIEF-R3.md noemt).
 LOGOBALK: een doorlopende marquee in plaats van een statische rij, met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de oude statische rij. De tussenruimte is ruim en loopt per breekpunt op (56 → 260px), zodat er nooit een complete reeks tegelijk in beeld staat: gemeten raken er 3 van de 5 items de balk op 390px en 4 op 1440px, tegen 11 in ronde 3. Het tempo is gemeten 15,8 px/s op 390px en 15,9 op 1440px — de helft van ronde 3, en gelijk aan wat de briefing voorschreef; de duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo.
-CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — twee brede boven, drie smalle onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen · DPG Media · SD Worx, van klein naar groot. Jana noemt dit het meest overtuigende blok van de pagina; de rijen zijn daarom allebei vol in plaats van drie-plus-een-gat.
+CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px).
 RONDLEIDING: het meescrollende blok bestaat alleen nog naast elkaar, vanaf 1024px, met één leeslijn op precies de helft van de vensterhoogte. Op telefoon staat per stap eerst de tekst en dan het scherm — Jana's vraag — en dat kan niet samen met een kaart die bovenaan vastkleeft, want die staat altijd bóven de tekst. De knop Boek een demo midden in dat blok is op desktop weg, en het losse brede blok Merit cycle 2027 is geschrapt: het herhaalde de cijfers van stap 1 en stap 3.
 HET GROTE CIJFER: de aanpak van draft-r2-04 overgenomen. Één doorlopende zin op displayformaat met 19.000 en 21 inline in dezelfde maat, alleen in kleur onderscheiden. In ronde 2 stond 19.000 op een eigen regel van 40/56px en 21 in gewone koptekst; dat verschil was Jana's klacht. Het optellen van die twee getallen is er in deze ronde uit: gemeten stonden er tijdens die 900ms 107 verschillende volledige zinnen op de pagina die alle 107 feitelijk onjuist waren.
 QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. De oplossing uit draft-r2-04 is overgenomen waar Jana zei dat die beter zat: de lege fotoplek is een stippellijncirkel met het woord "foto" erin en de reden staat als leesbare regel ónder de naam, niet in de cirkel geperst. Portretten blijven 56px, want marlies.png is maar 360×360. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr heeft geen logobestand en staat er typografisch.
@@ -16,9 +16,9 @@ VASTE BAND: terug, en nu écht permanent in beeld — ook vóór de cookiekeuze.
 STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency én de hr-tools · quotes · faq · formulier · footer). EU Pay Transparency en de hr-tools waren twee banden en zijn er in ronde 3 één: Jana noemt ze qua belang gelijkwaardig en wil ze op desktop naast elkaar, en naast elkaar bestaat niet over twee banden heen.
 LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk volgt dezelfde regel: youbo_logo.svg op licht, youbo_logo_white.svg in de zwarte footer.
 AFWIJKING VAN DE TOKENS: geen enkele nieuwe kleurwaarde. De enige afgeleiden zijn witte transparanties (72%, 16%, 6%) voor secundaire tekst, randen en vlakken op de donkere banden — het systeem documenteert daar geen aparte token voor, en #547068 op zwart haalt de contrastdrempel niet.
-TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Open blijven: het landental van Aertssen, de volgorde van de cases, de klantnamen voor de logobalk, de case-pdf's, de integratielijst en het antwoord op "hoeveel kost het".
-NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) Nicks achternaam en zijn exacte functietitel — we kennen alleen de voornaam; (2) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (3) foto's van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet, of het akkoord om alle vijf de quotes zonder foto te zetten; (4) de vijf case-pdf's; (5) de lijst klantnamen die in de logobalk getoond mogen worden, met zowel een donkere als een witte logoversie; (6) het landental van Aertssen, en of de 130 managers bij DPG Media horen naast de 6.214 medewerkers — de cijfers van Kaneka en DPG zelf besliste Jana op 2026-10-05; (7) de juiste integratielijst; (8) het antwoord op de prijsvraag; (9) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (10) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
-OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 medewerkers, van 2 weken naar 2 dagen) zijn op 2026-10-05 door Jana beslecht en staan nu zonder voorbehoud op de pagina. Wat nog open staat, staat zichtbaar als TODO-blokje bij de casekaart: het landental van Aertssen, of de 130 managers bij DPG Media horen, en de volgorde van de vijf cases.
+TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Open blijven: het landental van Aertssen — dat staat als X in het campagneplan van de klant zelf en ligt dus bij Bart of Nick — de klantnamen voor de logobalk, de case-pdf's, de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
+NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) Nicks achternaam en zijn exacte functietitel — we kennen alleen de voornaam; (2) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (3) foto's van Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet, of het akkoord om alle vijf de quotes zonder foto te zetten; (4) de vijf case-pdf's; (5) de lijst klantnamen die in de logobalk getoond mogen worden, met zowel een donkere als een witte logoversie; (6) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (7) de juiste integratielijst; (8) het antwoord op de prijsvraag; (9) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (10) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
+OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 medewerkers in 2 landen, 7× sneller) staan zonder voorbehoud op de pagina — de eerste twee besliste Jana op 2026-10-05, de derde komt op 2026-10-06 letterlijk uit haar campagneplan, dat ook de kop "van 2 weken naar 2 dagen" en de 130 managers uit haar oudere concept niet kent. Wat nog open staat, staat zichtbaar als TODO-blokje bij de casekaart: alleen nog het landental van Aertssen Group.
 -->
 <html lang="nl-BE">
 <head>
@@ -725,6 +725,111 @@ tailwind.config = {
   @media (prefers-reduced-motion: reduce) {
     [data-vasteband], [data-cookiebalk] { transition: none !important; }
   }
+
+  /* === r3: cases strakker === */
+
+  /* ---------------------------------------------------------------------
+     DE CASEKAART — één ritme, één voet, en de rij die de minste leegte maakt
+     ---------------------------------------------------------------------
+     Jana over dit blok: "ik vind dit het meest overtuigende van de hele site,
+     dus qua design mogen we hier zeker extra aandacht aan geven." De vorige
+     ronde haalde twee volle rijen, maar niet één vol ogende kaart. Gemeten op
+     1440px bleef er boven de downloadlink van Kaneka 99px over op een kaart
+     van 500 × 380, boven die van Aertssen 88px en boven die van SD Worx
+     146px: samen 334px aan leegte, verdeeld over drie van de vijf kaarten.
+     Een brede kaart met een lege band erin leest als een kaart die niet
+     afgewerkt is.
+
+     DRIE DINGEN DOEN HET, EN GEEN ERVAN VOEGT EEN CIJFER TOE.
+
+     1 · DE RIJVERDELING IS OMGEKEERD: DRIE SMALLE BOVEN, TWEE BREDE ONDER.
+     De leegte in een kaart is niets anders dan het hoogteverschil met de
+     hoogste kaart van dezelfde rij, en dat verschil is hier bijna helemaal
+     één ding: het zichtbare TODO-blokje. Na het campagneplan van 2026-10-06
+     dragen alleen Anchr en Aertssen Group er nog één, en dat zijn kaart twee
+     en drie. Zet je de knip na kaart twee, dan belandt de TODO van Aertssen
+     in de ONDERSTE rij, naast de twee kaarten die er geen hebben, en betaal
+     je hem twee keer. Zet je de knip na kaart drie, dan staan beide TODO's
+     in de bovenste rij en is de onderste rij vlak.
+
+     Gemeten op 1440px, als som van de leegte boven de vijf downloadlinks:
+
+       drie smal + twee breed   185px  (Kaneka 155, DPG 31, de rest 0)
+       twee breed + drie smal   366px  (Kaneka 87, SD Worx 124, DPG 155)
+       vijf gelijke kaarten     185px  maar de onderste rij staat gecentreerd
+                                       en lijnt links niet meer uit met de
+                                       bovenste
+       vijf naast elkaar        887px  kaarten van 186px, koppen van drie tot
+                                       vier regels — al in ronde 2 verworpen
+
+     Dezelfde volgorde, dezelfde twee volle rijen, geen enkele lege cel —
+     alleen is de leegte gehalveerd en zit wat overblijft in één kaart in
+     plaats van in drie.
+
+     Het raster blijft zes kolommen fijn, dus absorbeert het ook zes cases
+     (3 + 3) of acht (vier × 2 op twee rijen) zonder herontwerp, met één
+     klassewijziging per kaart.
+
+     2 · ÉÉN RITME, EN DAT IS NU ECHT ÉÉN RITME. De logo's hebben vijf
+     verschillende hoogtes (20 tot 32px) en de voordeelregel breekt in de ene
+     kaart over twee regels en in de andere over één. Daardoor begon de
+     cijferlijst in elke kaart op een andere hoogte. De logoplek is nu altijd
+     32px hoog, en de voordeelregel reserveert altijd twee regels (2,4em bij
+     24px/1,2). Logo, voordeel, cijfers, sector: in alle vijf de kaarten op
+     exact dezelfde hoogte, binnen hun rij.
+
+     3 · DE VOET IS EEN VOET. De downloadlink stond met mt-auto onderaan, maar
+     zonder iets wat die onderkant markeerde: de leegte lag tússen de tekst en
+     een losse link. Nu staat de link in een voet over de volle kaartbreedte
+     met een haarlijn erboven, en zit de TODO-regel daar vlak boven in plaats
+     van midden in de cijfers. Daarmee is wat overblijft "ruimte boven de
+     voet" in plaats van "een gat na de laatste regel" — in élke kaart op
+     dezelfde plek. De link blijft een tekstlink met zijn icoon; Jana vroeg
+     uitdrukkelijk om géén brede knop, en er komt er ook geen bij.
+
+     De voet heeft geen eigen vlak. Het TODO-blokje is al een vlak (bg-surface
+     met stippellijn) en twee getinte banden boven elkaar lezen als één vlek.
+     Een haarlijn in de randkleur van de huisstijl volstaat om de onderkant te
+     begrenzen. Geen nieuwe kleurwaarde, geen overflow: hidden — de
+     focusomlijning van de link mag nergens afgesneden worden, en de voet
+     heeft 16px boven en onder de link, meer dan de 4px die de ring nodig
+     heeft.
+
+     Op telefoon verandert de constructie niets: het blijft een veegbare rij
+     met scroll-snap, één kaart per keer, en de kaarten houden daar dezelfde
+     hoogte zodat de rand van het kaartje dat half in beeld komt niet rafelt.
+     --------------------------------------------------------------------- */
+  .case-kaart { display: flex; flex-direction: column; }
+  .case-body  { padding: 24px 24px 0; }
+
+  /* De logoplek is even hoog voor alle vijf, ongeacht de hoogte van het
+     bestand erin; Anchr heeft geen bestand en staat hier typografisch. */
+  .case-logo  { display: flex; align-items: center; height: 32px; }
+
+  /* Twee regels gereserveerd, zodat de cijferlijst in elke kaart op dezelfde
+     hoogte begint. 24px × 1,2 × 2 = 2,4em. */
+  .case-voordeel { min-height: 2.4em; }
+
+  /* De voet wordt naar de onderkant geduwd, met minstens 24px tussen de
+     sectorregel en wat eronder komt — ook in de volste kaart. */
+  .case-slot  { margin-top: auto; padding-top: 24px; }
+  .case-todo  { margin: 0 24px 16px; }
+  .case-foot  { padding: 16px 24px; border-top: 1px solid #e1ebf0; }
+
+  /* De voetlink breekt niet over twee regels. In de smalste kolom van het
+     raster — een kaart van 272px op een venster van 1024px — paste "Download
+     de case (pdf)" met zijn twee icoontjes nét niet, en dan sprong de pijl
+     naar de overkant van de kaart en liep de mint onderstreping als één lange
+     streep onder twee regels door.
+
+     De ondergrens staat er met opzet. De link meet gemeten 222px en heeft met
+     de kaartmarges 270px kaartbreedte nodig; op telefoon is een kaart 85% van
+     (venster − 48), dus vanaf een venster van 366px past hij. Onder 375px
+     laten we hem daarom gewoon afbreken: nowrap zou daar 16px buiten de kaart
+     steken, over de rand heen en over het kaartje ernaast — gemeten op 320px.
+     Twee regels is lelijker dan één, maar tekst die buiten zijn kaart hangt is
+     stuk. */
+  @media (min-width: 375px) { .case-foot .caselink { white-space: nowrap; } }
 </style>
 
 <script>document.documentElement.classList.add('js');</script>
@@ -1030,12 +1135,24 @@ tailwind.config = {
      geven." Een zichtbaar gat is het tegendeel van extra aandacht.
 
      Het raster is daarom zes kolommen fijn, en de kaarten vullen het in twee
-     volle rijen: de eerste twee kaarten nemen elk drie kolommen (2 × 628px op
-     1440), de laatste drie elk twee (3 × 410px). Geen enkele cel blijft leeg.
-     Dat de brede twee vooraan staan is geen toeval maar dezelfde regel die de
-     volgorde bepaalt: Kaneka (204) en Anchr (300) zitten midden in de
-     sweetspot van 200-500 die Jana met Nick en Bart vastlegde, en krijgen hier
-     dus letterlijk meer ruimte dan DPG en SD Worx.
+     volle rijen: de eerste drie kaarten nemen elk twee kolommen (3 × 325px op
+     1440), de laatste twee elk drie (2 × 500px). Geen enkele cel blijft leeg.
+     Welke rij de brede is, is gemeten en niet gekozen — de toelichting staat
+     bij "r3: cases strakker" onderaan de stijlbladen.
+
+     DE VOLGORDE IS NIET MEER ONZE AFLEIDING. Jana leverde op 2026-10-06 haar
+     eigen campagneplan aan, en dat beslecht het: Kaneka · Anchr · Aertssen
+     Group · SD Worx · DPG Media. Wij hadden de laatste twee omgedraaid. Uit
+     datzelfde document komen ook de sectoromschrijvingen letterlijk, en de
+     kop van DPG Media: "7× sneller", bij 6.214 medewerkers in 2 landen. De
+     oudere kop "van 2 weken naar 2 dagen" kwam uit haar ChatGPT-concept en is
+     weg, net als de TODO over de 130 managers — dat getal staat in haar
+     campagneplan nergens, dus valt er niets meer te bevestigen.
+
+     Bij Aertssen Group blijft er wél een TODO, en nu mét bewijs: haar eigen
+     document schrijft daar letterlijk "450 bedienden in X landen", met de X
+     erin. Het landental is dus ook bij de klant onbekend en ligt bij Bart of
+     Nick, niet bij Jana.
 
      Op telefoon blijft het een veegbare rij met scroll-snap, want vijf
      kaarten onder elkaar is daar een halve pagina scrollen.
@@ -1049,7 +1166,10 @@ tailwind.config = {
 
      Per kaart: het logo klein en ondergeschikt bovenaan, het voordeel als
      anker (niet het aantal medewerkers — dat is Jana's eigen regel), en de
-     cijfers eronder als opsomming in plaats van als zin.
+     cijfers eronder als opsomming in plaats van als zin. Elke kaart heeft
+     dezelfde vier blokken in dezelfde maatvoering en onderaan dezelfde voet
+     met de downloadlink; de TODO-blokjes staan vlak boven die voet in plaats
+     van midden tussen de cijfers.
      ========================================================================= -->
 <section class="bg-paper band-pad" aria-labelledby="cases-titel">
   <div class="shell">
@@ -1059,105 +1179,123 @@ tailwind.config = {
                lg:grid lg:grid-cols-6 lg:gap-6 lg:overflow-visible lg:mx-0 lg:px-0 lg:pb-0"
         data-reveal>
 
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3">
-        <article class="card h-full border border-line p-6 flex flex-col">
-          <img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="h-5 w-auto self-start">
-          <p class="mt-6 text-h2 font-bold text-ink">Twee werkweken tijdswinst</p>
-          <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">204 medewerkers</span></li>
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">27 afdelingen</span></li>
-          </ul>
-          <p class="mt-4 text-caption text-ink-soft">Chemie &amp; technologie</p>
-          <div class="mt-auto pt-6">
-            <a href="#cases-open" class="caselink" data-cta="case-pdf-kaneka">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
+        <article class="card case-kaart h-full border border-line">
+          <div class="case-body">
+            <span class="case-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="h-5 w-auto"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">Twee werkweken tijdswinst</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">204 medewerkers</span></li>
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">27 afdelingen</span></li>
+            </ul>
+            <p class="mt-4 text-caption text-ink-soft">Chemie- en technologiebedrijf</p>
+          </div>
+          <div class="case-slot">
+            <div class="case-foot">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-kaneka">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
           </div>
         </article>
       </li>
 
       <!-- Anchr heeft geen logobestand, in geen enkele versie. Dus geen grijze
-           plaatshouder en niets verzonnen: de naam staat hier typografisch, op
-           dezelfde hoogte als de logo's ernaast en in dezelfde zetting als in de
-           logobalk bovenaan, met een zichtbare TODO erbij. -->
+           plaatshouder en niets verzonnen: de naam staat hier typografisch, in
+           dezelfde 32px-hoge logoplek als de logo's ernaast en in dezelfde
+           zetting als in de logobalk bovenaan, met een zichtbare TODO erbij. -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
+        <article class="card case-kaart h-full border border-line">
+          <div class="case-body">
+            <span class="case-logo text-h3 font-bold text-ink">Anchr</span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">Meerdere werkdagen bespaard</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">300 medewerkers</span></li>
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">8 bedrijven</span></li>
+            </ul>
+            <p class="mt-4 text-caption text-ink-soft">Softwaregroep</p>
+          </div>
+          <div class="case-slot">
+            <span class="todo case-todo"><b>TODO — nodig van klant</b>: het logobestand van Anchr, in een donkere en een witte versie</span>
+            <div class="case-foot">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-anchr">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      </li>
+
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
+        <article class="card case-kaart h-full border border-line">
+          <div class="case-body">
+            <span class="case-logo"><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">Live op 3 maanden</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">450 bedienden</span></li>
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">van eerste gesprek tot eerste cyclus</span></li>
+            </ul>
+            <p class="mt-4 text-caption text-ink-soft">Infrastructuur- en logistiekgroep</p>
+          </div>
+          <div class="case-slot">
+            <span class="todo case-todo"><b>TODO — te bevestigen bij Bart of Nick</b>: in hoeveel landen. Jana’s campagneplan schrijft hier zelf 450 bedienden in X landen</span>
+            <div class="case-foot">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-aertssen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      </li>
+
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3">
-        <article class="card h-full border border-line p-6 flex flex-col">
-          <span class="h-8 flex items-center text-h3 font-bold text-ink">Anchr</span>
-          <p class="mt-6 text-h2 font-bold text-ink">Meerdere werkdagen bespaard</p>
-          <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">300 medewerkers</span></li>
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">8 bedrijven</span></li>
-          </ul>
-          <span class="todo mt-4"><b>TODO — nodig van klant</b>: het logobestand van Anchr, in een donkere en een witte versie</span>
-          <p class="mt-4 text-caption text-ink-soft">Softwaregroep</p>
-          <div class="mt-auto pt-6">
-            <a href="#cases-open" class="caselink" data-cta="case-pdf-anchr">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
+        <article class="card case-kaart h-full border border-line">
+          <div class="case-body">
+            <span class="case-logo"><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="h-6 w-auto"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">Van 2 maanden naar 3 weken</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">7.000 medewerkers</span></li>
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">21 landen</span></li>
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">voor een deel van hun populatie</span></li>
+            </ul>
+            <p class="mt-4 text-caption text-ink-soft">Hr-dienstverlener</p>
+          </div>
+          <div class="case-slot">
+            <div class="case-foot">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-sdworx">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
           </div>
         </article>
       </li>
 
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
-        <article class="card h-full border border-line p-6 flex flex-col">
-          <img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto self-start">
-          <p class="mt-6 text-h2 font-bold text-ink">Live op 3 maanden</p>
-          <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">450 bedienden</span></li>
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">van eerste gesprek tot eerste cyclus</span></li>
-          </ul>
-          <span class="todo mt-4"><b>TODO — te bevestigen</b>: in hoeveel landen</span>
-          <p class="mt-4 text-caption text-ink-soft">Infrastructuur &amp; logistiek</p>
-          <div class="mt-auto pt-6">
-            <a href="#cases-open" class="caselink" data-cta="case-pdf-aertssen">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3">
+        <article class="card case-kaart h-full border border-line">
+          <div class="case-body">
+            <span class="case-logo"><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="h-6 w-auto"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">7× sneller</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">6.214 medewerkers</span></li>
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
+            </ul>
+            <p class="mt-4 text-caption text-ink-soft">Mediagroep</p>
           </div>
-        </article>
-      </li>
-
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
-        <article class="card h-full border border-line p-6 flex flex-col">
-          <img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="h-6 w-auto self-start">
-          <p class="mt-6 text-h2 font-bold text-ink">Van 2 weken naar 2 dagen</p>
-          <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">6.214 medewerkers</span></li>
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
-          </ul>
-          <span class="todo mt-4"><b>TODO — te bevestigen</b>: of de 130 managers uit Jana's concept hier bij horen. Geen bron noemt dat cijfer samen met de 6.214 medewerkers, dus staat het er voorlopig niet</span>
-          <p class="mt-4 text-caption text-ink-soft">Mediagroep</p>
-          <div class="mt-auto pt-6">
-            <a href="#cases-open" class="caselink" data-cta="case-pdf-dpg">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-          </div>
-        </article>
-      </li>
-
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
-        <article class="card h-full border border-line p-6 flex flex-col">
-          <img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="h-6 w-auto self-start">
-          <p class="mt-6 text-h2 font-bold text-ink">Van 2 maanden naar 3 weken</p>
-          <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">7.000 medewerkers</span></li>
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">21 landen</span></li>
-            <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">voor een deel van hun populatie</span></li>
-          </ul>
-          <p class="mt-4 text-caption text-ink-soft">Hr-dienstverlener</p>
-          <div class="mt-auto pt-6">
-            <a href="#cases-open" class="caselink" data-cta="case-pdf-sdworx">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
+          <div class="case-slot">
+            <div class="case-foot">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-dpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
           </div>
         </article>
       </li>
     </ul>
 
     <p class="todo mt-10 max-w-prose" id="cases-open">
-      <b>TODO — te bevestigen</b>: twee dingen in dit blok. <b>De volgorde</b> hierboven
-      (Kaneka · Anchr · Aertssen · DPG Media · SD Worx), van klein naar groot, is onze afleiding uit Jana's regel dat de sweetspot
-      tussen 200 en 500 medewerkers ligt, niet haar eigen lijst — die staat in een Google Doc dat niet gedeeld is. En <b>de vijf case-pdf's</b> bestaan nog niet, dus de downloadlinks wijzen
-      voorlopig naar dit blokje in plaats van naar een bestand dat er niet is
+      <b>TODO — nodig van klant</b>: <b>de vijf case-pdf’s</b> bestaan nog niet, dus de
+      downloadlinks wijzen voorlopig naar dit blokje in plaats van naar een bestand dat er
+      niet is
     </p>
   </div>
 </section>
@@ -1923,7 +2061,7 @@ tailwind.config = {
         <div id="faq-1" x-show="open === 1" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
             Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat
-            doorgaans vanaf 300 à 500 medewerkers, of zodra het Excelproces complex en
+            doorgaans vanaf 300 medewerkers, of zodra het Excelproces complex en
             persoonsafhankelijk wordt.
           </p>
         </div>
@@ -2742,7 +2880,7 @@ tailwind.config = {
       "name": "Vanaf hoeveel medewerkers is Youbo relevant?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat doorgaans vanaf 300 à 500 medewerkers, of zodra het Excelproces complex en persoonsafhankelijk wordt."
+        "text": "Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat doorgaans vanaf 300 medewerkers, of zodra het Excelproces complex en persoonsafhankelijk wordt."
       }
     },
     {
