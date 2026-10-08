@@ -131,6 +131,40 @@
   .pin.ok{background:var(--ok)} .pin.change{background:var(--chg)} .pin.remove{background:var(--del)}
   .pin.sel{outline:3px solid rgba(10,242,159,.55)}
 
+  /* ── « deze kopie bewaart niets » ──────────────────────────
+     Geen statusbolletje maar een deur: zolang de opslag onbereikbaar is,
+     mag er niets geschreven worden. Dekkend, over de hele tool, en het
+     eerste en enige dat je leest. */
+  [hidden]{display:none !important}
+  #dood{
+    position:fixed; inset:0; z-index:100; background:var(--ink);
+    display:flex; align-items:center; justify-content:center; padding:16px;
+    overflow:auto; -webkit-overflow-scrolling:touch;
+  }
+  #doodbox{
+    background:var(--paper); color:var(--ink); border-radius:24px;
+    width:min(560px,100%); max-height:calc(100vh - 32px); overflow:auto;
+    padding:26px 24px; box-shadow:0 18px 50px rgba(0,0,0,.35);
+    border-top:5px solid var(--del);
+  }
+  #doodbox h1{margin:0 0 12px; font-size:21px; line-height:1.25; font-weight:700}
+  #doodbox p{margin:0 0 12px; font-size:15px; line-height:1.6; color:#2d4a40}
+  #doodbox strong{color:var(--ink)}
+  #doodAdres{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13.5px;
+    background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    padding:10px 12px; color:var(--ink); word-break:break-all; overflow-wrap:anywhere;
+  }
+  #doodReden{font-size:12.5px; color:var(--muted); font-style:italic}
+  #doodRetry{width:100%; margin-top:4px}
+  #doodbox:focus-visible{outline:3px solid var(--mint); outline-offset:4px}
+  @media (max-width:420px){
+    #dood{padding:10px; align-items:flex-start}
+    #doodbox{padding:20px 16px; border-radius:18px; max-height:none}
+    #doodbox h1{font-size:19px}
+    #doodbox p{font-size:14.5px}
+  }
+
   #toggleList{display:none}
   /* Op een echte telefoon moet de balk passen: alleen het nodige blijft.
      De keuze computer/telefoon heeft daar geen zin meer — je zit er al op. */
@@ -220,6 +254,27 @@
       <span class="grow"></span>
       <button class="btn primary" id="edOk">Bewaren</button>
     </div>
+  </div>
+</div>
+
+<!-- De deur die dichtgaat als er geen opslag is. Staat standaard dicht (hidden)
+     en gaat alleen open als de meting in boot() zegt dat /api onbereikbaar is. -->
+<div id="dood" hidden>
+  <div id="doodbox" role="alertdialog" aria-modal="true"
+       aria-labelledby="doodTitel" aria-describedby="doodUitleg" tabindex="-1">
+    <h1 id="doodTitel">Deze kopie bewaart niets</h1>
+    <div id="doodUitleg">
+      <p>Deze versie van de review-tool kan de server niet bereiken. Wat je hier zou
+         schrijven, blijft in deze browser staan en <strong>komt bij niemand terecht</strong> —
+         ook niet bij Sven. Daarom is annoteren hier uitgeschakeld: beter geen opmerking dan
+         een opmerking die niemand ooit leest.</p>
+      <p>Gebruik de link die je van Sven gekregen hebt. Die ziet er zo uit:</p>
+      <p id="doodAdres">https://youbo-drafts.pages.dev/review/?t=…</p>
+      <p>Het stuk na <strong>?t=</strong> is je persoonlijke sleutel: zonder dat stuk werkt de
+         link niet. Vind je ze niet meer terug, vraag ze dan gewoon opnieuw aan Sven.</p>
+      <p id="doodReden"></p>
+    </div>
+    <button class="btn primary" id="doodRetry">Opnieuw proberen</button>
   </div>
 </div>
 
@@ -321,13 +376,114 @@ async function api(path, opts){
   return r.json();
 }
 
+/* ══ is de opslag er wel? ════════════════════════════════════════
+   Deze tool belooft dat een opmerking van een klant niet verloren kan gaan.
+   Die belofte geldt alleen waar de Function en haar bindings bestaan — op
+   Cloudflare Pages. Dezelfde repo wordt óók door GitHub Pages gepubliceerd,
+   en daar antwoordt /api met een 404: de tool laadt volledig, de speldjes
+   werken, en niets komt ooit aan. Een grijs bolletje « offline » is dan geen
+   waarschuwing, het is een voetnoot onder een ronde feedback die nergens heen
+   ging.
+
+   Daarom wordt de tóestand gemeten en niet de hostnaam. Geen Function (404),
+   een ontbrekende D1- of KV-binding (500), een storing bij Cloudflare (52x of
+   een afgebroken verbinding) en een antwoord dat geen feedback-JSON is (een
+   statische server die iets anders teruggeeft) komen alle vier op hetzelfde
+   neer: hier wordt niets bewaard. Zo valt ook een halfafgewerkte deploy op —
+   het waarschijnlijkste geval, en het geval dat een hostnaamcontrole mist.
+
+   Twee dingen horen hier uitdrukkelijk NIET bij:
+     • 400/401/403 — dat gaat over het jeton of het project, niet over de
+       opslag. De poort op /review zegt dat zelf al met een 401, en die
+       boodschap mag hier niet mee vermengd worden.
+     • ?api=off — er is dan uitdrukkelijk gevraagd om alles in deze browser te
+       houden. Dat blijft werken, en blijft iets wat je moet typen. */
+let opslagDood = false;
+const doodEl = document.getElementById('dood');
+
+async function meetOpslag(){
+  const url = API_BASE.replace(/\/$/,'') + '/feedback?p=' + encodeURIComponent(PROJECT) +
+              (TOKEN ? '&t=' + encodeURIComponent(TOKEN) : '');
+  let reden = 'geen antwoord van /api/feedback';
+  // Twee pogingen: een echte storing of een afgebroken verbinding mag één keer
+  // herstellen voor we de deur dichtgooien. Een 404 heelt niet en wacht niet.
+  for (let poging = 0; poging < 2; poging++){
+    if (poging) await new Promise(r => setTimeout(r, 1200));
+    let r;
+    try {
+      r = await fetch(url, { method:'GET', cache:'no-store' });
+    } catch(e){
+      reden = 'de verbinding met /api/feedback werd afgebroken';
+      continue;
+    }
+    if (r.status === 404 || r.status === 405)
+      return { ok:false, reden:'HTTP ' + r.status + ' op /api/feedback — hier draait geen Function' };
+    if (r.status === 400 || r.status === 401 || r.status === 403)
+      return { ok:false, poort:true, reden:'HTTP ' + r.status };
+    if (!r.ok){ reden = 'HTTP ' + r.status + ' op /api/feedback'; continue; }
+    let d = null;
+    try { d = await r.json(); } catch(e){ d = null; }
+    if (!d || !Array.isArray(d.pins))
+      return { ok:false, reden:'/api/feedback antwoordt wel, maar geeft geen feedback terug' };
+    return { ok:true, data:d };
+  }
+  return { ok:false, reden };
+}
+
+/* Dicht. De tool blijft staan maar is onbruikbaar: `inert` haalt de balk, het
+   toneel en het invoervenster uit het toetsenbord én uit de voorleesmodus, en
+   de code hieronder weigert bovendien elke schrijfactie. Er is met opzet géén
+   focusval: wie wil, tabt gewoon naar de adresbalk van de browser. */
+function zetInert(aan){
+  for (const id of ['bar','wrap','ed']){
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (aan) el.setAttribute('aria-hidden','true'); else el.removeAttribute('aria-hidden');
+    if ('inert' in HTMLElement.prototype) el.inert = aan;
+  }
+}
+function blokkeer(reden){
+  opslagDood = true;
+  document.getElementById('doodReden').textContent =
+    reden ? 'Voor Sven: ' + reden + '.' : '';
+  ed.classList.remove('open');
+  activeId = null;
+  zetInert(true);
+  doodEl.hidden = false;
+  setState('err', 'niets wordt bewaard');
+  document.getElementById('doodbox').focus();
+}
+function deblokkeer(){
+  if (!opslagDood && doodEl.hidden) return;
+  opslagDood = false;
+  doodEl.hidden = true;
+  zetInert(false);
+}
+document.getElementById('doodRetry').onclick = async (e) => {
+  const b = e.currentTarget;
+  b.disabled = true; b.textContent = 'Opnieuw proberen…';
+  try { await boot(); render(); }
+  finally { b.disabled = false; b.textContent = 'Opnieuw proberen'; }
+};
+
 async function boot(){
   store = localLoad();
   document.getElementById('who').value = store.name || '';
   if (!API_BASE){ setState('', 'bewaard op dit toestel'); return; }
   setState('busy', 'laden…');
+  const meting = await meetOpslag();
+  if (!meting.ok){
+    /* Het jeton of het project: een andere zaak, en de poort op /review zegt die
+       zelf al met een 401. Hier verandert er dus niets aan — maar de deur moet
+       wél weer open, anders blijft na « Opnieuw proberen » een boodschap over de
+       verkeerde kopie staan terwijl het probleem intussen het jeton is. */
+    if (meting.poort){ deblokkeer(); setState('err', 'geen toegang — hier bewaard'); return; }
+    blokkeer(meting.reden);
+    return;
+  }
+  deblokkeer();
   try {
-    const d = await api('/feedback', { method:'GET' });
+    const d = meting.data;
     if (d && Array.isArray(d.pins)) {
       version = d.updated_at || '';
       // Wat deze browser nog niet verstuurd had, wordt niet weggegooid maar samengevoegd.
@@ -368,6 +524,10 @@ async function pushNow(){
 }
 
 function save(){
+  /* Onbereikbare opslag: er mag niets bijkomen, ook niet in deze browser.
+     De deur staat er al over, maar een toetsenbord kan een `inert`-loze
+     browser omzeilen en dit is de plek waar het geld wordt uitgegeven. */
+  if (opslagDood) return;
   localSave();
   if (!API_BASE) return;
   dirty = true;
@@ -453,6 +613,7 @@ function onFrameLoad(){
 frame.addEventListener('load', onFrameLoad);
 
 function onDocClick(e){
+  if (opslagDood) return;      // geen opslag, geen speldjes
   if (mode !== 'comment') return;
   e.preventDefault(); e.stopPropagation();
   const el = e.target;
@@ -567,6 +728,7 @@ const ed = document.getElementById('ed');
 function pinById(id){ return store.pins.find(p => p.id === id); }
 
 function openEditor(id){
+  if (opslagDood) return;      // niemand typt een ronde feedback in een dode tool
   const p = pinById(id); if (!p) return;
   activeId = id;
   document.getElementById('edCtx').textContent = '« ' + p.ctx + ' »';
@@ -658,6 +820,7 @@ async function shrink(file, maxSide = 1800, quality = 0.82){
 }
 
 document.getElementById('edFile').onchange = async e => {
+  if (opslagDood){ e.target.value = ''; return; }
   const p = pinById(activeId); if (!p) return;
   p.photos = p.photos || [];
   for (const file of [...e.target.files]){
@@ -710,7 +873,7 @@ document.getElementById('mComment').onclick = () => setMode('comment');
 document.getElementById('mBrowse').onclick  = () => setMode('browse');
 setMode('comment');
 
-document.getElementById('who').oninput = e => { store.name = e.target.value; save(); };
+document.getElementById('who').oninput = e => { if (opslagDood) return; store.name = e.target.value; save(); };
 
 /* Afronden: de lopende opmerkingen worden vastgezet in een genummerde ronde en
    Sven krijgt een mail. Wat verstuurd is, verandert niet meer; nieuwe
@@ -733,6 +896,7 @@ function majSend(){
 }
 
 document.getElementById('send').onclick = async () => {
+  if (opslagDood) return;      // er is niets om te versturen en nergens om het heen te sturen
   const open = store.pins.filter(p => !p.sealed);
   if (!open.length) return;
   if (!confirm(`${open.length} opmerking(en) naar Sven versturen?\n\nZe worden vastgezet: je kan ze nog nalezen, maar niet meer wijzigen. Nieuwe opmerkingen toevoegen kan altijd.`)) return;
