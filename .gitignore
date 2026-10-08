@@ -20,3 +20,16 @@ Offerte-landingspagina-Youbo.pdf
 Youbo docs/
 
 # Wegwerpscripts van bouwsessies staan in qa/, dat al genegeerd wordt.
+
+# Het jeton van de review-tool. Dit IS het wachtwoord: wie het heeft, kan
+# schrijven. Nooit committen, ook niet in een private repo — deze repo
+# publiceert naar GitHub Pages én naar Cloudflare Pages.
+review-token.txt
+review-token-PROD.txt
+
+# Wat de klant achterlaat, hoort in de API en niet hier.
+FEEDBACK.md
+feedback-fotos/
+
+# Lokale wrangler-cache (D1-bestand, KV-bestand) van `wrangler pages dev`.
+.wrangler/

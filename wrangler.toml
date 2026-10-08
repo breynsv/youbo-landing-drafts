@@ -1,0 +1,53 @@
+# Youbo — review-tool. Dit bestand dient ALLEEN voor lokaal werk.
+#
+# ──────────────────────────────────────────────────────────────────────────────
+# LEES DIT VOOR JE ER IETS AAN VERANDERT
+#
+# Er staat met opzet GEEN `pages_build_output_dir` in, en die mag er ook niet
+# bij. Cloudflare zegt het zelf: zodra een Pages-project een wrangler-bestand
+# mét die sleutel heeft, is dát bestand de bron van waarheid en negeert het
+# dashboard zijn eigen bindings. Deze repo wordt rechtstreeks door Cloudflare
+# gepubliceerd, dus zou een gevuld wrangler.toml met voorbeeld-id's hierin de
+# échte D1- en KV-koppeling stilletjes vervangen door niets.
+#
+# Zonder die sleutel is dit bestand per definitie "local development only" en
+# raakt het de deploy niet aan. Vul hier dus ook geen echte id's in: het
+# dashboard weet ze al, en deze repo staat publiek online.
+#
+# Studio 28 lost hetzelfde anders op — daar publiceert publish.py naar een
+# tweede repo en blijft wrangler.toml achter. Eén repo heeft die luxe niet.
+# ──────────────────────────────────────────────────────────────────────────────
+#
+# IN HET DASHBOARD (Workers & Pages → youbo-drafts → Settings), één keer:
+#   Functions → D1 database bindings   : DB      → youbo-review
+#   Functions → KV namespace bindings  : PHOTOS  → youbo-photos
+#   Variables and Secrets (Secret)     : REVIEW_TOKEN   = <lang en willekeurig>
+#   Variables and Secrets (Secret)     : RESEND_API_KEY = <sleutel van Resend>
+#   Build → Build command              : node stamp-version.mjs
+#   Build → Build output directory     : /
+#   Variables and Secrets (plain)      : SKIP_DEPENDENCY_INSTALL = 1
+#
+# De D1-tabellen maken zichzelf aan bij de eerste opslag: geen migratie nodig.
+#
+# De build command is niet optioneel. Zij stempelt de ontwerpversie in de
+# pagina; zonder haar zet de tool "versie onbekend" in het rood en weet niemand
+# of een opmerking over de pagina van vandaag gaat. Zie stamp-version.mjs.
+#
+# LOKAAL DRAAIEN — de bindings gaan op de opdrachtregel, niet hierlangs:
+#
+#   npx wrangler pages dev . --port 8788 \
+#     --d1=DB --kv=PHOTOS --binding REVIEW_TOKEN="$(cat review-token.txt)"
+#
+#   → http://127.0.0.1:8788/review/?t=<het jeton>&p=test
+
+name = "youbo-drafts"
+compatibility_date = "2026-09-01"
+
+# De twee bindingsnamen die de Function verwacht. De id's blijven leeg: ze horen
+# in het dashboard, en `wrangler pages dev` krijgt ze via --d1 en --kv.
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "youbo-review"
+#
+# [[kv_namespaces]]
+# binding = "PHOTOS"
