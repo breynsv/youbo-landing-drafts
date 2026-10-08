@@ -323,6 +323,25 @@ for (const file of drafts) {
     ? warns.push(`${msg} — gearchiveerd draft, niet meer bijgewerkt`)
     : errors.push(msg);
 
+  // --- Wat voor pagina is dit? ------------------------------------------------
+  // Er staan sinds 2026-10-08 twee SOORTEN pagina in deze map, en twee regels
+  // hieronder slaan voor de ene precies omgekeerd uit als voor de andere. Een
+  // bevestigingspagina (youbo.io/demo/bedankt) MOET noindex dragen en mag GEEN
+  // formulier hebben; een landingspagina is in beide gevallen het tegendeel.
+  //
+  // De keuze is: de draft zegt het zelf, in een meta. Niet uit de bestandsnaam
+  // raden — dan hangt een harde controle aan een woord in een naam die iemand
+  // morgen anders kiest — en niet de regel voor álle drafts verzwakken, want
+  // dan is de noindex-controle (die hier staat omdat hij vier drafts echt eens
+  // besmet heeft) nergens meer een gate. Zonder deze meta is een draft een
+  // landingspagina, zodat de zestien bestaande bestanden onaangeroerd blijven.
+  const SOORTEN = ['landingspagina', 'bevestiging'];
+  const soort = (html.match(/<meta[^>]+name=["']pagina-soort["'][^>]+content=["']([^"']+)["']/i)
+    || [, 'landingspagina'])[1].trim().toLowerCase();
+  if (!SOORTEN.includes(soort))
+    errors.push(`onbekende pagina-soort "${soort}" — kies uit ${SOORTEN.join(', ')}`);
+  const bevestiging = soort === 'bevestiging';
+
   // --- Language and structure -------------------------------------------------
   if (!/<html[^>]+lang=["']nl-BE["']/i.test(html)) errors.push('missing lang="nl-BE"');
 
@@ -370,10 +389,30 @@ for (const file of drafts) {
       ' in België pas na opt-in laden, dus zonder balk kan deze pagina niet live');
 
   // --- Form -------------------------------------------------------------------
-  if (!/<form/i.test(html)) errors.push('no <form>');
-  if (!/type=["']email["']/i.test(html)) errors.push('no email input');
-  const labels = (html.match(/<label[\s>]/gi) || []).length;
-  if (labels < 3) warns.push(`only ${labels} <label> elements — check for placeholder-as-label`);
+  // Op een bevestigingspagina is dit omgedraaid, en niet uitgezet. Een
+  // formulier daar is dezelfde fout als een tweede "Boek een demo": je vraagt
+  // iets aan iemand die het net gegeven heeft. Dat is een oordeel dat één keer
+  // genomen is en dat dus hier hoort te staan, niet in een reviewronde.
+  // Twee preciseringen die deze omkering nodig had, en die de landingspagina
+  // even goed maken:
+  //   · /<form/ zonder woordgrens matcht ook <footer>. Dat viel nooit op omdat
+  //     elke landingspagina een formulier HEEFT, dus kon de valse treffer daar
+  //     geen schade doen; omgedraaid las de ingesloten <footer id="footer"> als
+  //     een formulier. Vandaar [\s>].
+  //   · Er wordt in `visible` gekeken en niet in `html`. Een <form> die in een
+  //     comment uitgelegd wordt, is geen formulier — en op deze pagina legt een
+  //     comment uit waarom er juist géén staat.
+  if (bevestiging) {
+    if (/<form[\s>]/i.test(visible))
+      errors.push('bevestigingspagina met een <form> — de bezoeker heeft het formulier net ingevuld');
+    if (/type=["']email["']/i.test(visible))
+      errors.push('bevestigingspagina met een e-mailveld — zijn adres is al binnen');
+  } else {
+    if (!/<form[\s>]/i.test(visible)) errors.push('no <form>');
+    if (!/type=["']email["']/i.test(visible)) errors.push('no email input');
+    const labels = (visible.match(/<label[\s>]/gi) || []).length;
+    if (labels < 3) warns.push(`only ${labels} <label> elements — check for placeholder-as-label`);
+  }
 
   // --- Images -----------------------------------------------------------------
   const refs = [...html.matchAll(/assets\/img\/([A-Za-z0-9._-]+)/g)].map(m => m[1]);
@@ -418,8 +457,20 @@ for (const file of drafts) {
   // noticed for months — on a project whose brief is that SEO was never done.
   // The preview is protected by robots.txt instead, which cannot follow the
   // markup into production.
-  if (/<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html))
+  //
+  // EEN BEVESTIGINGSPAGINA IS HET OMGEKEERDE GEVAL, en daarom staat die hier
+  // niet als uitzondering maar als eigen eis. Wie /demo/bedankt via Google
+  // binnenkomt heeft niets aangevraagd en leest een bevestiging van iets wat
+  // niet gebeurd is, en elk bezoek aan dat adres telt mee als een conversie.
+  // Allebei de kanten zijn dus een fout, en de gate houdt in beide richtingen
+  // zijn tanden.
+  const noindex = /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html);
+  if (bevestiging) {
+    if (!noindex)
+      errors.push('bevestigingspagina zonder <meta robots noindex> — ze hoort niet in de zoekresultaten en elk bezoek telt als conversie');
+  } else if (noindex) {
     errors.push('has <meta robots noindex> — would ship an invisible landing page; protect previews with robots.txt');
+  }
 
   // --- Dubbele titels ----------------------------------------------------------
   // Jana keurde de minititel boven de kop expliciet af ("AI houdt wel van dubbele

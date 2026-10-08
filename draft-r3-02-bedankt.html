@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<!--
+CONCEPT: de bevestigingspagina die volgt op het demoformulier van draft-r3-01-definitief.html. Op productie komt ze op youbo.io/demo/bedankt te staan — een eigen adres, want de technische man van de klant bouwt een JSON-endpoint dat het formulier ontvangt en de bezoeker daarna doorstuurt, en een bereikt adres is het betrouwbaarste wat je als conversie kunt tellen: veel robuuster dan een gebeurtenis die op een klik afgevuurd wordt en die wegvalt zodra het versturen zelf mislukt. Zelfde tokens, zelfde componenten en dezelfde footer als de landingspagina; alles wat hier niet hoort is er niet.
+WAT EEN BEVESTIGINGSPAGINA DOET, EN NIETS MEER: zeggen dat de aanvraag binnen is, zeggen wat er nu gebeurt, en een weg terug geven. Geen tweede verkooppagina. Daarom staat er geen vaste «Boek een demo»-band (de bezoeker heeft net geboekt — nog eens vragen is ruis), geen logobalk, geen cases, geen quotes, geen FAQ en geen <header> met navigatie. Het woordmerk staat er wel, als één rustig merkanker bovenaan, en het is tegelijk de weg terug.
+DE REACTIETIJD: «eerstdaags», bewust vaag en op aanwijzing van de klant zo gekozen. Er stond in het concept «binnen één werkdag», en niemand heeft nagekeken of Nick die termijn kan halen. Een exacte termijn is een belofte die gebroken kan worden, en een bevestigingspagina is precies het verkeerde moment om dat risico te nemen: hier wordt het vertrouwen gevestigd dat de rest van de pagina heeft opgebouwd. «Eerstdaags» zegt genoeg zonder iets te beloven. Dit is dus géén open punt meer en er staat geen TODO over.
+NOINDEX, EN WAAROM DAT HIER OMGEKEERD IS AAN DE LANDINGSPAGINA: een bevestigingspagina hoort niet in de zoekresultaten. Wie haar via Google binnenkomt, heeft niets aangevraagd en leest een bevestiging van iets wat niet gebeurd is; bovendien vervuilt ze de conversiecijfers, want elk bezoek aan dit adres telt als een aanvraag. check-drafts.mjs verbiedt noindex op elke andere draft — dat was een echte fout die vier drafts eens besmette — dus kent de checker sinds deze pagina twee soorten draft en eist hij noindex hier juist. Zie de meta «pagina-soort» hieronder en de toelichting in check-drafts.mjs.
+GEEN FORMULIER, EN DAT IS AFDWINGBAAR GEMAAKT. De checker eist op een landingspagina een <form> met een e-mailveld en verbiedt die hier. Een bevestigingspagina met een formulier erop is dezelfde fout als de vaste demobalk: je vraagt iets aan iemand die het net gegeven heeft.
+HET ALTERNATIEF: hetzelfde als onder het formulier op de landingspagina — Nicks e-mailadres als mailto: en zijn telefoonnummer als tel:, beide met data-cta zodat ze meetbaar blijven. Het nummer staat Belgisch gezet (0486 08 27 65) en de href draagt +32486082765, want dat is wat een telefoon moet kiezen. De agendalink van Nick bestaat nog niet en staat hier dus niet; op de landingspagina staat daar een TODO bij, en die hoort daar en niet twee keer.
+DE COOKIEBALK STAAT ER WEL, en hij is letterlijk dezelfde: dezelfde balk, dezelfde twee knoppen, dezelfde localStorage-sleutel «youbo-toestemming» en dezelfde laadMeettags(). Dat is geen kopieerwerk uit netheid maar een vereiste: het meten loopt ook op deze pagina — dit is zelfs hét adres dat geteld wordt — en toestemming moet zich over het hele domein hetzelfde gedragen. Wie op de landingspagina Toestaan koos, ziet de balk hier niet meer; wie weigerde, blijft geweigerd. LinkedIn en Google laden nergens in de <head> maar uitsluitend in laadMeettags(), na Toestaan, met Consent Mode v2 op denied tot dan.
+DE FOOTER: hún eigen component, ingesloten, byte voor byte hetzelfde blok als op de landingspagina, met dezelfde comment erboven die uitlegt hoe hij op youbo.io weer door footer.js gevuld wordt. Eén verschil, en het is een weglating: de ISO 27001:2022-badge staat hier niet. Die hoort niet bij hun footer — hij staat op de landingspagina als los element erbóven omdat Jana's campagneplan hem dáár vraagt — en een keurmerk op een bevestigingspagina is precies het soort extra dat deze pagina niet hoort te hebben.
+GEEN TWEEDE SET STIJLEN: alles hieronder komt letterlijk uit draft-r3-01-definitief.html — de tokens, de knoppen, .shell, .band-pad, het TODO-blokje, de focusomlijning, de alternatievenlinks en het volledige footerblok. Overgenomen en niet nagebouwd, zodat deze pagina niet als een neef van de landingspagina leest maar als dezelfde site.
+-->
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- WELK SOORT DRAFT DIT IS. check-drafts.mjs leest dit en past twee regels
+     omgekeerd toe: noindex is hier verplicht in plaats van verboden, en een
+     <form> met een e-mailveld is hier verboden in plaats van verplicht. Staat
+     deze meta er niet, dan is een draft een landingspagina — dat is de
+     standaard, zodat de zestien bestaande drafts onaangeroerd blijven. -->
+<meta name="pagina-soort" content="bevestiging">
+
+<title>Je aanvraag is binnen | Youbo</title>
+<meta name="description" content="Bedankt voor je demo-aanvraag. Nick Van Langendonck, reward expert, neemt eerstdaags contact met je op en laat je Youbo zien op jullie eigen looncyclus.">
+
+<!-- NOINDEX — zie de toelichting bovenaan dit bestand. Kort: wie deze pagina
+     via een zoekmachine binnenkomt heeft niets aangevraagd, en elk bezoek aan
+     dit adres telt als een conversie. Er staat met opzet geen rel="canonical":
+     een pagina die niet geïndexeerd wil worden, hoeft zich niet als het
+     origineel van iets aan te melden, en youbo.io/demo/bedankt bestaat nog
+     niet. -->
+<meta name="robots" content="noindex, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_BE">
+<meta property="og:site_name" content="Youbo">
+<meta property="og:title" content="Je aanvraag is binnen | Youbo">
+<meta property="og:description" content="Bedankt voor je demo-aanvraag. Nick neemt eerstdaags contact met je op.">
+<meta property="og:image" content="assets/img/open_graph.png">
+<meta name="theme-color" content="#0af29f">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<!-- ===========================================================================
+     LINKEDIN INSIGHT TAG — PLAATSHOUDER, BEWUST NOG NIET ACTIEF
+     ---------------------------------------------------------------------------
+     Letterlijk hetzelfde blok als op de landingspagina, en om dezelfde reden
+     uitgeschakeld: er is nog geen bevestigd partner ID. Vul nooit een verzonnen
+     nummer in — dat stuurt data nergens naartoe en ziet er wél aangesloten uit.
+
+     DIT IS HET ADRES DAT GETELD WORDT. Een bereikt adres is de betrouwbaarste
+     conversiemeting die er is: ze overleeft een mislukte verzending, een
+     dubbele klik en een bezoeker die de pagina herlaadt. Zodra het partner ID
+     er is, hoort op dit adres de conversie in LinkedIn Campaign Manager te
+     staan, en in Google een doel op het paginapad — niet een klikgebeurtenis
+     op de knop van het formulier.
+
+     In België geldt opt-in, dus het script hoort niet hier maar in
+     laadMeettags() onderaan deze pagina, die pas draait nadat iemand in de
+     cookiebalk op Toestaan geklikt heeft.
+
+     <script type="text/javascript">
+       _linkedin_partner_id = "PARTNER_ID_HIER";
+       window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+       window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+     </script>
+     <script type="text/javascript">
+       (function(l) {
+         if (!l){window.lintrk=function(a,b){window.lintrk.q.push([a,b])};window.lintrk.q=[]}
+         var s = document.getElementsByTagName("script")[0];
+         var b = document.createElement("script");
+         b.type = "text/javascript"; b.async = true;
+         b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+         s.parentNode.insertBefore(b, s);
+       })(window.lintrk);
+     </script>
+     <noscript>
+       <img height="1" width="1" style="display:none;" alt=""
+            src="https://px.ads.linkedin.com/collect/?pid=PARTNER_ID_HIER&fmt=gif" />
+     </noscript>
+     =========================================================================== -->
+
+<!-- ===========================================================================
+     TOESTEMMING EERST — CONSENT MODE v2
+     ---------------------------------------------------------------------------
+     Dit draait wél en het haalt niets op: het zet de toestemming op "geweigerd"
+     voordat er ook maar één meettag bestaat. De cookiebalk onderaan zet hem op
+     "granted" zodra iemand toestemt, en roept dan laadMeettags() aan.
+     =========================================================================== -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* ---------------------------------------------------------------------------
+   Exact de tokenconfiguratie van draft-r3-01-definitief.html, overgenomen en
+   niet opnieuw opgemeten. Deze pagina mag geen eigen kleur, maat of radius
+   hebben: ze is hetzelfde adres, één klik later.
+   --------------------------------------------------------------------------- */
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },   /* primary + primary-text   */
+        ink:     { DEFAULT: '#0a3327', soft: '#547068',    /* text-primary + secondary */
+                   inv: '#ffffff' },
+        paper:   '#ffffff',                                 /* background               */
+        surface: '#f6f8fa',                                 /* surface                  */
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
+        /* Het cyaanblauw van de huisstijl haalt op licht de leesnorm niet:
+           2,67:1 op wit en 2,51:1 op #f6f8fa, waar 4,5:1 nodig is. Deze pagina
+           is volledig licht, dus staat overal de goedgekeurde donkerder
+           variant #00718c: 5,61:1 op wit en 5,27:1 op #f6f8fa. */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
+        forest:  '#154e3a',                                 /* gradient-dark-end        */
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      /* de spatiëringsschaal 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 80 · 128 */
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionDuration: { fast: '150ms', base: '200ms', medium: '300ms', slow: '350ms' },
+      transitionTimingFunction: {
+        standard:   'ease-in-out',
+        decelerate: 'ease-out',
+        accelerate: 'cubic-bezier(0, 1, 0.3, 1)',
+      },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    :root {
+      /* motion-tokens, één keer gedeclareerd en overal hergebruikt */
+      --m-fast: 150ms;
+      --m-base: 200ms;
+      --m-medium: 300ms;
+      --m-slow: 350ms;
+      --e-standard: ease-in-out;
+      --e-decelerate: ease-out;
+      --e-accelerate: cubic-bezier(0, 1, 0.3, 1);
+      /* De focusomlijning. #00acd6 haalt 2,67:1 op wit en 2,51:1 op #f6f8fa,
+         terwijl een bedieningselement 3:1 moet halen. Deze pagina is volledig
+         licht — er is geen donkere band die de variabele onderweg omzet — dus
+         staat hier de donkerder trap #00718c (5,61 en 5,27) en nergens iets
+         anders. */
+      --c-focus: #00718c;
+    }
+    html { scroll-behavior: smooth; }
+    body { @apply font-sans text-body font-medium text-ink bg-paper antialiased; }
+    h1, h2, h3 { @apply font-sans font-bold text-ink; text-wrap: balance;
+                 hyphens: auto; overflow-wrap: break-word; }
+    p { text-wrap: pretty; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
+    [x-cloak] { display: none !important; }
+  }
+
+  @layer components {
+    /* ---- knoppen, exact de componentspecificatie uit de designbron ---------- */
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-sm text-body
+                  font-bold min-h-[48px] px-6 py-[14px] cursor-pointer;
+           transition: background-color var(--m-base) var(--e-standard),
+                       color var(--m-base) var(--e-standard),
+                       border-color var(--m-base) var(--e-standard); }
+    .btn-primary { @apply btn bg-brand text-brand-ink; }
+    .btn-primary:hover { background-color: #000000; color: #0af29f; }
+    .btn-primary:active { background-color: #031317; color: #0af29f; }
+    .btn-secondary { @apply btn bg-paper text-ink border border-line-btn px-3 py-2; }
+    .btn-secondary:hover { background-color: #f6f8fa; border-color: #e1ebf0; }
+
+    /* ---- het zichtbare TODO-blokje, volledig binnen het palet --------------- */
+    .todo { @apply block rounded-sm border border-dashed border-line-btn bg-surface
+                   px-4 py-3 text-caption text-ink-soft; }
+    .todo b { @apply font-bold text-brand-ink; }
+
+    /* ---------------------------------------------------------------------
+       HET VINKJE — een zelfgetekend merk, geen icoonbibliotheek
+       ---------------------------------------------------------------------
+       Mint vlak met het donkergroen van de huisstijl erin: exact het paar
+       #0af29f / #154e3a dat ook .btn-primary draagt, en dus al nagemeten.
+       Het is puur decoratief — de kop zegt in woorden wat het zegt — dus
+       staat het op aria-hidden en leest geen schermlezer het voor.
+       --------------------------------------------------------------------- */
+    .vink { @apply flex h-12 w-12 shrink-0 items-center justify-center rounded-[50%] bg-brand; }
+    .vink svg { @apply h-6 w-6; color: #154e3a; }
+
+    /* ---------------------------------------------------------------------
+       DE ALTERNATIEVEN — letterlijk dezelfde zetting als onder het formulier
+       op de landingspagina, inclusief de afwegingen die daar gemeten zijn.
+       ---------------------------------------------------------------------
+       DE KLEUR. #00718c, dezelfde als de focusomlijning op licht: 5,61:1 op
+       wit, ruim boven de 4,5:1 voor lopende tekst en boven de 3:1 voor een
+       bedieningselement. Het cyaan van de huisstijl (#00acd6) haalt op wit
+       maar 2,67:1 en mag hier dus niet staan. De onderstreping staat er van
+       begin af aan: een link die alleen aan zijn kleur te herkennen is, is
+       voor wie kleuren slecht onderscheidt geen link.
+
+       ELK ALTERNATIEF OP ZIJN EIGEN REGEL. Op 390px past het adres niet naast
+       zijn aanloopzin en wikkelt het naar de volgende regel; met twee links
+       achter elkaar begint de regel daarna met het scheidingspunt, en een punt
+       bovenaan een regel leest als vuil. Twee regels met dezelfde aanloop
+       ("Mail hem op" / "Of bel hem op") lossen dat op zonder uitzonderings-
+       regel, en geven elke link zijn eigen focusomlijning zonder dat die van
+       de buur hem raakt.
+
+       WAAROM HET ADRES NIET AFBREEKT MAAR WEL MAG WIKKELEN. Een half
+       e-mailadres aan het einde van een regel is niet over te typen. Vandaar
+       nowrap op de link zelf en niets anders.
+       --------------------------------------------------------------------- */
+    .alt-weg .alt-link {
+      color: #00718c;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      transition: color var(--m-base) var(--e-standard);
+      white-space: nowrap;
+    }
+    .alt-weg .alt-link:hover { color: #006c87; }
+  }
+
+  @layer utilities {
+    /* de bloklengte: 80px verticaal op desktop, 48px op telefoon */
+    .band-pad { @apply py-12 md:py-20; }
+    .shell    { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+  }
+
+  /* Onder 390px is het adres breder dan de kolom. Daar wint afbreken van
+     buiten de kolom hangen — dezelfde afweging en dezelfde ondergrens als op
+     de landingspagina. */
+  @media (max-width: 374px) {
+    .alt-weg .alt-link { white-space: normal; overflow-wrap: anywhere; }
+  }
+
+  /* ---- alle beweging uit wanneer het besturingssysteem daarom vraagt ------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+    /* De cookiebalk verschijnt dan zonder overgang. Er is op deze pagina geen
+       tweede bewegend element: geen schakelende banden, geen marquee, geen
+       meescrollende kaart, geen carrousel. */
+    [data-cookiebalk] { transition: none !important; }
+  }
+
+  /* === r3: echte footer === */
+  /* ---------------------------------------------------------------------
+     DE FOOTER VAN YOUBO.IO, OVERGENOMEN ZONDER HUN STIJLBLAD TE LADEN
+     ---------------------------------------------------------------------
+     /css/global.css van youbo.io is 14 KB en 121 regels, en 41 daarvan zijn
+     globale elementselectors: *, html, body, h1 t/m h6, p, a, ul, button,
+     input, select, textarea, hr. Dat bestand hier gewoon inladen zou de
+     volledige typografie en élk formulierveld van deze pagina herschrijven —
+     hun h1 is 3,5rem en gecentreerd, hun a is cyaan #00acd6 (2,67:1 op wit),
+     hun body is 1,0625rem. Niets daarvan hoort hier.
+
+     Dus is alleen overgenomen wat de footer nodig heeft: de 21 regels uit dat
+     bestand die over de footer gaan, één op één, met één wijziging — elke
+     selector staat achter .yb-footer. Daarmee kan geen van deze regels iets
+     buiten de footer raken, en dat is gemeten: de berekende stijl van alle 557
+     elementen buiten de footer is op 390px en op 1440px identiek aan vóór deze
+     wijziging.
+
+     HUN VARIABELEN STAAN LOKAAL, NIET OP :root. Anders zou een naam uit
+     global.css (--color-border, --color-grey-900) alsnog over de hele pagina
+     beschikbaar zijn en in een volgende ronde per ongeluk hergebruikt worden.
+     Geen van de waarden is nieuw: alle zes staan één op één gelijk aan een
+     token dat deze pagina al gebruikt.
+
+     DRIE DINGEN ZIJN BEWUST NIET OVERGENOMEN
+     1 · `opacity: .6` op de taalnamen. #547068 op wit haalt 5,39:1, maar op
+         60% dekking zakt dat naar #98a9a4 en 2,46:1 — leestekst moet 4,5:1
+         halen, dus is dat een echte fout in hun stijlblad en staan de namen
+         hier op volle dekking. (Daarmee vervalt ook de `opacity: 1` die hun
+         .active-language nodig had om eronderuit te komen.)
+     2 · `--color-link: #00acd6` als hoverkleur. Datzelfde cyaan haalt 2,67:1
+         op wit. Deze pagina gebruikt daarvoor al de goedgekeurde donkerder
+         trap #00718c (5,61:1), zoals in de tailwind-config hierboven staat
+         uitgelegd, en de footer volgt diezelfde regel.
+     3 · `align-self: end`. Dat hoort bij hun grid-opzet met <page-container>
+         en betekent hier niets.
+
+     ÉÉN REGEL IS TOEGEVOEGD DIE ZIJ NIET HEBBEN, en wel om hun eigen
+     weergave te herstellen: `display: inline-block` op het woordmerk. Tailwind
+     zet in zijn preflight élke afbeelding op `display: block`; op hun site is
+     een afbeelding inline, en daar is de gecentreerde footer op telefoon van
+     afhankelijk (`text-align: center` doet niets met een blokelement). Zonder
+     deze regel staat het logo op 390px links in plaats van gecentreerd.
+
+     WAT WEL VERSCHILT MET HUN SITE, en waarom het zo blijft
+     · De footer is 1128px breed, de rest van deze pagina 1280px. Dat is hun
+       eigen maat (max-width: calc(1080px + 48px)); hem oprekken zou de preview
+       iets laten zien wat straks niet zo staat.
+     · De copyrightregel staat ±17px krapper dan op hun site: Tailwind zet de
+       standaardmarge van <p> op 0 en hun stijlblad zet er niets voor terug.
+     --------------------------------------------------------------------- */
+  .yb-footer {
+    --color-grey-700: #547068;        /* = token ink.soft    */
+    --color-grey-800: #154e3a;        /* = token brand.ink   */
+    --color-grey-900: #0a3327;        /* = token ink         */
+    --color-border:   #e1ebf0;        /* = token line        */
+    --color-brand-primary: #0af29f;   /* = token brand       */
+    --color-link:     #00718c;        /* = token link.licht  */
+    border-top: 1px solid var(--color-border);
+    padding: 32px 0;
+    background-color: #ffffff;
+  }
+  .yb-footer a,
+  .yb-footer p { color: var(--color-grey-700); font-size: 15px; }
+  .yb-footer a:hover { color: var(--color-link); }
+  .yb-footer .footer-links {
+    display: flex;
+    max-width: calc(1080px + 48px);
+    margin: auto;
+    gap: 40px;
+    padding: 0 24px 40px 24px;
+  }
+  .yb-footer .footer-links p { font-weight: bold; color: var(--color-grey-900); margin: 0; }
+  .yb-footer .footer-links a { display: block; }
+  .yb-footer .footer-links-logo { width: 100%; }
+  .yb-footer .footer-links-logo img {
+    display: inline-block;            /* preflight-compensatie, zie hierboven */
+    height: 32px;
+    width: auto;
+    transition: .3s all;
+  }
+  .yb-footer .footer-links-logo img:hover { transform: scale(.95); }
+  .yb-footer .footer-linkedin { display: flex; margin-top: 16px; align-items: center; }
+  .yb-footer .footer-linkedin img { height: 16px; width: auto; margin-right: 8px; margin-top: 0; }
+  .yb-footer .footer-links-about,
+  .yb-footer .footer-links-legal { width: 35%; display: flex; flex-direction: column; gap: 16px; }
+  .yb-footer .footer-languages {
+    max-width: calc(1080px + 48px);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin: auto;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+  }
+  .yb-footer .footer-languages a,
+  .yb-footer .footer-languages span { font-size: 14px; }
+  .yb-footer .active-language { color: var(--color-grey-800); pointer-events: none; font-weight: 500; }
+  .yb-footer .footer-copyright { text-align: center; font-size: .875rem; }
+  .yb-footer .footer-copyright a {
+    border-bottom: .0625rem solid var(--color-brand-primary);
+    padding-bottom: .125rem;
+    color: var(--color-grey-800);
+  }
+  @media (max-width: 656px) {
+    .yb-footer .footer-links-logo { justify-content: center; margin: auto; }
+    .yb-footer .footer-links { flex-direction: column; text-align: center; }
+    .yb-footer .footer-links-about,
+    .yb-footer .footer-links-legal { gap: 24px; width: 100%; }
+    .yb-footer .footer-languages { gap: 24px; }
+  }
+
+  /* De twee stukjes van dit blok die niet uit hun stijlblad komen: het
+     TODO-kader over de talen (46rem breed, want 1080px is geen leesregel) en
+     de ondernemingsregel onder het copyright. De inerte taalnamen erven de
+     tekstkleur van .yb-footer a/p en staan dus op 5,39:1. */
+  .yb-footer .footer-talen-todo { max-width: calc(46rem + 48px); margin: 0 auto 40px; padding: 0 24px; }
+  .yb-footer .footer-entiteit { margin-top: 8px; }
+  .yb-footer .inert-language { color: var(--color-grey-700); }
+</style>
+
+<script>document.documentElement.classList.add('js');</script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+
+<!-- min-h-screen met flex-col houdt de footer onderaan het venster in plaats
+     van halverwege: deze pagina is kort, en een footer die op een leeg scherm
+     midden in beeld hangt leest als een pagina die niet af is. De padding
+     onderaan is de terugval voor de cookiebalk; het script onderaan meet de
+     echte hoogte en overschrijft hem. -->
+<body class="min-h-screen flex flex-col pb-[52px] sm:pb-0">
+
+<!-- =========================================================================
+     1 · HET MERKANKER — GEEN NAVIGATIE
+     -------------------------------------------------------------------------
+     De landingspagina heeft geen <header> met menu en deze pagina evenmin.
+     Wat er wel staat is het woordmerk, en dat doet hier twee dingen tegelijk:
+     het zegt op wiens pagina je staat, en het is de weg terug. Lichte band,
+     dus het donkere bestand (youbo_logo.svg); de witte uitsparing hoort op
+     deze pagina nergens.
+     ========================================================================= -->
+<div class="bg-paper">
+  <div class="shell pt-6 md:pt-10">
+    <a href="https://www.youbo.io/nl/" data-cta="bedankt-logo" class="inline-block">
+      <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-7 w-auto">
+    </a>
+  </div>
+</div>
+
+<!-- =========================================================================
+     2 · DE BEVESTIGING ZELF — LICHT (#ffffff)
+     -------------------------------------------------------------------------
+     Eén kop, geen tweede titel erboven of eronder, en drie dingen in de
+     leesvolgorde waarin iemand ze nodig heeft:
+
+       1 · het is binnen
+       2 · dit gebeurt er nu
+       3 · zo bereik je Nick als het niet kan wachten, en zo ga je verder
+
+     De kolom is max-w-prose (46rem), dezelfde leesmaat als de FAQ en de
+     TODO-blokken op de landingspagina. Links uitgelijnd, net als al het
+     andere daar: een gecentreerde tekstkolom zou van deze pagina een kaartje
+     maken in plaats van hetzelfde adres, één klik later.
+     ========================================================================= -->
+<main class="flex-1 bg-paper band-pad">
+  <div class="shell">
+    <div class="max-w-prose">
+
+      <div class="flex items-center gap-4">
+        <span class="vink" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+        </span>
+        <h1 class="text-h1 m-0">Je aanvraag is binnen</h1>
+      </div>
+
+      <p class="mt-8 text-body text-ink-soft">
+        Bedankt. We hebben je demo-aanvraag ontvangen.
+      </p>
+
+      <!-- WAT ER NU GEBEURT. «Eerstdaags» is de termijn, en het is een
+           bewuste keuze van de klant: het concept zei "binnen één werkdag" en
+           niemand had nagekeken of Nick dat kan halen. Een exacte termijn is
+           een belofte die gebroken kan worden, en dit is de pagina waarop het
+           vertrouwen gevestigd wordt dat de rest heeft opgebouwd. Zet er dus
+           nooit een getal in zonder dat iemand het bevestigd heeft. -->
+      <p class="mt-4 text-body text-ink-soft">
+        <b class="font-bold text-ink">Nick Van Langendonck</b>, reward expert, neemt eerstdaags
+        contact met je op. Hij bekijkt samen met jou hoe Youbo aansluit op jullie loonbeleid,
+        structuur en systemen, en laat het zien op jullie eigen looncyclus.
+      </p>
+
+      <!-- Hetzelfde alternatief als onder het formulier op de landingspagina,
+           met dezelfde data-cta-logica zodat beide wegen meetbaar blijven.
+           Zijn agenda staat er niet bij: die link bestaat nog niet, en de TODO
+           daarover hoort op de landingspagina en niet twee keer. -->
+      <div class="alt-weg mt-10">
+        <p class="m-0 text-caption text-ink-soft">
+          Kan het niet wachten, of wil je er nog iets bij vermelden?
+        </p>
+        <p class="m-0 mt-2 text-caption text-ink-soft">
+          Mail hem op
+          <a class="alt-link" href="mailto:nick.vanlangendonck@youbo.io"
+             data-cta="bedankt-mail-nick">nick.vanlangendonck@youbo.io</a>
+        </p>
+        <p class="m-0 mt-2 text-caption text-ink-soft">
+          Of bel hem op
+          <a class="alt-link" href="tel:+32486082765"
+             data-cta="bedankt-telefoon-nick">0486 08 27 65</a>
+        </p>
+      </div>
+
+      <!-- DE WEG VERDER. Een bevestigingspagina zonder uitgang is een
+           doodlopende straat: de bezoeker heeft gedaan waarvoor hij kwam en
+           heeft geen reden meer om hier te blijven staan. Een secundaire knop
+           en niet de primaire mint: de enige actie die deze pagina kende is al
+           uitgevoerd, dus hoeft hier niets te schreeuwen. /nl/ is de echte
+           homepage — live nagemeten op 2026-10-08: 200 zonder omleiding,
+           terwijl /nl/merit/ hiernaartoe doorstuurt. -->
+      <p class="mt-10 m-0">
+        <a href="https://www.youbo.io/nl/" class="btn-secondary" data-cta="bedankt-terug-youbo">
+          Terug naar youbo.io
+        </a>
+      </p>
+
+    </div>
+  </div>
+</main>
+
+<!-- =========================================================================
+     4 · FOOTER — DE ECHTE FOOTER VAN YOUBO.IO, INGESLOTEN
+     -------------------------------------------------------------------------
+     DIT BLOK IS WOORD VOOR WOORD HET FOOTERBLOK VAN draft-r3-01-definitief.html,
+     comment inbegrepen, en dat is de bedoeling: er is één footer en niet twee.
+     Wie hem ooit bijwerkt, werkt hem op beide pagina's bij — of beter nog, doet
+     de omwisseling hieronder en laat hun eigen footer.js het werk doen. Twee
+     dingen verschillen, beide bewust:
+     · DE ISO 27001:2022-BADGE STAAT ER NIET. Op de landingspagina staat die als
+       los element bóven de footer, omdat Jana's campagneplan hem daar vraagt.
+       Hij hoort niet bij hun footer, en een keurmerk op een bevestigingspagina
+       is precies het soort extra dat deze pagina niet hoort te hebben.
+     · DE TWEE data-url-* HIERONDER WIJZEN NAAR DÉZE PAGINA, dus naar
+       /en/demo/bedankt en /fr/demo/bedankt in plaats van /en/demo en /fr/demo.
+     -------------------------------------------------------------------------
+     Dit is niet langer een nagebouwde footer maar hún component, letterlijk:
+     de inhoud van /components/nl/footer.html van youbo.io, met hun eigen
+     klassenamen (.footer-links, .footer-languages, .footer-copyright) in hun
+     eigen volgorde. De vorige versie hier was met de hand nagebouwd in
+     Tailwind op een zwarte band; die is weg.
+
+     Youbo.io heeft geen templatetaal — elke pagina is een los html-bestand.
+     /js/footer.js leest data-lang van een lege <footer id="footer"> en schuift
+     /components/<taal>/footer.html erin.
+
+     WAAROM HIER INGESLOTEN EN NIET OPGEHAALD
+     Deze draft wordt bekeken op breynsv.github.io, en daar bestaan
+     /js/footer.js en /components/ niet. Ophalen zou dus mislukken en Jana zou
+     naar een lege footer kijken. Een preview die iets anders laat zien dan de
+     pagina straks doet, is geen preview, dus staat de inhoud hier in het
+     bestand.
+
+     DE OMWISSELING OP YOUBO.IO — dit blok eruit, twee regels erin
+     Vervang op hun server dit hele <footer>-blok door hun eigen twee regels,
+     en de footer loopt automatisch mee met de rest van de site:
+
+       <footer id="footer" class="footer" data-lang="nl"
+               data-url-en="/en/demo/bedankt" data-url-fr="/fr/demo/bedankt"></footer>
+       <script src="/js/footer.js"></script>
+
+     Daarmee vervalt ook het CSS-blok «r3: echte footer» onderaan de stijlen:
+     daar doet /css/global.css het werk al. De twee data-url-* attributen zijn
+     de adressen van déze pagina in het Engels en het Frans; die bestaan nog
+     niet — zie het TODO-blokje in de footer zelf.
+
+     WAT VOOR DEZE PREVIEW IS AANGEPAST, en wat met de omwisseling terugdraait
+     · BEELDPADEN. Hun markup haalt het woordmerk uit de map img/logo en het
+       icoontje uit de map icons, beide onder /assets — twee mappen die in deze
+       repo niet bestaan. Wij hebben assets/img/youbo_logo.svg en
+       assets/img/linkedin.svg, en daar wijst het hieronder dus naar. Op hun
+       server zijn hun eigen paden juist en komen die met de omwisseling terug.
+     · LINKS ABSOLUUT. Hun hrefs zijn site-relatief (/nl/cases/); hier staan ze
+       als https://www.youbo.io/… zodat elke link ook vanaf het previewdomein
+       werkt. Geen enkele is bedacht of afgeleid: alle negen komen uit het
+       component zelf. «Nieuws» stond in de versie van augustus nog in
+       commentaar en is nu een echte link; Français is er nieuw bij.
+     · HET WOORDMERK WIJST NAAR /nl/, zoals hun eigen component. Dit stond tot
+       2026-10-08 op /nl/merit/, omdat /nl/ niet in de opgeslagen pagina's in
+       _raw/ staat en check-drafts.mjs de bestaande adressen daaruit afleidt.
+       Beide adressen zijn nu live getest: /nl/ geeft 200 zonder omleiding,
+       /nl/merit/ geeft 200 maar leidt door naar /nl/. /nl/ is dus de echte
+       homepage en /nl/merit/ de omweg. /nl/ staat nu met die reden in de
+       uitzonderingslijst van check-drafts.mjs.
+     · ALT-TEKST, WIDTH EN HEIGHT op beide afbeeldingen. In hun component
+       dragen die twee afbeeldingen geen alt, waardoor een schermlezer de
+       bestandsnaam van het logo voorleest. Het LinkedIn-icoontje krijgt
+       alt="" en aria-hidden, want de link spreekt het woord LinkedIn al uit.
+     · «Linkedin» is «LinkedIn» geworden; hun eigen schrijfwijze van de
+       merknaam is fout.
+     · HET JAARTAL. Hun markup gebruikt <label id="currentYear"></label>, leeg,
+       gevuld door hun javascript. Een <label> zonder bijhorend veld is geen
+       label, en leeg laat hij zonder javascript géén jaartal zien. Hier staat
+       <span id="currentYear">2026</span>: hetzelfde id, dus hun footer.js vult
+       hem net zo goed, en zonder javascript staat er alsnog een jaartal. Het
+       script onderaan deze pagina — één, en het enige — overschrijft hem met
+       het echte jaar.
+     · DE ENGELSE LABELS BLIJVEN ENGELS. «Legal», «Cookie policy», «Terms of
+       use»: zo staat het in hun Nederlandse footer. Dat is hun chrome, niet
+       onze copy, dus is het niet vernederlandst.
+     · DE TALEN. Zie het TODO-blokje hieronder.
+     · ÉÉN REGEL DIE NIET VAN HEN KOMT: de ondernemingsgegevens van Teal
+       Partners. Hun sitefooter draagt die niet, onze vorige footer wel, en op
+       een advertentiepagina die persoonsgegevens verzamelt is het adres van de
+       verwerkingsverantwoordelijke geen overbodige luxe. Weg als Jana dat
+       liever heeft.
+
+     WAT WIJ NIET HEBBEN «VERBETERD»
+     Hun kolomkoppen zijn <p>'s en de linkjes staan los in een <div>, niet in
+     een <nav> met een <ul> zoals in onze vorige, zelfgebouwde footer. Dat is
+     slechter voor een schermlezer, maar het is hún component: lossen wij het
+     hier op, dan is deze preview beter dan de pagina die straks live staat.
+     Die verbetering hoort in /components/nl/footer.html op hun server thuis.
+
+     DE FOOTER IS NU LICHT, WAS ZWART. Geen keuze maar een gevolg: hun footer
+     staat op wit met een lijn erboven. Het donkere woordmerk
+     (youbo_logo.svg) is daar dus het juiste bestand, en linkedin.svg is al in
+     #547068 getekend — precies de tekstkleur van deze footer.
+     ========================================================================= -->
+<footer class="yb-footer">
+
+  <div class="footer-links">
+    <div class="footer-links-logo">
+      <a href="https://www.youbo.io/nl/" data-cta="footer-logo"><img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28"></a>
+      <a class="footer-linkedin" href="https://www.linkedin.com/company/teal-partners/" target="_blank" rel="noopener" data-cta="footer-linkedin"><img src="assets/img/linkedin.svg" alt="" aria-hidden="true" width="14" height="14">LinkedIn</a>
+    </div>
+
+    <div class="footer-links-about">
+      <p>Over Youbo</p>
+      <a href="https://www.youbo.io/nl/cases/" data-cta="footer-cases">Referentie cases</a>
+      <a href="https://www.youbo.io/nl/nieuws/" data-cta="footer-nieuws">Nieuws</a>
+      <a href="https://www.youbo.io/nl/contact.html" data-cta="footer-contact">Contact</a>
+    </div>
+
+    <div class="footer-links-legal">
+      <p>Legal</p>
+      <a href="https://www.youbo.io/nl/legal/cookie-policy.html" data-cta="footer-cookiebeleid">Cookie policy</a>
+      <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener" data-cta="footer-privacy">Privacy policy</a>
+      <a href="https://www.youbo.io/nl/legal/responsible-disclosure-policy.html" data-cta="footer-rdp">Responsible disclosure policy</a>
+      <a href="https://www.youbo.io/nl/legal/disclaimer.html" data-cta="footer-disclaimer">Disclaimer</a>
+      <a href="https://www.youbo.io/nl/legal/gebruiksvoorwaarden.html" data-cta="footer-voorwaarden">Terms of use</a>
+    </div>
+
+  </div>
+
+  <!-- DE TAALSCHAKELAAR — drie namen, en geen van de twee andere is een link.
+       Hun component zet hier <a id="footer-url-en"> en <a id="footer-url-fr">
+       met een lege href, die footer.js vult uit data-url-en en data-url-fr.
+       Deze pagina bestaat alleen in het Nederlands, dus zou dat hier een lege
+       href opleveren: een link die de bezoeker terugzet op dezelfde pagina, of
+       na het vullen een 404. Daarom staan de drie namen er wél — zo ziet Jana
+       hoe de echte footer eruitziet en blijft de openstaande beslissing
+       zichtbaar — maar als <span>: geen href, niet in de tabvolgorde, niets om
+       op te klikken. Verbergen was het alternatief; dan was de enige
+       openstaande vraag van dit blok onzichtbaar geworden, en dat is precies
+       wat deze drafts nergens doen. -->
+  <div class="footer-languages">
+    <span class="inert-language">English</span>
+    <span class="active-language">Nederlands</span>
+    <span class="inert-language">Français</span>
+  </div>
+
+  <div class="footer-talen-todo">
+    <p class="todo">
+      <b>TODO — te bevestigen</b>: de footer van youbo.io draagt een schakelaar English ·
+      Nederlands · Français. Deze pagina bestaat alleen in het Nederlands, dus staan die
+      twee andere namen er zonder link. Zodra er een Engelse of Franse versie is, worden
+      het weer echte links — op youbo.io vult footer.js ze uit data-url-en en
+      data-url-fr — en dan hoort er ook hreflang in de head
+    </p>
+  </div>
+
+  <div class="footer-copyright">
+    <p>© <span id="currentYear">2026</span> Youbo by <a href="https://www.tealpartners.com/" target="_blank" rel="noopener" data-cta="footer-tealpartners">Teal Partners</a></p>
+    <p class="footer-entiteit">Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542</p>
+  </div>
+
+</footer>
+
+<!-- =========================================================================
+     3 · DE COOKIEBALK — DEZELFDE BALK ALS OP DE LANDINGSPAGINA
+     -------------------------------------------------------------------------
+     EN HIER STAAT ÉÉN BALK, GEEN TWEE. Op de landingspagina staat onder deze
+     cookiebalk nog een vaste band met «Boek een demo». Die hoort hier niet:
+     de bezoeker heeft net geboekt, en een pagina die daarna opnieuw vraagt om
+     te boeken is ruis. Daarmee is de omhulling hier dus één balk hoog, en de
+     meting onderaan rekent daar niet op — ze meet wat er staat.
+
+     WAAROM DE BALK ER WEL STAAT. Het meten loopt ook op deze pagina, en dit is
+     zelfs hét adres dat geteld wordt, dus moet de toestemming zich hier
+     precies zo gedragen als daar. Letterlijk dezelfde balk: dezelfde zin,
+     dezelfde twee gelijkwaardige knoppen (weigeren mag niet moeilijker zijn
+     dan toestaan), dezelfde localStorage-sleutel «youbo-toestemming» en
+     dezelfde laadMeettags(). Wie op de landingspagina Toestaan koos, ziet hem
+     hier niet meer; wie weigerde, blijft geweigerd. Eén keus voor het hele
+     domein, want het is één domein.
+
+     Jana: "de cookiewaarschuwing neemt wel veel te veel plek in, hoe minimaler
+     hoe beter." Hij is daarom één regel; op telefoon valt het staartje van de
+     zin weg zodat het ook daar één regel blijft.
+     ========================================================================= -->
+<div class="fixed bottom-0 inset-x-0 z-50" data-bodembalk>
+  <div x-data x-show="!$store.toestemming.beantwoord" x-transition.opacity.duration.200ms x-cloak
+       data-cookiebalk
+       class="border-t border-line bg-paper/95 backdrop-blur"
+       role="region" aria-label="Cookies">
+    <div class="max-w-shell mx-auto px-4 md:px-6 py-1 flex items-center gap-3">
+      <p class="flex-1 min-w-0 m-0 text-[13px] leading-[1.35] text-ink-soft">
+        We plaatsen <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
+           class="text-link-licht underline underline-offset-2 hover:text-link-hover"
+           style="transition: color var(--m-base) var(--e-standard)"
+           data-cta="cookiebalk-beleid">meetcookies</a><span class="hidden sm:inline"> om te zien hoe deze pagina gebruikt wordt</span>.
+      </p>
+      <div class="flex items-center gap-2 shrink-0">
+        <button type="button" @click="$store.toestemming.zet('geweigerd')"
+                class="btn-secondary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">
+          Weigeren
+        </button>
+        <button type="button" @click="$store.toestemming.zet('toegestaan')"
+                class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan">
+          Toestaan
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* -------------------------------------------------------------------------
+     LAADMEETTAGS — het enige punt waar een meettag de pagina binnenkomt
+     ---------------------------------------------------------------------------
+     Woord voor woord dezelfde functie als op de landingspagina, en dat hoort
+     zo: dit is dezelfde site en dezelfde toestemming. Ze draait uitsluitend
+     nadat iemand in de cookiebalk op Toestaan geklikt heeft, en één keer per
+     bezoek. Zolang de drie id's leeg zijn vertrekt er geen enkel verzoek naar
+     een meetdienst en geeft ze alleen de toestemming door aan Google.
+
+     DE CONVERSIE HOORT OP HET PAGINAPAD, NIET OP EEN KLIK. Zodra de id's er
+     zijn: in LinkedIn Campaign Manager een conversie op dit adres, en in
+     Google een doel op /demo/bedankt. Een gebeurtenis die op de knop van het
+     formulier afvuurt, telt ook de aanvragen die daarna mislukken.
+     ------------------------------------------------------------------------- */
+  var meettagsGeladen = false;
+  function laadMeettags() {
+    if (meettagsGeladen) { return; }
+    meettagsGeladen = true;
+
+    /* Google weet nu dat er toestemming is. Dit werkt ook als de tag zelf er
+       nog niet is: de push blijft in dataLayer staan tot hij opgepikt wordt. */
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+
+    /* De drie id's. Leeg = laadt niet. Vul in wat bevestigd is, kies tussen GTM
+       en GA4, en vul nooit een verzonnen nummer in.
+       TODO — nodig van klant: alle drie, en het zijn dezelfde drie als op de
+       landingspagina. Zolang ze leeg zijn, vertrekt er geen enkel verzoek naar
+       een meetdienst en doet deze functie verder niets. */
+    var GOOGLE_GTM_ID       = '';   /* bv. 'GTM-XXXXXXX'  */
+    var GOOGLE_GA4_ID       = '';   /* bv. 'G-XXXXXXXXXX' */
+    var LINKEDIN_PARTNER_ID = '';   /* het nummer uit LinkedIn Campaign Manager */
+
+    function laadScript(bron) {
+      var el = document.createElement('script');
+      el.async = true;
+      el.src = bron;
+      document.head.appendChild(el);
+    }
+
+    /* Google — Tag Manager áls er een container is, anders GA4 rechtstreeks. */
+    if (GOOGLE_GTM_ID) {
+      dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      laadScript('https://www.googletagmanager.com/gtm.js?id=' + GOOGLE_GTM_ID);
+    } else if (GOOGLE_GA4_ID) {
+      laadScript('https://www.googletagmanager.com/gtag/js?id=' + GOOGLE_GA4_ID);
+      gtag('js', new Date());
+      gtag('config', GOOGLE_GA4_ID);
+    }
+
+    /* LinkedIn Insight Tag — het blok uit de <head>, nu op het juiste moment. */
+    if (LINKEDIN_PARTNER_ID) {
+      window._linkedin_partner_id = LINKEDIN_PARTNER_ID;
+      window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+      window._linkedin_data_partner_ids.push(LINKEDIN_PARTNER_ID);
+      window.lintrk = window.lintrk || function (a, b) { window.lintrk.q.push([a, b]); };
+      window.lintrk.q = window.lintrk.q || [];
+      laadScript('https://snap.licdn.com/li.lms-analytics/insight.min.js');
+    }
+  }
+
+  /* -------------------------------------------------------------------------
+     RUIMTE ONDERAAN — de echte hoogte van wat er onderaan staat
+     ---------------------------------------------------------------------------
+     Hier staat één balk en niet twee, maar de meting blijft dezelfde als op de
+     landingspagina: ze meet de omhulling in plaats van ergens een vast getal
+     aan te nemen. Dat is het punt — zodra de bezoeker een keuze maakt gaat de
+     balk op display: none, krimpt de omhulling naar nul en moet de padding
+     mee, anders houdt de pagina 45px lege ruimte onder de footer over.
+
+     offsetParent is ALTIJD null bij position: fixed, dus die mag hier niet
+     gebruikt worden om zichtbaarheid te meten — dat leest de balk als verborgen
+     en laat de padding op nul staan. x-show zet display: none, en dat is wat
+     getComputedStyle hier leest.
+     ------------------------------------------------------------------------- */
+  (function () {
+    var balken = [].slice.call(document.querySelectorAll('[data-bodembalk]'));
+    if (!balken.length) { return; }
+    function ruimte() {
+      var hoog = 0;
+      balken.forEach(function (b) {
+        if (window.getComputedStyle(b).display === 'none') { return; }
+        hoog = Math.max(hoog, b.offsetHeight);
+      });
+      document.body.style.paddingBottom = hoog ? hoog + 'px' : '0px';
+    }
+    window.addEventListener('resize', ruimte);
+    balken.forEach(function (b) {
+      if (window.ResizeObserver) { new window.ResizeObserver(ruimte).observe(b); }
+      if (window.MutationObserver) {
+        new window.MutationObserver(ruimte).observe(b, {
+          attributes: true, attributeFilter: ['style', 'class'], subtree: true
+        });
+      }
+    });
+    document.addEventListener('alpine:initialized', function () { window.setTimeout(ruimte, 60); });
+    ruimte();
+  })();
+
+  document.addEventListener('alpine:init', () => {
+
+    /* De toestemming. Dezelfde sleutel als op de landingspagina — dat is de
+       hele reden dat deze balk hier mag staan zonder iemand twee keer te
+       vragen. Drie standen: niets (nog geen keuze, dus balk tonen),
+       'geweigerd' en 'toegestaan'. localStorage kan in een privévenster
+       gooien, dus elke lees- en schrijfactie staat in try. */
+    Alpine.store('toestemming', {
+      keuze: null,
+      init() {
+        try { this.keuze = localStorage.getItem('youbo-toestemming'); } catch (e) { this.keuze = null; }
+        if (this.keuze === 'toegestaan') { laadMeettags(); }
+      },
+      get beantwoord() {
+        return this.keuze === 'toegestaan' || this.keuze === 'geweigerd';
+      },
+      zet(keuze) {
+        this.keuze = keuze;
+        try { localStorage.setItem('youbo-toestemming', keuze); } catch (e) {}
+        if (keuze === 'toegestaan') { laadMeettags(); }
+      }
+    });
+  });
+</script>
+
+<script>
+  /* De echte footer van youbo.io vult het jaartal met JavaScript. Hetzelfde
+     hier, zodat er over twee jaar geen verkeerd jaartal in de voettekst staat. */
+  (function () {
+    var jaar = document.getElementById('currentYear');
+    if (jaar) { jaar.textContent = String(new Date().getFullYear()); }
+  })();
+</script>
+
+</body>
+</html>
