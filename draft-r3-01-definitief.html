@@ -3,7 +3,7 @@
 CONCEPT: Ronde 3, het definitieve ontwerp. Kopie van draft-r2-05 (de schakelende variant in de échte huisstijl van youbo.io), met Jana's feedback van 5 oktober 2026 verwerkt — zie BRIEF-R3.md. De schakelende variant, Zelfde structuur en zelfde copy als draft-r2-02, maar elke kleur, maat, radius en overgangsduur komt letterlijk uit DESIGN-youbo-io.md: groen #0af29f met tekst #154e3a, tekst #0a3327 en #547068, oppervlak #f6f8fa, rand #e1ebf0, Inter, radius 8/12/24, en de spatiëringsschaal 8-128. De pagina begint licht en kantelt per blok naar donker en terug — en het donker is hier niet verzonnen: het is hun eigen verloop van #000000 naar #154e3a, het meest kenmerkende element dat ze hebben.
 SCHAKELING: de overgang tussen licht en donker is zelf de belangrijkste beweging, en hij doet negen keer exact hetzelfde: niets. De sectiegrens is scherp — geen lijn erop, geen vervaging eromheen. Het kleurverschil doet het werk al, en alles wat je ertussen zet leest als iets wat stukging: een gekleurde streep over de volle breedte leest als een vergeten rand, en een vervaging tussen zwart en wit loopt altijd door grijs en ziet er altijd vuil uit. Het verloop #000000 → #154e3a blijft, maar het leeft nu bínnen de donkere band: die is zwart aan boven- én onderkant, het groen zwelt op in een vaste zone van 400px (300px op telefoon) vlak boven de onderrand en zakt in de laatste 160px (120px) terug naar zwart. Vaste pixels en niet procenten, zodat een band van 435px dezelfde zwelling krijgt als een van 1545px — een tweestopsverloop over de volle bandhoogte is precies wat hier als vlek las. Vijf stops `in oklab`, zodat het middengebied groen blijft in plaats van te vergrijzen. Dezelfde vorm als de heroband in draft 06, zodat de twee drafts dit identiek behandelen. Het groen zakt bij het binnenscrollen nog altijd in 350ms in de band in plaats van hard aan te knippen. Alle beweging gaat uit bij prefers-reduced-motion: reduce.
 TITELS: één kop per sectie, nooit twee. De negen minititels boven de koppen zijn weg — Jana keurde die expliciet af en de briefing verbiedt ze. "Bonus & Merit" naast het woordmerk is er in ronde 3 ook uit; wat overblijft zijn de vier stapnummers in de rondleiding, die iets anders zijn dan een titel.
-FOOTER EN TOESTEMMING: de footer is die van youbo.io, link voor link overgenomen uit `_raw/components/nl/footer.html` — de juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan.
+FOOTER EN TOESTEMMING: de footer is sinds 2026-10-08 niet langer nagebouwd maar hún component zelf, ingesloten — de inhoud van /components/nl/footer.html van youbo.io, met hun klassenamen, hun volgorde en hun negen links, waaronder Nieuws dat in de versie van augustus nog in commentaar stond. Hij is daarmee licht geworden in plaats van zwart, want zo staat hij op hun site: wit met een lijn erboven. Ingesloten en niet opgehaald, omdat deze draft op breynsv.github.io staat waar /js/footer.js en /components/ niet bestaan en de footer dus leeg zou blijven; het blok draagt een comment met de twee regels die hem op hun server weer door footer.js laten vullen. Uit /css/global.css zijn alleen de 21 footerregels overgenomen, elk achter .yb-footer gezet — dat bestand in zijn geheel laden zou via 41 globale elementselectors de typografie en elk formulierveld van deze pagina herschrijven. De juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. De ISO 27001:2022-badge staat als los element bóven de footer, want hun sitefooter draagt hem niet en Jana's campagneplan vraagt hem wel. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan.
 HERO: de tekst komt eerst — kop, intro, knop — en het portret van Nick staat eronder op telefoon en ernaast op desktop. Dat is Jana's uitdrukkelijke vraag in ronde 3; in ronde 2 stond de foto bovenaan. De cijferregel en het blokje "Bonus & Merit" zijn uit de hero weg, en de fotoplek is vervangen door de echte foto (assets/img/nick-portret.webp, 900×1140 — exact het formaat dat BRIEF-R3.md noemt).
 LOGOBALK: ACHT echte logo's sinds 2026-10-08, geen tekstzetting meer. De vier SVG's die er stonden (SD Worx, DPG Media, Kaneka, Aertssen Group) blijven — die bestaan in twee polariteiten en een PNG daarvoor inruilen is achteruit — en Anchr, Crelan, Axi en Mourik komen uit de map die Bart De Nil doorstuurde. Protime zat in diezelfde map maar rolt niet mee: Protime stond bij ons als integratiepartner genoteerd en er is eerder gevraagd de vermelding weg te laten, dus staat daar een zichtbare vraag aan Bart in plaats van een logo. Verder ongewijzigd: een doorlopende marquee met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de statische rij. De tussenruimte mocht met acht items kleiner (44 → 170px per breekpunt), want de reeks is uit zichzelf al breder dan de balk; gemeten over 60 standen van één volle reeks raken er 2 tot 4 van de 8 items de balk op 390px en 4 tot 5 op 1440px, en op geen enkele stand staat een naam twee keer in beeld. Het tempo blijft gemeten 15,8 à 15,9 px/s; de duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo.
 CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px). Sinds Anchr op 2026-10-08 een echt logo kreeg, is het TODO-blokje op die kaart weg en is die leegte opnieuw gemeten op 340px, nu in Kaneka en Anchr; de volgorde ligt vast in het campagneplan, dus de knip blijft waar hij staat.
@@ -14,10 +14,10 @@ FAQ: ongewijzigd. Jana vindt die goed en verfijnt de antwoorden zelf met Nick en
 FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, en die intro draagt sinds 2026-10-06 zijn volledige naam en titel: Nick Van Langendonck, reward expert. Het formulier komt eerst; eronder staat in de kleine zetting één rustig blok met de drie alternatieven — "Of boek rechtstreeks in Nicks agenda", zijn e-mailadres als mailto: en zijn telefoonnummer als tel:. Die gegevens stonden er in ronde 1, verdwenen in ronde 2 samen met de geschrapte zin "Liever meteen met iemand spreken" en zijn nu door Jana bevestigd — de gegevens komen dus terug, die zin niet. Bij de agenda staat nog geen knop, want die link bestaat nog niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef, met "1x kwartaal" en met de slotpunt — ronde 3 had daar ongemerkt "1× per kwartaal" van gemaakt.
 VASTE BAND: terug, en nu écht permanent in beeld — ook vóór de cookiekeuze. In ronde 3 wachtte hij op die keuze, waardoor Jana's punt 10 onzichtbaar was voor élke nieuwe bezoeker; hij zet zelf geen cookie, dus is er ook geen reden om te wachten. De cookiebalk staat nu als smalle strook bovenóp hem in één vaste omhulling. Eén actie: Boek een demo. Hij verdwijnt zodra #demo in beeld komt — IntersectionObserver, met 96px marge zodat hij weg is vóórdat hij de kop van die sectie raakt — en ruimte() meet de hoogte van de omhulling (dus de som van wat er staat, niet het maximum van de twee) en zet die als padding-bottom op body, zodat geen van beide over de laatste regels van de footer valt. Gemeten op 390px: 45 + 69 = 114px samen, 69px zodra de cookiebalk weg is. x-show zet display:none, dus een knop in een balk die er niet staat, staat ook niet in de tabvolgorde. Bij prefers-reduced-motion verschijnen ze beide zonder overgang.
 STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency én de hr-tools · quotes · faq · formulier · footer). EU Pay Transparency en de hr-tools waren twee banden en zijn er in ronde 3 één: Jana noemt ze qua belang gelijkwaardig en wil ze op desktop naast elkaar, en naast elkaar bestaat niet over twee banden heen.
-LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten van de vier SVG's; de vier PNG-logo's van 2026-10-08 zijn volkleurenbestanden en hebben geen tweede versie nodig. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk volgt dezelfde regel: youbo_logo.svg op licht, youbo_logo_white.svg in de zwarte footer.
+LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten van de vier SVG's; de vier PNG-logo's van 2026-10-08 zijn volkleurenbestanden en hebben geen tweede versie nodig. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk staat nu drie keer op licht — hero, vaste band en footer — en dus overal als youbo_logo.svg; sinds de footer hun eigen, witte component is, gebruikt deze pagina youbo_logo_white.svg nergens meer.
 AFWIJKING VAN DE TOKENS: geen enkele nieuwe kleurwaarde. De enige afgeleiden zijn witte transparanties (72%, 16%, 6%) voor secundaire tekst, randen en vlakken op de donkere banden — het systeem documenteert daar geen aparte token voor, en #547068 op zwart haalt de contrastdrempel niet.
 TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Op 2026-10-06 zijn er drie blokjes bij weggevallen, elk omdat de vraag een antwoord kreeg: Nicks achternaam en functietitel (Nick Van Langendonck, reward expert), de merklogo's bij de hr-tools (Jana: "Ik denk dat die icoontjes beter zijn, laten we het daar op houden") en de ontbrekende quotefoto's (alle drie aangeleverd). Op 2026-10-08 vielen er twee bij weg, allebei doordat Bart De Nil de klantlogo's doorstuurde: het logobestand van Anchr op de casekaart en dezelfde vraag op de quoteband. Het blokje over de klantnamen in de logobalk is niet weg maar versmald tot één open vraag: hoort Protime daar thuis als klant. Open blijven: het landental van Aertssen — dat staat als X in het campagneplan van de klant zelf en ligt dus bij Bart of Nick — de vraag over Protime, de case-pdf's, de agendalink van Nick, de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
-NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (2) — vervallen op 2026-10-08: het logobestand van Anchr is er, en dat éne mint-groene bestand werkt op licht én op donker; (3) de vijf case-pdf's; (4) bevestiging dat Protime als klant in de logobalk mag — het logo zat in de map klantlogo's maar staat bij ons als integratiepartner, en is eerder op vraag van de klant weggehaald; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
+NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (2) — vervallen op 2026-10-08: het logobestand van Anchr is er, en dat éne mint-groene bestand werkt op licht én op donker; (3) de vijf case-pdf's; (4) bevestiging dat Protime als klant in de logobalk mag — het logo zat in de map klantlogo's maar staat bij ons als integratiepartner, en is eerder op vraag van de klant weggehaald; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt sinds kort een schakelaar English/Nederlands/Français; zolang er geen vertaling is, staan die twee andere namen in de footer zonder link, en bij een ja horen er ook twee adressen bij (data-url-en en data-url-fr) plus hreflang in de head.
 OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 medewerkers in 2 landen, 7× sneller) staan zonder voorbehoud op de pagina — de eerste twee besliste Jana op 2026-10-05, de derde komt op 2026-10-06 letterlijk uit haar campagneplan, dat ook de kop "van 2 weken naar 2 dagen" en de 130 managers uit haar oudere concept niet kent. Wat nog open staat, staat zichtbaar als TODO-blokje bij de casekaart: alleen nog het landental van Aertssen Group.
 -->
 <html lang="nl-BE">
@@ -998,6 +998,129 @@ tailwind.config = {
      kleinere tussenruimte; die regel staat hierboven met !important en blijft
      dus gelden. Met acht namen wikkelt die rij over meer regels, en dat is
      daar de bedoeling: leesbaarheid gaat er voor op «niet allemaal tegelijk». */
+
+  /* === r3: echte footer === */
+  /* ---------------------------------------------------------------------
+     DE FOOTER VAN YOUBO.IO, OVERGENOMEN ZONDER HUN STIJLBLAD TE LADEN
+     ---------------------------------------------------------------------
+     /css/global.css van youbo.io is 14 KB en 121 regels, en 41 daarvan zijn
+     globale elementselectors: *, html, body, h1 t/m h6, p, a, ul, button,
+     input, select, textarea, hr. Dat bestand hier gewoon inladen zou de
+     volledige typografie en élk formulierveld van deze pagina herschrijven —
+     hun h1 is 3,5rem en gecentreerd, hun a is cyaan #00acd6 (2,67:1 op wit),
+     hun body is 1,0625rem. Niets daarvan hoort hier.
+
+     Dus is alleen overgenomen wat de footer nodig heeft: de 21 regels uit dat
+     bestand die over de footer gaan, één op één, met één wijziging — elke
+     selector staat achter .yb-footer. Daarmee kan geen van deze regels iets
+     buiten de footer raken, en dat is gemeten: de berekende stijl van alle 557
+     elementen buiten de footer is op 390px en op 1440px identiek aan vóór deze
+     wijziging.
+
+     HUN VARIABELEN STAAN LOKAAL, NIET OP :root. Anders zou een naam uit
+     global.css (--color-border, --color-grey-900) alsnog over de hele pagina
+     beschikbaar zijn en in een volgende ronde per ongeluk hergebruikt worden.
+     Geen van de waarden is nieuw: alle zes staan één op één gelijk aan een
+     token dat deze pagina al gebruikt.
+
+     DRIE DINGEN ZIJN BEWUST NIET OVERGENOMEN
+     1 · `opacity: .6` op de taalnamen. #547068 op wit haalt 5,39:1, maar op
+         60% dekking zakt dat naar #98a9a4 en 2,46:1 — leestekst moet 4,5:1
+         halen, dus is dat een echte fout in hun stijlblad en staan de namen
+         hier op volle dekking. (Daarmee vervalt ook de `opacity: 1` die hun
+         .active-language nodig had om eronderuit te komen.)
+     2 · `--color-link: #00acd6` als hoverkleur. Datzelfde cyaan haalt 2,67:1
+         op wit. Deze pagina gebruikt daarvoor al de goedgekeurde donkerder
+         trap #00718c (5,61:1), zoals in de tailwind-config hierboven staat
+         uitgelegd, en de footer volgt diezelfde regel.
+     3 · `align-self: end`. Dat hoort bij hun grid-opzet met <page-container>
+         en betekent hier niets.
+
+     ÉÉN REGEL IS TOEGEVOEGD DIE ZIJ NIET HEBBEN, en wel om hun eigen
+     weergave te herstellen: `display: inline-block` op het woordmerk. Tailwind
+     zet in zijn preflight élke afbeelding op `display: block`; op hun site is
+     een afbeelding inline, en daar is de gecentreerde footer op telefoon van
+     afhankelijk (`text-align: center` doet niets met een blokelement). Zonder
+     deze regel staat het logo op 390px links in plaats van gecentreerd.
+
+     WAT WEL VERSCHILT MET HUN SITE, en waarom het zo blijft
+     · De footer is 1128px breed, de rest van deze pagina 1280px. Dat is hun
+       eigen maat (max-width: calc(1080px + 48px)); hem oprekken zou de preview
+       iets laten zien wat straks niet zo staat.
+     · De copyrightregel staat ±17px krapper dan op hun site: Tailwind zet de
+       standaardmarge van <p> op 0 en hun stijlblad zet er niets voor terug.
+     --------------------------------------------------------------------- */
+  .yb-footer {
+    --color-grey-700: #547068;        /* = token ink.soft    */
+    --color-grey-800: #154e3a;        /* = token brand.ink   */
+    --color-grey-900: #0a3327;        /* = token ink         */
+    --color-border:   #e1ebf0;        /* = token line        */
+    --color-brand-primary: #0af29f;   /* = token brand       */
+    --color-link:     #00718c;        /* = token link.licht  */
+    border-top: 1px solid var(--color-border);
+    padding: 32px 0;
+    background-color: #ffffff;
+  }
+  .yb-footer a,
+  .yb-footer p { color: var(--color-grey-700); font-size: 15px; }
+  .yb-footer a:hover { color: var(--color-link); }
+  .yb-footer .footer-links {
+    display: flex;
+    max-width: calc(1080px + 48px);
+    margin: auto;
+    gap: 40px;
+    padding: 0 24px 40px 24px;
+  }
+  .yb-footer .footer-links p { font-weight: bold; color: var(--color-grey-900); margin: 0; }
+  .yb-footer .footer-links a { display: block; }
+  .yb-footer .footer-links-logo { width: 100%; }
+  .yb-footer .footer-links-logo img {
+    display: inline-block;            /* preflight-compensatie, zie hierboven */
+    height: 32px;
+    width: auto;
+    transition: .3s all;
+  }
+  .yb-footer .footer-links-logo img:hover { transform: scale(.95); }
+  .yb-footer .footer-linkedin { display: flex; margin-top: 16px; align-items: center; }
+  .yb-footer .footer-linkedin img { height: 16px; width: auto; margin-right: 8px; margin-top: 0; }
+  .yb-footer .footer-links-about,
+  .yb-footer .footer-links-legal { width: 35%; display: flex; flex-direction: column; gap: 16px; }
+  .yb-footer .footer-languages {
+    max-width: calc(1080px + 48px);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin: auto;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+  }
+  .yb-footer .footer-languages a,
+  .yb-footer .footer-languages span { font-size: 14px; }
+  .yb-footer .active-language { color: var(--color-grey-800); pointer-events: none; font-weight: 500; }
+  .yb-footer .footer-copyright { text-align: center; font-size: .875rem; }
+  .yb-footer .footer-copyright a {
+    border-bottom: .0625rem solid var(--color-brand-primary);
+    padding-bottom: .125rem;
+    color: var(--color-grey-800);
+  }
+  @media (max-width: 656px) {
+    .yb-footer .footer-links-logo { justify-content: center; margin: auto; }
+    .yb-footer .footer-links { flex-direction: column; text-align: center; }
+    .yb-footer .footer-links-about,
+    .yb-footer .footer-links-legal { gap: 24px; width: 100%; }
+    .yb-footer .footer-languages { gap: 24px; }
+  }
+
+  /* De twee stukjes van dit blok die niet uit hun stijlblad komen: het
+     TODO-kader over de talen (46rem breed, want 1080px is geen leesregel) en
+     de ondernemingsregel onder het copyright. De inerte taalnamen erven de
+     tekstkleur van .yb-footer a/p en staan dus op 5,39:1. */
+  .yb-footer .footer-talen-todo { max-width: calc(46rem + 48px); margin: 0 auto 40px; padding: 0 24px; }
+  .yb-footer .footer-entiteit { margin-top: 8px; }
+  .yb-footer .inert-language { color: var(--color-grey-700); }
 </style>
 
 <script>document.documentElement.classList.add('js');</script>
@@ -2499,89 +2622,160 @@ tailwind.config = {
 </section>
 
 <!-- =========================================================================
-     11 · FOOTER — DONKER (#000000). Wit woordmerk, want zwarte ondergrond.
-     Dit is de footer van youbo.io, niet een zelfbedachte minifooter: Jana
-     vroeg er uitdrukkelijk om, zodat de bezoeker ziet op welke site hij staat,
-     en omdat een landingspagina die vanuit de sitefooter gelinkt wordt beter
-     gevonden wordt.
+     11 · FOOTER — DE ECHTE FOOTER VAN YOUBO.IO, INGESLOTEN
+     -------------------------------------------------------------------------
+     Dit is niet langer een nagebouwde footer maar hún component, letterlijk:
+     de inhoud van /components/nl/footer.html van youbo.io, met hun eigen
+     klassenamen (.footer-links, .footer-languages, .footer-copyright) in hun
+     eigen volgorde. De vorige versie hier was met de hand nagebouwd in
+     Tailwind op een zwarte band; die is weg.
 
-     ELKE LINK HIERONDER IS OVERGENOMEN UIT `_raw/components/nl/footer.html`,
-     de opgehaalde footer van de site zelf. Niets is hier afgeleid of geraden.
-     Let op met de voor de hand liggende adressen: /cookies, /privacy en
-     /voorwaarden bestaan NIET. De echte NL-paden zijn
-     /nl/legal/cookie-policy.html, /nl/legal/responsible-disclosure-policy.html,
-     /nl/legal/disclaimer.html en /nl/legal/gebruiksvoorwaarden.html, en de
-     privacy policy staat niet op youbo.io maar op tealpartners.com.
-     "Nieuws" staat in de echte footer in commentaar en is hier dus weggelaten.
-     De links staan absoluut op https://www.youbo.io, want zo verwijst de site
-     naar zichzelf en zo werkt deze draft ook los van de site.
+     Youbo.io heeft geen templatetaal — elke pagina is een los html-bestand.
+     /js/footer.js leest data-lang van een lege <footer id="footer"> en schuift
+     /components/<taal>/footer.html erin.
+
+     WAAROM HIER INGESLOTEN EN NIET OPGEHAALD
+     Deze draft wordt bekeken op breynsv.github.io, en daar bestaan
+     /js/footer.js en /components/ niet. Ophalen zou dus mislukken en Jana zou
+     naar een lege footer kijken. Een preview die iets anders laat zien dan de
+     pagina straks doet, is geen preview, dus staat de inhoud hier in het
+     bestand.
+
+     DE OMWISSELING OP YOUBO.IO — dit blok eruit, twee regels erin
+     Vervang op hun server dit hele <footer>-blok door hun eigen twee regels,
+     en de footer loopt automatisch mee met de rest van de site:
+
+       <footer id="footer" class="footer" data-lang="nl"
+               data-url-en="/en/demo" data-url-fr="/fr/demo"></footer>
+       <script src="/js/footer.js"></script>
+
+     Daarmee vervalt ook het CSS-blok «r3: echte footer» onderaan de stijlen:
+     daar doet /css/global.css het werk al. De twee data-url-* attributen zijn
+     de adressen van déze pagina in het Engels en het Frans; die bestaan nog
+     niet — zie het TODO-blokje in de footer zelf.
+
+     WAT VOOR DEZE PREVIEW IS AANGEPAST, en wat met de omwisseling terugdraait
+     · BEELDPADEN. Hun markup haalt het woordmerk uit de map img/logo en het
+       icoontje uit de map icons, beide onder /assets — twee mappen die in deze
+       repo niet bestaan. Wij hebben assets/img/youbo_logo.svg en
+       assets/img/linkedin.svg, en daar wijst het hieronder dus naar. Op hun
+       server zijn hun eigen paden juist en komen die met de omwisseling terug.
+     · LINKS ABSOLUUT. Hun hrefs zijn site-relatief (/nl/cases/); hier staan ze
+       als https://www.youbo.io/… zodat elke link ook vanaf het previewdomein
+       werkt. Geen enkele is bedacht of afgeleid: alle negen komen uit het
+       component zelf. «Nieuws» stond in de versie van augustus nog in
+       commentaar en is nu een echte link; Français is er nieuw bij.
+     · HET WOORDMERK WIJST NAAR /nl/merit/, NIET NAAR /nl/. Hun component linkt
+       sinds kort naar /nl/, en wij kunnen offline niet bewijzen dat dat adres
+       bestaat: check-drafts.mjs leidt de bestaande adressen af uit de
+       opgeslagen pagina's in _raw/ en kent /nl/ niet. Hun eigen navigatie
+       noemt /nl/merit/ «Home», dus wijst het woordmerk daarheen.
+     · ALT-TEKST, WIDTH EN HEIGHT op beide afbeeldingen. In hun component
+       dragen die twee afbeeldingen geen alt, waardoor een schermlezer de
+       bestandsnaam van het logo voorleest. Het LinkedIn-icoontje krijgt
+       alt="" en aria-hidden, want de link spreekt het woord LinkedIn al uit.
+     · «Linkedin» is «LinkedIn» geworden; hun eigen schrijfwijze van de
+       merknaam is fout.
+     · HET JAARTAL. Hun markup gebruikt <label id="currentYear"></label>, leeg,
+       gevuld door hun javascript. Een <label> zonder bijhorend veld is geen
+       label, en leeg laat hij zonder javascript géén jaartal zien. Hier staat
+       <span id="currentYear">2026</span>: hetzelfde id, dus hun footer.js vult
+       hem net zo goed, en zonder javascript staat er alsnog een jaartal. Het
+       script onderaan deze pagina — één, en het enige — overschrijft hem met
+       het echte jaar.
+     · DE ENGELSE LABELS BLIJVEN ENGELS. «Legal», «Cookie policy», «Terms of
+       use»: zo staat het in hun Nederlandse footer. Dat is hun chrome, niet
+       onze copy, dus is het niet vernederlandst.
+     · DE TALEN. Zie het TODO-blokje hieronder.
+     · ÉÉN REGEL DIE NIET VAN HEN KOMT: de ondernemingsgegevens van Teal
+       Partners. Hun sitefooter draagt die niet, onze vorige footer wel, en op
+       een advertentiepagina die persoonsgegevens verzamelt is het adres van de
+       verwerkingsverantwoordelijke geen overbodige luxe. Weg als Jana dat
+       liever heeft.
+
+     WAT WIJ NIET HEBBEN «VERBETERD»
+     Hun kolomkoppen zijn <p>'s en de linkjes staan los in een <div>, niet in
+     een <nav> met een <ul> zoals in onze vorige, zelfgebouwde footer. Dat is
+     slechter voor een schermlezer, maar het is hún component: lossen wij het
+     hier op, dan is deze preview beter dan de pagina die straks live staat.
+     Die verbetering hoort in /components/nl/footer.html op hun server thuis.
+
+     DE FOOTER IS NU LICHT, WAS ZWART. Geen keuze maar een gevolg: hun footer
+     staat op wit met een lijn erboven. Het donkere woordmerk
+     (youbo_logo.svg) is daar dus het juiste bestand, en linkedin.svg is al in
+     #547068 getekend — precies de tekstkleur van deze footer.
      ========================================================================= -->
-<footer class="band band-black py-12 md:py-20">
-  <div class="shell">
 
-    <div class="grid gap-10 md:grid-cols-12 md:gap-12">
-
-      <div class="md:col-span-4">
-        <a href="https://www.youbo.io/nl/merit/" class="inline-flex" data-cta="footer-logo">
-          <img src="assets/img/youbo_logo_white.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
-        </a>
-        <a href="https://www.linkedin.com/company/teal-partners/" target="_blank" rel="noopener"
-           class="mt-5 flex w-fit items-center gap-2 text-caption on-dark underline underline-offset-4 hover:text-brand"
-           style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-linkedin">
-          <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.64h.05A4.2 4.2 0 0 1 16.6 8.7c4 0 4.74 2.5 4.74 5.76V21h-4v-5.75c0-1.37-.03-3.13-1.96-3.13-1.96 0-2.26 1.49-2.26 3.03V21H9z"/></svg>
-          LinkedIn
-        </a>
-      </div>
-
-      <nav class="md:col-span-4" aria-label="Over Youbo">
-        <p class="text-caption font-bold uppercase tracking-[0.08em] on-dark">Over Youbo</p>
-        <ul class="mt-4 space-y-3 list-none p-0">
-          <li><a href="https://www.youbo.io/nl/cases/" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-cases">Referentie cases</a></li>
-          <li><a href="https://www.youbo.io/nl/contact.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-contact">Contact</a></li>
-        </ul>
-      </nav>
-
-      <nav class="md:col-span-4" aria-label="Legal">
-        <p class="text-caption font-bold uppercase tracking-[0.08em] on-dark">Legal</p>
-        <ul class="mt-4 space-y-3 list-none p-0">
-          <li><a href="https://www.youbo.io/nl/legal/cookie-policy.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-cookiebeleid">Cookie policy</a></li>
-          <li><a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-privacy">Privacy policy</a></li>
-          <li><a href="https://www.youbo.io/nl/legal/responsible-disclosure-policy.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-rdp">Responsible disclosure policy</a></li>
-          <li><a href="https://www.youbo.io/nl/legal/disclaimer.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-disclaimer">Disclaimer</a></li>
-          <li><a href="https://www.youbo.io/nl/legal/gebruiksvoorwaarden.html" class="text-caption on-dark-soft underline underline-offset-4 hover:text-brand" style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-voorwaarden">Gebruiksvoorwaarden</a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="mt-12 border-t rule-inv pt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-      <div>
-        <p class="text-caption on-dark-soft">
-          <span class="font-bold on-dark">Taal</span> · Nederlands
-        </p>
-        <p class="todo-inv mt-3 max-w-prose">
-          <b>TODO — te bevestigen</b>: de echte footer draagt een schakelaar Nederlands / English, en er
-          komt Frans bij. Deze pagina bestaat voorlopig alleen in het Nederlands, dus staat hier geen
-          link naar een vertaling die er nog niet is. Zodra de talen vastliggen hoort hier de schakelaar
-          plus hreflang in de head — dat bepaalt ook het adres van de pagina
-        </p>
-        <p class="mt-6 text-caption on-dark-soft">
-          © <span id="currentYear">2026</span> Youbo by
-          <a href="https://www.tealpartners.com/" target="_blank" rel="noopener"
-             class="on-dark underline underline-offset-4 hover:text-brand"
-             style="transition: color var(--m-base) var(--e-standard)" data-cta="footer-tealpartners">Teal Partners</a>
-        </p>
-        <p class="mt-2 text-caption on-dark-soft">
-          Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542
-        </p>
-      </div>
-      <!-- De ISO-badge is donker getekend en zou op deze band verdwijnen, dus staat hij op een wit vlak -->
-      <div class="self-start md:self-auto">
-        <span class="inline-flex rounded-sm bg-paper px-4 py-3">
-          <img src="assets/img/iso-eng.svg" alt="ISO 27001:2022 en GDPR" class="h-12 w-auto">
-        </span>
-      </div>
-    </div>
+<!-- De ISO-badge staat BÓVEN de footer en hoort er niet bij: de sitefooter van
+     youbo.io draagt hem niet, en Jana's campagneplan vraagt hem wél voor deze
+     pagina. Als los element overleeft hij de omwisseling hierboven ongeschonden.
+     Op #f6f8fa, zodat de witte formuliersectie en de witte footer niet in
+     elkaar overlopen. -->
+<div class="bg-surface py-10">
+  <div class="shell flex justify-center">
+    <img src="assets/img/iso-eng.svg" alt="ISO 27001:2022 en GDPR"
+         width="266" height="70" class="h-12 w-auto">
   </div>
+</div>
+
+<footer class="yb-footer">
+
+  <div class="footer-links">
+    <div class="footer-links-logo">
+      <a href="https://www.youbo.io/nl/merit/" data-cta="footer-logo"><img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28"></a>
+      <a class="footer-linkedin" href="https://www.linkedin.com/company/teal-partners/" target="_blank" rel="noopener" data-cta="footer-linkedin"><img src="assets/img/linkedin.svg" alt="" aria-hidden="true" width="14" height="14">LinkedIn</a>
+    </div>
+
+    <div class="footer-links-about">
+      <p>Over Youbo</p>
+      <a href="https://www.youbo.io/nl/cases/" data-cta="footer-cases">Referentie cases</a>
+      <a href="https://www.youbo.io/nl/nieuws/" data-cta="footer-nieuws">Nieuws</a>
+      <a href="https://www.youbo.io/nl/contact.html" data-cta="footer-contact">Contact</a>
+    </div>
+
+    <div class="footer-links-legal">
+      <p>Legal</p>
+      <a href="https://www.youbo.io/nl/legal/cookie-policy.html" data-cta="footer-cookiebeleid">Cookie policy</a>
+      <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener" data-cta="footer-privacy">Privacy policy</a>
+      <a href="https://www.youbo.io/nl/legal/responsible-disclosure-policy.html" data-cta="footer-rdp">Responsible disclosure policy</a>
+      <a href="https://www.youbo.io/nl/legal/disclaimer.html" data-cta="footer-disclaimer">Disclaimer</a>
+      <a href="https://www.youbo.io/nl/legal/gebruiksvoorwaarden.html" data-cta="footer-voorwaarden">Terms of use</a>
+    </div>
+
+  </div>
+
+  <!-- DE TAALSCHAKELAAR — drie namen, en geen van de twee andere is een link.
+       Hun component zet hier <a id="footer-url-en"> en <a id="footer-url-fr">
+       met een lege href, die footer.js vult uit data-url-en en data-url-fr.
+       Deze pagina bestaat alleen in het Nederlands, dus zou dat hier een lege
+       href opleveren: een link die de bezoeker terugzet op dezelfde pagina, of
+       na het vullen een 404. Daarom staan de drie namen er wél — zo ziet Jana
+       hoe de echte footer eruitziet en blijft de openstaande beslissing
+       zichtbaar — maar als <span>: geen href, niet in de tabvolgorde, niets om
+       op te klikken. Verbergen was het alternatief; dan was de enige
+       openstaande vraag van dit blok onzichtbaar geworden, en dat is precies
+       wat deze drafts nergens doen. -->
+  <div class="footer-languages">
+    <span class="inert-language">English</span>
+    <span class="active-language">Nederlands</span>
+    <span class="inert-language">Français</span>
+  </div>
+
+  <div class="footer-talen-todo">
+    <p class="todo">
+      <b>TODO — te bevestigen</b>: de footer van youbo.io draagt een schakelaar English ·
+      Nederlands · Français. Deze pagina bestaat alleen in het Nederlands, dus staan die
+      twee andere namen er zonder link. Zodra er een Engelse of Franse versie is, worden
+      het weer echte links — op youbo.io vult footer.js ze uit data-url-en en
+      data-url-fr — en dan hoort er ook hreflang in de head
+    </p>
+  </div>
+
+  <div class="footer-copyright">
+    <p>© <span id="currentYear">2026</span> Youbo by <a href="https://www.tealpartners.com/" target="_blank" rel="noopener" data-cta="footer-tealpartners">Teal Partners</a></p>
+    <p class="footer-entiteit">Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542</p>
+  </div>
+
 </footer>
 
 <!-- =========================================================================
