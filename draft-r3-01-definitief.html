@@ -5,19 +5,19 @@ SCHAKELING: de overgang tussen licht en donker is zelf de belangrijkste beweging
 TITELS: één kop per sectie, nooit twee. De negen minititels boven de koppen zijn weg — Jana keurde die expliciet af en de briefing verbiedt ze. "Bonus & Merit" naast het woordmerk is er in ronde 3 ook uit; wat overblijft zijn de vier stapnummers in de rondleiding, die iets anders zijn dan een titel.
 FOOTER EN TOESTEMMING: de footer is die van youbo.io, link voor link overgenomen uit `_raw/components/nl/footer.html` — de juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan.
 HERO: de tekst komt eerst — kop, intro, knop — en het portret van Nick staat eronder op telefoon en ernaast op desktop. Dat is Jana's uitdrukkelijke vraag in ronde 3; in ronde 2 stond de foto bovenaan. De cijferregel en het blokje "Bonus & Merit" zijn uit de hero weg, en de fotoplek is vervangen door de echte foto (assets/img/nick-portret.webp, 900×1140 — exact het formaat dat BRIEF-R3.md noemt).
-LOGOBALK: een doorlopende marquee in plaats van een statische rij, met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de oude statische rij. De tussenruimte is ruim en loopt per breekpunt op (56 → 260px), zodat er nooit een complete reeks tegelijk in beeld staat: gemeten raken er 3 van de 5 items de balk op 390px en 4 op 1440px, tegen 11 in ronde 3. Het tempo is gemeten 15,8 px/s op 390px en 15,9 op 1440px — de helft van ronde 3, en gelijk aan wat de briefing voorschreef; de duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo.
-CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px).
+LOGOBALK: ACHT echte logo's sinds 2026-10-08, geen tekstzetting meer. De vier SVG's die er stonden (SD Worx, DPG Media, Kaneka, Aertssen Group) blijven — die bestaan in twee polariteiten en een PNG daarvoor inruilen is achteruit — en Anchr, Crelan, Axi en Mourik komen uit de map die Bart De Nil doorstuurde. Protime zat in diezelfde map maar rolt niet mee: Protime stond bij ons als integratiepartner genoteerd en er is eerder gevraagd de vermelding weg te laten, dus staat daar een zichtbare vraag aan Bart in plaats van een logo. Verder ongewijzigd: een doorlopende marquee met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de statische rij. De tussenruimte mocht met acht items kleiner (44 → 170px per breekpunt), want de reeks is uit zichzelf al breder dan de balk; gemeten over 60 standen van één volle reeks raken er 2 tot 4 van de 8 items de balk op 390px en 4 tot 5 op 1440px, en op geen enkele stand staat een naam twee keer in beeld. Het tempo blijft gemeten 15,8 à 15,9 px/s; de duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo.
+CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px). Sinds Anchr op 2026-10-08 een echt logo kreeg, is het TODO-blokje op die kaart weg en is die leegte opnieuw gemeten op 340px, nu in Kaneka en Anchr; de volgorde ligt vast in het campagneplan, dus de knip blijft waar hij staat.
 RONDLEIDING: het meescrollende blok bestaat alleen nog naast elkaar, vanaf 1024px, met één leeslijn op precies de helft van de vensterhoogte. Op telefoon staat per stap eerst de tekst en dan het scherm — Jana's vraag — en dat kan niet samen met een kaart die bovenaan vastkleeft, want die staat altijd bóven de tekst. De knop Boek een demo midden in dat blok is op desktop weg, en het losse brede blok Merit cycle 2027 is geschrapt: het herhaalde de cijfers van stap 1 en stap 3.
 HET GROTE CIJFER: de aanpak van draft-r2-04 overgenomen. Één doorlopende zin op displayformaat met 19.000 en 21 inline in dezelfde maat, alleen in kleur onderscheiden. In ronde 2 stond 19.000 op een eigen regel van 40/56px en 21 in gewone koptekst; dat verschil was Jana's klacht. Het optellen van die twee getallen is er in deze ronde uit: gemeten stonden er tijdens die 900ms 107 verschillende volledige zinnen op de pagina die alle 107 feitelijk onjuist waren.
-QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. Alle vijf de quotes hebben sinds 2026-10-06 een echte foto: de klant leverde bart-verhoeven.webp, joris-valkenborgh.webp en evi-van-der-vliet.webp aan (alle drie 320×320, vierkant, hoofd gecentreerd), naast de bestaande pieter-jan.webp en mieke-catthoor.webp. De lege fotoplek en de fotoTODO zijn daarmee weg. Portretten blijven 56px, want marlies.png in het caseblok is maar 360×360 en breekt boven ±120px. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr heeft geen logobestand en staat er typografisch.
+QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. Alle vijf de quotes hebben sinds 2026-10-06 een echte foto: de klant leverde bart-verhoeven.webp, joris-valkenborgh.webp en evi-van-der-vliet.webp aan (alle drie 320×320, vierkant, hoofd gecentreerd), naast de bestaande pieter-jan.webp en mieke-catthoor.webp. De lege fotoplek en de fotoTODO zijn daarmee weg. Portretten blijven 56px, want marlies.png in het caseblok is maar 360×360 en breekt boven ±120px. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr draagt sinds 2026-10-08 ook hier een echt logo: één mint-groen bestand doet beide banden, gemeten 4,8:1 op de donkere band.
 FAQ: ongewijzigd. Jana vindt die goed en verfijnt de antwoorden zelf met Nick en Bart.
 FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, en die intro draagt sinds 2026-10-06 zijn volledige naam en titel: Nick Van Langendonck, reward expert. Het formulier komt eerst; eronder staat in de kleine zetting één rustig blok met de drie alternatieven — "Of boek rechtstreeks in Nicks agenda", zijn e-mailadres als mailto: en zijn telefoonnummer als tel:. Die gegevens stonden er in ronde 1, verdwenen in ronde 2 samen met de geschrapte zin "Liever meteen met iemand spreken" en zijn nu door Jana bevestigd — de gegevens komen dus terug, die zin niet. Bij de agenda staat nog geen knop, want die link bestaat nog niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef, met "1x kwartaal" en met de slotpunt — ronde 3 had daar ongemerkt "1× per kwartaal" van gemaakt.
 VASTE BAND: terug, en nu écht permanent in beeld — ook vóór de cookiekeuze. In ronde 3 wachtte hij op die keuze, waardoor Jana's punt 10 onzichtbaar was voor élke nieuwe bezoeker; hij zet zelf geen cookie, dus is er ook geen reden om te wachten. De cookiebalk staat nu als smalle strook bovenóp hem in één vaste omhulling. Eén actie: Boek een demo. Hij verdwijnt zodra #demo in beeld komt — IntersectionObserver, met 96px marge zodat hij weg is vóórdat hij de kop van die sectie raakt — en ruimte() meet de hoogte van de omhulling (dus de som van wat er staat, niet het maximum van de twee) en zet die als padding-bottom op body, zodat geen van beide over de laatste regels van de footer valt. Gemeten op 390px: 45 + 69 = 114px samen, 69px zodra de cookiebalk weg is. x-show zet display:none, dus een knop in een balk die er niet staat, staat ook niet in de tabvolgorde. Bij prefers-reduced-motion verschijnen ze beide zonder overgang.
 STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency én de hr-tools · quotes · faq · formulier · footer). EU Pay Transparency en de hr-tools waren twee banden en zijn er in ronde 3 één: Jana noemt ze qua belang gelijkwaardig en wil ze op desktop naast elkaar, en naast elkaar bestaat niet over twee banden heen.
-LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk volgt dezelfde regel: youbo_logo.svg op licht, youbo_logo_white.svg in de zwarte footer.
+LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten van de vier SVG's; de vier PNG-logo's van 2026-10-08 zijn volkleurenbestanden en hebben geen tweede versie nodig. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk volgt dezelfde regel: youbo_logo.svg op licht, youbo_logo_white.svg in de zwarte footer.
 AFWIJKING VAN DE TOKENS: geen enkele nieuwe kleurwaarde. De enige afgeleiden zijn witte transparanties (72%, 16%, 6%) voor secundaire tekst, randen en vlakken op de donkere banden — het systeem documenteert daar geen aparte token voor, en #547068 op zwart haalt de contrastdrempel niet.
-TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Op 2026-10-06 zijn er drie blokjes bij weggevallen, elk omdat de vraag een antwoord kreeg: Nicks achternaam en functietitel (Nick Van Langendonck, reward expert), de merklogo's bij de hr-tools (Jana: "Ik denk dat die icoontjes beter zijn, laten we het daar op houden") en de ontbrekende quotefoto's (alle drie aangeleverd). Open blijven: het landental van Aertssen — dat staat als X in het campagneplan van de klant zelf en ligt dus bij Bart of Nick — de klantnamen voor de logobalk, het logobestand van Anchr, de case-pdf's, de agendalink van Nick, de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
-NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (2) het logobestand van Anchr, in een donkere én een witte versie; (3) de vijf case-pdf's; (4) de lijst klantnamen die in de logobalk getoond mogen worden, met zowel een donkere als een witte logoversie; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
+TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Op 2026-10-06 zijn er drie blokjes bij weggevallen, elk omdat de vraag een antwoord kreeg: Nicks achternaam en functietitel (Nick Van Langendonck, reward expert), de merklogo's bij de hr-tools (Jana: "Ik denk dat die icoontjes beter zijn, laten we het daar op houden") en de ontbrekende quotefoto's (alle drie aangeleverd). Op 2026-10-08 vielen er twee bij weg, allebei doordat Bart De Nil de klantlogo's doorstuurde: het logobestand van Anchr op de casekaart en dezelfde vraag op de quoteband. Het blokje over de klantnamen in de logobalk is niet weg maar versmald tot één open vraag: hoort Protime daar thuis als klant. Open blijven: het landental van Aertssen — dat staat als X in het campagneplan van de klant zelf en ligt dus bij Bart of Nick — de vraag over Protime, de case-pdf's, de agendalink van Nick, de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
+NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (2) — vervallen op 2026-10-08: het logobestand van Anchr is er, en dat éne mint-groene bestand werkt op licht én op donker; (3) de vijf case-pdf's; (4) bevestiging dat Protime als klant in de logobalk mag — het logo zat in de map klantlogo's maar staat bij ons als integratiepartner, en is eerder op vraag van de klant weggehaald; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt een schakelaar Nederlands/English.
 OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 medewerkers in 2 landen, 7× sneller) staan zonder voorbehoud op de pagina — de eerste twee besliste Jana op 2026-10-05, de derde komt op 2026-10-06 letterlijk uit haar campagneplan, dat ook de kop "van 2 weken naar 2 dagen" en de 130 managers uit haar oudere concept niet kent. Wat nog open staat, staat zichtbaar als TODO-blokje bij de casekaart: alleen nog het landental van Aertssen Group.
 -->
 <html lang="nl-BE">
@@ -530,6 +530,12 @@ tailwind.config = {
      een gap naast de sprongvrije plek — precies de zichtbare schok die een
      naïeve marquee maakt.
 
+     LET OP — DE TWEE TABELLEN HIERONDER ZIJN DIE VAN VIJF ITEMS EN ZIJN
+     ACHTERHAALD. Sinds 2026-10-08 staan er acht logo's in de reeks en worden
+     --logo-tussen en --logo-duur overschreven in het blok «r3: echte
+     klantlogo's» onderaan deze stylesheet, met de opnieuw gemeten getallen.
+     De redenering hieronder klopt nog wel, en daarom staat ze er.
+
      NIET ALLEMAAL TEGELIJK IN BEELD — WAT DAARVOOR NODIG WAS.
      In ronde 3 stond hier padding-inline: 36px, en dan is één reeks 635px
      breed tegen een balk van 1440px: er stonden 2,2 complete reeksen in beeld,
@@ -757,7 +763,15 @@ tailwind.config = {
      je hem twee keer. Zet je de knip na kaart drie, dan staan beide TODO's
      in de bovenste rij en is de onderste rij vlak.
 
-     Gemeten op 1440px, als som van de leegte boven de vijf downloadlinks:
+     BIJGESTELD OP 2026-10-08. Anchr heeft nu een logobestand, dus is dat
+     TODO-blokje weg en draagt alleen Aertssen Group er nog één. Daarmee klopt
+     het getal hieronder niet meer: opnieuw gemeten op 1440px is de som van de
+     leegte 340px in plaats van 185px, en zit ze nu in Kaneka (155) en Anchr
+     (155) in plaats van in Kaneka (155) en DPG Media (31). De knip blijft
+     na kaart drie staan — de volgorde van de vijf kaarten ligt vast in Jana's
+     campagneplan en is dus geen vrije variabele meer, en met één TODO in
+     plaats van twee valt er in de bovenste rij niets meer te verplaatsen.
+     Het blok eronder is de redenering van toen, met de getallen van toen:
 
        drie smal + twee breed   185px  (Kaneka 155, DPG 31, de rest 0)
        twee breed + drie smal   366px  (Kaneka 87, SD Worx 124, DPG 155)
@@ -892,6 +906,98 @@ tailwind.config = {
   @media (max-width: 374px) {
     .alt-weg .alt-link { white-space: normal; overflow-wrap: anywhere; }
   }
+  /* === r3: echte klantlogo's === */
+
+  /* ---------------------------------------------------------------------
+     VIER ECHTE KLANTLOGO'S ERBIJ — ANCHR, CRELAN, AXI, MOURIK
+     ---------------------------------------------------------------------
+     Bart De Nil stuurde op 2026-10-08 negen PNG's door. Vier ervan zijn nieuw
+     en staan nu op de pagina; SD Worx, DPG Media, Kaneka en Aertssen Group
+     houden hun SVG's, want die bestaan al in twee polariteiten en een PNG is
+     daar een stap terug. Protime blijft eruit tot Bart bevestigt dat het een
+     klant is en geen integratiepartner.
+
+     WAT ER MET DE BESTANDEN GEBEURD IS. Axi en Mourik kwamen aan als een
+     ONDOORZICHTIG WIT VLAK met het logo erin — op #f6f8fa zie je dan een
+     witte rechthoek om het logo heen staan. Die is weggehaald, inclusief de
+     binnenvlakken die bij het ontwerp horen (het oog van de a in «axi», de
+     trapeziumuitsparing in het merk van Mourik): die zijn nu doorzichtig, dus
+     is dat de bandkleur en niet wit. Gecontroleerd door ze op exact #f6f8fa
+     te renderen, niet door de conversie te geloven. Mourik ging van 492 KB
+     naar 9 KB, de vier samen wegen 24,8 KB.
+
+     OPTISCHE MAATVOERING, GEEN PIXELHOOGTE. Acht logo's op dezelfde CSS-hoogte
+     lezen niet als acht even grote logo's: een woordmerk zonder stok of staart
+     (anchr, axi) oogt groter dan een merk met een vorm erboven (Mourik) of een
+     teken naast het woord (Crelan, Aertssen). Daarom heeft elk logo zijn eigen
+     hoogte, in de browser tegen elkaar afgewogen in plaats van gerekend:
+
+       Aertssen Group  32px   vorm + woord naast elkaar
+       Mourik          26px   vorm half boven het woord
+       Crelan          26px   teken links, woord rechts, teken loopt hoger
+       SD Worx         24px   woordmerk met stokken
+       DPG Media       24px   vier vormen + woord
+       Anchr           21px   woordmerk, vrijwel alleen x-hoogte plus de h
+       Axi             20px   woordmerk, zeer vet en gesloten
+       Kaneka          20px   woordmerk, breed en licht
+
+     De vuistregel erachter: hoe compacter en voller het silhouet, hoe lager
+     het mag staan om even groot te lijken.
+     --------------------------------------------------------------------- */
+  .logo-anchr  { height: 21px; }
+  .logo-crelan { height: 26px; }
+  .logo-axi    { height: 20px; }
+  .logo-mourik { height: 26px; }
+
+  /* De casekaart heeft een logoplek van 32px en logo's van 20 tot 32px; Anchr
+     zit daar net als in de balk aan de onderkant van die reeks. */
+  .logo-anchr-case  { height: 21px; }
+
+  /* Op de donkere quoteband staan de logo's een maat kleiner (16 tot 20px).
+     Hetzelfde bestand: mint op bijna zwart haalt daar ruim contrast, dus er
+     is geen witte uitsparing nodig. */
+  .logo-anchr-quote { height: 17px; }
+
+  /* ---------------------------------------------------------------------
+     DE MARQUEE OPNIEUW AFGESTELD VOOR ACHT LOGO'S
+     ---------------------------------------------------------------------
+     Twee dingen veranderen zodra de reeks van vijf naar acht gaat, en ze gaan
+     de tegenovergestelde kant op.
+
+     1 · DE TUSSENRUIMTE MAG KLEINER. Met vijf items moest de tussenruimte
+     extreem ruim zijn om te verhinderen dat een complete reeks tegelijk in
+     beeld stond; met acht is de reeks al breed genoeg uit zichzelf. De ruime
+     maat uit ronde 3 liet er op 1440px nog maar 3 van de 8 voorbijkomen, en
+     een balk met drie logo's en veel lucht leest niet als een klantenrij.
+     De acht logo's meten samen 520px, dus is één reeks 520 + 16 × de
+     tussenruimte — ruim boven de balkbreedte op elk breekpunt, en dus staat
+     er nooit een complete reeks in beeld en nooit een naam twee keer.
+
+     Gemeten door de animatie stil te zetten en het spoor in 60 standen over
+     één volle reeks te schuiven, en op elke stand te tellen welke items de
+     balk raken en of er een naam twee keer in beeld staat:
+
+       tussenruimte   één reeks   balk      items in beeld   naam dubbel
+       44px  (<768)     1224px    390px     2 tot 4 van 8    0 van 60 standen
+       96px  (≥768)     2056px    768px     3 tot 4 van 8    0 van 60 standen
+       130px (≥1280)    2600px   1440px     4 tot 5 van 8    0 van 60 standen
+       170px (≥1920)    3240px   1920px     4 tot 5 van 8    0 van 60 standen
+
+     2 · DE DUUR MOET LANGER. Het tempo is de reeksbreedte gedeeld door de
+     duur, dus geeft dezelfde duur bij een bredere reeks een hóger tempo:
+     met de duur van ronde 3 liep deze balk gemeten op 26 à 27 px/s, bijna het
+     dubbele van de 15,9 px/s die de briefing voorschrijft. Duur =
+     reeksbreedte ÷ 15,9, per breekpunt opnieuw.
+     --------------------------------------------------------------------- */
+  .logo-balk { --logo-tussen: 44px; --logo-duur: 77s; }
+  @media (min-width: 768px)  { .logo-balk { --logo-tussen: 96px;  --logo-duur: 130s; } }
+  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 130px; --logo-duur: 164s; } }
+  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 170px; --logo-duur: 204s; } }
+
+  /* De statische terugval bij prefers-reduced-motion houdt haar eigen, veel
+     kleinere tussenruimte; die regel staat hierboven met !important en blijft
+     dus gelden. Met acht namen wikkelt die rij over meer regels, en dat is
+     daar de bedoeling: leesbaarheid gaat er voor op «niet allemaal tegelijk». */
 </style>
 
 <script>document.documentElement.classList.add('js');</script>
@@ -950,14 +1056,24 @@ tailwind.config = {
 </header>
 
 <!-- =========================================================================
-     2 · LOGOBALK — LICHT (#f6f8fa). Licht, dus de -dark logobestanden.
+     2 · LOGOBALK — LICHT (#f6f8fa). ACHT echte logo's sinds 2026-10-08.
+     De vier -dark SVG's die er al stonden, plus Anchr, Crelan, Axi en Mourik
+     uit de map die Bart De Nil doorstuurde. Die vier zijn volkleurenbestanden
+     en hebben dus geen -dark variant nodig; alleen Anchr komt ook op een
+     donkere band voor, en mint leest daar even goed.
+
+     Van de negen bestanden in die map gebruiken we er vier. SD Worx, DPG
+     Media, Kaneka en Aertssen Group hebben we al als vector in twee
+     polariteiten — een PNG daarvoor inruilen is achteruit. Protime is er
+     bewust uit, met een zichtbare vraag aan Bart eronder.
+
      Een doorlopende marquee: de logo's rollen traag van rechts naar links
      voorbij, met zoveel ruimte ertussen dat er nooit een complete reeks
-     tegelijk in beeld staat — gemeten 4 van de 5 items op 1440px, 3 op 390px,
+     tegelijk in beeld staat — gemeten 4 van de 8 items op 1440px, 2 op 390px,
      en nooit een naam twee keer. Het spoor draagt drie keer dezelfde reeks en schuift naar
      -33,3333%, zodat de lus naadloos sluit; de twee duplicaten staan op
      aria-hidden, dus in de toegankelijkheidsboom staat de lijst precies één
-     keer. Het tempo is gemeten 15,8 à 15,9 px/s. Zie de toelichting in de
+     keer. Het tempo blijft ±15,9 px/s. Zie de toelichting in de
      stylesheet.
      ========================================================================= -->
 <section class="bg-surface border-y border-line band-pad" aria-labelledby="klanten-titel">
@@ -974,31 +1090,42 @@ tailwind.config = {
       <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
       <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
       <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
+      <li><img src="assets/img/anchr-logo.webp"  width="214" height="65" alt="Anchr"  class="logo-anchr  w-auto"></li>
+      <li><img src="assets/img/crelan-logo.webp" width="268" height="78" alt="Crelan" class="logo-crelan w-auto"></li>
+      <li><img src="assets/img/axi-logo.webp"    width="244" height="96" alt="Axi"    class="logo-axi    w-auto"></li>
+      <li><img src="assets/img/mourik-logo.webp" width="353" height="96" alt="Mourik" class="logo-mourik w-auto"></li>
     </ul>
     <ul class="logo-reeks" aria-hidden="true">
       <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
       <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
       <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
       <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
+      <li><img src="assets/img/anchr-logo.webp"  width="214" height="65" alt="Anchr"  class="logo-anchr  w-auto"></li>
+      <li><img src="assets/img/crelan-logo.webp" width="268" height="78" alt="Crelan" class="logo-crelan w-auto"></li>
+      <li><img src="assets/img/axi-logo.webp"    width="244" height="96" alt="Axi"    class="logo-axi    w-auto"></li>
+      <li><img src="assets/img/mourik-logo.webp" width="353" height="96" alt="Mourik" class="logo-mourik w-auto"></li>
     </ul>
     <ul class="logo-reeks" aria-hidden="true">
       <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
       <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
       <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
       <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><span class="text-h3 font-bold text-ink">Anchr</span></li>
+      <li><img src="assets/img/anchr-logo.webp"  width="214" height="65" alt="Anchr"  class="logo-anchr  w-auto"></li>
+      <li><img src="assets/img/crelan-logo.webp" width="268" height="78" alt="Crelan" class="logo-crelan w-auto"></li>
+      <li><img src="assets/img/axi-logo.webp"    width="244" height="96" alt="Axi"    class="logo-axi    w-auto"></li>
+      <li><img src="assets/img/mourik-logo.webp" width="353" height="96" alt="Mourik" class="logo-mourik w-auto"></li>
     </ul>
     </div>
   </div>
 
   <div class="shell">
     <p class="todo mt-8 mx-auto max-w-prose text-left">
-      <b>TODO — te bevestigen</b>: de lijst klantnamen die in deze balk getoond mogen worden. Jana's
-      Dropbox-map met de overige logo's is niet machinaal te downloaden, dus er rollen hier voorlopig
-      vier echte logo's en één naam voorbij. Van elke nieuwe naam hebben we twee logoversies nodig: een
-      donkere voor de lichte banden en een witte voor de donkere
+      <b>TODO — vraag aan Bart</b>: in de map klantlogo’s zat ook Protime. Hoort Protime hier
+      thuis als klant? Tot nu stond Protime bij ons als integratiepartner genoteerd, en eerder is
+      gevraagd om de vermelding van Protime weg te laten. Het kan allebei kloppen — partner én
+      klant — maar zolang dat niet bevestigd is, rolt Protime hier niet mee: op een balk die zegt
+      “deze bedrijven vertrouwen Youbo” mag geen naam staan die geen klant is. Eén woord van Bart
+      en het logo staat er binnen de minuut bij
     </p>
   </div>
 </section>
@@ -1262,14 +1389,15 @@ tailwind.config = {
         </article>
       </li>
 
-      <!-- Anchr heeft geen logobestand, in geen enkele versie. Dus geen grijze
-           plaatshouder en niets verzonnen: de naam staat hier typografisch, in
-           dezelfde 32px-hoge logoplek als de logo's ernaast en in dezelfde
-           zetting als in de logobalk bovenaan, met een zichtbare TODO erbij. -->
+      <!-- Anchr heeft sinds 2026-10-08 een echt logobestand: Bart De Nil stuurde
+           negen klantlogo's door. Het is één mint-groene letterzetting zonder
+           aparte donkere of witte versie, en dat hoeft ook niet — mint haalt op
+           #f6f8fa én op de donkere band ruim contrast. De typografische
+           plaatsvervanger en de TODO erbij zijn dus weg. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo text-h3 font-bold text-ink">Anchr</span>
+            <span class="case-logo"><img src="assets/img/anchr-logo.webp" width="214" height="65" alt="Anchr" class="logo-anchr-case w-auto"></span>
             <p class="case-voordeel mt-6 text-h2 font-bold text-ink">Meerdere werkdagen bespaard</p>
             <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">300 medewerkers</span></li>
@@ -1278,7 +1406,6 @@ tailwind.config = {
             <p class="mt-4 text-caption text-ink-soft">Softwaregroep</p>
           </div>
           <div class="case-slot">
-            <span class="todo case-todo"><b>TODO — nodig van klant</b>: het logobestand van Anchr, in een donkere en een witte versie</span>
             <div class="case-foot">
               <a href="#cases-open" class="caselink" data-cta="case-pdf-anchr">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2032,11 +2159,12 @@ tailwind.config = {
         </figure>
       </li>
 
-      <!-- Evi Van der Vliet — foto aangeleverd op 2026-10-06; Anchr heeft nog
-           steeds geen logobestand en staat hier dus typografisch -->
+      <!-- Evi Van der Vliet — foto aangeleverd op 2026-10-06, logo op 2026-10-08.
+           Hetzelfde mint-groene bestand als op licht: op deze band staat het op
+           bijna zwart en dat is precies waar mint het best leest. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <span class="h-5 flex items-center text-h3 font-bold on-dark">Anchr</span>
+          <img src="assets/img/anchr-logo.webp" width="214" height="65" alt="Anchr" class="logo-anchr-quote w-auto self-start">
           <blockquote class="m-0 mt-6 text-h3 on-dark">
             “Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien
             we de jaarkost en het totale loonpakket van de werknemer.”
@@ -2072,16 +2200,10 @@ tailwind.config = {
       </template>
     </div>
 
-    <!-- De fotoTODO is weg: de klant leverde op 2026-10-06 de portretten van
-         Bart Verhoeven, Joris Valkenborgh en Evi Van der Vliet aan, dus hebben
-         alle vijf de quotes nu een echte foto en is "half met, half zonder"
-         geen open punt meer. Wat hier wél open blijft is het logobestand van
-         Anchr; dat is dezelfde ontbrekende asset als op de casekaart, maar hier
-         is een WITTE uitsparing nodig en daar een donkere. -->
-    <p class="todo-inv mt-8 max-w-prose" data-reveal>
-      <b>TODO — nodig van klant</b>: Anchr heeft nog geen logobestand, dus staat die naam hier in
-      letters in plaats van als logo. Op deze donkere band is een witte uitsparing nodig
-    </p>
+    <!-- Geen TODO meer in dit blok. De fotoTODO verviel op 2026-10-06 met de drie
+         ontbrekende portretten; de logoTODO verviel op 2026-10-08 met het logo van
+         Anchr. Dat ene bestand doet beide polariteiten: mint op bijna zwart is
+         hier zelfs leesbaarder dan op de lichte band. -->
   </div>
 </section>
 
