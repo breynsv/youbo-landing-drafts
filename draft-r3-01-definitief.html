@@ -2665,11 +2665,13 @@ tailwind.config = {
        werkt. Geen enkele is bedacht of afgeleid: alle negen komen uit het
        component zelf. «Nieuws» stond in de versie van augustus nog in
        commentaar en is nu een echte link; Français is er nieuw bij.
-     · HET WOORDMERK WIJST NAAR /nl/merit/, NIET NAAR /nl/. Hun component linkt
-       sinds kort naar /nl/, en wij kunnen offline niet bewijzen dat dat adres
-       bestaat: check-drafts.mjs leidt de bestaande adressen af uit de
-       opgeslagen pagina's in _raw/ en kent /nl/ niet. Hun eigen navigatie
-       noemt /nl/merit/ «Home», dus wijst het woordmerk daarheen.
+     · HET WOORDMERK WIJST NAAR /nl/, zoals hun eigen component. Dit stond tot
+       2026-10-08 op /nl/merit/, omdat /nl/ niet in de opgeslagen pagina's in
+       _raw/ staat en check-drafts.mjs de bestaande adressen daaruit afleidt.
+       Beide adressen zijn nu live getest: /nl/ geeft 200 zonder omleiding,
+       /nl/merit/ geeft 200 maar leidt door naar /nl/. /nl/ is dus de echte
+       homepage en /nl/merit/ de omweg. /nl/ staat nu met die reden in de
+       uitzonderingslijst van check-drafts.mjs.
      · ALT-TEKST, WIDTH EN HEIGHT op beide afbeeldingen. In hun component
        dragen die twee afbeeldingen geen alt, waardoor een schermlezer de
        bestandsnaam van het logo voorleest. Het LinkedIn-icoontje krijgt
@@ -2722,7 +2724,7 @@ tailwind.config = {
 
   <div class="footer-links">
     <div class="footer-links-logo">
-      <a href="https://www.youbo.io/nl/merit/" data-cta="footer-logo"><img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28"></a>
+      <a href="https://www.youbo.io/nl/" data-cta="footer-logo"><img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28"></a>
       <a class="footer-linkedin" href="https://www.linkedin.com/company/teal-partners/" target="_blank" rel="noopener" data-cta="footer-linkedin"><img src="assets/img/linkedin.svg" alt="" aria-hidden="true" width="14" height="14">LinkedIn</a>
     </div>
 

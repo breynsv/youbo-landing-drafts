@@ -131,10 +131,17 @@ function youboPath(url, rooted = false) {
 
 const KNOWN_URLS = knownYouboUrls(join(here, '_raw'));
 
-// Two URLs _raw/ cannot know about, each for a written reason.
+// Three URLs _raw/ cannot know about, each for a written reason. This list stays
+// explicit and per-URL on purpose: the rule it holds open is that every youbo.io path
+// must be proven, by _raw/ or by a line here. Blessing youbo.io as a host instead would
+// re-admit the invented /nl/legal/… URLs this check exists to catch.
 //   /demo        — this landing page itself; FACTS.md puts it there and it is not live yet.
 //   /nl/demo     — the same page under the NL prefix, if we end up mounting it there.
-for (const extra of ['/demo', '/nl/demo']) KNOWN_URLS.add(extra);
+//   /nl/         — the NL homepage, which their own footer component links the wordmark
+//                  to. No page saved in _raw/ declares it, so it cannot be derived.
+//                  Verified live 2026-10-08: HTTP 200, no redirect. /nl/merit/ answers
+//                  200 too but redirects here, so /nl/ is the canonical homepage.
+for (const extra of ['/demo', '/nl/demo', '/nl/']) KNOWN_URLS.add(extra);
 
 // Classes that render their text in capitals, read out of the draft's own stylesheet:
 // either `text-transform:uppercase` or Tailwind's `uppercase` utility inside @apply.
