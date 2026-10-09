@@ -1,0 +1,151 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.233.0/schema/sveltia-cms.json
+#
+# Sveltia CMS — de beheerkant van content/faq.yml.
+#
+# ──────────────────────────────────────────────────────────────────────────────
+# LEES DIT VOOR JE ER IETS AAN VERANDERT
+#
+# Dit bestand staat PUBLIEK online (GitHub Pages serveert deze repo
+# rechtstreeks, en Cloudflare Pages ook). Er hoort dus geen geheim in. Het
+# enige geheim van de aanmelding — de client secret van de GitHub-app — leeft
+# in de omgevingsvariabelen van de Worker, niet hier. Sveltia zegt het zelf
+# ook: "The config is publicly accessible, so don't put secrets in it."
+#
+# De velden zijn met opzet precies twee: vraag en antwoord, allebei PLATTE
+# TEKST. Geen markdown-veld, geen rich-text-veld. Een rich-text-editor schrijft
+# vroeg of laat een "<" in de inhoud, en build-faq.mjs weigert een faq.yml met
+# een "<" erin — dat is geen bug maar de beveiliging: tekst uit een invulveld
+# die als HTML op de pagina belandt, is een lek. Vandaar ook de `pattern` op
+# beide velden: dan zegt het CMS het meteen, in plaats van dat de bouw een uur
+# later faalt.
+#
+# Het CMS herschrijft content/faq.yml bij elke opslag met een echte
+# YAML-schrijver. Commentaar dat in dat bestand stond, is daarmee weg. Daarom
+# staat de uitleg nu op drie plekken die het wél overleven: `hint` (wat Jana in
+# de interface ziet), `comment` hieronder (die regels schrijft het CMS zelf
+# terug boven `items:`) en content/LEESMIJ.txt (de achtergrond, die geen CMS
+# aanraakt). Zie SVELTIA.md.
+# ──────────────────────────────────────────────────────────────────────────────
+
+backend:
+  name: github
+  repo: breynsv/youbo-landing-drafts
+  branch: main
+
+  # VUL IN — de URL van de Worker "sveltia-cms-auth" (zie SVELTIA.md, stap 1-3).
+  #
+  # Dit is geen keuze maar de enige weg: Sveltia kent voor GitHub exact twee
+  # aanmeldwegen, `oauth` en `token`. Aanmelden met een persoonlijk jeton is
+  # niets voor een marketeer, en de PKCE-weg (waarmee een client secret
+  # helemaal niet meer nodig zou zijn) staat in de broncode van Sveltia
+  # 0.233.0 als "not yet supported due to GitHub's limitations". Dus: een eigen
+  # OAuth-tussenstation, en Cloudflare Workers is daarvoor de kortste weg —
+  # dezelfde Cloudflare-account die deze site al publiceert.
+  #
+  # Zolang hier de plaatshouder staat, werkt de knop "Aanmelden met GitHub"
+  # niet. De knop "met een jeton" werkt wel, en daarmee kun je alles testen.
+  base_url: https://youbo-cms-auth.VUL-IN.workers.dev
+
+  # Beide wegen staan open tot de Worker er is. Daarna mag `token` eruit, zodat
+  # er maar één manier van aanmelden bestaat: auth_methods: [oauth]
+  auth_methods: [oauth, token]
+
+  # Deze repo is publiek, en dan is "public_repo" genoeg om erin te schrijven.
+  # Standaard vraagt Sveltia "repo", en dat geeft de aanmelding schrijfrecht op
+  # élke repository waar die persoon bij kan — ook de privé-repo's van een
+  # klant. Wat hier staat, vraagt GitHub dus om het kleinste recht dat werkt.
+  # Sveltia voegt er zelf ",user" aan toe om de naam van de aangemelde persoon
+  # te kunnen tonen. Wordt deze repo ooit privé, dan moet hier "repo" staan.
+  auth_scope: public_repo
+
+  # Nederlands in de geschiedenis van de repo, en zichtbaar waar het over gaat.
+  commit_messages:
+    create: 'Inhoud toegevoegd via /beheer/: {{collection}} ({{path}})'
+    update: 'Inhoud bijgewerkt via /beheer/: {{collection}} ({{path}})'
+    delete: 'Inhoud verwijderd via /beheer/: {{collection}} ({{path}})'
+    uploadMedia: 'Beeld toegevoegd via /beheer/: {{path}}'
+    deleteMedia: 'Beeld verwijderd via /beheer/: {{path}}'
+
+# Waar "de site bekijken" naar wijst. Bewust de pages.dev-site en niet GitHub
+# Pages: alleen daar draait het build command dat de FAQ uit dit bestand in de
+# pagina zet. Zie SVELTIA.md, "wat er na een opslag gebeurt".
+site_url: https://youbo-drafts.pages.dev
+display_url: https://youbo-drafts.pages.dev/draft-r3-01-definitief.html
+app_title: Youbo — beheer
+
+# Sveltia eist een media_folder, ook als geen enkel veld een beeld is (zonder
+# die sleutel weigert het de configuratie). Hij wijst daarom naar een eigen,
+# lege map en niet naar assets/img: dan staat de beeldbibliotheek van de echte
+# site niet open voor een vergissing.
+media_folder: content/media
+public_folder: /content/media
+
+collections:
+  - name: faq
+    label: Veelgestelde vragen
+    icon: quiz
+    files:
+      - name: faq
+        label: Veelgestelde vragen
+        file: content/faq.yml
+        description: >-
+          De vragen onderaan de landingspagina. Opslaan zet de tekst meteen in
+          de repo; een paar minuten later staat ze online.
+        # Geen voorbeeldpaneel: dat zou de losse velden tonen en niet de pagina,
+        # en dat leest als een belofte die het niet is. Wie het echt wil zien,
+        # gebruikt de knop naar de pagina zelf.
+        editor:
+          preview: false
+        fields:
+          - name: items
+            label: Vragen
+            label_singular: Vraag
+            widget: list
+            min: 1
+            summary: '{{fields.vraag}}'
+            collapsed: true
+            hint: >-
+              Sleep om de volgorde te veranderen — de volgorde hier is de
+              volgorde op de pagina. Verwijder je een vraag, dan verdwijnt ze
+              van de pagina.
+            # Deze regels schrijft Sveltia terug boven `items:` in het bestand,
+            # bij elke opslag. Het is de enige uitleg die een herschrijving
+            # overleeft, dus staat hier het nodige en niet alles.
+            comment: >-
+              Deze vragen worden beheerd op /beheer/ en horen bij
+              draft-r3-01-definitief.html.\nDit bestand is de bron:
+              build-faq.mjs zet de tekst bij de bouw in die pagina.\nVerander
+              dus hier de tekst en niet in de HTML.\nGEEN HTML in de tekst — de
+              bouw weigert een bestand met een < erin, met opzet.\nEen alinea
+              die met "TODO — " begint is een nota aan onszelf: ze krijgt op de
+              pagina het gele kader en houdt die vraag uit de
+              FAQ-structuurdata voor Google.\nDe volgorde hier is de volgorde
+              op de pagina.\nMeer uitleg: content/LEESMIJ.txt. Het CMS
+              herschrijft dit bestand bij elke opslag en bewaart geen ander
+              commentaar dan deze regels.
+            fields:
+              - name: vraag
+                label: Vraag
+                widget: string
+                required: true
+                hint: >-
+                  Eén regel, zoals een bezoeker ze zelf zou stellen. Geen
+                  opmaak.
+                pattern:
+                  - '^[^<]*$'
+                  - 'Het teken < mag hier niet staan: de pagina bouwt dan niet.'
+              - name: antwoord
+                label: Antwoord
+                widget: text
+                required: true
+                use_emoji_autocomplete: false
+                hint: >-
+                  Gewone tekst, geen opmaak en geen HTML — geen **vet**, geen
+                  links. **Een nieuwe regel begint een nieuwe alinea** op de
+                  pagina.\nStaat het antwoord nog niet vast? Begin de regel met
+                  `TODO — `: die alinea komt dan in een geel kader te staan en
+                  de vraag blijft uit de zoekresultaten van Google tot het
+                  echte antwoord er is.
+                pattern:
+                  - '^[^<]*$'
+                  - 'Het teken < mag hier niet staan: de pagina bouwt dan niet.'

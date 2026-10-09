@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Youbo — beheer</title>
+<!--
+  De beheerpagina: Sveltia CMS, dat content/faq.yml bewerkt en bij opslaan naar
+  GitHub commit. De instellingen staan in config.yml, hiernaast; Sveltia zoekt
+  dat bestand vanzelf naast deze index.html.
+
+  WAAROM DE VERSIE VASTSTAAT
+
+  Sveltia staat nog voor 1.0 en heeft 724 versies uitgebracht; de CDN-URL zonder
+  versienummer haalt elke keer de nieuwste op. Dat is prettig tot de dag dat een
+  nieuwe versie iets anders doet met het YAML-bestand of met een veld — en dan
+  verandert de beheerpagina van gedrag zonder dat hier iemand iets gewijzigd
+  heeft, terwijl build-faq.mjs en de pagina blijven wat ze waren. Daarom hangt
+  hier een vast nummer, en hoort een nieuwe versie een bewuste handeling te
+  zijn:
+
+    1. verander het nummer hieronder (twee keer: script en tekstbestanden);
+    2. draai `node toets-faq-rondrit.mjs` — die toets bootst het schrijfgedrag
+       van Sveltia na en bewijst dat build-faq.mjs het resultaat nog juist
+       leest;
+    3. open deze pagina en meld je één keer aan.
+
+  Zonder stap 2 is een versiesprong een gok op de inhoud van de klant.
+
+  WAAROM HIER EEN TAALREGEL STAAT
+
+  Sveltia kent geen instelling voor de taal van de interface: het kiest de taal
+  van de browser, en wat de gebruiker daarna zelf in de voorkeuren kiest, blijft
+  in zijn localStorage staan. Nederlands bestaat (locales/nl.yaml in de bron),
+  maar een browser die in het Engels staat krijgt Engels. Het regeltje hieronder
+  zet de taalvoorkeur één keer op "nl" als er nog geen voorkeuren zijn — dus
+  alleen bij het eerste bezoek, en het overschrijft nooit een keuze die iemand
+  zelf gemaakt heeft.
+
+  De Nederlandse teksten van de interface komen van het CDN (dezelfde versie als
+  het script hieronder). Zonder internet valt Sveltia terug op Engels; de
+  labels, de hints en de knoppen die wij zelf schrijven, staan in config.yml en
+  zijn altijd Nederlands.
+-->
+</head>
+<body>
+<noscript>
+  <p style="font:16px/1.5 system-ui,sans-serif;max-width:34em;margin:4rem auto;padding:0 1rem">
+    Deze beheerpagina werkt met JavaScript. Staat dat uit, dan is er niets te
+    bewerken. Zet het aan en herlaad de pagina, of vraag het aan Sven.
+  </p>
+</noscript>
+<script>
+  // Zie de nota in <head>: één keer Nederlands voorstellen, nooit een eigen
+  // keuze overschrijven. In een privévenster of met geblokkeerde opslag kan
+  // localStorage gooien — dan kiest de browsertaal, en dat is geen fout.
+  try {
+    var SLEUTEL = 'sveltia-cms.prefs';
+    if (!window.localStorage.getItem(SLEUTEL)) {
+      window.localStorage.setItem(SLEUTEL, JSON.stringify({ locale: 'nl' }));
+    }
+  } catch (e) { /* geen voorkeuren te zetten; de interface kiest zelf */ }
+</script>
+<script src="https://unpkg.com/@sveltia/cms@0.233.0/dist/sveltia-cms.js"></script>
+</body>
+</html>

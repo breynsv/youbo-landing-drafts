@@ -1,0 +1,82 @@
+DE INHOUD VAN DE LANDINGSPAGINA — WAT HIER STAAT EN WAAROM
+
+Dit bestand staat er omdat het de uitleg is die faq.yml zelf niet kan dragen.
+
+Tot 2026-10-09 stond die uitleg bovenaan content/faq.yml, als commentaar. Sinds
+de FAQ ook via de beheerpagina (/beheer/, Sveltia CMS) bewerkt wordt, kan dat
+niet meer: het CMS leest het YAML-bestand in, zet het om naar velden in een
+formulier, en schrijft bij elke opslag een volledig nieuw bestand terug. Een
+YAML-schrijver kent geen commentaar van het bestand dat er stond — het is bij de
+eerste opslag weg, zonder waarschuwing en zonder dat iemand het merkt. Die
+uitleg hoort dus hier, in een bestand dat geen CMS aanraakt.
+
+De uitleg staat daardoor op drie plekken, elk met een eigen reden:
+
+  1. beheer/config.yml, als `hint` bij elk veld — dat is wat Jana in de
+     interface onder het invulvak ziet, op het moment dat ze typt. Daar hoort
+     het kort.
+  2. beheer/config.yml, als `comment` bij het veld `items` — die regels schrijft
+     Sveltia zélf terug boven `items:` in faq.yml, bij elke opslag. Het is de
+     enige uitleg die in het bestand blijft staan. Daarom staat daar het
+     noodzakelijke en niet alles.
+  3. dit bestand, voor de achtergrond en de redenen.
+
+
+DE VORM VAN content/faq.yml
+
+  items:
+    - vraag: Eén regel, de vraag zoals de bezoeker ze stelt
+      antwoord: Het antwoord in gewone tekst.
+
+Meer is het niet, en meer mag het niet worden: build-faq.mjs weigert elk ander
+veld dan `vraag` en `antwoord`. Een veld dat het bouwscript negeert, is een veld
+dat iemand invult zonder dat het ergens terechtkomt — dat is erger dan geen
+veld.
+
+Een antwoord met meer dan één alinea ziet er zo uit, en dat is ook de vorm die
+het CMS schrijft:
+
+  - vraag: Hoeveel kost het?
+    antwoord: |-
+      De eerste alinea.
+      De tweede alinea.
+
+In een `|-`-blok is elke regelafbreking een alineagrens. In de beheerpagina komt
+dat overeen met wat je ziet: een nieuwe regel in het invulvak is een nieuwe
+alinea op de pagina. Met de hand mag je ook de gevouwen vorm (`antwoord: >`)
+gebruiken, waar een witregel de alineagrens is; build-faq.mjs leest beide. Wat
+je ook typt, na de eerste opslag via /beheer/ staat het er in de `|-`-vorm.
+
+
+DRIE DINGEN OM TE WETEN
+
+  1. GEEN HTML. Geen <b>, geen <br>, geen <a href>. Het bouwscript weigert een
+     bestand met een < erin, en dat is met opzet: tekst uit een invulveld die
+     als HTML op de pagina belandt, is een lek. De beheerpagina zegt het nu al
+     bij het typen, zodat de bouw niet een uur later faalt.
+  2. DE VOLGORDE HIER IS DE VOLGORDE OP DE PAGINA. Verplaatsen is slepen in de
+     beheerpagina, of knippen en plakken in dit bestand; er zijn geen nummers om
+     bij te houden.
+  3. EEN ALINEA DIE MET "TODO — " BEGINT is een nota aan onszelf en geen
+     antwoord. Ze krijgt op de pagina het gele TODO-kader, en de vraag valt dan
+     uit de FAQ-structuurdata voor Google — want een vraag waarvan het antwoord
+     nog openstaat, mag je niet als antwoord publiceren. Vervang de TODO-alinea
+     door het echte antwoord en de vraag staat er weer in.
+
+
+WAT ER NA EEN OPSLAG GEBEURT
+
+Opslaan in /beheer/ maakt één commit op `main`, met alleen dit bestand erin.
+Cloudflare Pages bouwt daarna opnieuw (`node stamp-version.mjs`, dat
+build-faq.mjs aanroept) en zet de nieuwe tekst in draft-r3-01-definitief.html.
+Dus: op https://youbo-drafts.pages.dev staat de wijziging na een paar minuten.
+
+GitHub Pages serveert dezelfde repo zónder bouwstap en blijft de FAQ tonen die
+in de HTML gecommit staat. Tot iemand `node build-faq.mjs` draait en het
+resultaat commit, lopen die twee uiteen; `node build-faq.mjs --check` zegt dat.
+Zie SVELTIA.md voor wat daaraan te doen is.
+
+De analytics-labels van de FAQ-knoppen (data-cta) staan niet in dit bestand maar
+in build-faq.mjs, met de vraag als sleutel. Herschrijf je een vraag, dan valt
+haar label terug op een naam uit de vraag zelf en zegt het bouwscript dat. Wie
+een label vast wil houden, past die lijst in build-faq.mjs aan.

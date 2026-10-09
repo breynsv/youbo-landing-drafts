@@ -1,1 +1,1 @@
-{"name":"youbo-drafts","private":true,"type":"module","devDependencies":{"playwright":"^1.62.1"}}
+{"name":"youbo-drafts","private":true,"type":"module","devDependencies":{"playwright":"^1.62.1","yaml":"^2.9.1"}}
