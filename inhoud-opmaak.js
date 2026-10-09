@@ -262,9 +262,15 @@ export function vindSlots(html) {
 
    Dus wordt het afgeleid: dit zijn simpelweg de rechtstreekse kinderen van
    <body>, en een blok hoort bij een bestand wanneer er een veld van dat
-   bestand in staat. De pagina zegt het dus zelf, net als bij de slots. */
+   bestand in staat. De pagina zegt het dus zelf, net als bij de slots.
 
-const GEEN_BLOK = new Set(['script', 'style', 'noscript', 'template']);
+   De <script>-blokken komen MEE in deze lijst, en dat is geen slordigheid. Het
+   voorbeeldvenster heeft ze nodig: zonder de scripts van de pagina blijft elk
+   blok met data-reveal onzichtbaar, gooien x-data="vasteband()" en
+   $store.toestemming een fout, en staat de quotecarrousel stil. Een voorbeeld
+   dat de helft van de blokken niet toont, of ze anders toont, is precies het
+   voorbeeld dat niet mag bestaan. Ze bevatten geen enkel slot, dus storen ze
+   blokkenVoorSleutels() niet. */
 
 export function vindBlokken(html) {
   const lichaam = /<body[^>]*>/i.exec(html);
@@ -292,7 +298,7 @@ export function vindBlokken(html) {
     const sluit = eindeElement(html, tag, tagEinde + 1);
     if (sluit === -1) stop(`geen </${tag}> gevonden voor een blok in <body>`);
     const blokEinde = html.indexOf('>', sluit) + 1;
-    if (!GEEN_BLOK.has(tag)) blokken.push({ tag, start: open, einde: blokEinde });
+    blokken.push({ tag, start: open, einde: blokEinde });
     i = blokEinde;
   }
   if (!blokken.length) stop('geen enkel blok in <body> gevonden');
@@ -310,8 +316,12 @@ export function blokkenVoorSleutels(html, slots, hoort) {
     if (blok === -1) buiten.push(slot.waarde);
     else raak.add(blok);
   }
+  // De volgnummers komen mee. Het voorbeeldvenster moet weten of er op de site
+  // nog een blok TUSSEN twee gekozen blokken staat, en dat is niet af te leiden
+  // uit de posities in het bestand: tussen twee blokken staat bijna altijd een
+  // commentaarblok, en dat is op de site niets.
   return {
-    blokken: [...raak].sort((a, b) => a - b).map((k) => blokken[k]),
+    blokken: [...raak].sort((a, b) => a - b).map((k) => ({ ...blokken[k], nummer: k })),
     buiten,
     totaal: blokken.length,
   };
@@ -353,20 +363,32 @@ export function tekstVoorSlot(slot, waarde) {
   return tekstHtml(waarde);
 }
 
-export function kenmerkVoorSlot(slot, velden) {
+/**
+ * De waarde die in dit attribuut hoort, zoals de browser hem straks leest: dus
+ * ZONDER de ontsnapping. Het voorbeeldvenster zet die met setAttribute() en
+ * heeft de ontsnapping niet nodig; de bouw schrijft hem in een HTML-bestand en
+ * wél. Dat is dezelfde waarde langs twee wegen, want een browser leest
+ * &amp;quot; in een attribuut terug als een aanhalingsteken. Het oplossen van
+ * de sleutel — en de vaste vorm met {sleutel} erin — gebeurt hier, één keer.
+ */
+export function kenmerkWaardeVoorSlot(slot, velden) {
   if (!slot.waarde.includes('{')) {
     const waarde = velden.get(slot.waarde);
     if (Array.isArray(waarde)) {
       stop(`"${slot.waarde}" is een opsomming en kan niet in het attribuut ` +
            `${slot.kenmerk} van een <${slot.tag}> staan`);
     }
-    return kenmerkHtml(waarde);
+    return waarde;
   }
-  return kenmerkHtml(slot.waarde.replace(SJABLOON, (_, s) => {
+  return slot.waarde.replace(SJABLOON, (_, s) => {
     const waarde = velden.get(s);
     if (Array.isArray(waarde)) stop(`"${s}" is een opsomming en past niet in een vaste vorm`);
     return waarde;
-  }));
+  });
+}
+
+export function kenmerkVoorSlot(slot, velden) {
+  return kenmerkHtml(kenmerkWaardeVoorSlot(slot, velden));
 }
 
 /**
