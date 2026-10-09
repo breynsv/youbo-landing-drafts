@@ -33,3 +33,6 @@ feedback-fotos/
 
 # Lokale wrangler-cache (D1-bestand, KV-bestand) van `wrangler pages dev`.
 .wrangler/
+
+# De samengestelde publicatiemap. Gemaakt door publiceer.mjs; nooit met de hand.
+publicatie-uit/
