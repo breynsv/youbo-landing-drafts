@@ -1,6 +1,29 @@
 DE INHOUD VAN DE LANDINGSPAGINA — WAT HIER STAAT EN WAAROM
 
-Dit bestand staat er omdat het de uitleg is die faq.yml zelf niet kan dragen.
+In deze map staan VIER bestanden met tekst van draft-r3-01-definitief.html:
+
+  faq.yml       de zes vragen en antwoorden            (sinds 2026-10-09)
+  pagina.yml    de koppen en de lopende tekst van de
+                negen andere blokken, en de twee
+                grote cijfers                          (sinds 2026-10-10)
+  klanten.yml   de vijf cases en de vijf quotes        (sinds 2026-10-10)
+  contact.yml   het formulier, de contactgegevens van
+                Nick, de twee vaste balken onderaan
+                en de voettekst                        (sinds 2026-10-10)
+
+Samen zijn ze de hele zichtbare tekst van die pagina. Wat er NIET in staat is de
+vorm: de opmaak, de volgorde van de secties, de negen klantlogo's, de vier
+nagetekende productschermen en de cijfers die daarin staan. Dat is ontwerp, en
+een veld waarmee de marketeer de pagina kan breken hoort er niet.
+
+Alle vier worden bij de bouw in de pagina gezet, niet in de browser: 57 van de 81
+pagina's van deze klant zijn zonder JavaScript onzichtbaar, en daar hoort van ons
+niets bij te komen. faq.yml gaat via build-faq.mjs, de andere drie via
+build-inhoud.mjs, en beide hangen aan het ene build command
+(`node stamp-version.mjs`).
+
+Dit bestand staat er omdat het de uitleg is die die vier bestanden zelf niet
+kunnen dragen.
 
 Tot 2026-10-09 stond die uitleg bovenaan content/faq.yml, als commentaar. Sinds
 de FAQ ook via de beheerpagina (/beheer/, Sveltia CMS) bewerkt wordt, kan dat
@@ -20,6 +43,12 @@ De uitleg staat daardoor op drie plekken, elk met een eigen reden:
      enige uitleg die in het bestand blijft staan. Daarom staat daar het
      noodzakelijke en niet alles.
   3. dit bestand, voor de achtergrond en de redenen.
+
+De kopregels die vandaag bovenaan pagina.yml, klanten.yml en contact.yml staan,
+zijn er voor wie het bestand in git leest. Ze verdwijnen bij de eerste opslag van
+die bestanden via /beheer/, net als bij faq.yml. Welke van die regels als
+`comment` in beheer/config.yml horen te staan — en dus wél blijven leven — staat
+in INHOUD-BEWERKBAAR.md.
 
 
 DE VORM VAN content/faq.yml
@@ -81,3 +110,75 @@ De analytics-labels van de FAQ-knoppen (data-cta) staan niet in dit bestand maar
 in build-faq.mjs, met de vraag als sleutel. Herschrijf je een vraag, dan valt
 haar label terug op een naam uit de vraag zelf en zegt het bouwscript dat. Wie
 een label vast wil houden, past die lijst in build-faq.mjs aan.
+
+
+DE VORM VAN pagina.yml, klanten.yml EN contact.yml
+
+Platte tekst in groepen, één regel per veld:
+
+  hero:
+    kop: Compensatie zonder kopzorgen
+    intro: Maak komaf met Excel. Beheer loon, bonus en promotie in één platform.
+
+Drie regels gelden voor elk veld, en de bouw stopt als ze niet kloppen:
+
+  1. GEEN HTML, om dezelfde reden als in faq.yml.
+  2. ÉÉN DOORLOPEND STUK TEKST. Geen tweede alinea en geen regelafbreking: op de
+     plekken waar deze velden staan — een kop, een knoplabel, een naamregel —
+     heeft de opmaak van de pagina geen plaats voor een tweede alinea. Alleen de
+     `cijfers` van een casekaart zijn een opsomming, met één regel per cijfer.
+  3. PRECIES DEZE VELDEN. Een veld bijzetten doet niets (de pagina vraagt er niet
+     om) en een veld weghalen laat een gat vallen. De bouw weigert dus beide:
+     een veld dat nergens in de pagina staat én een plek in de pagina waarvoor
+     geen veld bestaat.
+
+"TODO — " doet hier hetzelfde als in de FAQ: het veld krijgt op de pagina het
+kader met de stippellijn, met het stuk tot de eerste dubbele punt in het vet. Vijf
+van de zes open punten van de klant staan zo in deze drie bestanden; het zesde —
+de prijsvraag — staat in faq.yml.
+
+WAAR DE PAGINA EN HET VELD AAN ELKAAR HANGEN
+
+In draft-r3-01-definitief.html staat bij elk stuk tekst een attribuut dat zegt uit
+welk veld het komt:
+
+  <h1 class="text-h1" data-inhoud="hero.kop">Compensatie zonder kopzorgen</h1>
+  <img src="…" alt="Kaneka" data-inhoud-alt="cases.kaart_1.bedrijf">
+
+Dat is het verschil met de FAQ, die tussen markeringen staat: de FAQ is zes keer
+dezelfde vorm en dus code, terwijl de negen andere blokken negen verschillende
+vormen zijn waarin één woord verandert. De vorm blijft dus in de HTML staan, waar
+een ontwerper erbij kan, en de woorden komen hieruit. `node build-inhoud.mjs
+--check` zegt of de pagina nog overeenkomt met deze bestanden.
+
+Twee dingen volgen daaruit en zijn het waard om te weten:
+
+  · Een veld kan op meer dan één plek in de pagina staan. De naam onder een quote
+    is ook de alt-tekst van haar portret, en de kop van een stap in de
+    rondleiding zit ook in de aria-label van de knop ernaast ("Ga naar stap 1:
+    …"). Zo kan de voorleestekst niet achterlopen op wat er staat.
+  · Een veld dat naar een bestand verwijst — een portret, een case-pdf — laat de
+    bouw stoppen als dat bestand er niet is, net zoals publiceer.mjs dat doet.
+    Liever een mislukte publicatie dan een gebroken plaatje op de site.
+
+WAT ER NIET IN DEZE BESTANDEN STAAT, EN WAAROM NIET
+
+  · De negen klantlogo's in de balk, op de casekaarten en op de quotes. Elk heeft
+    een eigen, gemeten hoogte en de rolsnelheid van de balk is op de breedte van
+    de hele reeks gemeten. Een logo wisselen is ontwerpwerk. De NAAM achter het
+    logo is wel een veld, want die wordt voorgelezen in plaats van het beeld.
+  · De vier nagetekende productschermen en de panelen met voorbeeldcijfers. Die
+    cijfers sluiten op elkaar aan over vier schermen (38 van 50 managers = 76%,
+    en dezelfde bedragen komen in twee schermen terug). Op marketing voor
+    compensatiesoftware is een som die niet klopt het duurste detail dat bestaat,
+    dus is dit geen invulveld.
+  · Het portret in de hero. Dat is een uitsnede van 900×1140 waarvan de
+    breedte-hoogteverhouding in de HTML staat; een ander beeld moet daar passen.
+    De vijf quoteportretten en de ronde foto bij het formulier zijn wel velden:
+    die staan in een cirkel met een vaste maat, dus elk beeld past.
+  · De <title>, de meta description en de og:-tekst. Dat is geen tekst op de
+    pagina, en een wijziging daar is voor de marketeer onzichtbaar. check-drafts
+    eist bovendien een <title> zonder attributen.
+  · De sr-only kop "Cases" en het leeg gelaten `action` van het formulier: het
+    eerste is voorleestekst voor een blok zonder zichtbare kop, het tweede wacht
+    op het endpoint.
