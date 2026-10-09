@@ -139,8 +139,9 @@ collections:
             # bij elke opslag. Het is de enige uitleg die een herschrijving
             # overleeft, dus staat hier het nodige en niet alles.
             comment: >-
-              Deze vragen worden beheerd op /beheer/ en horen bij
-              draft-r3-01-definitief.html.\nDit bestand is de bron:
+              LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live
+              site; er kijkt niemand meer tussen.\nDeze vragen worden beheerd op
+              /beheer/ en horen bij draft-r3-01-definitief.html.\nDit bestand is de bron:
               build-faq.mjs zet de tekst bij de bouw in die pagina.\nVerander
               dus hier de tekst en niet in de HTML.\nGEEN HTML in de tekst — de
               bouw weigert een bestand met een < erin, met opzet.\nEen alinea

@@ -1,8 +1,9 @@
+# LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
 # Deze vragen worden beheerd op /beheer/ en horen bij draft-r3-01-definitief.html.
 # Dit bestand is de bron: build-faq.mjs zet de tekst bij de bouw in die pagina.
 # Verander dus hier de tekst en niet in de HTML.
 # GEEN HTML in de tekst — de bouw weigert een bestand met een < erin, met opzet.
-# Een alinea die met "TODO — " begint is een nota aan onszelf: ze krijgt op de pagina het gele kader en houdt die vraag uit de FAQ-structuurdata voor Google.
+# Een alinea die met "TODO — " begint is een nota aan onszelf: ze krijgt op de pagina een apart kader met een stippellijn en houdt die vraag uit de FAQ-structuurdata voor Google.
 # De volgorde hier is de volgorde op de pagina.
 # Meer uitleg: content/LEESMIJ.txt. Het CMS herschrijft dit bestand bij elke opslag en bewaart geen ander commentaar dan deze regels.
 items:
