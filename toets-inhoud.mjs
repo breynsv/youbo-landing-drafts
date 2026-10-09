@@ -14,14 +14,26 @@
  *
  * WAT ER TE BEWIJZEN VALT, EN WAAROM JUIST DIT
  *
- *  1. DE VORM. Sveltia leest een YAML-bestand in en schrijft bij elke opslag
- *     een volledig nieuw bestand. Staat de bron niet al in de vorm die Sveltia
- *     schrijft, dan is Jana's eerste opslag een herschrijving van het hele
- *     bestand waarin haar eigen wijziging niet te vinden is. Bij de FAQ
- *     veranderde zo'n herschrijving ook echt de pagina (een alineagrens
- *     verdween, en een openstaand TODO-antwoord belandde in de structuurdata
- *     voor Google). Daarom wordt die opslag hier nagebootst — met dezelfde
- *     bibliotheek en dezelfde opties als Sveltia — en vergeleken.
+ *  1. DE VORM, EN DE VELDEN DIE SVELTIA KENT. Sveltia leest een YAML-bestand in
+ *     en schrijft bij elke opslag een volledig nieuw bestand — in de volgorde
+ *     van `fields` in beheer/config.yml, en met alleen de velden die daarin
+ *     staan. Daar zitten twee stille fouten in:
+ *
+ *       · Staat de bron niet al in de vorm die Sveltia schrijft, dan is Jana's
+ *         eerste opslag een herschrijving van het hele bestand waarin haar eigen
+ *         wijziging niet te vinden is. Bij de FAQ veranderde zo'n herschrijving
+ *         ook echt de pagina: een alineagrens verdween, en een openstaand
+ *         TODO-antwoord belandde in de structuurdata voor Google.
+ *       · Ontbreekt een veld in `fields`, dan verdwijnt het bij de eerste opslag
+ *         uit het bestand, en stopt de bouw omdat de pagina erom vraagt. De
+ *         pagina is dan tot de volgende commit niet bij te werken.
+ *
+ *     Daarom wordt de opslag hier nagebootst uit beheer/config.yml zelf — met
+ *     dezelfde bibliotheek en dezelfde opties als Sveltia — voor alle VIER de
+ *     bestanden, en wordt het resultaat byte voor byte vergeleken. En daarna
+ *     wordt met die vier nagebootste bestanden de pagina opnieuw gebouwd: komt
+ *     daar byte voor byte dezelfde HTML uit, dan verandert een opslag in
+ *     /beheer/ werkelijk niets aan de pagina behalve de tekst die Jana typte.
  *
  *  2. DE NOTA'S. Op de pagina staan nog zes open punten van de klant. Die
  *     zijn nu velden, en een veld is iets dat iemand kan leegmaken. Deze toets
@@ -56,7 +68,7 @@ try {
     'Draai `npm install` en probeer opnieuw.');
   process.exit(2);
 }
-const { parse, Document } = yaml;
+const { parse, Document, isMap } = yaml;
 
 let fouten = 0;
 const ok = (wat, extra = '') => console.log(`  ok    ${wat}${extra ? `  ${extra}` : ''}`);
@@ -70,14 +82,33 @@ const eis = (wat, waar, uitleg = '') => (waar ? ok(wat) : fout(wat, uitleg));
    blijft staan, zijn de regels die in beheer/config.yml als `comment` bij een
    veld staan, en die schrijft Sveltia zelf terug. */
 
-const schrijfZoalsSveltia = (obj) => `${new Document(obj).toString({
-  indent: 2,
-  indentSeq: true,
-  lineWidth: 0,
-  defaultKeyType: 'PLAIN',
-  defaultStringType: 'PLAIN',
-  singleQuote: true,
-}).trim()}\n`;
+// addYAMLComments() uit hetzelfde bestand: de regels die als `comment` bij een
+// veld in beheer/config.yml staan, schrijft Sveltia zelf boven dat veld terug.
+// Dat is de enige uitleg die een herschrijving overleeft.
+const addYAMLComments = (node, comments, prefix = '') => {
+  if (!isMap(node)) return;
+  node.items.forEach(({ key, value }) => {
+    const keyPath = `${prefix}${key.value}`;
+    const comment = comments[keyPath];
+    if (comment) {
+      key.commentBefore = comment.split(/\\n|\n/).map((regel) => ` ${regel}`).join('\n');
+    }
+    addYAMLComments(value, comments, `${keyPath}.`);
+  });
+};
+
+const schrijfZoalsSveltia = (obj, comments = {}) => {
+  const doc = new Document(obj);
+  addYAMLComments(doc.contents, comments);
+  return `${doc.toString({
+    indent: 2,
+    indentSeq: true,
+    lineWidth: 0,
+    defaultKeyType: 'PLAIN',
+    defaultStringType: 'PLAIN',
+    singleQuote: true,
+  }).trim()}\n`;
+};
 
 // Sveltia trimt de waarde van een string-, text- en list-veld bij het opslaan.
 const trimDiep = (knoop) => {
@@ -88,20 +119,81 @@ const trimDiep = (knoop) => {
   return uit;
 };
 
-const naEenOpslag = (tekst) => schrijfZoalsSveltia(trimDiep(parse(tekst)));
+/* ---------------------------------------------- de velden uit config.yml ---
+   Sveltia bouwt de waarde op uit `fields` — in die volgorde, en alleen die
+   velden. Dus doet deze nabootsing dat ook: ze leest beheer/config.yml en niet
+   het bestand. Zo gaat ze rood wanneer de configuratie en het bestand
+   uiteenlopen, en dat is precies de fout die niemand ziet tot Jana opslaat. */
+
+const config = parse(readFileSync(join(hier, 'beheer', 'config.yml'), 'utf8'));
+const CMS_BESTANDEN = (config.collections ?? []).flatMap((c) => c.files ?? []);
+
+function waardeUitVelden(velden, data) {
+  const uit = {};
+  for (const v of velden ?? []) {
+    const w = data?.[v.name];
+    if (v.widget === 'object') uit[v.name] = waardeUitVelden(v.fields, w ?? {});
+    else if (v.widget === 'list') {
+      uit[v.name] = v.fields
+        ? (w ?? []).map((item) => waardeUitVelden(v.fields, item))
+        : (w ?? []).map((x) => String(x).trim());
+    } else uit[v.name] = String(w ?? '').trim();
+  }
+  return uit;
+}
+
+/** De `comment`-regels per sleutelpad, zoals Sveltia ze terugschrijft. */
+function commentsUitVelden(velden, pad = '', uit = {}) {
+  for (const v of velden ?? []) {
+    const hier = pad ? `${pad}.${v.name}` : v.name;
+    if (v.comment) uit[hier] = v.comment;
+    if (v.widget === 'object') commentsUitVelden(v.fields, hier, uit);
+  }
+  return uit;
+}
+
+/** De platte sleutels die de configuratie beschrijft, in de volgorde van `fields`. */
+function sleutelsUitVelden(velden, pad = '', uit = []) {
+  for (const v of velden ?? []) {
+    const hier = pad ? `${pad}.${v.name}` : v.name;
+    if (v.widget === 'object') sleutelsUitVelden(v.fields, hier, uit);
+    else uit.push(hier);
+  }
+  return uit;
+}
+
+/** Elk leesbaar veld in de configuratie, met zijn pad — voor de keuring eronder. */
+function alleVelden(velden, pad = '', uit = []) {
+  for (const v of velden ?? []) {
+    const hier = pad ? `${pad}.${v.name}` : v.name;
+    if (v.widget === 'object') alleVelden(v.fields, hier, uit);
+    else {
+      uit.push([hier, v]);
+      if (v.widget === 'list' && v.field) uit.push([`${hier}[]`, v.field]);
+      if (v.widget === 'list' && v.fields) alleVelden(v.fields, `${hier}[]`, uit);
+    }
+  }
+  return uit;
+}
+
+/** Wat Sveltia na een opslag van dit bestand zou wegschrijven. */
+const naEenOpslagVan = (bestand, tekst) =>
+  schrijfZoalsSveltia(trimDiep(waardeUitVelden(bestand.fields, parse(tekst))),
+                      commentsUitVelden(bestand.fields));
 
 /* --------------------------------------------------------------- wegwerpmap ---
    Een volledige, werkende kopie van de bouw in /tmp. Daar mag kapotgemaakt
    worden; de echte pagina wordt door deze toets nooit geschreven. */
 
-const SCRIPTS = ['build-inhoud.mjs', 'inhoud-opmaak.js', 'lees-yaml.js', 'faq-opmaak.js'];
+const SCRIPTS = ['build-inhoud.mjs', 'build-faq.mjs', 'inhoud-opmaak.js',
+                 'lees-yaml.js', 'faq-opmaak.js'];
 
 function maakWegwerp() {
   const map = mkdtempSync(join(tmpdir(), 'youbo-inhoud-'));
   for (const f of SCRIPTS) cpSync(join(hier, f), join(map, f));
   cpSync(join(hier, 'draft-r3-01-definitief.html'), join(map, 'draft-r3-01-definitief.html'));
   mkdirSync(join(map, 'content'));
-  for (const f of BRONNEN) cpSync(join(hier, 'content', f), join(map, 'content', f));
+  for (const f of [...BRONNEN, 'faq.yml']) cpSync(join(hier, 'content', f), join(map, 'content', f));
   mkdirSync(join(map, 'assets', 'img'), { recursive: true });
   for (const beeld of beeldenInBronnen()) cpSync(join(hier, beeld), join(map, beeld));
   return map;
@@ -137,23 +229,57 @@ function verander(map, bestand, oud, nieuw) {
   return true;
 }
 
-/* ------------------------------------------------- 1 · de vorm van de bron --- */
+/* ------------------------------- 1 · een opslag in /beheer/, alle vier --- */
 
-console.log('1. De drie inhoudsbestanden — de vorm die het CMS schrijft');
+console.log('1. Een opslag in /beheer/ — alle vier de inhoudsbestanden');
+
+const ALLE_BRONNEN = ['pagina.yml', 'klanten.yml', 'contact.yml', 'faq.yml'];
+
+eis(`beheer/config.yml beheert alle ${ALLE_BRONNEN.length} de inhoudsbestanden`,
+    ALLE_BRONNEN.every((f) => CMS_BESTANDEN.some((b) => b.file === `content/${f}`)),
+    'ontbreekt: ' + ALLE_BRONNEN.filter((f) => !CMS_BESTANDEN.some((b) => b.file === `content/${f}`))
+      .join(', '));
 
 const bronTekst = new Map(BRONNEN.map((f) => [f, readFileSync(join(hier, 'content', f), 'utf8')]));
+const naOpslag = new Map();
 
-for (const [naam, tekst] of bronTekst) {
-  const zonderKop = tekst.replace(/^(#[^\n]*\n)+/, '');
-  const na = naEenOpslag(tekst);
-  if (na === zonderKop) ok(`content/${naam} staat al in de vorm die het CMS schrijft`);
-  else {
-    fout(`content/${naam} staat al in de vorm die het CMS schrijft`,
-         'Jana\'s eerste opslag herschrijft dan het hele bestand in plaats van alleen haar ' +
-         'wijziging. Eerste verschil:\n        ' + eersteVerschil(zonderKop, na));
+for (const naam of ALLE_BRONNEN) {
+  const bestand = CMS_BESTANDEN.find((b) => b.file === `content/${naam}`);
+  if (!bestand) continue;
+  const pad = join(hier, 'content', naam);
+  const was = readFileSync(pad, 'utf8');
+  const na = naEenOpslagVan(bestand, was);
+  naOpslag.set(naam, na);
+
+  // (a) beschrijft de configuratie precies de velden die in het bestand staan,
+  //     en in dezelfde volgorde? Een veld dat hier ontbreekt, verdwijnt bij
+  //     Jana's eerste opslag uit het bestand.
+  if (naam !== 'faq.yml') {
+    const inBestand = [...vlak(leesYaml(was, naam)).keys()];
+    const inConfig = sleutelsUitVelden(bestand.fields);
+    eis(`${naam}: de configuratie beschrijft precies deze ${inBestand.length} velden, in deze volgorde`,
+        JSON.stringify(inBestand) === JSON.stringify(inConfig),
+        `in het bestand: ${inBestand.join(', ')}\n        in config.yml: ${inConfig.join(', ')}`);
   }
-  if (naEenOpslag(na) === na) ok(`en een tweede opslag verandert er niets meer aan (stabiel)`);
-  else fout(`een tweede opslag van content/${naam} verandert er niets meer aan`, 'niet stabiel');
+
+  // (b) levert een opslag byte voor byte hetzelfde bestand op?
+  if (na === was) ok(`${naam}: een opslag verandert er geen byte aan`);
+  else {
+    fout(`${naam}: een opslag verandert er geen byte aan`,
+         'Jana\'s eerste opslag herschrijft dan het hele bestand in plaats van alleen haar ' +
+         'wijziging. Eerste verschil:\n        ' + eersteVerschil(was, na));
+  }
+
+  // (c) en een tweede opslag ook niet (stabiel)
+  eis(`${naam}: en een tweede opslag ook niet (stabiel)`,
+      naEenOpslagVan(bestand, na) === na, 'elke opslag levert een ander bestand op');
+
+  // (d) de uitleg bovenaan komt uit `comment` en staat er werkelijk
+  const kopregels = na.split('\n').filter((r) => r.startsWith('#')).length;
+  const uitConfig = Object.keys(commentsUitVelden(bestand.fields)).length;
+  eis(`${naam}: de uitleg bovenaan (${kopregels} regels) komt uit "comment" in config.yml`,
+      kopregels > 0 && uitConfig > 0,
+      uitConfig === 0 ? 'geen enkel veld heeft een "comment"' : 'het bestand heeft geen kopregels');
 }
 
 function eersteVerschil(a, b) {
@@ -164,18 +290,88 @@ function eersteVerschil(a, b) {
   return '(geen)';
 }
 
-// En nu de lezekant: leest de bouw na zo'n opslag dezelfde velden? De lezer is
-// hier geen nabootsing — het is leesYaml() uit de bouw zelf.
+// (e) de lezekant: leest de bouw na zo'n opslag dezelfde velden? De lezer is
+//     hier geen nabootsing — het is leesYaml() uit de bouw zelf.
 {
   const nu = new Map();
   const na = new Map();
   for (const [naam, tekst] of bronTekst) {
     for (const [k, v] of vlak(leesYaml(tekst, naam))) nu.set(k, v);
-    for (const [k, v] of vlak(leesYaml(naEenOpslag(tekst), naam))) na.set(k, v);
+    for (const [k, v] of vlak(leesYaml(naOpslag.get(naam), naam))) na.set(k, v);
   }
   eis(`de bouw leest na een opslag dezelfde ${nu.size} velden`,
       JSON.stringify([...nu]) === JSON.stringify([...na]),
       'de lezer van de bouw en de schrijver van het CMS zijn niet elkaars omgekeerde');
+}
+
+// (f) EN HET ANTWOORD DAT ERTOE DOET: komt er na een opslag van alle vier de
+//     bestanden byte voor byte dezelfde pagina uit? Hier wordt niets
+//     nagebootst behalve de opslag zelf: de bouw is de echte bouw, in een
+//     wegwerpmap, en het resultaat gaat tegen de pagina in git.
+{
+  const map = maakWegwerp();
+  try {
+    for (const [naam, tekst] of naOpslag) writeFileSync(join(map, 'content', naam), tekst);
+    const a = bouw(map);
+    const b = spawnSync(process.execPath, [join(map, 'build-faq.mjs')], { cwd: map, encoding: 'utf8' });
+    const gebouwd = readFileSync(join(map, 'draft-r3-01-definitief.html'), 'utf8');
+    const inGit = readFileSync(join(hier, 'draft-r3-01-definitief.html'), 'utf8');
+    eis('na een opslag van alle vier de bestanden bouwt de pagina byte voor byte hetzelfde',
+        a.code === 0 && b.status === 0 && gebouwd === inGit,
+        `${a.uit.trim()}\n        ${(b.stdout + b.stderr).trim()}\n        ` +
+        (gebouwd === inGit ? '' : `de HTML verschilt (${inGit.length} → ${gebouwd.length} tekens)`));
+  } finally { rmSync(map, { recursive: true, force: true }); }
+}
+
+// (g) en de velden zelf: platte tekst, nergens een opmaakveld, en overal een
+//     patroon dat een < al in de interface weigert.
+{
+  const velden = CMS_BESTANDEN.flatMap((b) => alleVelden(b.fields));
+  const rijk = velden.filter(([, v]) => ['markdown', 'richtext', 'rich_text', 'code'].includes(v.widget));
+  eis(`geen markdown-, rich-text- of code-veld (${velden.length} velden nagekeken)`,
+      rijk.length === 0,
+      rijk.map(([p]) => p).join(', ') + ' — zo\'n veld schrijft HTML in de inhoud');
+
+  const vreemd = velden.filter(([, v]) => !['string', 'text', 'list'].includes(v.widget));
+  eis('en alleen string-, text- en list-velden', vreemd.length === 0,
+      vreemd.map(([p, v]) => `${p} is een ${v.widget}-veld`).join(', '));
+
+  const geenPatroon = velden.filter(([, v]) => v.widget !== 'list').filter(([, v]) => {
+    const pat = Array.isArray(v.pattern) ? v.pattern[0] : null;
+    if (!pat) return true;
+    const r = new RegExp(pat);
+    return !r.test('gewone tekst') || r.test('met een <b> erin');
+  });
+  eis('en elk veld weigert een < al in de interface', geenPatroon.length === 0,
+      geenPatroon.map(([p]) => p).join(', '));
+
+  // De tekstvelden van de pagina zijn één doorlopend stuk tekst: de bouw
+  // weigert een regelafbreking, dus hoort de interface dat ook te doen. Het
+  // FAQ-antwoord is het enige veld waar een nieuwe regel juist WEL een nieuwe
+  // alinea is, en dat is het enige veld dat `text` mag zijn.
+  const tekstvelden = CMS_BESTANDEN
+    .filter((b) => b.file !== 'content/faq.yml')
+    .flatMap((b) => alleVelden(b.fields))
+    .filter(([, v]) => v.widget !== 'list');
+  const regelDoor = tekstvelden.filter(([, v]) => {
+    const pat = Array.isArray(v.pattern) ? v.pattern[0] : null;
+    return !pat || new RegExp(pat).test('eerste\ntweede');
+  });
+  eis('en elk veld buiten de FAQ weigert ook een nieuwe regel', regelDoor.length === 0,
+      regelDoor.map(([p]) => p).join(', '));
+
+  // De regels BINNEN een opsomming krijgen geen eigen hint: Sveltia zet die
+  // onder het lijstveld zelf, en één hint per regel zou vijf keer hetzelfde
+  // zeggen onder vijf invulvakken.
+  const zonderHint = tekstvelden
+    .filter(([p]) => !p.endsWith('[]'))
+    .filter(([, v]) => !v.hint || !v.hint.trim());
+  eis('en elk van die velden heeft een hint die Jana onder het invulvak ziet',
+      zonderHint.length === 0, zonderHint.map(([p]) => p).join(', '));
+
+  const zonderLabel = CMS_BESTANDEN.flatMap((b) => alleVelden(b.fields))
+    .filter(([p, v]) => !v.label && !p.endsWith('[]'));
+  eis('en een Nederlands label', zonderLabel.length === 0, zonderLabel.map(([p]) => p).join(', '));
 }
 
 /* ----------------------------------------------- 2 · de pagina en de bron --- */
