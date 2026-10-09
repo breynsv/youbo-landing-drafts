@@ -8,13 +8,14 @@ In deze map staan VIER bestanden met tekst van draft-r3-01-definitief.html:
                 grote cijfers                          (sinds 2026-10-10)
   klanten.yml   de vijf cases en de vijf quotes        (sinds 2026-10-10)
   contact.yml   het formulier, de contactgegevens van
-                Nick, de twee vaste balken onderaan
-                en de voettekst                        (sinds 2026-10-10)
+                Nick, de balk onderaan en de voettekst (sinds 2026-10-10)
 
-Samen zijn ze de hele zichtbare tekst van die pagina. Wat er NIET in staat is de
-vorm: de opmaak, de volgorde van de secties, de negen klantlogo's, de vier
-nagetekende productschermen en de cijfers die daarin staan. Dat is ontwerp, en
-een veld waarmee de marketeer de pagina kan breken hoort er niet.
+Samen zijn ze bijna de hele zichtbare tekst van die pagina — 140 velden. Wat er
+NIET in staat is de vorm: de opmaak, de volgorde van de secties, de negen
+klantlogo's, de vier nagetekende productschermen en de cijfers die daarin staan.
+Dat is ontwerp, en een veld waarmee de marketeer de pagina kan breken hoort er
+niet. En één stuk tekst staat er met opzet niet in: de cookiebalk en de
+privacyregel onder het formulier. Zie onderaan.
 
 Alle vier worden bij de bouw in de pagina gezet, niet in de browser: 57 van de 81
 pagina's van deze klant zijn zonder JavaScript onzichtbaar, en daar hoort van ons
@@ -38,17 +39,17 @@ De uitleg staat daardoor op drie plekken, elk met een eigen reden:
   1. beheer/config.yml, als `hint` bij elk veld — dat is wat Jana in de
      interface onder het invulvak ziet, op het moment dat ze typt. Daar hoort
      het kort.
-  2. beheer/config.yml, als `comment` bij het veld `items` — die regels schrijft
-     Sveltia zélf terug boven `items:` in faq.yml, bij elke opslag. Het is de
-     enige uitleg die in het bestand blijft staan. Daarom staat daar het
-     noodzakelijke en niet alles.
+  2. beheer/config.yml, als `comment` bij het bovenste veld van elk bestand —
+     die regels schrijft Sveltia zélf terug bovenaan het bestand, bij elke
+     opslag. Het is de enige uitleg die in het bestand blijft staan. Daarom
+     staat daar het noodzakelijke en niet alles.
   3. dit bestand, voor de achtergrond en de redenen.
 
-De kopregels die vandaag bovenaan pagina.yml, klanten.yml en contact.yml staan,
-zijn er voor wie het bestand in git leest. Ze verdwijnen bij de eerste opslag van
-die bestanden via /beheer/, net als bij faq.yml. Welke van die regels als
-`comment` in beheer/config.yml horen te staan — en dus wél blijven leven — staat
-in INHOUD-BEWERKBAAR.md.
+De kopregels die vandaag bovenaan alle vier de bestanden staan, ZIJN sinds
+2026-10-09 precies die `comment`-regels: wat Jana's eerste opslag oplevert,
+staat al in git. Daardoor is die eerste opslag een diff met alleen háár
+wijziging erin en niet een herschrijving van het hele bestand. toets-inhoud.mjs
+bewaakt dat, byte voor byte, voor alle vier.
 
 
 DE VORM VAN content/faq.yml
@@ -176,9 +177,23 @@ WAT ER NIET IN DEZE BESTANDEN STAAT, EN WAAROM NIET
     breedte-hoogteverhouding in de HTML staat; een ander beeld moet daar passen.
     De vijf quoteportretten en de ronde foto bij het formulier zijn wel velden:
     die staan in een cirkel met een vaste maat, dus elk beeld past.
-  · De <title>, de meta description en de og:-tekst. Dat is geen tekst op de
-    pagina, en een wijziging daar is voor de marketeer onzichtbaar. check-drafts
-    eist bovendien een <title> zonder attributen.
+  · De COOKIEBALK en de PRIVACYREGEL onder het formulier. Tot 2026-10-09 waren
+    dat zeven velden in contact.yml; sindsdien staan ze hard in de HTML, met een
+    nota erbij op allebei de plekken. Dat is juridische tekst, en een marketeer
+    die zonder nalezen een cookiemelding bijschaaft is een aansprakelijkheid en
+    geen gemak. Een wijziging daar hoort langs Sven en de klant te gaan.
+    Let op waarom ze uit het BESTAND moesten en niet alleen uit de interface:
+    Sveltia schrijft bij elke opslag een volledig nieuw bestand uit `fields`, dus
+    zou een veld dat niet in de configuratie staat bij de eerste opslag uit
+    contact.yml verdwijnen — en dan stopt de bouw, want de pagina vroeg erom.
+  · og:image, og:url en canonical. Dat zijn adressen en geen tekst, en een
+    vergissing daarin is onzichtbaar tot de advertenties geen voorbeeldafbeelding
+    meer tonen. De paginatitel, de meta description en de twee deelteksten zijn
+    sinds 2026-10-09 WEL velden — zie de groep "vindbaarheid" onderaan
+    pagina.yml. Dat is campagnetekst, en die hoort bij de marketeer. Ze staan
+    achteraan omdat ze niet op de pagina zelf te zien zijn; het
+    voorbeeldvenster van /beheer/ zegt dat er met zoveel woorden bij, in plaats
+    van een zoekresultaat na te tekenen.
   · De sr-only kop "Cases" en het leeg gelaten `action` van het formulier: het
     eerste is voorleestekst voor een blok zonder zichtbare kop, het tweede wacht
     op het endpoint.
