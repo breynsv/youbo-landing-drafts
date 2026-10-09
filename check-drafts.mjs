@@ -18,7 +18,7 @@
 // the pages saved in _raw/, not fetched, so this check gives the same answer on a train
 // as it does in the office.
 
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -145,7 +145,51 @@ function youboPath(url, rooted = false) {
   return null;
 }
 
-const KNOWN_URLS = knownYouboUrls(join(here, '_raw'));
+// _raw/ staat niet in git: het is een opgeslagen kopie van de site van de klant,
+// en die hoort niet mee gepubliceerd te worden. Maar deze controle draait óók in
+// GitHub, waar die map dus ontbreekt — en daar beslist ze of er gepubliceerd wordt.
+//
+// Twee uitwegen waren er, en de ene is fout. De controle stilzwijgend overslaan
+// als _raw/ ontbreekt, maakt haar in GitHub vacuüm groen: precies daar waar ze
+// iets moet tegenhouden, houdt ze niets meer tegen. Dus: het bewijs wordt
+// vastgelegd in een bestand dat wél meegaat, en bij elke lokale run wordt
+// gecontroleerd of dat bestand nog klopt met _raw/.
+const BEWIJS = join(here, 'bekende-youbo-urls.json');
+
+function ladenKnownUrls() {
+  const heeftRaw = existsSync(join(here, '_raw'));
+
+  if (heeftRaw) {
+    const uitRaw = knownYouboUrls(join(here, '_raw'));
+    if (process.argv.includes('--leg-urls-vast')) {
+      writeFileSync(BEWIJS, JSON.stringify([...uitRaw].sort(), null, 2) + '\n');
+      console.log(`bekende-youbo-urls.json bijgewerkt — ${uitRaw.size} adressen uit _raw/`);
+      process.exit(0);
+    }
+    if (existsSync(BEWIJS)) {
+      const vast = new Set(JSON.parse(readFileSync(BEWIJS, 'utf8')));
+      const mist = [...uitRaw].filter((u) => !vast.has(u));
+      const teveel = [...vast].filter((u) => !uitRaw.has(u));
+      if (mist.length || teveel.length) {
+        console.error('STOP — bekende-youbo-urls.json loopt niet meer gelijk met _raw/.');
+        if (mist.length) console.error('  nieuw in _raw/ : ' + mist.join(', '));
+        if (teveel.length) console.error('  weg uit _raw/  : ' + teveel.join(', '));
+        console.error('  Draai `node check-drafts.mjs --leg-urls-vast` en commit het resultaat.');
+        process.exit(1);
+      }
+    }
+    return uitRaw;
+  }
+
+  if (!existsSync(BEWIJS)) {
+    console.error('STOP — geen _raw/ en geen bekende-youbo-urls.json: deze controle kan');
+    console.error('       niets bewijzen en mag dus niet groen zijn.');
+    process.exit(1);
+  }
+  return new Set(JSON.parse(readFileSync(BEWIJS, 'utf8')));
+}
+
+const KNOWN_URLS = ladenKnownUrls();
 
 // Three URLs _raw/ cannot know about, each for a written reason. This list stays
 // explicit and per-URL on purpose: the rule it holds open is that every youbo.io path
