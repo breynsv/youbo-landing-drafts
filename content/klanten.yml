@@ -1,14 +1,9 @@
 # LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
-# Dit bestand is de bron van de vijf cases en de vijf quotes op de landingspagina.
-# GEEN HTML in de tekst — de bouw weigert een bestand met een < erin, met opzet.
-# Vijf cases en vijf quotes, niet meer en niet minder: het raster van de cases is op precies
-# vijf kaarten gemeten en een zesde laat een gat vallen. Een case bijzetten is ontwerpwerk.
-# "bedrijf" is de naam achter het logo: hij staat niet als tekst op de pagina maar wordt
-# voorgelezen in plaats van het logo. Het logobestand zelf staat vast — dat is ontwerp.
-# "cijfers" is de enige opsomming in deze bestanden: één regel per cijfer, twee of drie regels.
-# "downloadlink" mag een anker (#cases-open) of een bestand in deze map zijn. Verwijst het naar
-# een bestand dat er niet is, dan stopt de bouw — liever dat dan een dode link op de site.
-# Een veld dat begint met "TODO — " krijgt op de pagina het kader met de stippellijn.
+# De vijf cases en de vijf quotes. Vijf en niet meer: het raster is op precies vijf gemeten.
+# "bedrijf" is de naam achter het logo — die wordt voorgelezen in plaats van het beeld.
+# "cijfers" is een opsomming: één regel per cijfer, twee of drie regels.
+# "downloadlink" mag een anker (#cases-open) of een bestand zijn; een bestand dat niet bestaat stopt de bouw.
+# GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
 # Meer uitleg: content/LEESMIJ.txt.
 cases:
   downloadtekst: Download de case (pdf)

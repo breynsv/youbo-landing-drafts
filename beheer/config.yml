@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.233.0/schema/sveltia-cms.json
 #
-# Sveltia CMS — de beheerkant van content/faq.yml.
+# Sveltia CMS — de beheerkant van de hele landingspagina: content/pagina.yml,
+# content/klanten.yml, content/contact.yml en content/faq.yml.
 #
 # ──────────────────────────────────────────────────────────────────────────────
 # LEES DIT VOOR JE ER IETS AAN VERANDERT
@@ -11,20 +12,41 @@
 # in de omgevingsvariabelen van de Worker, niet hier. Sveltia zegt het zelf
 # ook: "The config is publicly accessible, so don't put secrets in it."
 #
-# De velden zijn met opzet precies twee: vraag en antwoord, allebei PLATTE
-# TEKST. Geen markdown-veld, geen rich-text-veld. Een rich-text-editor schrijft
-# vroeg of laat een "<" in de inhoud, en build-faq.mjs weigert een faq.yml met
-# een "<" erin — dat is geen bug maar de beveiliging: tekst uit een invulveld
-# die als HTML op de pagina belandt, is een lek. Vandaar ook de `pattern` op
-# beide velden: dan zegt het CMS het meteen, in plaats van dat de bouw een uur
-# later faalt.
+# ELK VELD IS PLATTE TEKST. Geen markdown-veld, geen rich-text-veld, geen
+# code-veld — nergens. Een rich-text-editor schrijft vroeg of laat een "<" in de
+# inhoud, en de bouw weigert een inhoudsbestand met een "<" erin; dat is geen bug
+# maar de beveiliging, want tekst uit een invulveld die als HTML op de pagina
+# belandt is een lek. Vandaar ook de `pattern` op élk veld: die weigert een "<"
+# en een regelafbreking al in de interface, in plaats van dat de publicatie een
+# uur later faalt aan iets wat het invulvak net toestond.
 #
-# Het CMS herschrijft content/faq.yml bij elke opslag met een echte
-# YAML-schrijver. Commentaar dat in dat bestand stond, is daarmee weg. Daarom
-# staat de uitleg nu op drie plekken die het wél overleven: `hint` (wat Jana in
-# de interface ziet), `comment` hieronder (die regels schrijft het CMS zelf
-# terug boven `items:`) en content/LEESMIJ.txt (de achtergrond, die geen CMS
-# aanraakt). Zie SVELTIA.md.
+# `widget: string` en niet `text`, óók voor de lange TODO-nota's. Elk veld op de
+# pagina is één doorlopend stuk tekst — de opmaak heeft er geen plaats voor een
+# tweede alinea — en de bouw weigert een regelafbreking. Een `text`-veld nodigt
+# uit tot Enter, en dat is een val. De enige uitzondering is
+# cases.kaart_N.cijfers: dat is een `list` van `string`, omdat het aantal cijfers
+# per case echt verschilt. Het FAQ-antwoord onderaan is wél een `text`-veld, en
+# dat is het enige: daar IS een nieuwe regel een nieuwe alinea.
+#
+# DE VELDVOLGORDE IS GEEN SMAAKKWESTIE. Sveltia schrijft bij elke opslag een
+# volledig nieuw bestand, in de volgorde van `fields`. Wijkt die af van de
+# volgorde in content/*.yml, dan is Jana's eerste opslag een herschrijving van
+# het hele bestand waarin haar eigen wijziging niet te vinden is.
+# toets-inhoud.mjs vergelijkt die twee volgordes en gaat rood zodra ze
+# uiteenlopen — daar hoef je dus niet op te letten, maar wel op te vertrouwen.
+#
+# OM DEZELFDE REDEN KAN EEN VELD HIER NIET WEGGELATEN WORDEN. Wat niet in
+# `fields` staat, verdwijnt bij de eerste opslag uit het bestand, en dan stopt de
+# bouw omdat de pagina erom vraagt. Zo is de cookiebalk en de privacyregel niet
+# "uit het CMS gehaald" maar uit content/contact.yml én uit de HTML gehaald; ze
+# staan nu hard in de pagina, met een nota erbij. Zie BEHEER-VOLLEDIG.md.
+#
+# Het CMS herschrijft die bestanden met een echte YAML-schrijver, dus is
+# commentaar dat erin stond daarna weg. Daarom staat de uitleg op drie plekken
+# die het wél overleven: `hint` (wat Jana onder het invulvak ziet), `comment`
+# hieronder (die regels schrijft het CMS zelf terug boven het bovenste veld van
+# elk bestand) en content/LEESMIJ.txt (de achtergrond, die geen CMS aanraakt).
+# Zie SVELTIA.md.
 # ──────────────────────────────────────────────────────────────────────────────
 
 backend:
@@ -89,22 +111,1353 @@ collections:
   # Tot 2026-10-09 heetten ze allebei "Veelgestelde vragen", en dan leest het
   # middenpaneel als een lege of kapotte lijst terwijl je gewoon moet
   # doorklikken. Nu zegt elk niveau waar je bent: de zijbalk zegt WAAR de tekst
-  # staat (op de landingspagina), het middenpaneel zegt WAT je bewerkt (de
-  # veelgestelde vragen).
+  # staat (op de landingspagina), het middenpaneel zegt WAT je bewerkt.
   #
   # Dat tussenniveau helemaal overslaan kan Sveltia 0.233.0 niet. Nagemeten met
   # de echte beheerpagina in een browser: met `singletons` (hun eigen vorm voor
   # losse bestanden) verschijnt er een zijbalkpositie die rechtstreeks naar het
   # formulier gaat — maar alléén wanneer er daarnaast ook nog verzamelingen
-  # zijn. Met dit ene bestand valt Sveltia terug op één positie die "Bestanden"
+  # zijn. Met één verzameling valt Sveltia terug op één positie die "Bestanden"
   # heet, een naam uit hun eigen taalbestand die wij niet kunnen veranderen, en
   # daarachter staat precies dezelfde tussenlijst. Dat is dus niet korter maar
   # wél onduidelijker. Een rechtstreekse link naar het formulier overleeft de
   # aanmelding niet (Sveltia springt na het inloggen zelf naar de verzameling).
-  - name: faq
+  #
+  # Sinds 2026-10-09 is het middenpaneel geen tussenstap meer maar een echte
+  # keuze: vier bestanden, en Jana moet weten welk ze nodig heeft. De indeling
+  # komt uit INHOUD-BEWERKBAAR.md en is gekozen op de vraag "waar gaat ze
+  # kijken als ze iets wil aanpassen", niet op hoe de pagina gebouwd is. De
+  # volgorde hieronder is de volgorde op de pagina.
+  - name: landingspagina
     label: Landingspagina
     icon: article
     files:
+      - name: pagina
+        label: De tekst van de pagina
+        icon: article
+        file: content/pagina.yml
+        editor:
+          preview: true
+        fields:
+          - name: 'hero'
+            label: 'Bovenaan de pagina'
+            comment: |-
+              LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
+              Dit bestand is de TEKST van de landingspagina: de koppen, de lopende tekst en de knoplabels.
+              Elk veld is één doorlopend stuk tekst — geen tweede alinea en geen regelafbreking.
+              GEEN HTML: de bouw weigert een bestand met een < erin, met opzet.
+              Een veld dat begint met "TODO — " krijgt op de pagina een apart kader met een stippellijn.
+              De volgorde hier is de volgorde op de pagina. Velden bijzetten of weghalen kan niet.
+              De groep "vindbaarheid" onderaan staat niet op de pagina: dat is Google en het deelbericht.
+              Meer uitleg: content/LEESMIJ.txt.
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'kop'
+                label: 'Grote kop'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'intro'
+                label: 'Tekst onder de kop'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'knop'
+                label: 'Knop'
+                widget: 'string'
+                required: true
+                hint: 'Wat er op de knop staat. Kort houden: op een telefoon is dit de hele breedte.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'foto_alt'
+                label: 'Beschrijving van de foto'
+                widget: 'string'
+                required: true
+                hint: 'Wordt voorgelezen in plaats van het beeld, en staat er als het beeld niet laadt. Beschrijf wat erop staat.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'fototekst'
+                label: 'Tekst naast de foto'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'logobalk'
+            label: 'De balk met klantenlogo’s'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'kop'
+                label: 'Kop boven de logo’s'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'kern'
+            label: 'De drie kernblokken'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'kop'
+                label: 'Kop van het blok'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'blok1_titel'
+                label: 'Blok 1 — titel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'blok1_tekst'
+                label: 'Blok 1 — tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'blok2_titel'
+                label: 'Blok 2 — titel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'blok2_tekst'
+                label: 'Blok 2 — tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'blok3_titel'
+                label: 'Blok 3 — titel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'blok3_tekst'
+                label: 'Blok 3 — tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'rondleiding'
+            label: 'De rondleiding door het product'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'kop'
+                label: 'Kop van het blok'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'scrollhint'
+                label: 'Het zinnetje “Scroll verder”'
+                widget: 'string'
+                required: true
+                hint: 'Staat alleen op desktop, onderaan de eerste stap.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'stap1_titel'
+                label: 'Stap 1 — titel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'stap1_tekst'
+                label: 'Stap 1 — tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'stap2_titel'
+                label: 'Stap 2 — titel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'stap2_tekst'
+                label: 'Stap 2 — tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'stap3_titel'
+                label: 'Stap 3 — titel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'stap3_tekst'
+                label: 'Stap 3 — tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'stap4_titel'
+                label: 'Stap 4 — titel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'stap4_tekst'
+                label: 'Stap 4 — tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'knop'
+                label: 'Knop onder de rondleiding'
+                widget: 'string'
+                required: true
+                hint: 'Wat er op de knop staat. Kort houden: op een telefoon is dit de hele breedte.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'nota'
+                label: 'Open punt'
+                widget: 'string'
+                required: true
+                hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'cijfer'
+            label: 'Het grote cijfer'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'aanloop'
+                label: 'De zin ervóór'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'medewerkers'
+                label: 'Aantal medewerkers'
+                widget: 'string'
+                required: true
+                hint: 'Alleen het getal. Het staat in de kleur van de huisstijl midden in de zin; de woorden eromheen zijn de drie velden ernaast.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'midden'
+                label: 'De woorden tussen de twee cijfers'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'landen'
+                label: 'Aantal landen'
+                widget: 'string'
+                required: true
+                hint: 'Alleen het getal. Het staat in de kleur van de huisstijl midden in de zin; de woorden eromheen zijn de drie velden ernaast.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'slot'
+                label: 'De zin erna'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'eu'
+            label: 'EU Pay Transparency'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'kop'
+                label: 'Kop'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'tekst'
+                label: 'Tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'integraties'
+            label: 'Plug in met je hr-tools'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'kop'
+                label: 'Kop'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'tekst'
+                label: 'Tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'functie_1'
+                label: 'Functie 1'
+                widget: 'string'
+                required: true
+                hint: 'Eén of twee woorden: het soort systeem, geen merknaam. Er staat een icoon naast dat vast is.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'functie_2'
+                label: 'Functie 2'
+                widget: 'string'
+                required: true
+                hint: 'Eén of twee woorden: het soort systeem, geen merknaam. Er staat een icoon naast dat vast is.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'functie_3'
+                label: 'Functie 3'
+                widget: 'string'
+                required: true
+                hint: 'Eén of twee woorden: het soort systeem, geen merknaam. Er staat een icoon naast dat vast is.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'functie_4'
+                label: 'Functie 4'
+                widget: 'string'
+                required: true
+                hint: 'Eén of twee woorden: het soort systeem, geen merknaam. Er staat een icoon naast dat vast is.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'faq'
+            label: 'Boven de veelgestelde vragen'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'kop'
+                label: 'Kop van het blok'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'vindbaarheid'
+            label: 'In Google en bij delen — niet op de pagina zelf'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'titel'
+                label: 'Titel in het tabblad en in Google'
+                widget: 'string'
+                required: true
+                hint: 'Staat in het tabblad van de browser en als blauwe regel in Google. Niet op de pagina zelf. Houd het onder 60 tekens, anders kapt Google het af.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'omschrijving'
+                label: 'Omschrijving onder het zoekresultaat'
+                widget: 'string'
+                required: true
+                hint: 'De twee regels onder het zoekresultaat in Google. Niet op de pagina zelf. Ongeveer 150 tekens werkt het best.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'deel_titel'
+                label: 'Titel als iemand de pagina deelt'
+                widget: 'string'
+                required: true
+                hint: 'De titel van het kaartje dat verschijnt als iemand de link deelt op LinkedIn of in een bericht. Niet op de pagina zelf.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'deel_omschrijving'
+                label: 'Tekst als iemand de pagina deelt'
+                widget: 'string'
+                required: true
+                hint: 'De tekst onder dat kaartje. Niet op de pagina zelf. Eén korte zin.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+
+      - name: klanten
+        label: Cases en quotes
+        icon: reviews
+        file: content/klanten.yml
+        editor:
+          preview: true
+        fields:
+          - name: 'cases'
+            label: 'De vijf cases'
+            comment: |-
+              LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
+              De vijf cases en de vijf quotes. Vijf en niet meer: het raster is op precies vijf gemeten.
+              "bedrijf" is de naam achter het logo — die wordt voorgelezen in plaats van het beeld.
+              "cijfers" is een opsomming: één regel per cijfer, twee of drie regels.
+              "downloadlink" mag een anker (#cases-open) of een bestand zijn; een bestand dat niet bestaat stopt de bouw.
+              GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
+              Meer uitleg: content/LEESMIJ.txt.
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'downloadtekst'
+                label: 'Tekst op elke downloadlink'
+                widget: 'string'
+                required: true
+                hint: 'Dezelfde tekst op alle vijf de links.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'kaart_1'
+                label: 'Case 1'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'voordeel'
+                    label: 'Het resultaat in één regel'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'cijfers'
+                    label: 'De cijfers'
+                    widget: 'list'
+                    min: 1
+                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
+                    field:
+                      name: 'regel'
+                      label: 'Regel'
+                      widget: 'string'
+                      required: true
+                      pattern:
+                        - '^[^<\n]*$'
+                        - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'sector'
+                    label: 'Wat voor bedrijf het is'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'downloadlink'
+                    label: 'Waar de downloadlink naartoe gaat'
+                    widget: 'string'
+                    required: true
+                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'kaart_2'
+                label: 'Case 2'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'voordeel'
+                    label: 'Het resultaat in één regel'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'cijfers'
+                    label: 'De cijfers'
+                    widget: 'list'
+                    min: 1
+                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
+                    field:
+                      name: 'regel'
+                      label: 'Regel'
+                      widget: 'string'
+                      required: true
+                      pattern:
+                        - '^[^<\n]*$'
+                        - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'sector'
+                    label: 'Wat voor bedrijf het is'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'downloadlink'
+                    label: 'Waar de downloadlink naartoe gaat'
+                    widget: 'string'
+                    required: true
+                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'kaart_3'
+                label: 'Case 3'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'voordeel'
+                    label: 'Het resultaat in één regel'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'cijfers'
+                    label: 'De cijfers'
+                    widget: 'list'
+                    min: 1
+                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
+                    field:
+                      name: 'regel'
+                      label: 'Regel'
+                      widget: 'string'
+                      required: true
+                      pattern:
+                        - '^[^<\n]*$'
+                        - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'sector'
+                    label: 'Wat voor bedrijf het is'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'nota'
+                    label: 'Open punt op deze kaart'
+                    widget: 'string'
+                    required: true
+                    hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'downloadlink'
+                    label: 'Waar de downloadlink naartoe gaat'
+                    widget: 'string'
+                    required: true
+                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'kaart_4'
+                label: 'Case 4'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'voordeel'
+                    label: 'Het resultaat in één regel'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'cijfers'
+                    label: 'De cijfers'
+                    widget: 'list'
+                    min: 1
+                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
+                    field:
+                      name: 'regel'
+                      label: 'Regel'
+                      widget: 'string'
+                      required: true
+                      pattern:
+                        - '^[^<\n]*$'
+                        - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'sector'
+                    label: 'Wat voor bedrijf het is'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'downloadlink'
+                    label: 'Waar de downloadlink naartoe gaat'
+                    widget: 'string'
+                    required: true
+                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'kaart_5'
+                label: 'Case 5'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'voordeel'
+                    label: 'Het resultaat in één regel'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'cijfers'
+                    label: 'De cijfers'
+                    widget: 'list'
+                    min: 1
+                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
+                    field:
+                      name: 'regel'
+                      label: 'Regel'
+                      widget: 'string'
+                      required: true
+                      pattern:
+                        - '^[^<\n]*$'
+                        - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'sector'
+                    label: 'Wat voor bedrijf het is'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'downloadlink'
+                    label: 'Waar de downloadlink naartoe gaat'
+                    widget: 'string'
+                    required: true
+                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'nota'
+                label: 'Open punt onder de cases'
+                widget: 'string'
+                required: true
+                hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'quotes'
+            label: 'De vijf quotes'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'kop'
+                label: 'Kop boven de quotes'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'quote_1'
+                label: 'Quote 1'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'tekst'
+                    label: 'De quote'
+                    widget: 'string'
+                    required: true
+                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'foto'
+                    label: 'Portret'
+                    widget: 'string'
+                    required: true
+                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'naam'
+                    label: 'Naam'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'functie'
+                    label: 'Functie'
+                    widget: 'string'
+                    required: true
+                    hint: 'De functie onder de naam.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'quote_2'
+                label: 'Quote 2'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'tekst'
+                    label: 'De quote'
+                    widget: 'string'
+                    required: true
+                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'foto'
+                    label: 'Portret'
+                    widget: 'string'
+                    required: true
+                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'naam'
+                    label: 'Naam'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'functie'
+                    label: 'Functie'
+                    widget: 'string'
+                    required: true
+                    hint: 'De functie onder de naam.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'quote_3'
+                label: 'Quote 3'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'tekst'
+                    label: 'De quote'
+                    widget: 'string'
+                    required: true
+                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'foto'
+                    label: 'Portret'
+                    widget: 'string'
+                    required: true
+                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'naam'
+                    label: 'Naam'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'functie'
+                    label: 'Functie'
+                    widget: 'string'
+                    required: true
+                    hint: 'De functie onder de naam.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'quote_4'
+                label: 'Quote 4'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'tekst'
+                    label: 'De quote'
+                    widget: 'string'
+                    required: true
+                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'foto'
+                    label: 'Portret'
+                    widget: 'string'
+                    required: true
+                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'naam'
+                    label: 'Naam'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'functie'
+                    label: 'Functie'
+                    widget: 'string'
+                    required: true
+                    hint: 'De functie onder de naam.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'quote_5'
+                label: 'Quote 5'
+                widget: 'object'
+                collapsed: true
+                fields:
+                  - name: 'bedrijf'
+                    label: 'Naam achter het logo'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'tekst'
+                    label: 'De quote'
+                    widget: 'string'
+                    required: true
+                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'foto'
+                    label: 'Portret'
+                    widget: 'string'
+                    required: true
+                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'naam'
+                    label: 'Naam'
+                    widget: 'string'
+                    required: true
+                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'functie'
+                    label: 'Functie'
+                    widget: 'string'
+                    required: true
+                    hint: 'De functie onder de naam.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+
+      - name: contact
+        label: Formulier, contact en voet
+        icon: mail
+        file: content/contact.yml
+        editor:
+          preview: true
+        fields:
+          - name: 'demo'
+            label: 'Het demoblok'
+            comment: |-
+              LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
+              Het formulier, de gegevens van Nick, de balk onderaan en de voettekst.
+              E-mail en telefoon staan er twee keer: de leesbare vorm en de vorm die de telefoon kiest.
+              Verander die twee altijd samen, anders belt de link een ander nummer dan er staat.
+              De cookiebalk en de privacyregel staan hier NIET: dat is juridische tekst en die blijft vast.
+              GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
+              Meer uitleg: content/LEESMIJ.txt.
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'kop'
+                label: 'Kop van het blok'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'nick_foto'
+                label: 'Ronde foto van Nick'
+                widget: 'string'
+                required: true
+                hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'nick_foto_alt'
+                label: 'Beschrijving van die foto'
+                widget: 'string'
+                required: true
+                hint: 'Wordt voorgelezen in plaats van het beeld, en staat er als het beeld niet laadt. Beschrijf wat erop staat.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'nick_naam'
+                label: 'Naam'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'nick_tekst'
+                label: 'Tekst achter de naam'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'formulier'
+            label: 'Het formulier'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'label_naam'
+                label: 'Label boven “Naam”'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'plaatshouder_naam'
+                label: 'Voorbeeldtekst in het naamvak'
+                widget: 'string'
+                required: true
+                hint: 'De grijze voorbeeldtekst in het invulvak. Geen instructie: wat de bezoeker zou kunnen typen.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'label_email'
+                label: 'Label boven “E-mailadres”'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'plaatshouder_email'
+                label: 'Voorbeeldtekst in het e-mailvak'
+                widget: 'string'
+                required: true
+                hint: 'De grijze voorbeeldtekst in het invulvak. Geen instructie: wat de bezoeker zou kunnen typen.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'label_telefoon'
+                label: 'Label boven “Telefoon”'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'plaatshouder_telefoon'
+                label: 'Voorbeeldtekst in het telefoonvak'
+                widget: 'string'
+                required: true
+                hint: 'De grijze voorbeeldtekst in het invulvak. Geen instructie: wat de bezoeker zou kunnen typen.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'label_bericht'
+                label: 'Label boven het berichtvak'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'plaatshouder_bericht'
+                label: 'Voorbeeldtekst in het berichtvak'
+                widget: 'string'
+                required: true
+                hint: 'De grijze voorbeeldtekst in het invulvak. Geen instructie: wat de bezoeker zou kunnen typen.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'nieuwsbrief'
+                label: 'De nieuwsbriefregel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'verzendknop'
+                label: 'Verzendknop'
+                widget: 'string'
+                required: true
+                hint: 'Wat er op de knop staat. Kort houden: op een telefoon is dit de hele breedte.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'anders'
+            label: 'De andere manieren om Nick te bereiken'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'agenda_regel'
+                label: 'De agendaregel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'mail_aanloop'
+                label: 'De zin vóór het e-mailadres'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'e_mail_link'
+                label: 'Wat de e-maillink doet'
+                widget: 'string'
+                required: true
+                hint: 'Wat de link doet, niet wat er staat: mailto:… Verander dit altijd samen met het veld eronder.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'e_mail'
+                label: 'Het e-mailadres zoals het er staat'
+                widget: 'string'
+                required: true
+                hint: 'Het adres zoals de bezoeker het leest. Verander dit altijd samen met het veld erboven.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'bel_aanloop'
+                label: 'De zin vóór het nummer'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'telefoon_link'
+                label: 'Wat de telefoonlink doet'
+                widget: 'string'
+                required: true
+                hint: 'Wat de link doet, niet wat er staat: tel:+32… Verander dit altijd samen met het veld eronder.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'telefoon'
+                label: 'Het nummer zoals het er staat'
+                widget: 'string'
+                required: true
+                hint: 'Het nummer zoals de bezoeker het leest, Belgisch gezet. Verander dit altijd samen met het veld erboven.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'nota'
+                label: 'Open punt'
+                widget: 'string'
+                required: true
+                hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'band'
+            label: 'De balk onderaan het scherm'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'regel'
+                label: 'De zin in de balk'
+                widget: 'string'
+                required: true
+                hint: 'Deze zin staat alleen op een breed scherm; op een telefoon is de knop de hele balk. De balk moet dus ook zonder deze zin kloppen.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'knop'
+                label: 'Knop in de balk'
+                widget: 'string'
+                required: true
+                hint: 'Wat er op de knop staat. Kort houden: op een telefoon is dit de hele breedte.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+          - name: 'voet'
+            label: 'De voet van de pagina'
+            widget: 'object'
+            collapsed: true
+            fields:
+              - name: 'iso_alt'
+                label: 'Beschrijving van het ISO-keurmerk'
+                widget: 'string'
+                required: true
+                hint: 'Wordt voorgelezen in plaats van het beeld, en staat er als het beeld niet laadt. Beschrijf wat erop staat.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'kop_over'
+                label: 'Kopje van de eerste kolom'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'over_1'
+                label: 'Link 1'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'over_2'
+                label: 'Link 2'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'over_3'
+                label: 'Link 3'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'kop_legal'
+                label: 'Kopje van de tweede kolom'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'legal_1'
+                label: 'Link 1'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'legal_2'
+                label: 'Link 2'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'legal_3'
+                label: 'Link 3'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'legal_4'
+                label: 'Link 4'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'legal_5'
+                label: 'Link 5'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'taal_1'
+                label: 'Taal 1'
+                widget: 'string'
+                required: true
+                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands. Zie het open punt onderaan.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'taal_2'
+                label: 'Taal 2'
+                widget: 'string'
+                required: true
+                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands. Zie het open punt onderaan.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'taal_3'
+                label: 'Taal 3'
+                widget: 'string'
+                required: true
+                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands. Zie het open punt onderaan.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'nota'
+                label: 'Open punt'
+                widget: 'string'
+                required: true
+                hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'copyright'
+                label: 'Het stukje achter het jaartal'
+                widget: 'string'
+                required: true
+                hint: 'Het stukje tussen het jaartal en de link naar Teal Partners. Het jaartal wordt automatisch gezet.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'copyright_linktekst'
+                label: 'De link erachter'
+                widget: 'string'
+                required: true
+                hint: 'Alleen de tekst van de link. Het adres erachter staat vast.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'entiteit'
+                label: 'De regel met de firmagegevens'
+                widget: 'string'
+                required: true
+                hint: 'De wettelijke gegevens onderaan. Verander dit alleen als ze echt veranderd zijn.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+
+      # De FAQ. Het enige bestand met een `text`-veld, en het enige waar een
+      # nieuwe regel een nieuwe alinea is — zie de kop van dit bestand.
       - name: faq
         label: Veelgestelde vragen
         icon: quiz
@@ -114,12 +1467,12 @@ collections:
         # erin stond — dat opslaan meteen publiceert — staat nu in de hint
         # hieronder, waar Jana het werkelijk ziet.
         #
-        # HET VOORBEELDVENSTER STAAT AAN, en toont niet de losse velden maar de
-        # echte FAQ-sectie van de pagina: dezelfde Tailwind-tokens, hetzelfde
+        # HET VOORBEELDVENSTER STAAT AAN, en toont niet de losse velden maar het
+        # echte blok van de pagina: dezelfde Tailwind-tokens, hetzelfde
         # lettertype, hetzelfde open- en dichtklappen, hetzelfde TODO-kader. Het
         # is letterlijk uit draft-r3-01-definitief.html geknipt en met
-        # faq-opmaak.js gevuld — hetzelfde bestand waarmee de bouw de pagina
-        # maakt. Zie beheer/voorbeeld.js.
+        # faq-opmaak.js en inhoud-opmaak.js gevuld — dezelfde bestanden waarmee
+        # de bouw de pagina maakt. Zie beheer/voorbeeld.js.
         editor:
           preview: true
         fields:
@@ -137,20 +1490,17 @@ collections:
               pagina. Verwijder je een vraag, dan verdwijnt ze van de pagina.
             # Deze regels schrijft Sveltia terug boven `items:` in het bestand,
             # bij elke opslag. Het is de enige uitleg die een herschrijving
-            # overleeft, dus staat hier het nodige en niet alles.
-            comment: >-
-              LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live
-              site; er kijkt niemand meer tussen.\nDeze vragen worden beheerd op
-              /beheer/ en horen bij draft-r3-01-definitief.html.\nDit bestand is de bron:
-              build-faq.mjs zet de tekst bij de bouw in die pagina.\nVerander
-              dus hier de tekst en niet in de HTML.\nGEEN HTML in de tekst — de
-              bouw weigert een bestand met een < erin, met opzet.\nEen alinea
-              die met "TODO — " begint is een nota aan onszelf: ze krijgt op de
-              pagina een apart kader met een stippellijn en houdt die vraag uit de
-              FAQ-structuurdata voor Google.\nDe volgorde hier is de volgorde
-              op de pagina.\nMeer uitleg: content/LEESMIJ.txt. Het CMS
-              herschrijft dit bestand bij elke opslag en bewaart geen ander
-              commentaar dan deze regels.
+            # overleeft, dus staat hier het nodige en niet alles. Een letterlijk
+            # blok (|-), zodat elke regel hier één regel commentaar wordt.
+            comment: |-
+              LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
+              Deze vragen worden beheerd op /beheer/ en horen bij draft-r3-01-definitief.html.
+              Dit bestand is de bron: build-faq.mjs zet de tekst bij de bouw in die pagina.
+              Verander dus hier de tekst en niet in de HTML.
+              GEEN HTML in de tekst — de bouw weigert een bestand met een < erin, met opzet.
+              Een alinea die met "TODO — " begint is een nota aan onszelf: ze krijgt op de pagina een apart kader met een stippellijn en houdt die vraag uit de FAQ-structuurdata voor Google.
+              De volgorde hier is de volgorde op de pagina.
+              Meer uitleg: content/LEESMIJ.txt. Het CMS herschrijft dit bestand bij elke opslag en bewaart geen ander commentaar dan deze regels.
             fields:
               - name: vraag
                 label: Vraag

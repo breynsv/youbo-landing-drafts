@@ -1,13 +1,9 @@
 # LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
-# Dit bestand is de bron van het formulierblok, de contactgegevens van Nick, de twee vaste
-# balken onderaan en de voettekst van de landingspagina.
-# GEEN HTML in de tekst — de bouw weigert een bestand met een < erin, met opzet.
-# Het e-mailadres en het telefoonnummer staan er elk TWEE keer: de leesbare vorm die op de
-# pagina staat, en de vorm die de telefoon of de mailprogramma gebruikt (tel: en mailto:).
-# Verander ze altijd samen, anders belt de link een ander nummer dan er staat.
-# De cookiebalk en de privacyregel onder het formulier staan HIER NIET: dat is juridische
-# tekst en die blijft hard in de pagina staan. Zie de nota's in de HTML.
-# Een veld dat begint met "TODO — " krijgt op de pagina het kader met de stippellijn.
+# Het formulier, de gegevens van Nick, de balk onderaan en de voettekst.
+# E-mail en telefoon staan er twee keer: de leesbare vorm en de vorm die de telefoon kiest.
+# Verander die twee altijd samen, anders belt de link een ander nummer dan er staat.
+# De cookiebalk en de privacyregel staan hier NIET: dat is juridische tekst en die blijft vast.
+# GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
 # Meer uitleg: content/LEESMIJ.txt.
 demo:
   kop: Met Youbo starten is makkelijk

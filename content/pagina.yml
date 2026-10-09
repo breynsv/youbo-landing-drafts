@@ -1,17 +1,10 @@
 # LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
-# Dit bestand is de bron van de TEKST van de landingspagina: de koppen, de lopende tekst, de
-# knoplabels, de vier stappen van de rondleiding en de twee grote cijfers.
-# build-inhoud.mjs zet die tekst bij de bouw in draft-r3-01-definitief.html. Verander de tekst
-# dus hier en niet in de HTML.
-# GEEN HTML in de tekst — de bouw weigert een bestand met een < erin, met opzet.
-# Elk veld is één doorlopend stuk tekst: geen tweede alinea en geen regelafbreking, want de
-# opmaak van de pagina heeft op die plekken geen plaats voor een tweede alinea.
-# Een veld dat begint met "TODO — " is een nota aan onszelf: het krijgt op de pagina een apart
-# kader met een stippellijn. Dezelfde afspraak als in de FAQ.
-# De volgorde hier is de volgorde op de pagina. Velden bijzetten of weghalen kan niet: de
-# pagina vraagt om precies deze velden en de bouw stopt als er één ontbreekt of over is.
-# De groep "vindbaarheid" onderaan staat NIET op de pagina: dat is de titel in Google en de
-# tekst die meekomt als iemand de pagina deelt. Daarom staat ze achteraan en niet vooraan.
+# Dit bestand is de TEKST van de landingspagina: de koppen, de lopende tekst en de knoplabels.
+# Elk veld is één doorlopend stuk tekst — geen tweede alinea en geen regelafbreking.
+# GEEN HTML: de bouw weigert een bestand met een < erin, met opzet.
+# Een veld dat begint met "TODO — " krijgt op de pagina een apart kader met een stippellijn.
+# De volgorde hier is de volgorde op de pagina. Velden bijzetten of weghalen kan niet.
+# De groep "vindbaarheid" onderaan staat niet op de pagina: dat is Google en het deelbericht.
 # Meer uitleg: content/LEESMIJ.txt.
 hero:
   kop: Compensatie zonder kopzorgen
