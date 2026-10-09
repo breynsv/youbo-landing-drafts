@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-CONCEPT: de bevestigingspagina die volgt op het demoformulier van draft-r3-01-definitief.html. Op productie komt ze op youbo.io/demo/bedankt te staan — een eigen adres, want de technische man van de klant bouwt een JSON-endpoint dat het formulier ontvangt en de bezoeker daarna doorstuurt, en een bereikt adres is het betrouwbaarste wat je als conversie kunt tellen: veel robuuster dan een gebeurtenis die op een klik afgevuurd wordt en die wegvalt zodra het versturen zelf mislukt. Zelfde tokens, zelfde componenten en dezelfde footer als de landingspagina; alles wat hier niet hoort is er niet.
+CONCEPT: de bevestigingspagina die volgt op het demoformulier van draft-r3-01-definitief.html. Op productie komt ze op demo.youbo.io/bedankt te staan — een eigen adres, want de technische man van de klant bouwt een JSON-endpoint dat het formulier ontvangt en de bezoeker daarna doorstuurt, en een bereikt adres is het betrouwbaarste wat je als conversie kunt tellen: veel robuuster dan een gebeurtenis die op een klik afgevuurd wordt en die wegvalt zodra het versturen zelf mislukt. Zelfde tokens, zelfde componenten en dezelfde footer als de landingspagina; alles wat hier niet hoort is er niet.
 WAT EEN BEVESTIGINGSPAGINA DOET, EN NIETS MEER: zeggen dat de aanvraag binnen is, zeggen wat er nu gebeurt, en een weg terug geven. Geen tweede verkooppagina. Daarom staat er geen vaste «Boek een demo»-band (de bezoeker heeft net geboekt — nog eens vragen is ruis), geen logobalk, geen cases, geen quotes, geen FAQ en geen <header> met navigatie. Het woordmerk staat er wel, als één rustig merkanker bovenaan, en het is tegelijk de weg terug.
 DE REACTIETIJD: «eerstdaags», bewust vaag en op aanwijzing van de klant zo gekozen. Er stond in het concept «binnen één werkdag», en niemand heeft nagekeken of Nick die termijn kan halen. Een exacte termijn is een belofte die gebroken kan worden, en een bevestigingspagina is precies het verkeerde moment om dat risico te nemen: hier wordt het vertrouwen gevestigd dat de rest van de pagina heeft opgebouwd. «Eerstdaags» zegt genoeg zonder iets te beloven. Dit is dus géén open punt meer en er staat geen TODO over.
 NOINDEX, EN WAAROM DAT HIER OMGEKEERD IS AAN DE LANDINGSPAGINA: een bevestigingspagina hoort niet in de zoekresultaten. Wie haar via Google binnenkomt, heeft niets aangevraagd en leest een bevestiging van iets wat niet gebeurd is; bovendien vervuilt ze de conversiecijfers, want elk bezoek aan dit adres telt als een aanvraag. check-drafts.mjs verbiedt noindex op elke andere draft — dat was een echte fout die vier drafts eens besmette — dus kent de checker sinds deze pagina twee soorten draft en eist hij noindex hier juist. Zie de meta «pagina-soort» hieronder en de toelichting in check-drafts.mjs.
@@ -29,7 +29,7 @@ GEEN TWEEDE SET STIJLEN: alles hieronder komt letterlijk uit draft-r3-01-definit
      via een zoekmachine binnenkomt heeft niets aangevraagd, en elk bezoek aan
      dit adres telt als een conversie. Er staat met opzet geen rel="canonical":
      een pagina die niet geïndexeerd wil worden, hoeft zich niet als het
-     origineel van iets aan te melden, en youbo.io/demo/bedankt bestaat nog
+     origineel van iets aan te melden, en demo.youbo.io/bedankt bestaat nog
      niet. -->
 <meta name="robots" content="noindex, follow">
 
