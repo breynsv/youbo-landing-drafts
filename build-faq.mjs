@@ -113,16 +113,32 @@ function schaal(ruw, regelnr) {
   return t;
 }
 
-// Blokschalen. ">" (gevouwen) en "|" (letterlijk) worden hier hetzelfde
-// behandeld: een witregel begint een nieuwe alinea, en regels binnen een alinea
-// worden met een spatie aan elkaar geplakt. Een harde regelafbreking midden in
-// een alinea bestaat niet, want die zou <br> vragen en er mag geen HTML in de
-// inhoud staan.
-function blokAlineas(lijnen) {
+// Blokschalen, en de twee vormen zijn NIET hetzelfde — dit is de hele reden dat
+// deze lezer sinds 2026-10-09 beide kent.
+//
+//   ">" is gevouwen: YAML plakt opeenvolgende regels met een spatie aan elkaar,
+//       en alleen een witregel is een alineagrens. Dat is de vorm waarin dit
+//       bestand met de hand getypt is.
+//   "|" is letterlijk: elke regelafbreking is een echte regelafbreking. Daar is
+//       één regel dus één alinea, met of zonder witregel ertussen.
+//
+// Waarom dat verschil hier moet bestaan: Sveltia CMS leest dit bestand met een
+// echte YAML-lezer en schrijft het daarna zelf terug. Een gevouwen blok met een
+// witregel erin levert bij het lezen één "\n" op — geen twee — en het CMS zet
+// dat terug als een letterlijk blok met twee regels zonder witregel ertussen.
+// Zou "|" hier als gevouwen gelezen worden, dan plakte dit script die twee
+// regels weer aan elkaar en verdween de alineagrens. Bij de prijsvraag betekende
+// dat: geen geel TODO-kader meer, en — erger — de openstaande TODO-tekst als
+// gepubliceerd antwoord in de FAQ-structuurdata voor Google. Zie SVELTIA.md.
+//
+// Een harde regelafbreking BINNEN een alinea bestaat nog steeds niet: die zou
+// <br> vragen, en er mag geen HTML in de inhoud staan.
+function blokAlineas(lijnen, letterlijk = false) {
   const gevuld = lijnen.filter((r) => !isLeeg(r));
   if (!gevuld.length) return [];
   const diepte = Math.min(...gevuld.map(inspringing));
   const kaal = lijnen.map((r) => (isLeeg(r) ? '' : r.slice(diepte)));
+  if (letterlijk) return kaal.map((r) => r.trim()).filter((r) => r !== '');
   const alineas = [];
   let huidig = [];
   for (const r of kaal) {
@@ -133,7 +149,19 @@ function blokAlineas(lijnen) {
   return alineas;
 }
 
-function leesFaq(pad) {
+// Een waarde op één regel kan evengoed regelafbrekingen bevatten: een YAML-lezer
+// mag "a\nb" ook als dubbel aangehaalde string schrijven. Dezelfde afspraak als
+// bij "|" — een regelafbreking is een alineagrens.
+const alineasUitTekst = (tekst) =>
+  tekst.split('\n').map((r) => r.trim()).filter((r) => r !== '');
+
+// Een blokaanduiding: "|" of ">", eventueel met een inspringingscijfer en/of een
+// afkapteken, in beide volgordes ("|2-" en "|-2" zijn allebei geldig YAML).
+const BLOKVORM = /^[|>](?:[1-9][-+]?|[-+][1-9]?)?$/;
+
+// Geëxporteerd voor toets-faq-rondrit.mjs: die toets leest met déze lezer, en
+// niet met een nabootsing ervan — anders bewijst ze iets over een kopie.
+export function leesFaq(pad) {
   if (!existsSync(pad)) stop(`${relative(hier, pad)} ontbreekt — zonder bron is er geen FAQ`);
   const regels = readFileSync(pad, 'utf8').split('\n');
   let i = 0;
@@ -146,7 +174,6 @@ function leesFaq(pad) {
   i++;
 
   const items = [];
-  let letterlijkGebruikt = false;
 
   while (true) {
     vooruit();
@@ -175,8 +202,7 @@ function leesFaq(pad) {
       const sleutel = p[1];
       const rest = p[2].trim();
       if (sleutel in item) stop(`content/faq.yml regel ${nr}: "${sleutel}" staat twee keer in hetzelfde item`);
-      if (/^[|>][-+]?$/.test(rest)) {
-        if (rest[0] === '|') letterlijkGebruikt = true;
+      if (BLOKVORM.test(rest)) {
         const lijnen = [];
         j++;
         while (j < blok.length) {
@@ -185,9 +211,9 @@ function leesFaq(pad) {
           if (inspringing(rr) <= diepte) break;
           lijnen.push(rr); j++;
         }
-        item[sleutel] = blokAlineas(lijnen);
+        item[sleutel] = blokAlineas(lijnen, rest[0] === '|');
       } else {
-        item[sleutel] = [schaal(rest, nr)];
+        item[sleutel] = alineasUitTekst(schaal(rest, nr));
         j++;
       }
       item[`${sleutel}@regel`] = nr;
@@ -195,17 +221,13 @@ function leesFaq(pad) {
     items.push(item);
   }
 
-  if (letterlijkGebruikt) {
-    console.log('  nota: een antwoord gebruikt "|" in plaats van ">". Een harde regelafbreking binnen ' +
-                'een alinea bestaat niet op deze pagina; een witregel begint een nieuwe alinea.');
-  }
   if (!items.length) stop('content/faq.yml bevat geen enkel item');
   return items;
 }
 
 /* -------------------------------------------------------------- nazicht --- */
 
-function keur(items) {
+export function keur(items) {
   const TOEGESTAAN = new Set(['vraag', 'antwoord']);
   const netjes = (a) => a.map((s) => s.replace(/\s+/g, ' ').trim()).filter((s) => s !== '');
   const uit = [];
