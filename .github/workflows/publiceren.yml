@@ -39,11 +39,23 @@ on:
     paths:
       - 'draft-r3-01-definitief.html'
       - 'draft-r3-02-bedankt.html'
+      # Alles wat de marketeer via /beheer/ kan aanpassen. Staat een bestand
+      # hier NIET, dan merkt deze workflow haar opslag niet op, verandert er
+      # niets aan de site, en krijgt niemand een melding — want er is geen
+      # mislukte publicatie, er is helemaal geen publicatie. Dat is de stilste
+      # manier waarop dit kapot kan, dus: elk inhoudsbestand hoort hier.
       - 'content/faq.yml'
+      - 'content/pagina.yml'
+      - 'content/klanten.yml'
+      - 'content/contact.yml'
       - 'assets/img/**'
       - 'publicatie/web.config'
       - 'publiceer.mjs'
       - 'build-faq.mjs'
+      - 'build-inhoud.mjs'
+      - 'faq-opmaak.js'
+      - 'inhoud-opmaak.js'
+      - 'lees-yaml.js'
       - 'stamp-version.mjs'
       - 'check-drafts.mjs'
       - 'VERSION'
@@ -98,6 +110,9 @@ jobs:
       - name: 2 · Nakijken — komt de gebouwde pagina overeen met faq.yml
         id: faq_controle
         run: node build-faq.mjs --check
+
+      - name: 2 · Nakijken — komt de gebouwde pagina overeen met de inhoudsbestanden
+        run: node build-inhoud.mjs --check
 
       - name: 2 · Nakijken — de 19 paginacontroles
         id: pagina_controle
