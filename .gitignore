@@ -36,3 +36,9 @@ feedback-fotos/
 
 # De samengestelde publicatiemap. Gemaakt door publiceer.mjs; nooit met de hand.
 publicatie-uit/
+
+# Uitzondering op de *.md-regel hierboven. Dit is de handleiding die Jana nodig
+# heeft om het beheerscherm te gebruiken, geschreven vóór haar. Hij bevat niets
+# vertrouwelijks — nagekeken op jetons, sleutels en serveradressen — en zonder
+# hem in de repo heeft zij geen instructies op de plek waar ze werkt.
+!beheer/LEESMIJ-JANA.md
