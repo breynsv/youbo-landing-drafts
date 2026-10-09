@@ -25,15 +25,19 @@ OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Loon, bonus en promotie beheren zonder Excel | Youbo</title>
-<meta name="description" content="Youbo beheert de lonen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.">
+<title data-inhoud="vindbaarheid.titel">Loon, bonus en promotie beheren zonder Excel | Youbo</title>
+<meta name="description" data-inhoud-content="vindbaarheid.omschrijving" content="Youbo beheert de lonen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.">
 <link rel="canonical" href="https://demo.youbo.io/">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_BE">
 <meta property="og:site_name" content="Youbo">
-<meta property="og:title" content="Compensatie zonder kopzorgen | Youbo">
-<meta property="og:description" content="Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Boek een demo en zie het op jouw eigen looncyclus.">
+<meta property="og:title" data-inhoud-content="vindbaarheid.deel_titel" content="Compensatie zonder kopzorgen | Youbo">
+<meta property="og:description" data-inhoud-content="vindbaarheid.deel_omschrijving" content="Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Boek een demo en zie het op jouw eigen looncyclus.">
+<!-- og:image, og:url en canonical zijn met opzet GEEN velden: dat zijn adressen
+     en geen tekst, en een vergissing daarin is onzichtbaar tot de advertenties
+     geen voorbeeldafbeelding meer tonen. De vier tekstvelden hierboven zijn
+     campagnetekst en horen wel bij de marketeer. Beslissing van 2026-10-09. -->
 <meta property="og:image" content="https://demo.youbo.io/assets/img/open_graph.png">
 <meta property="og:url" content="https://demo.youbo.io/">
 <meta name="twitter:card" content="summary_large_image">
@@ -2690,11 +2694,18 @@ tailwind.config = {
 
         <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo" data-inhoud="formulier.verzendknop">Vraag je demo aan</button>
 
+        <!-- GEEN VELD, MET OPZET. Deze regel en de cookiebalk onderaan zijn de
+             enige juridische tekst op de pagina, en ze staan daarom NIET in
+             content/contact.yml en niet in /beheer/. Een marketeer die zonder
+             nalezen een privacy- of cookiemelding bijschaaft, is een
+             aansprakelijkheid en geen gemak; dit hoort langs Sven en de klant te
+             gaan en niet langs een invulveld. Beslissing van 2026-10-09; tot dan
+             waren het zeven velden. -->
         <p class="mt-4 text-caption text-ink-soft">
-          <span data-inhoud="formulier.privacy_regel">We gebruiken je gegevens enkel om je demo-aanvraag op te volgen. Lees hoe we daarmee omgaan in de</span>
+          <span>We gebruiken je gegevens enkel om je demo-aanvraag op te volgen. Lees hoe we daarmee omgaan in de</span>
           <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener"
           class="text-link-licht underline underline-offset-4 hover:text-link-hover"
-          style="transition: color var(--m-base) var(--e-standard)" data-cta="formulier-privacy" data-inhoud="formulier.privacy_linktekst">privacy policy</a>.
+          style="transition: color var(--m-base) var(--e-standard)" data-cta="formulier-privacy">privacy policy</a>.
         </p>
       </form>
 
@@ -2947,6 +2958,10 @@ tailwind.config = {
 <div class="fixed bottom-0 inset-x-0 z-50" data-bodembalk>
 
   <!-- DE COOKIEBALK — één smalle strook, bovenop de demobalk.
+       GEEN VELDEN, MET OPZET: de vijf stukken tekst hieronder zijn juridisch en
+       staan daarom niet in content/contact.yml. Zie de nota bij de privacyregel
+       in de formuliersectie. De demobalk eronder is gewone copy en wél een
+       veld.
        Geen overlay, geen blok dat een halve telefoon vult, geen
        voorkeurenpaneel met schuifjes voor categorieën die hier niet bestaan.
        Er is precies één keuze te maken, want er is precies één soort cookie in
@@ -2959,16 +2974,16 @@ tailwind.config = {
        role="region" aria-label="Cookies">
     <div class="max-w-shell mx-auto px-4 md:px-6 py-1 flex items-center gap-3">
       <p class="flex-1 min-w-0 m-0 text-[13px] leading-[1.35] text-ink-soft">
-        <span data-inhoud="cookiebalk.aanloop">We plaatsen</span> <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
+        <span>We plaatsen</span> <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
            class="text-link-licht underline underline-offset-2 hover:text-link-hover"
            style="transition: color var(--m-base) var(--e-standard)"
-           data-cta="cookiebalk-beleid" data-inhoud="cookiebalk.linktekst">meetcookies</a><span class="hidden sm:inline"> <span data-inhoud="cookiebalk.staart">om te zien hoe deze pagina gebruikt wordt</span></span>.
+           data-cta="cookiebalk-beleid">meetcookies</a><span class="hidden sm:inline"> <span>om te zien hoe deze pagina gebruikt wordt</span></span>.
       </p>
       <div class="flex items-center gap-2 shrink-0">
         <button type="button" @click="$store.toestemming.zet('geweigerd')"
-                class="btn-secondary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren" data-inhoud="cookiebalk.weigeren">Weigeren</button>
+                class="btn-secondary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">Weigeren</button>
         <button type="button" @click="$store.toestemming.zet('toegestaan')"
-                class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan" data-inhoud="cookiebalk.toestaan">Toestaan</button>
+                class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan">Toestaan</button>
       </div>
     </div>
   </div>

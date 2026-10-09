@@ -415,7 +415,13 @@ for (const file of drafts) {
   if (h1s.length === 0) errors.push('no <h1>');
   else if (h1s.length > 1) errors.push(`${h1s.length} <h1> elements (must be exactly 1)`);
 
-  if (!/<title>[^<]{10,}<\/title>/i.test(html)) errors.push('missing or stub <title>');
+  // <title[^>]*> en niet <title>: sinds 2026-10-09 draagt de titel van
+  // draft-r3-01-definitief.html een data-inhoud-attribuut, omdat de marketeer de
+  // paginatitel zelf mag schrijven (het is campagnetekst). Deze controle gaat
+  // over de INHOUD van de titel — te kort of ontbrekend — en niet over de vorm
+  // van het tag; met het oude patroon zou ze op elke pagina met een attribuut
+  // afgaan en daarmee precies niets meer zeggen.
+  if (!/<title[^>]*>[^<]{10,}<\/title>/i.test(html)) errors.push('missing or stub <title>');
   if (!/<meta[^>]+name=["']description["'][^>]+content=["'][^"']{40,}/i.test(html))
     errors.push('missing or thin meta description');
   // og-metadata beschrijft een pagina die iemand als link deelt. Een

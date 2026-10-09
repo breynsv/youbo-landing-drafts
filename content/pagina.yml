@@ -10,6 +10,8 @@
 # kader met een stippellijn. Dezelfde afspraak als in de FAQ.
 # De volgorde hier is de volgorde op de pagina. Velden bijzetten of weghalen kan niet: de
 # pagina vraagt om precies deze velden en de bouw stopt als er één ontbreekt of over is.
+# De groep "vindbaarheid" onderaan staat NIET op de pagina: dat is de titel in Google en de
+# tekst die meekomt als iemand de pagina deelt. Daarom staat ze achteraan en niet vooraan.
 # Meer uitleg: content/LEESMIJ.txt.
 hero:
   kop: Compensatie zonder kopzorgen
@@ -58,3 +60,8 @@ integraties:
   functie_4: Core hr
 faq:
   kop: Veelgestelde vragen
+vindbaarheid:
+  titel: Loon, bonus en promotie beheren zonder Excel | Youbo
+  omschrijving: Youbo beheert de lonen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.
+  deel_titel: Compensatie zonder kopzorgen | Youbo
+  deel_omschrijving: Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Boek een demo en zie het op jouw eigen looncyclus.
