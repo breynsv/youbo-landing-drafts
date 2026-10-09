@@ -10,7 +10,7 @@ CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee r
 RONDLEIDING: het meescrollende blok bestaat alleen nog naast elkaar, vanaf 1024px, met één leeslijn op precies de helft van de vensterhoogte. Op telefoon staat per stap eerst de tekst en dan het scherm — Jana's vraag — en dat kan niet samen met een kaart die bovenaan vastkleeft, want die staat altijd bóven de tekst. De knop Boek een demo midden in dat blok is op desktop weg, en het losse brede blok Merit cycle 2027 is geschrapt: het herhaalde de cijfers van stap 1 en stap 3.
 HET GROTE CIJFER: de aanpak van draft-r2-04 overgenomen. Één doorlopende zin op displayformaat met 19.000 en 21 inline in dezelfde maat, alleen in kleur onderscheiden. In ronde 2 stond 19.000 op een eigen regel van 40/56px en 21 in gewone koptekst; dat verschil was Jana's klacht. Het optellen van die twee getallen is er in deze ronde uit: gemeten stonden er tijdens die 900ms 107 verschillende volledige zinnen op de pagina die alle 107 feitelijk onjuist waren.
 QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. Alle vijf de quotes hebben sinds 2026-10-06 een echte foto: de klant leverde bart-verhoeven.webp, joris-valkenborgh.webp en evi-van-der-vliet.webp aan (alle drie 320×320, vierkant, hoofd gecentreerd), naast de bestaande pieter-jan.webp en mieke-catthoor.webp. De lege fotoplek en de fotoTODO zijn daarmee weg. Portretten blijven 56px, want marlies.png in het caseblok is maar 360×360 en breekt boven ±120px. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr draagt sinds 2026-10-08 ook hier een echt logo: één mint-groen bestand doet beide banden, gemeten 4,8:1 op de donkere band.
-FAQ: ongewijzigd. Jana vindt die goed en verfijnt de antwoorden zelf met Nick en Bart.
+FAQ: de tekst staat sinds 2026-10-09 NIET MEER IN DIT BESTAND. Ze komt uit content/faq.yml en wordt bij de bouw hierin gezet door build-faq.mjs, dat meeloopt in het ene build command van Cloudflare Pages (node stamp-version.mjs). De blokken tussen FAQ-LIJST:BEGIN/EINDE en FAQ-JSONLD:BEGIN/EINDE zijn dus gegenereerd: aanpassen heeft hier geen zin, want de volgende bouw overschrijft het. Reden: Jana verfijnt de antwoorden zelf met Nick en Bart, en dat was het enige dat de oplevering nog tegenhield — nu kan ze dat zonder ontwikkelaar. Het gebouwde resultaat staat in git omdat GitHub Pages dit bestand rechtstreeks serveert, zonder build; `node build-faq.mjs --check` zegt of het nog overeenkomt. De zichtbare tekst is woord voor woord die van de vorige versie. Alleen de FAQ werkt zo; de cases, de quotes en de hero blijven HTML, want dit is een proef en geen verbouwing.
 FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, en die intro draagt sinds 2026-10-06 zijn volledige naam en titel: Nick Van Langendonck, reward expert. Het formulier komt eerst; eronder staat in de kleine zetting één rustig blok met de drie alternatieven — "Of boek rechtstreeks in Nicks agenda", zijn e-mailadres als mailto: en zijn telefoonnummer als tel:. Die gegevens stonden er in ronde 1, verdwenen in ronde 2 samen met de geschrapte zin "Liever meteen met iemand spreken" en zijn nu door Jana bevestigd — de gegevens komen dus terug, die zin niet. Bij de agenda staat nog geen knop, want die link bestaat nog niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef, met "1x kwartaal" en met de slotpunt — ronde 3 had daar ongemerkt "1× per kwartaal" van gemaakt.
 VASTE BAND: terug, en nu écht permanent in beeld — ook vóór de cookiekeuze. In ronde 3 wachtte hij op die keuze, waardoor Jana's punt 10 onzichtbaar was voor élke nieuwe bezoeker; hij zet zelf geen cookie, dus is er ook geen reden om te wachten. De cookiebalk staat nu als smalle strook bovenóp hem in één vaste omhulling. Eén actie: Boek een demo. Hij verdwijnt zodra #demo in beeld komt — IntersectionObserver, met 96px marge zodat hij weg is vóórdat hij de kop van die sectie raakt — en ruimte() meet de hoogte van de omhulling (dus de som van wat er staat, niet het maximum van de twee) en zet die als padding-bottom op body, zodat geen van beide over de laatste regels van de footer valt. Gemeten op 390px: 45 + 69 = 114px samen, 69px zodra de cookiebalk weg is. x-show zet display:none, dus een knop in een balk die er niet staat, staat ook niet in de tabvolgorde. Bij prefers-reduced-motion verschijnen ze beide zonder overgang.
 STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency én de hr-tools · quotes · faq · formulier · footer). EU Pay Transparency en de hr-tools waren twee banden en zijn er in ronde 3 één: Jana noemt ze qua belang gelijkwaardig en wil ze op desktop naast elkaar, en naast elkaar bestaat niet over twee banden heen.
@@ -2546,6 +2546,7 @@ tailwind.config = {
     </div>
 
     <div class="mt-10 border-y border-line max-w-prose" data-reveal>
+    <!-- FAQ-LIJST:BEGIN — gegenereerd uit content/faq.yml door build-faq.mjs — met de hand aanpassen heeft geen zin -->
 
       <div class="border-b border-line">
         <h3 class="m-0">
@@ -2559,9 +2560,7 @@ tailwind.config = {
         </h3>
         <div id="faq-0" x-show="open === 0" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De
-            precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je
-            loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder.
+            Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder.
           </p>
         </div>
       </div>
@@ -2578,9 +2577,7 @@ tailwind.config = {
         </h3>
         <div id="faq-1" x-show="open === 1" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat
-            doorgaans vanaf 300 medewerkers, of zodra het Excelproces complex en
-            persoonsafhankelijk wordt.
+            Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat doorgaans vanaf 300 medewerkers, of zodra het Excelproces complex en persoonsafhankelijk wordt.
           </p>
         </div>
       </div>
@@ -2598,12 +2595,10 @@ tailwind.config = {
         <div id="faq-2" x-show="open === 2" x-collapse>
           <div class="pb-6 pr-6">
             <p class="text-body text-ink-soft">
-              Dit is de vraag die iedereen stelt, en ze hoort op de pagina. Wat hier komt te staan,
-              beslist Youbo zelf.
+              Dit is de vraag die iedereen stelt, en ze hoort op de pagina. Wat hier komt te staan, beslist Youbo zelf.
             </p>
             <p class="todo mt-4">
-              <b>TODO — te bevestigen</b>: het antwoord op de prijsvraag. Jana loopt dit na met de partners
-              en met Nicole. Een bereik of de logica achter de prijs is verdedigbaar, geen antwoord is dat niet
+              <b>TODO — te bevestigen</b>: het antwoord op de prijsvraag. Jana loopt dit na met de partners en met Nicole. Een bereik of de logica achter de prijs is verdedigbaar, geen antwoord is dat niet
             </p>
           </div>
         </div>
@@ -2621,8 +2616,7 @@ tailwind.config = {
         </h3>
         <div id="faq-3" x-show="open === 3" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het
-            uitgangspunt. Youbo neemt ook complexe regels en formules over.
+            Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het uitgangspunt. Youbo neemt ook complexe regels en formules over.
           </p>
         </div>
       </div>
@@ -2639,8 +2633,7 @@ tailwind.config = {
         </h3>
         <div id="faq-4" x-show="open === 4" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo
-            inzetten in verschillende landen.
+            Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo inzetten in verschillende landen.
           </p>
         </div>
       </div>
@@ -2657,12 +2650,12 @@ tailwind.config = {
         </h3>
         <div id="faq-5" x-show="open === 5" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing
-            onderbouwd en traceerbaar.
+            Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing onderbouwd en traceerbaar.
           </p>
         </div>
       </div>
 
+    <!-- FAQ-LIJST:EINDE -->
     </div>
   </div>
 </section>
@@ -3494,6 +3487,7 @@ tailwind.config = {
   })();
 </script>
 
+<!-- FAQ-JSONLD:BEGIN — gegenereerd uit content/faq.yml door build-faq.mjs — met de hand aanpassen heeft geen zin -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -3543,6 +3537,7 @@ tailwind.config = {
   ]
 }
 </script>
+<!-- FAQ-JSONLD:EINDE -->
 
 </body>
 </html>

@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 /**
- * Stempelt de ontwerpversie in elke draft, vlak voor publicatie.
+ * Stempelt de ontwerpversie in elke draft, vlak voor publicatie — en bouwt
+ * eerst de FAQ uit content/faq.yml (build-faq.mjs; zie de nota onderaan de
+ * invoer, en de kop van dat bestand).
  *
- *     node stamp-version.mjs            # stempelt
+ *     node stamp-version.mjs            # bouwt de FAQ en stempelt
  *     node stamp-version.mjs --dry-run  # zegt alleen wat het zou doen
  *
  * WAAROM DIT BESTAAT
@@ -43,11 +45,29 @@
 import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { bouwFaq } from './build-faq.mjs';
 
 const hier   = dirname(fileURLToPath(import.meta.url));
 const proef  = process.argv.includes('--dry-run');
 
-const MAANDEN = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli',
+// EERST DE INHOUD, DAARNA DE STEMPEL.
+//
+// Sinds 2026-10-09 komt de FAQ van draft-r3-01-definitief.html uit
+// content/faq.yml in plaats van uit de HTML. Die bouwstap hangt bewust hieraan
+// en niet aan een tweede build command: Cloudflare draait één commando, en een
+// tweede dat iemand in het dashboard had moeten instellen, is een commando dat
+// ooit niet ingesteld is — en dan publiceert de pagina stilletjes de FAQ van
+// vorige maand, zonder dat iemand dat ziet. Precies het argument waarmee de
+// stempel hier staat en geen handeling is.
+//
+// Dit script blijft dus "stamp-version" heten en doet er één ding bij, in de
+// enige juiste volgorde: eerst de tekst in de pagina zetten, dan stempelen
+// welke versie dat is. Gaat de FAQ-bouw niet door, dan stopt build-faq.mjs het
+// hele proces en mislukt de deploy — dat is de bedoeling, want dan houdt
+// Cloudflare de vorige publicatie online in plaats van een halve FAQ.
+bouwFaq({ proef });
+
+const MAANDEN =['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli',
                  'augustus', 'september', 'oktober', 'november', 'december'];
 
 function stop(bericht) {

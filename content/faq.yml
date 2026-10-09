@@ -1,0 +1,65 @@
+# De veelgestelde vragen van de landingspagina.
+#
+# DIT BESTAND IS DE BRON. De FAQ op draft-r3-01-definitief.html wordt hieruit
+# gebouwd door build-faq.mjs, dat meeloopt in de build van Cloudflare Pages.
+# Verander dus hier de tekst en niet in de HTML: wat in de HTML staat wordt bij
+# de volgende bouw overschreven.
+#
+# De vorm, en meer is het niet:
+#
+#   items:
+#     - vraag: "Eén regel, de vraag zoals de bezoeker ze stelt"
+#       antwoord: >
+#         Het antwoord in gewone tekst. Afbreken mag waar je wil — de regels
+#         worden aan elkaar geplakt.
+#
+#         Een witregel begint een nieuwe alinea.
+#
+# Drie dingen om te weten:
+#
+#   1. GEEN HTML. Geen <b>, geen <br>, geen <a href>. Het bouwscript weigert
+#      een bestand met een < erin, en dat is met opzet: tekst uit een
+#      invulveld die als HTML op de pagina belandt, is een lek.
+#   2. DE VOLGORDE HIER IS DE VOLGORDE OP DE PAGINA. Verplaatsen is knippen
+#      en plakken; er zijn geen nummers om bij te houden.
+#   3. EEN ALINEA DIE MET "TODO — " BEGINT is een nota aan onszelf en geen
+#      antwoord. Ze krijgt op de pagina het gele TODO-kader, en de vraag valt
+#      dan uit de FAQ-structuurdata voor Google — want een vraag waarvan het
+#      antwoord nog openstaat, mag je niet als antwoord publiceren. Vervang de
+#      TODO-alinea door het echte antwoord en de vraag staat er weer in.
+
+items:
+  - vraag: "Hoe lang duurt het om Youbo op te zetten?"
+    antwoord: >
+      Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De
+      precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je
+      loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder.
+
+  - vraag: "Vanaf hoeveel medewerkers is Youbo relevant?"
+    antwoord: >
+      Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat
+      doorgaans vanaf 300 medewerkers, of zodra het Excelproces complex en
+      persoonsafhankelijk wordt.
+
+  - vraag: "Hoeveel kost het?"
+    antwoord: >
+      Dit is de vraag die iedereen stelt, en ze hoort op de pagina. Wat hier komt te staan,
+      beslist Youbo zelf.
+
+      TODO — te bevestigen: het antwoord op de prijsvraag. Jana loopt dit na met de partners
+      en met Nicole. Een bereik of de logica achter de prijs is verdedigbaar, geen antwoord is dat niet
+
+  - vraag: "Past Youbo zich aan onze manier van werken aan?"
+    antwoord: >
+      Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het
+      uitgangspunt. Youbo neemt ook complexe regels en formules over.
+
+  - vraag: "Is Youbo geschikt voor meerdere landen en niveaus?"
+    antwoord: >
+      Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo
+      inzetten in verschillende landen.
+
+  - vraag: "Hoe helpt Youbo met compliance?"
+    antwoord: >
+      Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing
+      onderbouwd en traceerbaar.
