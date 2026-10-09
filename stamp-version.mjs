@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 /**
- * Stempelt de ontwerpversie in elke draft, vlak voor publicatie — en bouwt
- * eerst de FAQ uit content/faq.yml (build-faq.mjs; zie de nota onderaan de
- * invoer, en de kop van dat bestand).
+ * Stempelt de ontwerpversie in elke draft, vlak voor publicatie — en zet
+ * eerst de tekst van de landingspagina in de pagina: de negen blokken uit
+ * content/pagina.yml, content/klanten.yml en content/contact.yml
+ * (build-inhoud.mjs) en de FAQ uit content/faq.yml (build-faq.mjs). Zie de
+ * nota onderaan de invoer, en de kop van die twee bestanden.
  *
- *     node stamp-version.mjs            # bouwt de FAQ en stempelt
+ *     node stamp-version.mjs            # bouwt de inhoud en de FAQ, en stempelt
  *     node stamp-version.mjs --dry-run  # zegt alleen wat het zou doen
  *
  * WAAROM DIT BESTAAT
@@ -46,6 +48,7 @@ import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { bouwFaq } from './build-faq.mjs';
+import { bouwInhoud } from './build-inhoud.mjs';
 
 const hier   = dirname(fileURLToPath(import.meta.url));
 const proef  = process.argv.includes('--dry-run');
@@ -60,11 +63,23 @@ const proef  = process.argv.includes('--dry-run');
 // vorige maand, zonder dat iemand dat ziet. Precies het argument waarmee de
 // stempel hier staat en geen handeling is.
 //
-// Dit script blijft dus "stamp-version" heten en doet er één ding bij, in de
+// Sinds 2026-10-10 geldt datzelfde voor de negen andere blokken van die pagina:
+// de koppen, de lopende tekst, de cases, de quotes, het formulier en de voet
+// komen uit content/pagina.yml, content/klanten.yml en content/contact.yml, en
+// build-inhoud.mjs zet ze erin. Twee bouwstappen, één build command, en dus
+// niets om in het dashboard te vergeten.
+//
+// Dit script blijft dus "stamp-version" heten en doet er twee dingen bij, in de
 // enige juiste volgorde: eerst de tekst in de pagina zetten, dan stempelen
-// welke versie dat is. Gaat de FAQ-bouw niet door, dan stopt build-faq.mjs het
-// hele proces en mislukt de deploy — dat is de bedoeling, want dan houdt
-// Cloudflare de vorige publicatie online in plaats van een halve FAQ.
+// welke versie dat is. Gaat een van die twee bouwstappen niet door, dan stopt
+// ze het hele proces en mislukt de deploy — dat is de bedoeling, want dan houdt
+// Cloudflare de vorige publicatie online in plaats van een halve pagina.
+//
+// De inhoud eerst en de FAQ daarna, want zo leest de pagina ook: de FAQ is één
+// blok binnen de inhoud. De twee stappen raken elkaars stukken niet — de FAQ
+// staat tussen markeringen, de rest achter data-inhoud-attributen — dus is die
+// volgorde leesbaarheid en geen afhankelijkheid.
+bouwInhoud({ proef });
 bouwFaq({ proef });
 
 const MAANDEN =['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli',
