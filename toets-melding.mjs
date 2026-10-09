@@ -287,8 +287,8 @@ try {
   const wegwerp = mkdtempSync(join(tmpdir(), 'youbo-melding-'));
   try {
     mkdirSync(join(wegwerp, 'content'));
-    for (const f of ['build-faq.mjs', 'stamp-version.mjs', 'meld-mislukking.mjs', 'VERSION',
-                     'draft-r3-01-definitief.html']) {
+    for (const f of ['build-faq.mjs', 'faq-opmaak.js', 'stamp-version.mjs', 'meld-mislukking.mjs',
+                     'VERSION', 'draft-r3-01-definitief.html']) {
       copyFileSync(join(hier, f), join(wegwerp, f));
     }
     // Precies de fout die we van een invulveld vrezen: HTML in de tekst.
