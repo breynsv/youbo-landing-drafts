@@ -44,6 +44,13 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// De opmaak — hoe een vraag en een antwoord HTML worden — staat sinds
+// 2026-10-09 in faq-opmaak.js. Niet om dit bestand korter te maken, maar omdat
+// het voorbeeldvenster in /beheer/ dezelfde functies in de browser gebruikt.
+// Eén bron voor die HTML, dus kan het voorbeeld niet uiteenlopen met de pagina.
+// Lezen, keuren en wegschrijven blijven hier.
+import { TODO_ALINEA, alineasUitTekst, ctas, lijstHtml } from './faq-opmaak.js';
+
 const hier = dirname(fileURLToPath(import.meta.url));
 
 const BRON   = join(hier, 'content', 'faq.yml');
@@ -55,28 +62,7 @@ const LIJST_EINDE  = '    <!-- FAQ-LIJST:EINDE -->';
 const JSONLD_BEGIN = `<!-- FAQ-JSONLD:BEGIN — ${UITLEG} -->`;
 const JSONLD_EINDE = '<!-- FAQ-JSONLD:EINDE -->';
 
-// De analytics-labels van de zes vragen van oktober 2026. Ze staan hier en niet
-// in content/faq.yml omdat faq.yml precies twee velden heeft — vraag en
-// antwoord — en dat de afspraak is met de CMS-kant. Een data-cta is ook niets
-// voor de marketeer: het is de naam waaronder een klik in de rapportage
-// terechtkomt, en die naam moet gelijk blijven terwijl de tekst verandert.
-// Sleutel is de vraag zelf, dus herschikken verandert niets. Herschrijft iemand
-// een vraag, dan valt dat label terug op een slug en zegt dit script dat.
-const CTA_ERFENIS = new Map([
-  ['Hoe lang duurt het om Youbo op te zetten?',          'faq-opzet'],
-  ['Vanaf hoeveel medewerkers is Youbo relevant?',       'faq-omvang'],
-  ['Hoeveel kost het?',                                  'faq-prijs'],
-  ['Past Youbo zich aan onze manier van werken aan?',    'faq-maatwerk'],
-  ['Is Youbo geschikt voor meerdere landen en niveaus?', 'faq-landen'],
-  ['Hoe helpt Youbo met compliance?',                    'faq-compliance'],
-]);
 
-// Een alinea die zo begint is een nota aan onszelf, geen antwoord aan de
-// bezoeker. Ze krijgt het gele TODO-kader van de pagina, en de vraag valt uit de
-// FAQPage-structuurdata — want een openstaand antwoord aan Google aanbieden als
-// antwoord is erger dan geen structuurdata. Dat is ook precies waarom de
-// prijsvraag vandaag in de zichtbare FAQ staat en niet in de JSON-LD.
-const TODO_ALINEA = /^TODO\s+—\s+/;
 
 function stop(bericht) {
   console.error('STOP — ' + bericht);
@@ -148,12 +134,6 @@ function blokAlineas(lijnen, letterlijk = false) {
   if (huidig.length) alineas.push(huidig.join(' '));
   return alineas;
 }
-
-// Een waarde op één regel kan evengoed regelafbrekingen bevatten: een YAML-lezer
-// mag "a\nb" ook als dubbel aangehaalde string schrijven. Dezelfde afspraak als
-// bij "|" — een regelafbreking is een alineagrens.
-const alineasUitTekst = (tekst) =>
-  tekst.split('\n').map((r) => r.trim()).filter((r) => r !== '');
 
 // Een blokaanduiding: "|" of ">", eventueel met een inspringingscijfer en/of een
 // afkapteken, in beide volgordes ("|2-" en "|-2" zijn allebei geldig YAML).
@@ -260,91 +240,6 @@ export function keur(items) {
   return uit;
 }
 
-/* --------------------------------------------------------------- opmaak --- */
-
-const ontsnap = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-
-function slug(vraag) {
-  const kaal = vraag.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  const woorden = kaal.replace(/[^a-z0-9]+/g, ' ').trim().split(/\s+/).slice(0, 5);
-  return 'faq-' + (woorden.join('-') || 'vraag');
-}
-
-function ctas(items) {
-  const uit = [];
-  const gezien = new Set();
-  for (const item of items) {
-    let naam = CTA_ERFENIS.get(item.vraag);
-    if (!naam) {
-      naam = slug(item.vraag);
-      console.log(`  nota: "${item.vraag}" heeft geen vast analytics-label; data-cta wordt "${naam}"`);
-    }
-    // check-drafts.mjs waarschuwt bij een dubbele data-cta, en terecht: twee
-    // hooks met dezelfde naam zijn in de rapportage niet te scheiden.
-    let kandidaat = naam, n = 2;
-    while (gezien.has(kandidaat)) kandidaat = `${naam}-${n++}`;
-    gezien.add(kandidaat);
-    uit.push(kandidaat);
-  }
-  return uit;
-}
-
-function alineaHtml(tekst, eerste) {
-  const todo = TODO_ALINEA.test(tekst);
-  const klasse = todo ? 'todo mt-4' : `text-body text-ink-soft${eerste ? '' : ' mt-4'}`;
-  let binnen = ontsnap(tekst);
-  if (todo) {
-    const dp = tekst.indexOf(':');
-    binnen = dp === -1
-      ? `<b>${ontsnap(tekst)}</b>`
-      : `<b>${ontsnap(tekst.slice(0, dp))}</b>${ontsnap(tekst.slice(dp))}`;
-  }
-  return { todo, klasse, binnen };
-}
-
-function paneelHtml(item) {
-  const stukken = item.alineas.map((t, n) => alineaHtml(t, n === 0));
-  if (stukken.length === 1 && !stukken[0].todo) {
-    return [
-      '          <p class="pb-6 pr-6 text-body text-ink-soft">',
-      `            ${stukken[0].binnen}`,
-      '          </p>',
-    ];
-  }
-  const regels = ['          <div class="pb-6 pr-6">'];
-  for (const s of stukken) {
-    regels.push(`            <p class="${s.klasse}">`);
-    regels.push(`              ${s.binnen}`);
-    regels.push('            </p>');
-  }
-  regels.push('          </div>');
-  return regels;
-}
-
-function lijstHtml(items, labels) {
-  const blokken = items.map((item, k) => {
-    const laatste = k === items.length - 1;
-    const kop = laatste ? '      <div>' : '      <div class="border-b border-line">';
-    return [
-      kop,
-      '        <h3 class="m-0">',
-      `          <button type="button" @click="open = open === ${k} ? null : ${k}" :aria-expanded="open === ${k} ? 'true' : 'false'"`,
-      `                  aria-controls="faq-${k}" data-cta="${labels[k]}"`,
-      '                  class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"',
-      '                  style="transition: color var(--m-base) var(--e-standard)">',
-      `            <span>${ontsnap(item.vraag)}</span>`,
-      `            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === ${k} && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>`,
-      '          </button>',
-      '        </h3>',
-      `        <div id="faq-${k}" x-show="open === ${k}" x-collapse>`,
-      ...paneelHtml(item),
-      '        </div>',
-      '      </div>',
-    ].join('\n');
-  });
-  return '\n\n' + blokken.join('\n\n') + '\n\n';
-}
 
 function jsonLdHtml(items) {
   const vragen = [];

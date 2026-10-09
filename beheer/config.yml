@@ -32,7 +32,8 @@ backend:
   repo: breynsv/youbo-landing-drafts
   branch: main
 
-  # VUL IN — de URL van de Worker "sveltia-cms-auth" (zie SVELTIA.md, stap 1-3).
+  # De Worker "sveltia-cms-auth" — het aanmeldstation. Hij draait (nagemeten op
+  # 2026-10-09: /auth antwoordt 200 en laat alleen youbo-drafts.pages.dev toe).
   #
   # Dit is geen keuze maar de enige weg: Sveltia kent voor GitHub exact twee
   # aanmeldwegen, `oauth` en `token`. Aanmelden met een persoonlijk jeton is
@@ -42,9 +43,10 @@ backend:
   # OAuth-tussenstation, en Cloudflare Workers is daarvoor de kortste weg —
   # dezelfde Cloudflare-account die deze site al publiceert.
   #
-  # Zolang hier de plaatshouder staat, werkt de knop "Aanmelden met GitHub"
-  # niet. De knop "met een jeton" werkt wel, en daarmee kun je alles testen.
-  base_url: https://youbo-cms-auth.VUL-IN.workers.dev
+  # De GitHub-sleutels van die Worker staan er nog niet in, dus werkt de knop
+  # "Aanmelden met GitHub" pas zodra Sven de GitHub-app aangemaakt heeft. Tot
+  # dan is de jeton-knop de enige die werkt, en daarom staat die er nog.
+  base_url: https://youbo-cms-auth.sven-breynaert.workers.dev
 
   # Beide wegen staan open tot de Worker er is. Daarna mag `token` eruit, zodat
   # er maar één manier van aanmelden bestaat: auth_methods: [oauth]
@@ -81,21 +83,45 @@ media_folder: content/media
 public_folder: /content/media
 
 collections:
+  # TWEE NIVEAUS, TWEE NAMEN.
+  #
+  # Links in de zijbalk staat de verzameling, in het middenpaneel het bestand.
+  # Tot 2026-10-09 heetten ze allebei "Veelgestelde vragen", en dan leest het
+  # middenpaneel als een lege of kapotte lijst terwijl je gewoon moet
+  # doorklikken. Nu zegt elk niveau waar je bent: de zijbalk zegt WAAR de tekst
+  # staat (op de landingspagina), het middenpaneel zegt WAT je bewerkt (de
+  # veelgestelde vragen).
+  #
+  # Dat tussenniveau helemaal overslaan kan Sveltia 0.233.0 niet. Nagemeten met
+  # de echte beheerpagina in een browser: met `singletons` (hun eigen vorm voor
+  # losse bestanden) verschijnt er een zijbalkpositie die rechtstreeks naar het
+  # formulier gaat — maar alléén wanneer er daarnaast ook nog verzamelingen
+  # zijn. Met dit ene bestand valt Sveltia terug op één positie die "Bestanden"
+  # heet, een naam uit hun eigen taalbestand die wij niet kunnen veranderen, en
+  # daarachter staat precies dezelfde tussenlijst. Dat is dus niet korter maar
+  # wél onduidelijker. Een rechtstreekse link naar het formulier overleeft de
+  # aanmelding niet (Sveltia springt na het inloggen zelf naar de verzameling).
   - name: faq
-    label: Veelgestelde vragen
-    icon: quiz
+    label: Landingspagina
+    icon: article
     files:
       - name: faq
         label: Veelgestelde vragen
+        icon: quiz
         file: content/faq.yml
-        description: >-
-          De vragen onderaan de landingspagina. Opslaan zet de tekst meteen in
-          de repo; een paar minuten later staat ze online.
-        # Geen voorbeeldpaneel: dat zou de losse velden tonen en niet de pagina,
-        # en dat leest als een belofte die het niet is. Wie het echt wil zien,
-        # gebruikt de knop naar de pagina zelf.
+        # `description` stond hier en is weg: Sveltia kent die sleutel niet en
+        # schreef bij elke keer openen een waarschuwing in de console. Wat
+        # erin stond — dat opslaan meteen publiceert — staat nu in de hint
+        # hieronder, waar Jana het werkelijk ziet.
+        #
+        # HET VOORBEELDVENSTER STAAT AAN, en toont niet de losse velden maar de
+        # echte FAQ-sectie van de pagina: dezelfde Tailwind-tokens, hetzelfde
+        # lettertype, hetzelfde open- en dichtklappen, hetzelfde TODO-kader. Het
+        # is letterlijk uit draft-r3-01-definitief.html geknipt en met
+        # faq-opmaak.js gevuld — hetzelfde bestand waarmee de bouw de pagina
+        # maakt. Zie beheer/voorbeeld.js.
         editor:
-          preview: false
+          preview: true
         fields:
           - name: items
             label: Vragen
@@ -105,9 +131,10 @@ collections:
             summary: '{{fields.vraag}}'
             collapsed: true
             hint: >-
-              Sleep om de volgorde te veranderen — de volgorde hier is de
-              volgorde op de pagina. Verwijder je een vraag, dan verdwijnt ze
-              van de pagina.
+              **Opslaan zet je tekst rechtstreeks op de site** — er kijkt
+              niemand meer mee. Een paar minuten later staat ze er.\nSleep om de
+              volgorde te veranderen — de volgorde hier is de volgorde op de
+              pagina. Verwijder je een vraag, dan verdwijnt ze van de pagina.
             # Deze regels schrijft Sveltia terug boven `items:` in het bestand,
             # bij elke opslag. Het is de enige uitleg die een herschrijving
             # overleeft, dus staat hier het nodige en niet alles.
@@ -118,7 +145,7 @@ collections:
               dus hier de tekst en niet in de HTML.\nGEEN HTML in de tekst — de
               bouw weigert een bestand met een < erin, met opzet.\nEen alinea
               die met "TODO — " begint is een nota aan onszelf: ze krijgt op de
-              pagina het gele kader en houdt die vraag uit de
+              pagina een apart kader met een stippellijn en houdt die vraag uit de
               FAQ-structuurdata voor Google.\nDe volgorde hier is de volgorde
               op de pagina.\nMeer uitleg: content/LEESMIJ.txt. Het CMS
               herschrijft dit bestand bij elke opslag en bewaart geen ander
@@ -143,7 +170,8 @@ collections:
                   Gewone tekst, geen opmaak en geen HTML — geen **vet**, geen
                   links. **Een nieuwe regel begint een nieuwe alinea** op de
                   pagina.\nStaat het antwoord nog niet vast? Begin de regel met
-                  `TODO — `: die alinea komt dan in een geel kader te staan en
+                  `TODO — `: die alinea komt dan in een apart kader te staan (je
+                  ziet het meteen in het voorbeeld hiernaast) en
                   de vraag blijft uit de zoekresultaten van Google tot het
                   echte antwoord er is.
                 pattern:

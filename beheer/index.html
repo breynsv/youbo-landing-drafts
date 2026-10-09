@@ -63,5 +63,12 @@
   } catch (e) { /* geen voorkeuren te zetten; de interface kiest zelf */ }
 </script>
 <script src="https://unpkg.com/@sveltia/cms@0.233.0/dist/sveltia-cms.js"></script>
+<!--
+  Het voorbeeldvenster. Staat NA het CMS-script, want het registreert zich bij
+  window.CMS; een module wordt toch uitgesteld tot de pagina gelezen is, dus die
+  volgorde is zeker. Zie beheer/voorbeeld.js voor wat het doet en waarom het de
+  echte pagina uitknipt in plaats van haar na te bouwen.
+-->
+<script type="module" src="voorbeeld.js"></script>
 </body>
 </html>
