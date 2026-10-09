@@ -1,0 +1,138 @@
+# Publiceert de landingspagina naar de Azure-app van de klant.
+#
+# DE BEDOELING, IN ÉÉN REGEL
+# Jana past in /beheer/ een FAQ-antwoord aan, Sveltia commit content/faq.yml
+# naar main, en enkele minuten later staat dat antwoord op hun productiesite.
+# Niemand uploadt iets met de hand.
+#
+# DE VOLGORDE IS HET HELE PUNT
+# De FAQ-tekst zit niet in de HTML in git — die wordt er bij de bouw in gezet
+# (build-faq.mjs, aangeroepen door stamp-version.mjs). Zouden we uploaden wat in
+# git staat, dan bereikt een CMS-aanpassing de server NOOIT: faq.yml verandert,
+# de HTML niet, en de upload stuurt een bestand dat er al stond. Dus:
+#
+#   1. bouwen        node stamp-version.mjs   (zet de FAQ in de HTML + stempelt)
+#   2. nakijken      build-faq.mjs --check en check-drafts.mjs OP HET RESULTAAT
+#   3. uitzoeken     node publiceer.mjs       (alleen wat de pagina's nodig hebben)
+#   4. uploaden      FTPS
+#
+# Stap 2 staat met opzet NA stap 1 en niet ervoor. `build-faq.mjs --check` zegt
+# of de HTML overeenkomt met faq.yml; vóór de bouw is dat bij elke CMS-opslag
+# per definitie rood, en dan zou de pijplijn precies dat tegenhouden waarvoor
+# ze bestaat. Ná de bouw is het een echte controle: ze bewijst dat de bouwstap
+# de nieuwe tekst er ook werkelijk in gezet heeft.
+#
+# WAT HIER NIET STAAT
+# Geen host, geen gebruikersnaam, geen wachtwoord, geen pad naar iemands
+# server. Alleen verwijzingen naar GitHub-secrets. Deze repo is publiek.
+# De doelmap op de server staat in publiceer.mjs (de constante SERVERMAP) en
+# wordt hieronder opgevraagd, zodat er geen tweede plek is die hem ook weet.
+
+name: Publiceren naar demo.youbo.io
+
+on:
+  push:
+    branches: [main]
+    # Alleen wanneer er iets verandert dat op de server terechtkomt. Een
+    # aangepaste BRIEF.md of een nieuwe interne draft hoort geen publicatie naar
+    # de klant te veroorzaken.
+    paths:
+      - 'draft-r3-01-definitief.html'
+      - 'draft-r3-02-bedankt.html'
+      - 'content/faq.yml'
+      - 'assets/img/**'
+      - 'publicatie/web.config'
+      - 'publiceer.mjs'
+      - 'build-faq.mjs'
+      - 'stamp-version.mjs'
+      - 'check-drafts.mjs'
+      - 'VERSION'
+      - '.github/workflows/publiceren.yml'
+
+  # Met de hand, en standaard als PROEFRIT: dan logt de upload wat hij zou doen
+  # en schrijft hij niets. Zo kan de eerste keer veilig bekeken worden voordat
+  # er één byte naar de klant gaat.
+  workflow_dispatch:
+    inputs:
+      proefrit:
+        description: 'Proefrit — zegt wat het zou uploaden, schrijft niets'
+        type: boolean
+        default: true
+
+# Eén publicatie tegelijk. cancel-in-progress staat met opzet UIT: een upload
+# halverwege afbreken laat de server in een halve toestand achter, met een
+# boekhoudbestand dat beweert dat alles er staat. Twee duwen vlak na elkaar
+# wachten dus netjes op elkaar.
+concurrency:
+  group: publiceren-demo-youbo
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publiceren:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Geen `npm ci`. stamp-version.mjs, build-faq.mjs, check-drafts.mjs en
+      # publiceer.mjs gebruiken alleen ingebouwde node-modules — nagekeken, niet
+      # aangenomen. De playwright-afhankelijkheid is er voor de QA-scripts, en
+      # die horen niet in een publicatie.
+
+      - name: 1 · Bouwen — de FAQ in de HTML en de versiestempel erop
+        run: node stamp-version.mjs
+
+      - name: 2 · Nakijken — komt de gebouwde pagina overeen met faq.yml
+        run: node build-faq.mjs --check
+
+      - name: 2 · Nakijken — de 19 paginacontroles
+        run: node check-drafts.mjs
+
+      - name: 3 · De publicatiemap samenstellen
+        run: node publiceer.mjs
+
+      - name: 3 · De doelmap op de server opvragen
+        id: doel
+        run: echo "map=$(node publiceer.mjs --servermap)" >> "$GITHUB_OUTPUT"
+
+      # De upload. protocol: ftps is verplicht — Azure weigert gewone FTP, en
+      # de standaardwaarde van deze actie is nog altijd `ftp`.
+      #
+      # security: strict laat de TLS-verbinding het certificaat van de server
+      # controleren. De standaard is `loose`, en die zou het wachtwoord
+      # prijsgeven aan wie zich tussen de runner en Azure wringt.
+      #
+      # De actie stuurt alleen GEWIJZIGDE bestanden: ze houdt op de server een
+      # boekhoudbestand bij met de hash van elk bestand dat er staat. Dat is
+      # haar eigen, bewezen mechanisme en geen eigen bouwsel van ons. De eerste
+      # keer bestaat dat bestand nog niet en gaat alles mee (27 bestanden,
+      # 1,2 MB — enkele seconden). web.config zorgt ervoor dat het
+      # boekhoudbestand zelf niet publiek opvraagbaar is.
+      #
+      # LET OP: de actie maakt de doelmap GELIJK aan de publicatiemap. Alles wat
+      # daar staat en niet uit publiceer.mjs komt, wordt verwijderd — ook
+      # hostingstart.html. Dat is juist voor een app die alleen deze pagina
+      # draagt, en het is de reden dat dit nooit naar een gedeelde app mag
+      # wijzen.
+      #
+      # Vastgezet op de commit achter v4.4.0 en niet op het label: een label kan
+      # verplaatst worden, en deze stap krijgt het FTPS-wachtwoord te zien.
+      - name: 4 · Uploaden via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@110f9186c050f71550953127052e77650219c287 # v4.4.0
+        with:
+          server: ${{ secrets.FTPS_HOST }}
+          username: ${{ secrets.FTPS_GEBRUIKERSNAAM }}
+          password: ${{ secrets.FTPS_WACHTWOORD }}
+          protocol: ftps
+          security: strict
+          local-dir: ./publicatie-uit/
+          server-dir: ${{ steps.doel.outputs.map }}
+          state-name: .ftp-deploy-sync-state.json
+          log-level: standard
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.proefrit || false }}
