@@ -3,7 +3,7 @@
 CONCEPT: Ronde 3, het definitieve ontwerp. Kopie van draft-r2-05 (de schakelende variant in de échte huisstijl van youbo.io), met Jana's feedback van 5 oktober 2026 verwerkt — zie BRIEF-R3.md. De schakelende variant, Zelfde structuur en zelfde copy als draft-r2-02, maar elke kleur, maat, radius en overgangsduur komt letterlijk uit DESIGN-youbo-io.md: groen #0af29f met tekst #154e3a, tekst #0a3327 en #547068, oppervlak #f6f8fa, rand #e1ebf0, Inter, radius 8/12/24, en de spatiëringsschaal 8-128. De pagina begint licht en kantelt per blok naar donker en terug — en het donker is hier niet verzonnen: het is hun eigen verloop van #000000 naar #154e3a, het meest kenmerkende element dat ze hebben.
 SCHAKELING: de overgang tussen licht en donker is zelf de belangrijkste beweging, en hij doet negen keer exact hetzelfde: niets. De sectiegrens is scherp — geen lijn erop, geen vervaging eromheen. Het kleurverschil doet het werk al, en alles wat je ertussen zet leest als iets wat stukging: een gekleurde streep over de volle breedte leest als een vergeten rand, en een vervaging tussen zwart en wit loopt altijd door grijs en ziet er altijd vuil uit. Het verloop #000000 → #154e3a blijft, maar het leeft nu bínnen de donkere band: die is zwart aan boven- én onderkant, het groen zwelt op in een vaste zone van 400px (300px op telefoon) vlak boven de onderrand en zakt in de laatste 160px (120px) terug naar zwart. Vaste pixels en niet procenten, zodat een band van 435px dezelfde zwelling krijgt als een van 1545px — een tweestopsverloop over de volle bandhoogte is precies wat hier als vlek las. Vijf stops `in oklab`, zodat het middengebied groen blijft in plaats van te vergrijzen. Dezelfde vorm als de heroband in draft 06, zodat de twee drafts dit identiek behandelen. Het groen zakt bij het binnenscrollen nog altijd in 350ms in de band in plaats van hard aan te knippen. Alle beweging gaat uit bij prefers-reduced-motion: reduce.
 TITELS: één kop per sectie, nooit twee. De negen minititels boven de koppen zijn weg — Jana keurde die expliciet af en de briefing verbiedt ze. "Bonus & Merit" naast het woordmerk is er in ronde 3 ook uit; wat overblijft zijn de vier stapnummers in de rondleiding, die iets anders zijn dan een titel.
-FOOTER EN TOESTEMMING: de footer is sinds 2026-10-08 niet langer nagebouwd maar hún component zelf, ingesloten — de inhoud van /components/nl/footer.html van youbo.io, met hun klassenamen, hun volgorde en hun negen links, waaronder Nieuws dat in de versie van augustus nog in commentaar stond. Hij is daarmee licht geworden in plaats van zwart, want zo staat hij op hun site: wit met een lijn erboven. Ingesloten en niet opgehaald, omdat deze draft op breynsv.github.io staat waar /js/footer.js en /components/ niet bestaan en de footer dus leeg zou blijven; het blok draagt een comment met de twee regels die hem op hun server weer door footer.js laten vullen. Uit /css/global.css zijn alleen de 21 footerregels overgenomen, elk achter .yb-footer gezet — dat bestand in zijn geheel laden zou via 41 globale elementselectors de typografie en elk formulierveld van deze pagina herschrijven. De juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. De ISO 27001:2022-badge staat als los element bóven de footer, want hun sitefooter draagt hem niet en Jana's campagneplan vraagt hem wel. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan.
+FOOTER EN TOESTEMMING: de footer is sinds 2026-10-08 niet langer nagebouwd maar hún component zelf, ingesloten — de inhoud van /components/nl/footer.html van youbo.io, met hun klassenamen, hun volgorde en hun negen links, waaronder Nieuws dat in de versie van augustus nog in commentaar stond. Hij is daarmee licht geworden in plaats van zwart, want zo staat hij op hun site: wit met een lijn erboven. Ingesloten en niet opgehaald, omdat deze draft op breynsv.github.io staat waar /js/footer.js en /components/ niet bestaan en de footer dus leeg zou blijven; het blok draagt een comment met de twee regels die hem op hun server weer door footer.js laten vullen. Uit /css/global.css zijn alleen de 21 footerregels overgenomen, elk achter .yb-footer gezet — dat bestand in zijn geheel laden zou via 41 globale elementselectors de typografie en elk formulierveld van deze pagina herschrijven. De juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. De ISO 27001:2022-badge staat als los element bóven de footer, want hun sitefooter draagt hem niet en Jana's campagneplan vraagt hem wel. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan. Sinds 2026-10-09 is LinkedIn er echt — partner ID 10139124 — en laadt dus pas na Toestaan in plaats van helemaal niet; van Google is er nog geen id.
 HERO: de tekst komt eerst — kop, intro, knop — en het portret van Nick staat eronder op telefoon en ernaast op desktop. Dat is Jana's uitdrukkelijke vraag in ronde 3; in ronde 2 stond de foto bovenaan. De cijferregel en het blokje "Bonus & Merit" zijn uit de hero weg, en de fotoplek is vervangen door de echte foto (assets/img/nick-portret.webp, 900×1140 — exact het formaat dat BRIEF-R3.md noemt).
 LOGOBALK: NEGEN echte logo's sinds 2026-10-08, geen tekstzetting meer. De vier SVG's die er stonden (SD Worx, DPG Media, Kaneka, Aertssen Group) blijven — die bestaan in twee polariteiten en een PNG daarvoor inruilen is achteruit — en Anchr, Crelan, Axi, Mourik en Protime komen uit de map die Bart De Nil doorstuurde. Protime kwam er als laatste bij: het stond bij ons als integratiepartner genoteerd en er was eerder gevraagd de vermelding weg te laten, maar Bart bevestigde op 2026-10-08 dat Protime óók klant is, dus hoort het in een balk die zegt dat deze bedrijven Youbo vertrouwen. De zichtbare vraag eronder is daarmee beantwoord en weg. Verder ongewijzigd: een doorlopende marquee met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de statische rij. De tussenruimte blijft op 44 → 170px per breekpunt, want de reeks is uit zichzelf al ruim breder dan de balk; gemeten over 60 standen van één volle reeks raken er 2 tot 4 van de 9 items de balk op 390px en 4 tot 5 op 1440px, en op geen enkele stand staat een naam twee keer in beeld. Het tempo is opnieuw gemeten op 15,8 à 15,9 px/s; de duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo — met het negende logo erbij ging dat tempo eerst naar 17,7 px/s en zijn de vier duren opnieuw gezet.
 CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px). Sinds Anchr op 2026-10-08 een echt logo kreeg, is het TODO-blokje op die kaart weg en is die leegte opnieuw gemeten op 340px, nu in Kaneka en Anchr; de volgorde ligt vast in het campagneplan, dus de knip blijft waar hij staat.
@@ -17,7 +17,7 @@ STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · dri
 LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten van de vier SVG's; de vijf PNG-logo's van 2026-10-08 zijn volkleurenbestanden en hebben geen tweede versie nodig. Protime staat alleen op de lichte balk: op donker verdwijnt het grijze «time» bijna. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk staat nu drie keer op licht — hero, vaste band en footer — en dus overal als youbo_logo.svg; sinds de footer hun eigen, witte component is, gebruikt deze pagina youbo_logo_white.svg nergens meer.
 AFWIJKING VAN DE TOKENS: geen enkele nieuwe kleurwaarde. De enige afgeleiden zijn witte transparanties (72%, 16%, 6%) voor secundaire tekst, randen en vlakken op de donkere banden — het systeem documenteert daar geen aparte token voor, en #547068 op zwart haalt de contrastdrempel niet.
 TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Op 2026-10-06 zijn er drie blokjes bij weggevallen, elk omdat de vraag een antwoord kreeg: Nicks achternaam en functietitel (Nick Van Langendonck, reward expert), de merklogo's bij de hr-tools (Jana: "Ik denk dat die icoontjes beter zijn, laten we het daar op houden") en de ontbrekende quotefoto's (alle drie aangeleverd). Op 2026-10-08 vielen er drie bij weg, alle drie doordat Bart De Nil de klantlogo's doorstuurde: het logobestand van Anchr op de casekaart, dezelfde vraag op de quoteband, en de vraag of Protime als klant in de logobalk hoort — Bart antwoordde diezelfde dag dat Protime effectief ook klant is, dus rolt het logo mee en is het blokje eronder weg. Open blijven: het landental van Aertssen — dat staat als X in het campagneplan van de klant zelf en ligt dus bij Bart of Nick — de case-pdf's, de agendalink van Nick, de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
-NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) naast het LinkedIn partner ID; (1) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (2) — vervallen op 2026-10-08: het logobestand van Anchr is er, en dat éne mint-groene bestand werkt op licht én op donker; (3) de vijf case-pdf's; (4) — vervallen op 2026-10-08: Bart De Nil bevestigde dat Protime ook klant is, dus staat het logo in de balk; het blijft daarnaast integratiepartner, en dat is geen tegenspraak; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) het LinkedIn partner ID en het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt sinds kort een schakelaar English/Nederlands/Français; zolang er geen vertaling is, staan die twee andere namen in de footer zonder link, en bij een ja horen er ook twee adressen bij (data-url-en en data-url-fr) plus hreflang in de head.
+NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) — het LinkedIn partner ID is er wél: 10139124, ingevuld op 2026-10-09; (1) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (2) — vervallen op 2026-10-08: het logobestand van Anchr is er, en dat éne mint-groene bestand werkt op licht én op donker; (3) de vijf case-pdf's; (4) — vervallen op 2026-10-08: Bart De Nil bevestigde dat Protime ook klant is, dus staat het logo in de balk; het blijft daarnaast integratiepartner, en dat is geen tegenspraak; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) — half vervallen op 2026-10-09: Jana stuurde de installatiemail van LinkedIn door, dus is het partner ID binnen (10139124, advertentieaccount YouboMerit) en is de Insight Tag actief achter de cookiebalk; open blijft het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt sinds kort een schakelaar English/Nederlands/Français; zolang er geen vertaling is, staan die twee andere namen in de footer zonder link, en bij een ja horen er ook twee adressen bij (data-url-en en data-url-fr) plus hreflang in de head.
 OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 medewerkers in 2 landen, 7× sneller) staan zonder voorbehoud op de pagina — de eerste twee besliste Jana op 2026-10-05, de derde komt op 2026-10-06 letterlijk uit haar campagneplan, dat ook de kop "van 2 weken naar 2 dagen" en de 130 managers uit haar oudere concept niet kent. Wat nog open staat, staat zichtbaar als TODO-blokje bij de casekaart: alleen nog het landental van Aertssen Group.
 -->
 <html lang="nl-BE">
@@ -41,20 +41,41 @@ OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 
 <!-- ===========================================================================
-     LINKEDIN INSIGHT TAG — PLAATSHOUDER, BEWUST NOG NIET ACTIEF
+     LINKEDIN INSIGHT TAG — HET BLOK VAN LINKEDIN ZELF, EN HET BLIJFT IN
+     COMMENTAAR STAAN
      ---------------------------------------------------------------------------
-     Er staat hier geen partner ID, omdat er nog geen bevestigd ID is. Vervang
-     PARTNER_ID_HIER door het echte nummer uit LinkedIn Campaign Manager en haal
-     dan pas het commentaar weg. Vul hier nooit een verzonnen nummer in: dat
-     stuurt data nergens naartoe en ziet er wél aangesloten uit.
+     DE TAG IS ACTIEF sinds 2026-10-09, maar niet hier. Het echte partner ID
+     10139124 (advertentieaccount YouboMerit) staat onderaan deze pagina in
+     laadMeettags(), en die functie draait uitsluitend nadat iemand in de
+     cookiebalk op Toestaan geklikt heeft. In België geldt opt-in: een meettag
+     in de <head> meet vóór de keuze van de bezoeker, en dat mag niet.
 
-     De campagne is LinkedIn-first, dus dit is de eerste tag die live moet.
-     In België geldt opt-in, dus dit script hoort niet hier maar in
-     laadMeettags() onderaan de pagina — die functie draait pas nadat iemand in
-     de cookiebalk op Toestaan geklikt heeft. De cookiebalk en de meelopende
-     demo-knop staan gestapeld in één vaste omhulling onderaan — de cookiebalk
-     als smalle strook bovenop, de demobalk eronder — dus hoeft de demobalk niet
-     op een cookiekeuze te wachten en wachten ze ook niet op elkaar.
+     Wat hieronder staat is dus géén code — de browser voert het niet uit. Het
+     is letterlijk het blok uit de installatiemail van LinkedIn, bewaard zodat
+     de volgende die hier komt kan zien wat LinkedIn aanlevert en wat wij
+     daarvan gemaakt hebben. HAAL HET COMMENTAAR HIER NOOIT WEG: dan laadt de tag
+     in de <head>, vóór de cookiebalk, en is dat precies de overtreding die
+     deze opzet voorkomt. Het nummer blijft hier met opzet PARTNER_ID_HIER
+     staan, zodat dit blok niet voor werkende code kan doorgaan — en
+     check-drafts.mjs leest de ruwe HTML inclusief commentaar en weigert een
+     letterlijk ingevuld _linkedin_partner_id.
+
+     OVER HET ID: 10139124 is openbaar van ontwerp. Het staat in de paginabron
+     van elke site die de Insight Tag gebruikt, LinkedIn levert het aan om in
+     HTML geplakt te worden, en het geeft toegang tot niets. Er valt hier dus
+     geen geheim te bewaken en het hoort niet in een omgevingsvariabele.
+
+     DE <noscript>-PIXEL GEBRUIKEN WE NIET, en daarom staat die alleen hier in
+     commentaar. Zo'n img-element vuurt bij het laden van de pagina, buiten
+     JavaScript om en dus ook buiten de cookiebalk om — hij zou meten bij
+     iemand die nog niets gekozen heeft of net geweigerd heeft. In de echte
+     markup van deze pagina staat geen enkele <noscript>-pixel, en dat hoort
+     zo te blijven.
+
+     De cookiebalk en de meelopende demo-knop staan gestapeld in één vaste
+     omhulling onderaan — de cookiebalk als smalle strook bovenop, de demobalk
+     eronder — dus hoeft de demobalk niet op een cookiekeuze te wachten en
+     wachten ze ook niet op elkaar.
 
      <script type="text/javascript">
        _linkedin_partner_id = "PARTNER_ID_HIER";
@@ -109,14 +130,14 @@ OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 
      Er staat hier met opzet geen tag. Google en LinkedIn worden allebei pas
      ingeladen door laadMeettags(), onderaan deze pagina, en die functie draait
      alleen nadat iemand in de cookiebalk op Toestaan geklikt heeft — in België
-     geldt opt-in. De drie id's staan daar als lege constanten:
+     geldt opt-in. De drie id's staan daar als constanten:
 
-       GOOGLE_GTM_ID       een Tag Manager-container, bv. GTM-XXXXXXX
-       GOOGLE_GA4_ID       een GA4 meetstroom, bv. G-XXXXXXXXXX
-       LINKEDIN_PARTNER_ID het nummer uit LinkedIn Campaign Manager
+       GOOGLE_GTM_ID       een Tag Manager-container, bv. GTM-XXXXXXX — leeg
+       GOOGLE_GA4_ID       een GA4 meetstroom, bv. G-XXXXXXXXXX — leeg
+       LINKEDIN_PARTNER_ID 10139124, ingevuld op 2026-10-09 (YouboMerit)
 
-     Vul in wat je hebt en laat de rest leeg; wat leeg blijft, laadt niet. Kies
-     tussen GTM en GA4, niet allebei: dan telt elke paginaweergave dubbel.
+     Van Google is er nog geen id; wat leeg blijft, laadt niet. Kies tussen GTM
+     en GA4, niet allebei: dan telt elke paginaweergave dubbel.
      Vul nooit een verzonnen id in — dat stuurt data nergens naartoe en ziet er
      wél aangesloten uit.
      =========================================================================== -->
@@ -3247,14 +3268,11 @@ tailwind.config = {
      LAADMEETTAGS — het enige punt waar een meettag de pagina binnenkomt
      ---------------------------------------------------------------------------
      Deze functie draait uitsluitend nadat iemand in de cookiebalk op Toestaan
-     geklikt heeft, en één keer per bezoek. Zolang er geen bevestigde id's zijn,
-     staan de twee tags in commentaar en doet de functie dus niets meer dan de
-     toestemming doorgeven aan Google. Dat is met opzet: een verzonnen id ziet
-     er aangesloten uit en stuurt data nergens naartoe.
+     geklikt heeft, en één keer per bezoek. Dit is het enige punt waar LinkedIn
+     en Google de pagina binnenkomen; in de <head> staat geen van beide.
 
-     Zet hier de twee blokken uit de <head> neer zodra de id's er zijn:
-     · Google  — GTM-XXXXXXX óf G-XXXXXXXXXX, niet allebei
-     · LinkedIn — het Insight-blok met het echte partner ID
+     · LinkedIn — ACTIEF sinds 2026-10-09, partner ID 10139124 (YouboMerit)
+     · Google   — nog geen id; GTM-XXXXXXX óf G-XXXXXXXXXX, niet allebei
      ------------------------------------------------------------------------- */
   var meettagsGeladen = false;
   function laadMeettags() {
@@ -3272,13 +3290,22 @@ tailwind.config = {
       });
     }
 
-    /* De drie id's. Leeg = laadt niet. Vul in wat bevestigd is, kies tussen GTM
-       en GA4, en vul nooit een verzonnen nummer in.
-       TODO — nodig van klant: alle drie. Zolang ze leeg zijn, vertrekt er geen
-       enkel verzoek naar een meetdienst en doet deze functie verder niets. */
+    /* De drie id's. Leeg = laadt niet. Kies tussen GTM en GA4, en vul nooit een
+       verzonnen nummer in: dat stuurt data nergens naartoe en ziet er wél
+       aangesloten uit.
+
+       LinkedIn is ingevuld. 10139124 is het partner ID van het
+       advertentieaccount YouboMerit, uit de installatiemail van LinkedIn zelf
+       die Jana Wuyts op 2026-10-09 doorstuurde. Dat nummer is openbaar van
+       ontwerp: het staat in de paginabron van elke site met een Insight Tag en
+       het geeft toegang tot niets, dus hoeft het niet verborgen te worden en
+       hoort het niet in een omgevingsvariabele.
+
+       TODO — nodig van klant: het Google meet-id. Zolang dat leeg is laadt er
+       van Google niets en geeft deze functie alleen de toestemming door. */
     var GOOGLE_GTM_ID       = '';   /* bv. 'GTM-XXXXXXX'  */
     var GOOGLE_GA4_ID       = '';   /* bv. 'G-XXXXXXXXXX' */
-    var LINKEDIN_PARTNER_ID = '';   /* het nummer uit LinkedIn Campaign Manager */
+    var LINKEDIN_PARTNER_ID = '10139124';   /* YouboMerit — openbaar, zie hierboven */
 
     function laadScript(bron) {
       var el = document.createElement('script');

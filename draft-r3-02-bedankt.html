@@ -6,7 +6,7 @@ DE REACTIETIJD: «eerstdaags», bewust vaag en op aanwijzing van de klant zo gek
 NOINDEX, EN WAAROM DAT HIER OMGEKEERD IS AAN DE LANDINGSPAGINA: een bevestigingspagina hoort niet in de zoekresultaten. Wie haar via Google binnenkomt, heeft niets aangevraagd en leest een bevestiging van iets wat niet gebeurd is; bovendien vervuilt ze de conversiecijfers, want elk bezoek aan dit adres telt als een aanvraag. check-drafts.mjs verbiedt noindex op elke andere draft — dat was een echte fout die vier drafts eens besmette — dus kent de checker sinds deze pagina twee soorten draft en eist hij noindex hier juist. Zie de meta «pagina-soort» hieronder en de toelichting in check-drafts.mjs.
 GEEN FORMULIER, EN DAT IS AFDWINGBAAR GEMAAKT. De checker eist op een landingspagina een <form> met een e-mailveld en verbiedt die hier. Een bevestigingspagina met een formulier erop is dezelfde fout als de vaste demobalk: je vraagt iets aan iemand die het net gegeven heeft.
 HET ALTERNATIEF: hetzelfde als onder het formulier op de landingspagina — Nicks e-mailadres als mailto: en zijn telefoonnummer als tel:, beide met data-cta zodat ze meetbaar blijven. Het nummer staat Belgisch gezet (0486 08 27 65) en de href draagt +32486082765, want dat is wat een telefoon moet kiezen. De agendalink van Nick bestaat nog niet en staat hier dus niet; op de landingspagina staat daar een TODO bij, en die hoort daar en niet twee keer.
-DE COOKIEBALK STAAT ER WEL, en hij is letterlijk dezelfde: dezelfde balk, dezelfde twee knoppen, dezelfde localStorage-sleutel «youbo-toestemming» en dezelfde laadMeettags(). Dat is geen kopieerwerk uit netheid maar een vereiste: het meten loopt ook op deze pagina — dit is zelfs hét adres dat geteld wordt — en toestemming moet zich over het hele domein hetzelfde gedragen. Wie op de landingspagina Toestaan koos, ziet de balk hier niet meer; wie weigerde, blijft geweigerd. LinkedIn en Google laden nergens in de <head> maar uitsluitend in laadMeettags(), na Toestaan, met Consent Mode v2 op denied tot dan.
+DE COOKIEBALK STAAT ER WEL, en hij is letterlijk dezelfde: dezelfde balk, dezelfde twee knoppen, dezelfde localStorage-sleutel «youbo-toestemming» en dezelfde laadMeettags(). Dat is geen kopieerwerk uit netheid maar een vereiste: het meten loopt ook op deze pagina — dit is zelfs hét adres dat geteld wordt — en toestemming moet zich over het hele domein hetzelfde gedragen. Wie op de landingspagina Toestaan koos, ziet de balk hier niet meer; wie weigerde, blijft geweigerd. LinkedIn en Google laden nergens in de <head> maar uitsluitend in laadMeettags(), na Toestaan, met Consent Mode v2 op denied tot dan. Sinds 2026-10-09 staat het echte LinkedIn partner ID 10139124 ingevuld, hier en op de landingspagina; van Google is er nog geen id.
 DE FOOTER: hún eigen component, ingesloten, byte voor byte hetzelfde blok als op de landingspagina, met dezelfde comment erboven die uitlegt hoe hij op youbo.io weer door footer.js gevuld wordt. Eén verschil, en het is een weglating: de ISO 27001:2022-badge staat hier niet. Die hoort niet bij hun footer — hij staat op de landingspagina als los element erbóven omdat Jana's campagneplan hem dáár vraagt — en een keurmerk op een bevestigingspagina is precies het soort extra dat deze pagina niet hoort te hebben.
 GEEN TWEEDE SET STIJLEN: alles hieronder komt letterlijk uit draft-r3-01-definitief.html — de tokens, de knoppen, .shell, .band-pad, het TODO-blokje, de focusomlijning, de alternatievenlinks en het volledige footerblok. Overgenomen en niet nagebouwd, zodat deze pagina niet als een neef van de landingspagina leest maar als dezelfde site.
 -->
@@ -43,22 +43,39 @@ GEEN TWEEDE SET STIJLEN: alles hieronder komt letterlijk uit draft-r3-01-definit
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 
 <!-- ===========================================================================
-     LINKEDIN INSIGHT TAG — PLAATSHOUDER, BEWUST NOG NIET ACTIEF
+     LINKEDIN INSIGHT TAG — HET BLOK VAN LINKEDIN ZELF, EN HET BLIJFT IN
+     COMMENTAAR STAAN
      ---------------------------------------------------------------------------
-     Letterlijk hetzelfde blok als op de landingspagina, en om dezelfde reden
-     uitgeschakeld: er is nog geen bevestigd partner ID. Vul nooit een verzonnen
-     nummer in — dat stuurt data nergens naartoe en ziet er wél aangesloten uit.
+     Letterlijk hetzelfde blok als op de landingspagina, en om dezelfde reden in
+     commentaar: de tag hoort niet in de <head>. DE TAG IS ACTIEF sinds
+     2026-10-09, met partner ID 10139124 (advertentieaccount YouboMerit), en hij
+     staat onderaan deze pagina in laadMeettags(). In België geldt opt-in, dus
+     draait die functie pas nadat iemand in de cookiebalk op Toestaan geklikt
+     heeft — ook hier, en op dezelfde keuze als op de landingspagina, want het
+     is dezelfde sleutel in localStorage.
 
      DIT IS HET ADRES DAT GETELD WORDT. Een bereikt adres is de betrouwbaarste
      conversiemeting die er is: ze overleeft een mislukte verzending, een
-     dubbele klik en een bezoeker die de pagina herlaadt. Zodra het partner ID
-     er is, hoort op dit adres de conversie in LinkedIn Campaign Manager te
-     staan, en in Google een doel op het paginapad — niet een klikgebeurtenis
-     op de knop van het formulier.
+     dubbele klik en een bezoeker die de pagina herlaadt. Op dit adres hoort dus
+     de conversie in LinkedIn Campaign Manager te staan, en in Google een doel
+     op het paginapad — niet een klikgebeurtenis op de knop van het formulier.
+     Dat wie weigerde hier niet geteld wordt, is geen defect: dat is wat
+     weigeren betekent.
 
-     In België geldt opt-in, dus het script hoort niet hier maar in
-     laadMeettags() onderaan deze pagina, die pas draait nadat iemand in de
-     cookiebalk op Toestaan geklikt heeft.
+     Wat hieronder staat is géén code en wordt niet uitgevoerd; het is het blok
+     uit de installatiemail van LinkedIn, bewaard als documentatie. HAAL HET
+     COMMENTAAR HIER NOOIT WEG. Het nummer blijft hier met opzet
+     PARTNER_ID_HIER staan, zodat dit blok niet voor werkende code kan doorgaan.
+     Over het ID zelf: 10139124 is openbaar van ontwerp — het staat in de
+     paginabron van elke site die de Insight Tag gebruikt en het geeft toegang
+     tot niets, dus valt er geen geheim te bewaken.
+
+     DE <noscript>-PIXEL GEBRUIKEN WE NIET. Zo'n img-element vuurt bij het laden
+     van de pagina, buiten JavaScript en dus buiten de cookiebalk om, en zou
+     meten bij
+     wie nog niets koos of net weigerde. Juist op een conversiepagina is dat
+     verleidelijk; het blijft een overtreding. In de echte markup van deze
+     pagina staat geen enkele <noscript>-pixel.
 
      <script type="text/javascript">
        _linkedin_partner_id = "PARTNER_ID_HIER";
@@ -728,13 +745,13 @@ tailwind.config = {
      Woord voor woord dezelfde functie als op de landingspagina, en dat hoort
      zo: dit is dezelfde site en dezelfde toestemming. Ze draait uitsluitend
      nadat iemand in de cookiebalk op Toestaan geklikt heeft, en één keer per
-     bezoek. Zolang de drie id's leeg zijn vertrekt er geen enkel verzoek naar
-     een meetdienst en geeft ze alleen de toestemming door aan Google.
+     bezoek. LinkedIn is sinds 2026-10-09 ingevuld en laadt dus écht, maar
+     alleen na Toestaan; van Google is er nog geen id.
 
-     DE CONVERSIE HOORT OP HET PAGINAPAD, NIET OP EEN KLIK. Zodra de id's er
-     zijn: in LinkedIn Campaign Manager een conversie op dit adres, en in
-     Google een doel op /demo/bedankt. Een gebeurtenis die op de knop van het
-     formulier afvuurt, telt ook de aanvragen die daarna mislukken.
+     DE CONVERSIE HOORT OP HET PAGINAPAD, NIET OP EEN KLIK: in LinkedIn
+     Campaign Manager een conversie op dit adres, en in Google een doel op
+     /demo/bedankt. Een gebeurtenis die op de knop van het formulier afvuurt,
+     telt ook de aanvragen die daarna mislukken.
      ------------------------------------------------------------------------- */
   var meettagsGeladen = false;
   function laadMeettags() {
@@ -752,14 +769,20 @@ tailwind.config = {
       });
     }
 
-    /* De drie id's. Leeg = laadt niet. Vul in wat bevestigd is, kies tussen GTM
-       en GA4, en vul nooit een verzonnen nummer in.
-       TODO — nodig van klant: alle drie, en het zijn dezelfde drie als op de
-       landingspagina. Zolang ze leeg zijn, vertrekt er geen enkel verzoek naar
-       een meetdienst en doet deze functie verder niets. */
+    /* De drie id's, dezelfde drie als op de landingspagina. Leeg = laadt niet.
+       Kies tussen GTM en GA4, en vul nooit een verzonnen nummer in.
+
+       LinkedIn is ingevuld: 10139124, het partner ID van het advertentieaccount
+       YouboMerit, uit de installatiemail van LinkedIn zelf die Jana Wuyts op
+       2026-10-09 doorstuurde. Dat nummer is openbaar van ontwerp — het staat in
+       de paginabron van elke site met een Insight Tag en het geeft toegang tot
+       niets, dus hoeft het niet verborgen te worden.
+
+       TODO — nodig van klant: het Google meet-id, en dat is hetzelfde id als op
+       de landingspagina. Zolang dat leeg is laadt er van Google niets. */
     var GOOGLE_GTM_ID       = '';   /* bv. 'GTM-XXXXXXX'  */
     var GOOGLE_GA4_ID       = '';   /* bv. 'G-XXXXXXXXXX' */
-    var LINKEDIN_PARTNER_ID = '';   /* het nummer uit LinkedIn Campaign Manager */
+    var LINKEDIN_PARTNER_ID = '10139124';   /* YouboMerit — openbaar, zie hierboven */
 
     function laadScript(bron) {
       var el = document.createElement('script');
