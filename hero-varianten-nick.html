@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<!--
+CONCEPT: Vijf hero's naast elkaar, één vraag. Jana vindt Nick te prominent in de hero van
+draft-r3-01-definitief.html, en dat is géén vraag om hem weg te halen: in ronde 1 vroeg ze hem
+er juist bij — "dan geven we de software een gezicht, het is vertrouwenswaardig". De opdracht is
+dus het volume omlaag, niet de persoon eruit. Deze pagina toont vijf manieren om dat te doen,
+zodat ze er één kan aanwijzen. Zelfde opzet als interacties-hoe-het-werkt.html uit ronde 2: één
+pagina, vijf werkende varianten, een oordeel per variant en een aanbeveling onderaan.
+ECHT, NIET GESCHETST: elke variant is de échte hero — hetzelfde woordmerk, dezelfde kop, dezelfde
+intro, dezelfde knop, dezelfde tokens uit DESIGN-youbo-io.md en dezelfde foto's. Niets staat in
+een telefoonlijstje of een kadertje op schaal: de hero's lopen over de volle paginabreedte, dus
+op een breed scherm zie je ze op ware grootte en op een telefoon zie je precies wat een bezoeker
+daar ziet. Dat is het enige waarop een hero te beoordelen is.
+WAT ER PER VARIANT VERANDERT: alleen de foto. Kop, intro, knop, woordmerk, kleuren en maten zijn
+in alle vijf identiek, want anders vergelijk je twee dingen tegelijk en zegt het antwoord niets.
+De vijf vormen samen een schaal van luid naar stil: 3 (even groot, maar zonder kader) · 2 (smaller
+en korter) · 1 (rond en kleiner) · 4 (klein en laag) · 5 (niet in de hero).
+TELEFOON EERST: in alle vijf staat de tekst vóór de foto in de HTML, dus op een telefoon lees je
+kop, belofte en knop en pas daarna zie je Nick. Dat is Jana's eigen beslissing uit ronde 3 en die
+blijft in elke variant overeind.
+GEEN KOPPEN IN DE HERO'S: de kop "Compensatie zonder kopzorgen" staat hier vijf keer, en vijf
+keer dezelfde paginatitel op een pagina is geen pagina meer. De vijf hero's zijn stalen, geen
+secties, dus staat die kop in een alinea met de klasse koptekst — letterlijk dezelfde zetting
+(text-h1 / lg:text-display, font-bold, text-ink, text-wrap balance), alleen geen kop in de
+documentstructuur. Wie met een schermlezer door de koppen loopt, hoort zo de vijf varianten en
+niet vijf keer dezelfde slogan. De enige echte paginatitel is die van deze vergelijkingspagina
+zelf, bovenaan. (Deze alinea schrijft die tag met opzet niet voltallig uit: check-drafts.mjs
+telt ze in de ruwe HTML, commentaar inbegrepen, en een voorbeeld in een toelichting telt mee.)
+PAGINA-SOORT: deze pagina is geen landingspagina en wordt ook niet gepubliceerd. Ze draagt daarom
+<meta name="pagina-soort" content="vergelijking">, net zoals draft-r3-02-bedankt.html zichzelf als
+"bevestiging" aanmeldt. check-drafts.mjs leest die meta en keert drie regels om in plaats van ze
+te verzwakken: noindex is hier verplicht in plaats van verboden, een meettag is hier verboden in
+plaats van verplicht, en een formulier wordt hier niet geëist. De reden staat per regel in
+check-drafts.mjs. Deze pagina wordt dus écht gecontroleerd; ze ontsnapt niet aan de gate door
+anders te heten.
+NIEUWE BEELDEN: geen. Alle vijf de varianten komen uit nick-portret.webp (900×1140) en
+nick-rond.webp (320×320) die er al zijn. De smallere uitsnedes zijn uitsnedes in CSS
+(aspect-ratio + object-fit + object-position), geen nieuwe bestanden, dus er is niets aan
+ASSET-MANIFEST.md toe te voegen. De ronde foto staat op 176px en de kleine op 56px — allebei ruim
+onder de 320px van het bestand, dus scherp op een retinascherm.
+AANBEVELING: variant 3. Het kader is wat Nick tot voorwerp maakt, niet zijn formaat; de foto is
+een uitsnede op wit en staat dus zonder rand al ín de pagina in plaats van erop. Hij blijft
+daarmee even herkenbaar en even groot, en precies de hardheid waar Jana over valt is weg. Variant 1
+is de veilige tweede keuze. De volledige afweging staat onderaan deze pagina.
+-->
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="pagina-soort" content="vergelijking">
+
+<title>Vijf hero’s met Nick — welke verhouding klopt | Youbo</title>
+<meta name="description" content="Vijf keer dezelfde hero van de Youbo-landingspagina, met telkens een andere behandeling van het portret van Nick: rond, smaller uitgesneden, zonder kader, klein en laag, of helemaal niet in de hero.">
+
+<!-- Een interne vergelijkingspagina hoort niet in de zoekresultaten: ze toont vijf
+     tegenstrijdige versies van dezelfde hero en ze is voor één lezer gemaakt.
+     check-drafts.mjs eist noindex voor pagina-soort "vergelijking", net zoals
+     voor de bevestigingspagina. -->
+<meta name="robots" content="noindex">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* ---------------------------------------------------------------------------
+   Letterlijk de tokenconfiguratie van draft-r3-01-definitief.html. Niet
+   nagemaakt en niet uitgedund: als de varianten op andere waarden staan dan de
+   echte pagina, vergelijk je iets anders dan wat je gaat bouwen.
+   --------------------------------------------------------------------------- */
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },   /* primary + primary-text   */
+        ink:     { DEFAULT: '#0a3327', soft: '#547068',    /* text-primary + secondary */
+                   inv: '#ffffff' },
+        paper:   '#ffffff',                                 /* background               */
+        surface: '#f6f8fa',                                 /* surface                  */
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
+        forest:  '#154e3a',                                 /* gradient-dark-end        */
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionDuration: { fast: '150ms', base: '200ms', medium: '300ms', slow: '350ms' },
+      transitionTimingFunction: {
+        standard:   'ease-in-out',
+        decelerate: 'ease-out',
+        accelerate: 'cubic-bezier(0, 1, 0.3, 1)',
+      },
+    }
+  }
+}
+</script>
+
+<style type="text/tailwindcss">
+  @layer base {
+    :root {
+      --m-fast: 150ms;
+      --m-base: 200ms;
+      --m-medium: 300ms;
+      --m-slow: 350ms;
+      --e-standard: ease-in-out;
+      --e-decelerate: ease-out;
+      --e-accelerate: cubic-bezier(0, 1, 0.3, 1);
+      /* #00acd6 haalt op wit maar 2,67:1 en op #f6f8fa 2,51:1, terwijl een
+         bedieningselement 3:1 moet halen. Deze pagina is volledig licht, dus
+         staat de focusomlijning overal op de donkerder trap #00718c:
+         5,61:1 op wit en 5,27:1 op #f6f8fa. */
+      --c-focus: #00718c;
+    }
+    html { scroll-behavior: smooth; }
+    body { @apply font-sans text-body font-medium text-ink bg-paper antialiased; }
+    h1, h2, h3 { @apply font-sans font-bold text-ink; text-wrap: balance;
+                 hyphens: auto; overflow-wrap: break-word; }
+    p { text-wrap: pretty; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
+  }
+
+  @layer components {
+    /* ---- knoppen, exact de componentspecificatie uit de designbron ---------- */
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-sm text-body
+                  font-bold min-h-[48px] px-6 py-[14px] cursor-pointer;
+           transition: background-color var(--m-base) var(--e-standard),
+                       color var(--m-base) var(--e-standard),
+                       border-color var(--m-base) var(--e-standard); }
+    .btn-primary { @apply btn bg-brand text-brand-ink; }
+    .btn-primary:hover { background-color: #000000; color: #0af29f; }
+    .btn-primary:active { background-color: #031317; color: #0af29f; }
+
+    /* ---- de kop van een staal -----------------------------------------------
+       Precies de zetting die h1 in de echte pagina krijgt, maar als <p>. Zie de
+       toelichting bovenaan dit bestand: vijf keer dezelfde kop als échte kop zou
+       de documentstructuur van deze vergelijkingspagina onbruikbaar maken. */
+    .koptekst { @apply font-sans font-bold text-ink; text-wrap: balance;
+                hyphens: auto; overflow-wrap: break-word; }
+
+    /* ---- het bijschrift naast de foto, zoals op de echte pagina ------------- */
+    .bijschrift { @apply mt-5 text-body text-ink-soft border-l-4 border-brand pl-5; }
+
+    /* ---- variant 3: de onderkant lost op in de pagina -----------------------
+       De foto is een uitsnede op wit, dus een masker naar transparant laat hem
+       in het papier zakken in plaats van tegen een rand te stoppen. Geen nieuwe
+       kleur, geen tweede beeldbestand: hetzelfde webp met een masker erover.
+       Het masker begint pas op 52% — daarboven blijft Nick volledig dekkend,
+       dus zijn gezicht wordt nergens flauwer. */
+    /* Variant 4 heeft hetzelfde probleem in het klein: haal het kader weg en de
+       rechte onderrand van de uitsnede wordt ineens een streep. Deze korte
+       vervaging raakt alleen de laatste 18% en is dus geen tweede versie van
+       variant 3 maar de prijs van elk kaderloos portret — op zich al een
+       bevinding om te melden. */
+    .vervloei-kort {
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 82%, transparent 100%);
+              mask-image: linear-gradient(to bottom, #000 0%, #000 82%, transparent 100%);
+    }
+
+    .vervloei {
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 52%, rgba(0,0,0,.55) 78%, transparent 97%);
+              mask-image: linear-gradient(to bottom, #000 0%, #000 52%, rgba(0,0,0,.55) 78%, transparent 97%);
+    }
+
+    /* ---- de snelkoppelingen bovenaan ---------------------------------------- */
+    .sprong { @apply inline-flex items-center gap-2 min-h-[44px] rounded-sm border
+                     border-line-btn bg-paper px-4 py-2 text-caption font-medium text-ink
+                     no-underline;
+              transition: background-color var(--m-fast) var(--e-standard),
+                          border-color var(--m-fast) var(--e-standard); }
+    .sprong:hover { @apply bg-surface border-ink; }
+    .sprong b { @apply font-bold text-brand-ink; }
+  }
+
+  @layer utilities {
+    .band-pad { @apply py-12 md:py-20; }
+    .shell    { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================================
+     PAGINAKOP — wat hier te kiezen valt, en waarom er vijf staan.
+     Geen minititel boven de kop: die regel geldt ook op deze pagina.
+     ========================================================================= -->
+<header class="bg-surface border-b border-line">
+  <div class="shell py-12 md:py-20">
+    <h1 class="text-h1 lg:text-display max-w-[20ch]">
+      Vijf hero’s, vijf keer minder Nick
+    </h1>
+    <p class="mt-5 text-h3 text-ink-soft max-w-prose">
+      Jana vindt Nick te prominent in de hero. Niet dat hij weg moet — zij vroeg hem er in de
+      eerste ronde zelf bij, omdat de software een gezicht nodig heeft. Dus: hetzelfde gezicht,
+      zachter gezet. Hieronder staat vijf keer dezelfde hero, met telkens één verschil.
+    </p>
+    <p class="mt-5 text-body text-ink-soft max-w-prose">
+      Kop, belofte, knop, woordmerk en kleuren zijn in alle vijf identiek. Alleen de foto
+      verandert. Het zijn echte hero’s op ware grootte, geen schetsen: op een telefoon zie je
+      precies wat een bezoeker daar ziet, en in alle vijf komt de tekst eerst en de foto daarna.
+    </p>
+
+    <nav class="mt-8" aria-label="Naar een variant">
+      <ul class="flex flex-wrap gap-3 m-0 p-0 list-none">
+        <li><a href="#variant-1" class="sprong"><b>1</b> Kleiner en rond</a></li>
+        <li><a href="#variant-2" class="sprong"><b>2</b> Strakker uitgesneden</a></li>
+        <li><a href="#variant-3" class="sprong"><b>3</b> Zonder kader, uitvloeiend</a></li>
+        <li><a href="#variant-4" class="sprong"><b>4</b> Klein en laag</a></li>
+        <li><a href="#variant-5" class="sprong"><b>5</b> Niet in de hero</a></li>
+        <li><a href="#advies" class="sprong"><b>→</b> Onze keuze</a></li>
+      </ul>
+    </nav>
+
+    <p class="mt-6 text-caption text-ink-soft max-w-prose">
+      Ter vergelijking: vandaag staat Nick op 400 bij 505 pixels in een kader met een rand,
+      rechts naast de kop, met het bijschrift eronder.
+    </p>
+  </div>
+</header>
+
+<!-- =========================================================================
+     VARIANT 1 — KLEINER EN ROND
+     De vorm die de pagina verderop al gebruikt: bij het formulier staat Nick
+     rond op 96px. Dezelfde vorm in de hero laat de twee plekken op elkaar
+     rijmen, en een cirkel heeft geen hoeken die als kader lezen.
+     Bron: nick-portret.webp, vierkant uitgesneden in CSS (object-fit cover op een
+     vierkant vak toont het bovenste 900×900-vlak van het bestand) en dan rond
+     gemaakt. Niet nick-rond.webp: dat bestand heeft veel lucht boven het hoofd en
+     dat ziet er op 96px bij het formulier goed uit, maar op 176px los. Een
+     uitsnede van 900 bronpixels op 176 schermpixels is bovendien scherper dan
+     een van 320. Wordt deze variant gekozen, dan knippen we er alsnog één echt
+     bestand van — hier is het nog een CSS-uitsnede, dus er komt geen beeld bij
+     dat straks ongebruikt in de map blijft staan.
+     ========================================================================= -->
+<section id="variant-1" aria-labelledby="variant-1-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-1-titel" class="text-h2">
+        Variant 1 — Kleiner en rond
+      </h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">
+        Een ronde foto van 176 pixels rechts naast de kop, dezelfde vorm als bij het formulier
+        verderop op de pagina.
+      </p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">
+        Rijmt met iets wat de pagina al heeft, en een cirkel kan niet als kader lezen. Nick is nog
+        goed herkenbaar, maar hij weegt ongeveer een achtste van wat hij nu weegt.
+      </p>
+    </div>
+  </div>
+
+  <header class="bg-paper">
+    <div class="shell pt-6 md:pt-10">
+      <a href="#demo" class="inline-flex items-center" data-cta="v1-hero-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+
+      <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
+        <div class="lg:col-span-7">
+          <p class="koptekst text-h1 lg:text-display">
+            Compensatie zonder kopzorgen
+          </p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+          <div class="mt-8">
+            <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="v1-hero-boek-demo">Boek een demo</a>
+          </div>
+        </div>
+
+        <figure class="lg:col-span-5 m-0 mx-auto w-full max-w-[22rem]">
+          <img src="assets/img/nick-portret.webp" width="900" height="1140"
+               alt="Portret van Nick Van Langendonck"
+               class="h-36 w-36 md:h-44 md:w-44 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+          <figcaption class="bijschrift">
+            Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch,
+            wel een concrete blik op jouw looncyclus.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <!-- De bovenrand van de volgende sectie (de logobalk), zodat de hero een
+       echte onderkant heeft om tegen te beoordelen in plaats van over te lopen
+       in de chroom van deze vergelijkingspagina. -->
+  <div class="h-14 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<!-- =========================================================================
+     VARIANT 2 — STRAKKER UITGESNEDEN
+     Zelfde behandeling als vandaag — rechthoek, afgeronde hoek, dunne rand —
+     maar 240 bij 360 in plaats van 400 bij 505. De uitsnede gebeurt in CSS op
+     hetzelfde bestand: aspect-ratio 2/3 met object-fit cover snijdt links en
+     rechts weg, niet bovenaan, dus het hoofd blijft heel.
+     ========================================================================= -->
+<section id="variant-2" aria-labelledby="variant-2-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-2-titel" class="text-h2">
+        Variant 2 — Strakker uitgesneden
+      </h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">
+        Hetzelfde kader als vandaag, maar smaller en korter: 240 bij 360 in plaats van 400 bij 505,
+        zodat hij een kolom wordt in plaats van een blok.
+      </p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">
+        De kleinste ingreep van de vijf, en de enige die niets aan de vormtaal verandert. Het kader
+        blijft, dus het blijft een voorwerp — alleen een kleiner voorwerp.
+      </p>
+    </div>
+  </div>
+
+  <header class="bg-paper">
+    <div class="shell pt-6 md:pt-10">
+      <a href="#demo" class="inline-flex items-center" data-cta="v2-hero-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+
+      <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
+        <div class="lg:col-span-7">
+          <p class="koptekst text-h1 lg:text-display">
+            Compensatie zonder kopzorgen
+          </p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+          <div class="mt-8">
+            <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="v2-hero-boek-demo">Boek een demo</a>
+          </div>
+        </div>
+
+        <figure class="lg:col-span-5 m-0 mx-auto w-full max-w-[22rem]">
+          <img src="assets/img/nick-portret.webp" width="900" height="1140"
+               alt="Portret van Nick Van Langendonck"
+               class="block w-[13.5rem] md:w-[15rem] h-auto aspect-[2/3] object-cover object-[54%_6%]
+                      rounded-lg border border-line bg-paper">
+          <figcaption class="bijschrift">
+            Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch,
+            wel een concrete blik op jouw looncyclus.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <div class="h-14 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<!-- =========================================================================
+     VARIANT 3 — ZONDER KADER, UITVLOEIEND
+     Even groot als vandaag. Het enige verschil is de rand en de onderkant.
+     Dat is met opzet: zo meet deze variant precies één ding, namelijk of het
+     kader het probleem is en niet het formaat. De foto is een uitsnede op wit,
+     dus zonder rand staat hij al ín de pagina; het masker laat de onderkant
+     wegzakken zodat er nergens een lijn overblijft om tegenaan te kijken.
+     ========================================================================= -->
+<section id="variant-3" aria-labelledby="variant-3-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-3-titel" class="text-h2">
+        Variant 3 — Zonder kader, uitvloeiend
+      </h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">
+        Even groot als vandaag, maar het kader is weg en de onderkant lost op in de pagina.
+      </p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">
+        Verandert maar één ding, en dat is het ding waar het volgens ons om gaat: de harde rand
+        maakt van Nick een voorwerp dat op de pagina ligt. Zonder rand staat hij erin.
+      </p>
+    </div>
+  </div>
+
+  <header class="bg-paper">
+    <div class="shell pt-6 md:pt-10">
+      <a href="#demo" class="inline-flex items-center" data-cta="v3-hero-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+
+      <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
+        <div class="lg:col-span-7">
+          <p class="koptekst text-h1 lg:text-display">
+            Compensatie zonder kopzorgen
+          </p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+          <div class="mt-8">
+            <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="v3-hero-boek-demo">Boek een demo</a>
+          </div>
+        </div>
+
+        <figure class="lg:col-span-5 m-0 mx-auto w-full max-w-[20rem] lg:max-w-none">
+          <img src="assets/img/nick-portret.webp" width="900" height="1140"
+               alt="Portret van Nick Van Langendonck"
+               class="vervloei block w-full h-auto">
+          <figcaption class="bijschrift -mt-2">
+            Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch,
+            wel een concrete blik op jouw looncyclus.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <div class="h-14 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<!-- =========================================================================
+     VARIANT 4 — KLEIN EN LAAG
+     Drie knoppen tegelijk omlaag: formaat (200px breed), kader (weg) en
+     plaatsing (onderaan uitgelijnd in plaats van op ooghoogte met de kop).
+     Dat laatste is het eigenlijke werk: iets wat onder het optische midden
+     staat, wordt tweede gelezen, hoe scherp het ook is. Het bijschrift gaat
+     mee omlaag naar de kleine zetting, zonder het mintstreepje, want dat
+     streepje is zelf een accent.
+     ========================================================================= -->
+<section id="variant-4" aria-labelledby="variant-4-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-4-titel" class="text-h2">
+        Variant 4 — Klein en laag
+      </h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">
+        Op 200 pixels, zonder kader en onderaan uitgelijnd, met het bijschrift in de kleine zetting.
+      </p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">
+        De stilste variant die Nick nog in de hero houdt. De kop is hier onbetwist de hoofdzaak;
+        de vraag is of Nick op deze maat nog vertrouwen koopt of alleen nog decoratie is.
+      </p>
+    </div>
+  </div>
+
+  <header class="bg-paper">
+    <div class="shell pt-6 md:pt-10">
+      <a href="#demo" class="inline-flex items-center" data-cta="v4-hero-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+
+      <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-end pb-12 md:pb-20">
+        <div class="lg:col-span-7">
+          <p class="koptekst text-h1 lg:text-display">
+            Compensatie zonder kopzorgen
+          </p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+          <div class="mt-8">
+            <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="v4-hero-boek-demo">Boek een demo</a>
+          </div>
+        </div>
+
+        <figure class="lg:col-span-5 m-0 w-full max-w-[12.5rem]">
+          <img src="assets/img/nick-portret.webp" width="900" height="1140"
+               alt="Portret van Nick Van Langendonck"
+               class="vervloei-kort block w-full h-auto">
+          <figcaption class="mt-3 text-caption text-ink-soft">
+            Nick geeft de demo, op jouw eigen looncyclus.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <div class="h-14 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<!-- =========================================================================
+     VARIANT 5 — NIET IN DE HERO
+     Het argument: de hero is er voor de belofte, en een gezicht hoort waar de
+     vraag gesteld wordt. Nick staat hier als 56px-cirkel ónder de knop, als
+     onderschrift bij de daad, en komt verderop bij het formulier op ware
+     grootte terug — waar hij vandaag al op 96px staat. Dat tweede blok staat
+     hieronder mee afgebeeld, want anders is het een belofte en geen ontwerp.
+     Let op wat dit kost: de hero is nu één kolom en er staat niets meer rechts
+     van de tekst. Dat is een andere pagina, geen andere foto.
+     ========================================================================= -->
+<section id="variant-5" aria-labelledby="variant-5-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-5-titel" class="text-h2">
+        Variant 5 — Niet in de hero
+      </h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">
+        De hero is alleen kop, belofte en knop; Nick staat klein onder de knop en pas groot bij het
+        formulier, waar de vraag gesteld wordt.
+      </p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">
+        Dit is de enige variant die niet alleen de foto verandert maar de hero zelf — er staat
+        niets meer rechts van de tekst. Hij staat erbij omdat het de eerlijke uiterste is, niet
+        omdat wij hem aanraden.
+      </p>
+    </div>
+  </div>
+
+  <header class="bg-paper">
+    <div class="shell pt-6 md:pt-10">
+      <a href="#demo" class="inline-flex items-center" data-cta="v5-hero-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+
+      <div class="mt-8 md:mt-12 pb-12 md:pb-20">
+        <p class="koptekst text-h1 lg:text-display max-w-[18ch]">
+          Compensatie zonder kopzorgen
+        </p>
+        <p class="mt-5 text-h3 text-ink-soft max-w-text">
+          Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+        </p>
+        <div class="mt-8">
+          <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="v5-hero-boek-demo">Boek een demo</a>
+        </div>
+
+        <div class="mt-6 flex items-center gap-4">
+          <!-- Dezelfde CSS-uitsnede als in variant 1, zodat de twee ronde foto’s op
+               deze pagina niet anders uitgesneden zijn en de vergelijking zuiver
+               blijft. De 96px-foto verderop blijft wél nick-rond.webp: dat blok
+               staat er vandaag zo en moet er dus ook zo bij staan. -->
+          <img src="assets/img/nick-portret.webp" width="900" height="1140"
+               alt="Portret van Nick Van Langendonck"
+               class="h-14 w-14 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+          <p class="m-0 text-caption text-ink-soft max-w-text">
+            <b class="font-bold text-ink">Nick Van Langendonck</b>, reward expert, geeft de demo
+            persoonlijk — op jouw eigen looncyclus.
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Waar Nick in deze variant wél groot staat. Dit is het blok dat vandaag al
+       op de pagina staat, bij het formulier, met dezelfde ronde foto op 96px en
+       dezelfde tekst. Hier afgebeeld zonder het formulier ernaast: het gaat om
+       de plek van de foto, niet om de velden. De kop staat ook hier als <p>,
+       om dezelfde reden als in de hero's. -->
+  <div class="bg-surface border-t border-line">
+    <div class="shell py-10 md:py-12">
+      <p class="text-caption text-ink-soft">
+        Verderop op diezelfde pagina, bij het formulier, blijft dit staan zoals het vandaag staat
+      </p>
+      <div class="mt-5 rounded-lg border border-line bg-paper p-6 md:p-8 max-w-prose">
+        <p class="koptekst text-h2 md:text-h1 max-w-[18ch]">
+          Met Youbo starten is makkelijk
+        </p>
+        <div class="mt-6 flex items-start gap-5">
+          <img src="assets/img/nick-rond.webp" width="320" height="320" loading="lazy" decoding="async"
+               alt="Nick Van Langendonck, reward expert bij Teal Partners"
+               class="h-24 w-24 shrink-0 rounded-[50%] object-cover bg-surface">
+          <p class="m-0 text-body text-ink-soft max-w-text">
+            <b class="font-bold text-ink">Nick Van Langendonck</b>, reward expert, laat je zien hoe
+            Youbo aansluit op jullie loonbeleid, structuur en systemen. Hij neemt persoonlijk
+            contact op.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     ADVIES — één aanbeveling, niet vijf gelijke opties.
+     Dit blok draagt ook id="demo", want de knop "Boek een demo" staat vijf keer
+     op deze pagina en moet ergens heen. Op de echte pagina gaat hij naar het
+     formulier; hier legt hij uit dat dat zo is en wijst hij de weg terug.
+     ========================================================================= -->
+<section id="advies" class="bg-paper band-pad" aria-labelledby="advies-titel">
+  <div class="shell">
+    <h2 id="advies-titel" class="text-h2 md:text-h1 max-w-[20ch]">
+      Wij zouden variant 3 nemen
+    </h2>
+
+    <div class="mt-6 max-w-prose space-y-5">
+      <p class="text-body text-ink-soft">
+        Niet zijn formaat maakt Nick te luid, maar zijn kader. Een rechthoek met een rand en een
+        afgeronde hoek is een voorwerp: het heeft een eigen vorm, en die vorm concurreert met de
+        kop ernaast. De foto is een uitsnede op wit, dus zodra de rand weg is staat hij al in het
+        papier in plaats van erop, en het masker aan de onderkant haalt de laatste lijn weg.
+      </p>
+      <p class="text-body text-ink-soft">
+        Dat is ook de reden om hem niet kleiner te maken: het gezicht is precies wat Jana in de
+        eerste ronde vroeg. Variant 3 houdt de herkenbaarheid volledig overeind en haalt alleen
+        de hardheid weg. Het is bovendien de enige variant die maar één ding verandert, dus als
+        ze het niet genoeg vindt, weten we meteen dat het wél om het formaat ging.
+      </p>
+      <p class="text-body text-ink-soft">
+        <b class="font-bold text-ink">Variant 1 is de veilige tweede keuze.</b> Rond is kleiner
+        zonder krap te worden, en de pagina gebruikt die vorm verderop toch al — de hero en het
+        formulier gaan dan op elkaar rijmen. Nadeel: een ronde pasfoto is de meest voorspelbare
+        vorm die er is, en de huidige hero heeft juist iets eigens.
+      </p>
+      <p class="text-body text-ink-soft">
+        Variant 2 raden we af als eindkeuze: ze verzacht niets, ze verkleint alleen, en het kader
+        waar het volgens ons om gaat blijft staan. Variant 4 is stil genoeg maar zet Nick op een
+        maat waarop hij geen vertrouwen meer koopt. Variant 5 beantwoordt een andere vraag dan
+        de gestelde — hij staat erbij omdat het argument klopt, niet omdat wij hem aanraden.
+      </p>
+    </div>
+
+    <p id="demo" class="mt-10 text-caption text-ink-soft max-w-prose">
+      De knoppen hierboven staan er alleen om de hero echt te houden. Op de echte pagina brengen
+      ze je naar het formulier onderaan:
+      <a href="draft-r3-01-definitief.html#demo" class="font-bold text-link-licht underline"
+         data-cta="advies-naar-de-pagina">bekijk de volledige landingspagina</a>.
+    </p>
+  </div>
+</section>
+
+</body>
+</html>

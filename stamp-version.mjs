@@ -73,11 +73,19 @@ const OUD = /\s*<meta name="ontwerp-versie[^"]*"[^>]*>/gi;
 // vervanging van de eerste treffer zou de stempel daar kunnen neerzetten.
 const HEAD = /^<head>$/m;
 
+// Dezelfde verzameling als check-drafts.mjs en shoot-thumbs.mjs: elke draft, plus
+// elke pagina die zichzelf met <meta name="pagina-soort" content="vergelijking">
+// aanmeldt. Een vergelijkingspagina wordt net zo goed gepubliceerd en net zo goed
+// becommentarieerd, dus moet ze net zo goed zeggen welke versie je bekijkt —
+// anders is "versie onbekend" straks geen signaal meer maar normaal.
+const VERGELIJKING_META = /<meta[^>]+name=["']pagina-soort["'][^>]+content=["']\s*vergelijking\s*["']/i;
 const drafts = readdirSync(hier)
-  .filter((f) => f.startsWith('draft-') && f.endsWith('.html'))
+  .filter((f) => f.endsWith('.html'))
+  .filter((f) => f.startsWith('draft-') ||
+                 VERGELIJKING_META.test(readFileSync(join(hier, f), 'utf8')))
   .sort();
 
-if (!drafts.length) stop('geen draft-*.html gevonden — staat dit script in de juiste map?');
+if (!drafts.length) stop('geen te stempelen pagina gevonden — staat dit script in de juiste map?');
 
 let gedaan = 0;
 for (const naam of drafts) {

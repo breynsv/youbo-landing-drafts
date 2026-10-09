@@ -12,7 +12,7 @@
 //   npx playwright screenshot --help
 
 import { chromium } from 'playwright';
-import { readdirSync, mkdirSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, mkdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -21,8 +21,15 @@ const thumbs = join(here, 'thumbs');
 if (!existsSync(thumbs)) mkdirSync(thumbs, { recursive: true });
 
 const filters = process.argv.slice(2);
+// Dezelfde verzameling als check-drafts.mjs: elke draft, plus elke pagina die
+// zichzelf met <meta name="pagina-soort" content="vergelijking"> aanmeldt. Die
+// staan allebei in het reviewgereedschap en hebben er dus allebei een thumbnail
+// nodig. Gevonden op wat de pagina over zichzelf zegt, niet op hoe ze heet.
+const VERGELIJKING_META = /<meta[^>]+name=["']pagina-soort["'][^>]+content=["']\s*vergelijking\s*["']/i;
 const drafts = readdirSync(here)
-  .filter(f => f.startsWith('draft-') && f.endsWith('.html'))
+  .filter(f => f.endsWith('.html'))
+  .filter(f => f.startsWith('draft-') ||
+               VERGELIJKING_META.test(readFileSync(join(here, f), 'utf8')))
   .filter(f => !filters.length || filters.some(x => f.includes(x)))
   .sort();
 

@@ -25,8 +25,24 @@ import { dirname, join } from 'node:path';
 const here = dirname(fileURLToPath(import.meta.url));
 const filters = process.argv.slice(2);
 
+// Welke bestanden gecontroleerd worden. "draft-*.html" was lang genoeg, maar sinds
+// 2026-10-09 staat er ook een vergelijkingspagina in deze map die een echte hero vijf
+// keer toont (hero-varianten-nick.html). Die draagt de volle huisstijl, de echte foto's
+// en de echte copy, dus precies de fouten die deze check vangt kunnen er net zo goed in
+// zitten: een verdwenen beeld, een verzonnen bestandsnaam, een dubbele titel.
+//
+// Ze heet niet "draft-", want ze is geen kandidaat voor de echte pagina; dat is de
+// bestaande naamgeving van ronde 2 (interacties-hoe-het-werkt.html). Ze wordt dus
+// gevonden op wat ze over zichzelf zegt en niet op hoe ze heet — dezelfde keuze als bij
+// de bevestigingspagina hieronder, en om dezelfde reden: een harde controle mag niet aan
+// een woord in een bestandsnaam hangen, want dat woord kiest morgen iemand anders.
+// Een pagina zonder die meta verandert hier niets, dus interacties-hoe-het-werkt.html
+// blijft buiten beeld zoals voorheen.
+const VERGELIJKING_META = /<meta[^>]+name=["']pagina-soort["'][^>]+content=["']\s*vergelijking\s*["']/i;
 const drafts = readdirSync(here)
-  .filter(f => f.startsWith('draft-') && f.endsWith('.html'))
+  .filter(f => f.endsWith('.html'))
+  .filter(f => f.startsWith('draft-') ||
+               VERGELIJKING_META.test(readFileSync(join(here, f), 'utf8')))
   .filter(f => !filters.length || filters.some(x => f.includes(x)))
   .sort();
 
@@ -335,12 +351,18 @@ for (const file of drafts) {
   // dan is de noindex-controle (die hier staat omdat hij vier drafts echt eens
   // besmet heeft) nergens meer een gate. Zonder deze meta is een draft een
   // landingspagina, zodat de zestien bestaande bestanden onaangeroerd blijven.
-  const SOORTEN = ['landingspagina', 'bevestiging'];
+  // Sinds 2026-10-09 is er een derde soort. Een VERGELIJKINGSPAGINA zet een echt
+  // stuk van de landingspagina een paar keer naast elkaar zodat de klant kan
+  // kiezen; ze wordt nooit gepubliceerd en ze is geen kandidaat voor /demo.
+  // Drie regels hieronder slaan voor haar anders uit, en alle drie omgekeerd in
+  // plaats van uitgezet — zie de reden telkens ter plaatse.
+  const SOORTEN = ['landingspagina', 'bevestiging', 'vergelijking'];
   const soort = (html.match(/<meta[^>]+name=["']pagina-soort["'][^>]+content=["']([^"']+)["']/i)
     || [, 'landingspagina'])[1].trim().toLowerCase();
   if (!SOORTEN.includes(soort))
     errors.push(`onbekende pagina-soort "${soort}" — kies uit ${SOORTEN.join(', ')}`);
   const bevestiging = soort === 'bevestiging';
+  const vergelijking = soort === 'vergelijking';
 
   // --- Language and structure -------------------------------------------------
   if (!/<html[^>]+lang=["']nl-BE["']/i.test(html)) errors.push('missing lang="nl-BE"');
@@ -352,15 +374,31 @@ for (const file of drafts) {
   if (!/<title>[^<]{10,}<\/title>/i.test(html)) errors.push('missing or stub <title>');
   if (!/<meta[^>]+name=["']description["'][^>]+content=["'][^"']{40,}/i.test(html))
     errors.push('missing or thin meta description');
-  if (!/property=["']og:image["']/i.test(html)) warns.push('no og:image');
-  if (!/property=["']og:locale["']/i.test(html)) warns.push('no og:locale');
+  // og-metadata beschrijft een pagina die iemand als link deelt. Een
+  // vergelijkingspagina wordt niet gedeeld en niet geïndexeerd, dus is het daar
+  // geen gemis maar ruis — en ruis in een rapport is hoe een rapport ongelezen
+  // raakt. Voor een landingspagina en een bevestigingspagina blijft het staan.
+  if (!vergelijking) {
+    if (!/property=["']og:image["']/i.test(html)) warns.push('no og:image');
+    if (!/property=["']og:locale["']/i.test(html)) warns.push('no og:locale');
+  }
 
   // --- Tracking ---------------------------------------------------------------
   // The campaign is LinkedIn-first, so the tag placeholder is non-negotiable —
   // but an invented partner ID is worse than none, because it silently sends
   // data nowhere and looks wired up.
   const hasLinkedIn = /linkedin/i.test(html) && /(insight|_linkedin_partner_id|partner_id)/i.test(html);
-  if (!hasLinkedIn) errors.push('no LinkedIn Insight Tag placeholder');
+  // OOK DIT IS OMGEKEERD OP EEN VERGELIJKINGSPAGINA, en niet uitgezet. Die pagina
+  // leeft op hetzelfde adres als de drafts en wordt door de klant bezocht; een
+  // Insight Tag erop telt dat bezoek mee als campagneverkeer en vervuilt precies
+  // het cijfer waarvoor de tag er is. Er hoort er dus geen op, en dat is een eis
+  // en geen vrijstelling.
+  if (vergelijking) {
+    if (hasLinkedIn)
+      errors.push('vergelijkingspagina met een LinkedIn Insight Tag — intern bezoek telt dan mee als campagneverkeer');
+  } else if (!hasLinkedIn) {
+    errors.push('no LinkedIn Insight Tag placeholder');
+  }
   const inventedId = html.match(/_linkedin_partner_id\s*=\s*["']?(\d{4,})/i);
   if (inventedId) errors.push(`invented LinkedIn partner ID "${inventedId[1]}" — must stay a placeholder`);
 
@@ -402,7 +440,13 @@ for (const file of drafts) {
   //   · Er wordt in `visible` gekeken en niet in `html`. Een <form> die in een
   //     comment uitgelegd wordt, is geen formulier — en op deze pagina legt een
   //     comment uit waarom er juist géén staat.
-  if (bevestiging) {
+  // Een vergelijkingspagina toont stukken van de pagina, geen pagina. Of daar een
+  // formulier in zit hangt af van welk stuk vergeleken wordt, dus zegt de
+  // aanwezigheid ervan hier niets — geen eis in de ene richting en geen verbod in
+  // de andere. De regel voor een landingspagina blijft onaangeroerd hard.
+  if (vergelijking) {
+    // niets: zie hierboven
+  } else if (bevestiging) {
     if (/<form[\s>]/i.test(visible))
       errors.push('bevestigingspagina met een <form> — de bezoeker heeft het formulier net ingevuld');
     if (/type=["']email["']/i.test(visible))
@@ -468,6 +512,13 @@ for (const file of drafts) {
   if (bevestiging) {
     if (!noindex)
       errors.push('bevestigingspagina zonder <meta robots noindex> — ze hoort niet in de zoekresultaten en elk bezoek telt als conversie');
+  } else if (vergelijking) {
+    // Derde geval, derde richting, en ook deze is een eis. Een
+    // vergelijkingspagina zet vijf tegenstrijdige versies van hetzelfde blok op
+    // een rij; in Google is dat vijf keer dezelfde kop op een adres dat niemand
+    // zocht, naast de echte pagina die het wel moet hebben.
+    if (!noindex)
+      errors.push('vergelijkingspagina zonder <meta robots noindex> — ze toont meerdere versies van hetzelfde blok en hoort niet in de zoekresultaten');
   } else if (noindex) {
     errors.push('has <meta robots noindex> — would ship an invisible landing page; protect previews with robots.txt');
   }
