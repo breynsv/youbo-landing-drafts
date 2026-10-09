@@ -1,0 +1,89 @@
+# LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
+# Dit bestand is de bron van de vijf cases en de vijf quotes op de landingspagina.
+# GEEN HTML in de tekst — de bouw weigert een bestand met een < erin, met opzet.
+# Vijf cases en vijf quotes, niet meer en niet minder: het raster van de cases is op precies
+# vijf kaarten gemeten en een zesde laat een gat vallen. Een case bijzetten is ontwerpwerk.
+# "bedrijf" is de naam achter het logo: hij staat niet als tekst op de pagina maar wordt
+# voorgelezen in plaats van het logo. Het logobestand zelf staat vast — dat is ontwerp.
+# "cijfers" is de enige opsomming in deze bestanden: één regel per cijfer, twee of drie regels.
+# "downloadlink" mag een anker (#cases-open) of een bestand in deze map zijn. Verwijst het naar
+# een bestand dat er niet is, dan stopt de bouw — liever dat dan een dode link op de site.
+# Een veld dat begint met "TODO — " krijgt op de pagina het kader met de stippellijn.
+# Meer uitleg: content/LEESMIJ.txt.
+cases:
+  downloadtekst: Download de case (pdf)
+  kaart_1:
+    bedrijf: Kaneka
+    voordeel: Twee werkweken tijdswinst
+    cijfers:
+      - 204 medewerkers
+      - 27 afdelingen
+    sector: Chemie- en technologiebedrijf
+    downloadlink: '#cases-open'
+  kaart_2:
+    bedrijf: Anchr
+    voordeel: Meerdere werkdagen bespaard
+    cijfers:
+      - 300 medewerkers
+      - 8 bedrijven
+    sector: Softwaregroep
+    downloadlink: '#cases-open'
+  kaart_3:
+    bedrijf: Aertssen Group
+    voordeel: Live op 3 maanden
+    cijfers:
+      - 450 bedienden
+      - van eerste gesprek tot eerste cyclus
+    sector: Infrastructuur- en logistiekgroep
+    nota: 'TODO — te bevestigen bij Bart of Nick: in hoeveel landen. Jana’s campagneplan schrijft hier zelf 450 bedienden in X landen'
+    downloadlink: '#cases-open'
+  kaart_4:
+    bedrijf: SD Worx
+    voordeel: Van 2 maanden naar 3 weken
+    cijfers:
+      - 7.000 medewerkers
+      - 21 landen
+      - voor een deel van hun populatie
+    sector: Hr-dienstverlener
+    downloadlink: '#cases-open'
+  kaart_5:
+    bedrijf: DPG Media
+    voordeel: 7× sneller
+    cijfers:
+      - 6.214 medewerkers
+      - 2 landen
+    sector: Mediagroep
+    downloadlink: '#cases-open'
+  nota: 'TODO — nodig van klant: de vijf case-pdf’s bestaan nog niet, dus de downloadlinks wijzen voorlopig naar dit blokje in plaats van naar een bestand dat er niet is'
+quotes:
+  kop: Waarom klanten voor Youbo kiezen
+  quote_1:
+    bedrijf: SD Worx
+    tekst: “Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”
+    foto: assets/img/pieter-jan.webp
+    naam: Pieter-Jan Boden
+    functie: People director
+  quote_2:
+    bedrijf: Kaneka
+    tekst: '“Toen ik een demo zag, wist ik: hier hebben we op gewacht.”'
+    foto: assets/img/bart-verhoeven.webp
+    naam: Bart Verhoeven
+    functie: Hr manager
+  quote_3:
+    bedrijf: DPG Media
+    tekst: “Youbo helpt om de loonkloof weg te werken.”
+    foto: assets/img/mieke-catthoor.webp
+    naam: Mieke Catthoor
+    functie: Compensation & benefits
+  quote_4:
+    bedrijf: SD Worx
+    tekst: “Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu betere inhoudelijke gesprekken met mijn team.”
+    foto: assets/img/joris-valkenborgh.webp
+    naam: Joris Valkenborgh
+    functie: Team manager
+  quote_5:
+    bedrijf: Anchr
+    tekst: “Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien we de jaarkost en het totale loonpakket van de werknemer.”
+    foto: assets/img/evi-van-der-vliet.webp
+    naam: Evi Van der Vliet
+    functie: Hr business partner

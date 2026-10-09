@@ -1,0 +1,60 @@
+# LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
+# Dit bestand is de bron van de TEKST van de landingspagina: de koppen, de lopende tekst, de
+# knoplabels, de vier stappen van de rondleiding en de twee grote cijfers.
+# build-inhoud.mjs zet die tekst bij de bouw in draft-r3-01-definitief.html. Verander de tekst
+# dus hier en niet in de HTML.
+# GEEN HTML in de tekst — de bouw weigert een bestand met een < erin, met opzet.
+# Elk veld is één doorlopend stuk tekst: geen tweede alinea en geen regelafbreking, want de
+# opmaak van de pagina heeft op die plekken geen plaats voor een tweede alinea.
+# Een veld dat begint met "TODO — " is een nota aan onszelf: het krijgt op de pagina een apart
+# kader met een stippellijn. Dezelfde afspraak als in de FAQ.
+# De volgorde hier is de volgorde op de pagina. Velden bijzetten of weghalen kan niet: de
+# pagina vraagt om precies deze velden en de bouw stopt als er één ontbreekt of over is.
+# Meer uitleg: content/LEESMIJ.txt.
+hero:
+  kop: Compensatie zonder kopzorgen
+  intro: Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+  knop: Boek een demo
+  foto_alt: Portret van Nick Van Langendonck
+  fototekst: Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch, wel een concrete blik op jouw looncyclus.
+logobalk:
+  kop: Deze bedrijven vertrouwen Youbo
+kern:
+  kop: Van versnipperde excels naar één helder proces
+  blok1_titel: Hr en managers werken samen in één platform
+  blok1_tekst: Gedaan met splitsen en consolideren van excels. Bye-bye versies en errors.
+  blok2_titel: Automatische verdeelsuggesties, makkelijk én eerlijker
+  blok2_tekst: Datagedreven volgens je loonbeleid, loonbanden, prestatiescores en andere parameters. Wat jij verkiest.
+  blok3_titel: Realtime inzicht in budgetten
+  blok3_tekst: Minder overschrijdingen. Meer controle, per budget en in totaal. Geen budget slippage meer.
+rondleiding:
+  kop: Ontdek hoe het werkt
+  scrollhint: Scroll verder
+  stap1_titel: Hr houdt realtime het overzicht
+  stap1_tekst: Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.
+  stap2_titel: Managers beslissen onderbouwd
+  stap2_tekst: Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele situaties of vergelijk medewerkers.
+  stap3_titel: Elk budget blijft onder controle
+  stap3_tekst: Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.
+  stap4_titel: Rewardletters in één klik
+  stap4_tekst: Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.
+  knop: Boek een demo
+  nota: 'TODO — te bevestigen: de vier schermen zijn nagetekend met eigen, sluitende voorbeeldcijfers uit één demodataset, omdat het bestaande hero-scherm van youbo.io dezelfde medewerker op twee verschillende bedragen zet. Zodra er toegang is tot de app vervangen we ze door echte schermen met geanonimiseerde data'
+cijfer:
+  aanloop: De lonen, bonussen en promoties van
+  medewerkers: '19.000'
+  midden: medewerkers in
+  landen: '21'
+  slot: landen worden al met Youbo beheerd
+eu:
+  kop: Wees klaar voor EU Pay Transparency
+  tekst: 'Start nu: ontdek loonverschillen en werk ze tijdig weg. Bewijs dat elke loonbeslissing consequent is.'
+integraties:
+  kop: Plug vlot in met al je hr-tools
+  tekst: Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt.
+  functie_1: Payroll
+  functie_2: Tijdsregistratie
+  functie_3: Performancemanagement
+  functie_4: Core hr
+faq:
+  kop: Veelgestelde vragen

@@ -1,0 +1,67 @@
+# LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
+# Dit bestand is de bron van het formulierblok, de contactgegevens van Nick, de twee vaste
+# balken onderaan en de voettekst van de landingspagina.
+# GEEN HTML in de tekst — de bouw weigert een bestand met een < erin, met opzet.
+# Het e-mailadres en het telefoonnummer staan er elk TWEE keer: de leesbare vorm die op de
+# pagina staat, en de vorm die de telefoon of de mailprogramma gebruikt (tel: en mailto:).
+# Verander ze altijd samen, anders belt de link een ander nummer dan er staat.
+# De tekst van de cookiebalk en de privacyregel zijn juridische tekst. Leg een wijziging daar
+# eerst voor; de rest van dit bestand is gewone copy.
+# Een veld dat begint met "TODO — " krijgt op de pagina het kader met de stippellijn.
+# Meer uitleg: content/LEESMIJ.txt.
+demo:
+  kop: Met Youbo starten is makkelijk
+  nick_foto: assets/img/nick-rond.webp
+  nick_foto_alt: Nick Van Langendonck, reward expert bij Teal Partners
+  nick_naam: Nick Van Langendonck
+  nick_tekst: reward expert, laat je zien hoe Youbo aansluit op jullie loonbeleid, structuur en systemen. Hij neemt persoonlijk contact op.
+formulier:
+  label_naam: Naam
+  plaatshouder_naam: Anne Peeters
+  label_email: E-mailadres
+  plaatshouder_email: anne@bedrijf.be
+  label_telefoon: Telefoon
+  plaatshouder_telefoon: +32 4xx xx xx xx
+  label_bericht: Stel gerust al je vragen
+  plaatshouder_bericht: Hoeveel medewerkers zitten er in jullie looncyclus? Waar loopt het vandaag vast?
+  nieuwsbrief: Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.
+  verzendknop: Vraag je demo aan
+  privacy_regel: We gebruiken je gegevens enkel om je demo-aanvraag op te volgen. Lees hoe we daarmee omgaan in de
+  privacy_linktekst: privacy policy
+anders:
+  agenda_regel: Of boek rechtstreeks in Nicks agenda
+  mail_aanloop: Of mail hem op
+  e_mail_link: mailto:nick.vanlangendonck@youbo.io
+  e_mail: nick.vanlangendonck@youbo.io
+  bel_aanloop: Of bel hem op
+  telefoon_link: tel:+32486082765
+  telefoon: 0486 08 27 65
+  nota: 'TODO — nodig van klant: de link naar Nicks agenda is aangevraagd en bestaat nog niet. Zolang die er niet is staat hier geen knop, want een knop die nergens naartoe gaat is in een review niet van een werkende te onderscheiden'
+band:
+  regel: Nick toont je Youbo op jouw eigen looncyclus
+  knop: Boek een demo
+cookiebalk:
+  aanloop: We plaatsen
+  linktekst: meetcookies
+  staart: om te zien hoe deze pagina gebruikt wordt
+  weigeren: Weigeren
+  toestaan: Toestaan
+voet:
+  iso_alt: ISO 27001:2022 en GDPR
+  kop_over: Over Youbo
+  over_1: Referentie cases
+  over_2: Nieuws
+  over_3: Contact
+  kop_legal: Legal
+  legal_1: Cookie policy
+  legal_2: Privacy policy
+  legal_3: Responsible disclosure policy
+  legal_4: Disclaimer
+  legal_5: Terms of use
+  taal_1: English
+  taal_2: Nederlands
+  taal_3: Français
+  nota: 'TODO — te bevestigen: de footer van youbo.io draagt een schakelaar English · Nederlands · Français. Deze pagina bestaat alleen in het Nederlands, dus staan die twee andere namen er zonder link. Zodra er een Engelse of Franse versie is, worden het weer echte links — op youbo.io vult footer.js ze uit data-url-en en data-url-fr — en dan hoort er ook hreflang in de head'
+  copyright: Youbo by
+  copyright_linktekst: Teal Partners
+  entiteit: Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542

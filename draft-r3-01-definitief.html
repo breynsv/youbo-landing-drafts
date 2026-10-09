@@ -1304,15 +1304,11 @@ tailwind.config = {
            de foto ziet; op desktop zet lg:col-span-7 deze kolom links en komt het
            portret er vanzelf rechts naast. Daarom is lg:order-last op de figure weg. -->
       <div class="lg:col-span-7" data-reveal>
-        <h1 class="text-h1 lg:text-display">
-          Compensatie zonder kopzorgen
-        </h1>
-        <p class="mt-5 text-h3 text-ink-soft max-w-text">
-          Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
-        </p>
+        <h1 class="text-h1 lg:text-display" data-inhoud="hero.kop">Compensatie zonder kopzorgen</h1>
+        <p class="mt-5 text-h3 text-ink-soft max-w-text" data-inhoud="hero.intro">Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.</p>
 
         <div class="mt-8">
-          <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="hero-boek-demo">Boek een demo</a>
+          <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="hero-boek-demo" data-inhoud="hero.knop">Boek een demo</a>
         </div>
       </div>
 
@@ -1324,11 +1320,9 @@ tailwind.config = {
       <figure class="lg:col-span-5 m-0 mx-auto w-full max-w-[20rem] lg:max-w-none" data-reveal>
         <img src="assets/img/nick-portret.webp" width="900" height="1140"
              alt="Portret van Nick Van Langendonck"
-             class="block w-full h-auto rounded-lg border border-line bg-paper">
-        <figcaption class="mt-5 text-body text-ink-soft border-l-4 border-brand pl-5">
-          Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch,
-          wel een concrete blik op jouw looncyclus.
-        </figcaption>
+             class="block w-full h-auto rounded-lg border border-line bg-paper"
+             data-inhoud-alt="hero.foto_alt">
+        <figcaption class="mt-5 text-body text-ink-soft border-l-4 border-brand pl-5" data-inhoud="hero.fototekst">Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch, wel een concrete blik op jouw looncyclus.</figcaption>
       </figure>
     </div>
   </div>
@@ -1361,9 +1355,7 @@ tailwind.config = {
      ========================================================================= -->
 <section class="bg-surface border-y border-line band-pad" aria-labelledby="klanten-titel">
   <div class="shell text-center" data-reveal>
-    <h2 id="klanten-titel" class="text-caption font-bold uppercase tracking-[0.08em] text-ink-soft">
-      Deze bedrijven vertrouwen Youbo
-    </h2>
+    <h2 id="klanten-titel" class="text-caption font-bold uppercase tracking-[0.08em] text-ink-soft" data-inhoud="logobalk.kop">Deze bedrijven vertrouwen Youbo</h2>
   </div>
 
   <div class="logo-balk mt-8">
@@ -1413,21 +1405,15 @@ tailwind.config = {
   <div class="shell">
 
     <div data-reveal>
-      <h2 id="kern-titel" class="text-h2 md:text-h1 on-dark max-w-[22ch]">
-        Van versnipperde excels naar één helder proces
-      </h2>
+      <h2 id="kern-titel" class="text-h2 md:text-h1 on-dark max-w-[22ch]" data-inhoud="kern.kop">Van versnipperde excels naar één helder proces</h2>
     </div>
 
     <!-- 1 -->
     <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
       <div class="lg:col-span-5">
         <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">1</span>
-        <h3 class="mt-5 text-h2 on-dark">
-          Hr en managers werken samen in één platform
-        </h3>
-        <p class="mt-4 text-body on-dark-soft max-w-text">
-          Gedaan met splitsen en consolideren van excels. Bye-bye versies en errors.
-        </p>
+        <h3 class="mt-5 text-h2 on-dark" data-inhoud="kern.blok1_titel">Hr en managers werken samen in één platform</h3>
+        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok1_tekst">Gedaan met splitsen en consolideren van excels. Bye-bye versies en errors.</p>
       </div>
 
       <div class="lg:col-span-7 min-w-0">
@@ -1468,13 +1454,8 @@ tailwind.config = {
     <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
       <div class="lg:col-span-5 lg:order-last">
         <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">2</span>
-        <h3 class="mt-5 text-h2 on-dark">
-          Automatische verdeelsuggesties, makkelijk én eerlijker
-        </h3>
-        <p class="mt-4 text-body on-dark-soft max-w-text">
-          Datagedreven volgens je loonbeleid, loonbanden, prestatiescores en andere parameters.
-          Wat jij verkiest.
-        </p>
+        <h3 class="mt-5 text-h2 on-dark" data-inhoud="kern.blok2_titel">Automatische verdeelsuggesties, makkelijk én eerlijker</h3>
+        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok2_tekst">Datagedreven volgens je loonbeleid, loonbanden, prestatiescores en andere parameters. Wat jij verkiest.</p>
       </div>
 
       <div class="lg:col-span-7 min-w-0">
@@ -1527,12 +1508,8 @@ tailwind.config = {
     <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
       <div class="lg:col-span-5">
         <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">3</span>
-        <h3 class="mt-5 text-h2 on-dark">
-          Realtime inzicht in budgetten
-        </h3>
-        <p class="mt-4 text-body on-dark-soft max-w-text">
-          Minder overschrijdingen. Meer controle, per budget en in totaal. Geen budget slippage meer.
-        </p>
+        <h3 class="mt-5 text-h2 on-dark" data-inhoud="kern.blok3_titel">Realtime inzicht in budgetten</h3>
+        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok3_tekst">Minder overschrijdingen. Meer controle, per budget en in totaal. Geen budget slippage meer.</p>
       </div>
 
       <div class="lg:col-span-7 min-w-0">
@@ -1658,18 +1635,18 @@ tailwind.config = {
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="h-5 w-auto"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">Twee werkweken tijdswinst</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+            <span class="case-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="h-5 w-auto" data-inhoud-alt="cases.kaart_1.bedrijf"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_1.voordeel">Twee werkweken tijdswinst</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_1.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">204 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">27 afdelingen</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft">Chemie- en technologiebedrijf</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_1.sector">Chemie- en technologiebedrijf</p>
           </div>
           <div class="case-slot">
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-kaneka">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-kaneka" data-inhoud-href="cases.kaart_1.downloadlink">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
           </div>
@@ -1684,18 +1661,18 @@ tailwind.config = {
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/anchr-logo.webp" width="214" height="65" alt="Anchr" class="logo-anchr-case w-auto"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">Meerdere werkdagen bespaard</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+            <span class="case-logo"><img src="assets/img/anchr-logo.webp" width="214" height="65" alt="Anchr" class="logo-anchr-case w-auto" data-inhoud-alt="cases.kaart_2.bedrijf"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_2.voordeel">Meerdere werkdagen bespaard</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_2.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">300 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">8 bedrijven</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft">Softwaregroep</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_2.sector">Softwaregroep</p>
           </div>
           <div class="case-slot">
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-anchr">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-anchr" data-inhoud-href="cases.kaart_2.downloadlink">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
           </div>
@@ -1705,19 +1682,19 @@ tailwind.config = {
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">Live op 3 maanden</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+            <span class="case-logo"><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto" data-inhoud-alt="cases.kaart_3.bedrijf"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_3.voordeel">Live op 3 maanden</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_3.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">450 bedienden</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">van eerste gesprek tot eerste cyclus</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft">Infrastructuur- en logistiekgroep</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_3.sector">Infrastructuur- en logistiekgroep</p>
           </div>
           <div class="case-slot">
-            <span class="todo case-todo"><b>TODO — te bevestigen bij Bart of Nick</b>: in hoeveel landen. Jana’s campagneplan schrijft hier zelf 450 bedienden in X landen</span>
+            <span class="todo case-todo" data-inhoud="cases.kaart_3.nota"><b>TODO — te bevestigen bij Bart of Nick</b>: in hoeveel landen. Jana’s campagneplan schrijft hier zelf 450 bedienden in X landen</span>
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-aertssen">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-aertssen" data-inhoud-href="cases.kaart_3.downloadlink">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
           </div>
@@ -1727,19 +1704,19 @@ tailwind.config = {
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3">
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="h-6 w-auto"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">Van 2 maanden naar 3 weken</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+            <span class="case-logo"><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="h-6 w-auto" data-inhoud-alt="cases.kaart_4.bedrijf"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_4.voordeel">Van 2 maanden naar 3 weken</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_4.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">7.000 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">21 landen</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">voor een deel van hun populatie</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft">Hr-dienstverlener</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_4.sector">Hr-dienstverlener</p>
           </div>
           <div class="case-slot">
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-sdworx">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-sdworx" data-inhoud-href="cases.kaart_4.downloadlink">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
           </div>
@@ -1749,18 +1726,18 @@ tailwind.config = {
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3">
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="h-6 w-auto"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink">7× sneller</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft">
+            <span class="case-logo"><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="h-6 w-auto" data-inhoud-alt="cases.kaart_5.bedrijf"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_5.voordeel">7× sneller</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_5.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">6.214 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft">Mediagroep</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_5.sector">Mediagroep</p>
           </div>
           <div class="case-slot">
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-dpg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-dpg" data-inhoud-href="cases.kaart_5.downloadlink">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
           </div>
@@ -1796,11 +1773,7 @@ tailwind.config = {
       </template>
     </div>
 
-    <p class="todo mt-10 max-w-prose" id="cases-open">
-      <b>TODO — nodig van klant</b>: <b>de vijf case-pdf’s</b> bestaan nog niet, dus de
-      downloadlinks wijzen voorlopig naar dit blokje in plaats van naar een bestand dat er
-      niet is
-    </p>
+    <p class="todo mt-10 max-w-prose" id="cases-open" data-inhoud="cases.nota"><b>TODO — nodig van klant</b>: de vijf case-pdf’s bestaan nog niet, dus de downloadlinks wijzen voorlopig naar dit blokje in plaats van naar een bestand dat er niet is</p>
   </div>
 </section>
 
@@ -1824,9 +1797,7 @@ tailwind.config = {
   <div class="shell">
 
     <div data-reveal>
-      <h2 id="hoe-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]">
-        Ontdek hoe het werkt
-      </h2>
+      <h2 id="hoe-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="rondleiding.kop">Ontdek hoe het werkt</h2>
     </div>
 
     <div class="scrolly mt-8 md:mt-10" data-scrolly>
@@ -1835,19 +1806,23 @@ tailwind.config = {
            hieronder in. Zonder JavaScript bestaat dit blok niet. -->
       <div class="scrolly-visual" data-scrolly-visual>
         <div class="sc-cue">
-          <span class="text-caption on-dark-soft">Scroll verder</span>
+          <span class="text-caption on-dark-soft" data-inhoud="rondleiding.scrollhint">Scroll verder</span>
           <div class="sc-bars" role="group" aria-label="Spring naar een stap">
             <button type="button" class="sc-bar" data-scrolly-jump="0" aria-current="true"
                     aria-label="Ga naar stap 1: Hr houdt realtime het overzicht"
+                    data-inhoud-aria-label="Ga naar stap 1: {rondleiding.stap1_titel}"
                     data-cta="rondleiding-stap-1"><span aria-hidden="true"></span></button>
             <button type="button" class="sc-bar" data-scrolly-jump="1" aria-current="false"
                     aria-label="Ga naar stap 2: Managers beslissen onderbouwd"
+                    data-inhoud-aria-label="Ga naar stap 2: {rondleiding.stap2_titel}"
                     data-cta="rondleiding-stap-2"><span aria-hidden="true"></span></button>
             <button type="button" class="sc-bar" data-scrolly-jump="2" aria-current="false"
                     aria-label="Ga naar stap 3: Elk budget blijft onder controle"
+                    data-inhoud-aria-label="Ga naar stap 3: {rondleiding.stap3_titel}"
                     data-cta="rondleiding-stap-3"><span aria-hidden="true"></span></button>
             <button type="button" class="sc-bar" data-scrolly-jump="3" aria-current="false"
                     aria-label="Ga naar stap 4: Rewardletters in één klik"
+                    data-inhoud-aria-label="Ga naar stap 4: {rondleiding.stap4_titel}"
                     data-cta="rondleiding-stap-4"><span aria-hidden="true"></span></button>
           </div>
         </div>
@@ -1859,10 +1834,8 @@ tailwind.config = {
         <article class="sc-step is-actief" data-scrolly-step>
           <span class="sc-mark" aria-hidden="true"></span>
           <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">01</p>
-          <h3 class="sc-titel mt-3 text-h2">Hr houdt realtime het overzicht</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text">
-            Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.
-          </p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stap1_titel">Hr houdt realtime het overzicht</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stap1_tekst">Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.</p>
           <figure class="panel m-0 mt-6" data-scrolly-slide>
             <div class="panel-bar">
               <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
@@ -1938,11 +1911,8 @@ tailwind.config = {
         <article class="sc-step" data-scrolly-step>
           <span class="sc-mark" aria-hidden="true"></span>
           <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">02</p>
-          <h3 class="sc-titel mt-3 text-h2">Managers beslissen onderbouwd</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text">
-            Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele
-            situaties of vergelijk medewerkers.
-          </p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stap2_titel">Managers beslissen onderbouwd</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stap2_tekst">Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele situaties of vergelijk medewerkers.</p>
           <figure class="panel m-0 mt-6" data-scrolly-slide>
             <div class="panel-bar">
               <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
@@ -2006,11 +1976,8 @@ tailwind.config = {
         <article class="sc-step" data-scrolly-step>
           <span class="sc-mark" aria-hidden="true"></span>
           <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">03</p>
-          <h3 class="sc-titel mt-3 text-h2">Elk budget blijft onder controle</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text">
-            Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en
-            promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.
-          </p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stap3_titel">Elk budget blijft onder controle</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stap3_tekst">Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.</p>
           <figure class="panel m-0 mt-6" data-scrolly-slide>
             <div class="panel-bar">
               <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
@@ -2051,10 +2018,8 @@ tailwind.config = {
         <article class="sc-step" data-scrolly-step>
           <span class="sc-mark" aria-hidden="true"></span>
           <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">04</p>
-          <h3 class="sc-titel mt-3 text-h2">Rewardletters in één klik</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text">
-            Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.
-          </p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stap4_titel">Rewardletters in één klik</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stap4_tekst">Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.</p>
           <figure class="panel m-0 mt-6" data-scrolly-slide>
             <div class="panel-bar">
               <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
@@ -2107,7 +2072,7 @@ tailwind.config = {
              band onderaan die behoefte op. Op telefoon blijft hij staan: daar is de
              rondleiding een lange stapel en is het einde ervan een natuurlijk
              beslismoment. lg:hidden en niet weggelaten, dus. -->
-        <a href="#demo" class="btn-primary mt-8 w-full sm:w-auto lg:hidden" data-cta="rondleiding-boek-demo">Boek een demo</a>
+        <a href="#demo" class="btn-primary mt-8 w-full sm:w-auto lg:hidden" data-cta="rondleiding-boek-demo" data-inhoud="rondleiding.knop">Boek een demo</a>
       </div>
     </div>
 
@@ -2120,12 +2085,7 @@ tailwind.config = {
          cijfer op één pagina is geen bevestiging maar een uitnodiging om te
          gaan natellen. Het blok is dus geschrapt in plaats van uitgelijnd. -->
 
-    <p class="todo-inv mt-8">
-      <b>TODO — te bevestigen</b>: de vier schermen zijn nagetekend met eigen, sluitende
-      voorbeeldcijfers uit één demodataset, omdat het bestaande hero-scherm van youbo.io dezelfde
-      medewerker op twee verschillende bedragen zet. Zodra er toegang is tot de app vervangen we ze
-      door echte schermen met geanonimiseerde data
-    </p>
+    <p class="todo-inv mt-8" data-inhoud="rondleiding.nota"><b>TODO — te bevestigen</b>: de vier schermen zijn nagetekend met eigen, sluitende voorbeeldcijfers uit één demodataset, omdat het bestaande hero-scherm van youbo.io dezelfde medewerker op twee verschillende bedragen zet. Zodra er toegang is tot de app vervangen we ze door echte schermen met geanonimiseerde data</p>
   </div>
 </section>
 
@@ -2174,9 +2134,11 @@ tailwind.config = {
 <section class="bg-surface band-pad" aria-labelledby="cijfer-titel">
   <div class="shell text-center" data-reveal>
     <h2 id="cijfer-titel" class="mx-auto max-w-[24ch] text-[28px] leading-[1.2] md:text-h1 lg:text-display">
-      De lonen, bonussen en promoties van
-      <span class="tabular text-brand-ink">19.000</span> medewerkers in
-      <span class="tabular text-brand-ink">21</span> landen worden al met Youbo beheerd
+      <span data-inhoud="cijfer.aanloop">De lonen, bonussen en promoties van</span>
+      <span class="tabular text-brand-ink" data-inhoud="cijfer.medewerkers">19.000</span>
+      <span data-inhoud="cijfer.midden">medewerkers in</span>
+      <span class="tabular text-brand-ink" data-inhoud="cijfer.landen">21</span>
+      <span data-inhoud="cijfer.slot">landen worden al met Youbo beheerd</span>
     </h2>
   </div>
 </section>
@@ -2206,13 +2168,8 @@ tailwind.config = {
   <div class="shell grid lg:grid-cols-2 gap-10 lg:gap-12 items-start">
 
     <section aria-labelledby="eu-titel" data-reveal>
-      <h2 id="eu-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]">
-        Wees klaar voor EU Pay Transparency
-      </h2>
-      <p class="mt-5 text-h3 on-dark-soft max-w-text">
-        Start nu: ontdek loonverschillen en werk ze tijdig weg. Bewijs dat elke loonbeslissing
-        consequent is.
-      </p>
+      <h2 id="eu-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="eu.kop">Wees klaar voor EU Pay Transparency</h2>
+      <p class="mt-5 text-h3 on-dark-soft max-w-text" data-inhoud="eu.tekst">Start nu: ontdek loonverschillen en werk ze tijdig weg. Bewijs dat elke loonbeslissing consequent is.</p>
 
       <div class="panel mt-8">
         <div class="panel-bar">
@@ -2255,12 +2212,8 @@ tailwind.config = {
     </section>
 
     <section aria-labelledby="integraties-titel" data-reveal>
-      <h2 id="integraties-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]">
-        Plug vlot in met al je hr-tools
-      </h2>
-      <p class="mt-5 text-h3 on-dark-soft max-w-text">
-        Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt.
-      </p>
+      <h2 id="integraties-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</h2>
+      <p class="mt-5 text-h3 on-dark-soft max-w-text" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt.</p>
 
       <!-- FUNCTIES, GEEN MERKNAMEN. Elk met een eigen icoon, zelf getekend op
            hetzelfde raster van 24px en met dezelfde lijndikte — de iconen van
@@ -2282,7 +2235,7 @@ tailwind.config = {
               <path d="M6 10v4M18 10v4"/>
             </svg>
           </span>
-          <span class="hrtool-naam">Payroll</span>
+          <span class="hrtool-naam" data-inhoud="integraties.functie_1">Payroll</span>
         </li>
         <li class="hrtool">
           <span class="hrtool-icoon" aria-hidden="true">
@@ -2292,7 +2245,7 @@ tailwind.config = {
               <path d="M12 7.5V12l3 2"/>
             </svg>
           </span>
-          <span class="hrtool-naam">Tijdsregistratie</span>
+          <span class="hrtool-naam" data-inhoud="integraties.functie_2">Tijdsregistratie</span>
         </li>
         <li class="hrtool">
           <span class="hrtool-icoon" aria-hidden="true">
@@ -2302,7 +2255,7 @@ tailwind.config = {
               <path d="M15 7h6v6"/>
             </svg>
           </span>
-          <span class="hrtool-naam">Performancemanagement</span>
+          <span class="hrtool-naam" data-inhoud="integraties.functie_3">Performancemanagement</span>
         </li>
         <li class="hrtool">
           <span class="hrtool-icoon" aria-hidden="true">
@@ -2314,7 +2267,7 @@ tailwind.config = {
               <path d="M17.5 19a6 6 0 0 0-1.6-4.1"/>
             </svg>
           </span>
-          <span class="hrtool-naam">Core hr</span>
+          <span class="hrtool-naam" data-inhoud="integraties.functie_4">Core hr</span>
         </li>
       </ul>
 
@@ -2374,9 +2327,7 @@ tailwind.config = {
   <div class="shell">
 
     <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
-      <h2 id="quotes-titel" class="text-h2 md:text-h1 on-dark max-w-[22ch]">
-        Waarom klanten voor Youbo kiezen
-      </h2>
+      <h2 id="quotes-titel" class="text-h2 md:text-h1 on-dark max-w-[22ch]" data-inhoud="quotes.kop">Waarom klanten voor Youbo kiezen</h2>
 
       <!-- De pijlen bestaan alleen vanaf md, en dat mag nu pas: het veegteken
            zelf zijn de puntjes onder de rij, en die staan op élke breedte
@@ -2407,16 +2358,15 @@ tailwind.config = {
       <!-- Pieter-Jan Boden — foto aanwezig -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-5 w-auto self-start">
-          <blockquote class="m-0 mt-6 text-h3 on-dark">
-            “Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”
-          </blockquote>
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-5 w-auto self-start" data-inhoud-alt="quotes.quote_1.bedrijf">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_1.tekst">“Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/pieter-jan.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Pieter-Jan Boden" class="h-14 w-14 shrink-0 rounded-[50%] object-cover">
+                 alt="Pieter-Jan Boden" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+                 data-inhoud-src="quotes.quote_1.foto" data-inhoud-alt="quotes.quote_1.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark">Pieter-Jan Boden</span>
-              <span class="block text-caption on-dark-soft">People director</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_1.naam">Pieter-Jan Boden</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_1.functie">People director</span>
             </span>
           </figcaption>
         </figure>
@@ -2428,16 +2378,15 @@ tailwind.config = {
            dezelfde foto of naam voor die twee. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="h-4 w-auto self-start">
-          <blockquote class="m-0 mt-6 text-h3 on-dark">
-            “Toen ik een demo zag, wist ik: hier hebben we op gewacht.”
-          </blockquote>
+          <img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="h-4 w-auto self-start" data-inhoud-alt="quotes.quote_2.bedrijf">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_2.tekst">“Toen ik een demo zag, wist ik: hier hebben we op gewacht.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/bart-verhoeven.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Bart Verhoeven" class="h-14 w-14 shrink-0 rounded-[50%] object-cover">
+                 alt="Bart Verhoeven" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+                 data-inhoud-src="quotes.quote_2.foto" data-inhoud-alt="quotes.quote_2.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark">Bart Verhoeven</span>
-              <span class="block text-caption on-dark-soft">Hr manager</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_2.naam">Bart Verhoeven</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_2.functie">Hr manager</span>
             </span>
           </figcaption>
         </figure>
@@ -2446,16 +2395,15 @@ tailwind.config = {
       <!-- Mieke Catthoor — foto aanwezig -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/dpg-logo.svg" alt="DPG Media" class="h-5 w-auto self-start">
-          <blockquote class="m-0 mt-6 text-h3 on-dark">
-            “Youbo helpt om de loonkloof weg te werken.”
-          </blockquote>
+          <img src="assets/img/dpg-logo.svg" alt="DPG Media" class="h-5 w-auto self-start" data-inhoud-alt="quotes.quote_3.bedrijf">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_3.tekst">“Youbo helpt om de loonkloof weg te werken.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/mieke-catthoor.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Mieke Catthoor" class="h-14 w-14 shrink-0 rounded-[50%] object-cover">
+                 alt="Mieke Catthoor" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+                 data-inhoud-src="quotes.quote_3.foto" data-inhoud-alt="quotes.quote_3.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark">Mieke Catthoor</span>
-              <span class="block text-caption on-dark-soft">Compensation &amp; benefits</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_3.naam">Mieke Catthoor</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_3.functie">Compensation &amp; benefits</span>
             </span>
           </figcaption>
         </figure>
@@ -2464,17 +2412,15 @@ tailwind.config = {
       <!-- Joris Valkenborgh — foto aangeleverd op 2026-10-06 -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-5 w-auto self-start">
-          <blockquote class="m-0 mt-6 text-h3 on-dark">
-            “Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu
-            betere inhoudelijke gesprekken met mijn team.”
-          </blockquote>
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-5 w-auto self-start" data-inhoud-alt="quotes.quote_4.bedrijf">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_4.tekst">“Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu betere inhoudelijke gesprekken met mijn team.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/joris-valkenborgh.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Joris Valkenborgh" class="h-14 w-14 shrink-0 rounded-[50%] object-cover">
+                 alt="Joris Valkenborgh" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+                 data-inhoud-src="quotes.quote_4.foto" data-inhoud-alt="quotes.quote_4.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark">Joris Valkenborgh</span>
-              <span class="block text-caption on-dark-soft">Team manager</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_4.naam">Joris Valkenborgh</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_4.functie">Team manager</span>
             </span>
           </figcaption>
         </figure>
@@ -2485,17 +2431,15 @@ tailwind.config = {
            bijna zwart en dat is precies waar mint het best leest. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/anchr-logo.webp" width="214" height="65" alt="Anchr" class="logo-anchr-quote w-auto self-start">
-          <blockquote class="m-0 mt-6 text-h3 on-dark">
-            “Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien
-            we de jaarkost en het totale loonpakket van de werknemer.”
-          </blockquote>
+          <img src="assets/img/anchr-logo.webp" width="214" height="65" alt="Anchr" class="logo-anchr-quote w-auto self-start" data-inhoud-alt="quotes.quote_5.bedrijf">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_5.tekst">“Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien we de jaarkost en het totale loonpakket van de werknemer.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/evi-van-der-vliet.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Evi Van der Vliet" class="h-14 w-14 shrink-0 rounded-[50%] object-cover">
+                 alt="Evi Van der Vliet" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+                 data-inhoud-src="quotes.quote_5.foto" data-inhoud-alt="quotes.quote_5.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark">Evi Van der Vliet</span>
-              <span class="block text-caption on-dark-soft">Hr business partner</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_5.naam">Evi Van der Vliet</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_5.functie">Hr business partner</span>
             </span>
           </figcaption>
         </figure>
@@ -2540,9 +2484,7 @@ tailwind.config = {
          x-data="{ open: null }" x-cloak>
   <div class="shell">
     <div data-reveal>
-      <h2 id="faq-titel" class="text-h2 md:text-h1 max-w-[20ch]">
-        Veelgestelde vragen
-      </h2>
+      <h2 id="faq-titel" class="text-h2 md:text-h1 max-w-[20ch]" data-inhoud="faq.kop">Veelgestelde vragen</h2>
     </div>
 
     <div class="mt-10 border-y border-line max-w-prose" data-reveal>
@@ -2692,17 +2634,15 @@ tailwind.config = {
   <div class="shell grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
 
     <div class="lg:col-span-5" data-reveal>
-      <h2 id="demo-titel" class="text-h2 md:text-h1 max-w-[18ch]">
-        Met Youbo starten is makkelijk
-      </h2>
+      <h2 id="demo-titel" class="text-h2 md:text-h1 max-w-[18ch]" data-inhoud="demo.kop">Met Youbo starten is makkelijk</h2>
 
       <div class="mt-6 flex items-start gap-5">
         <img src="assets/img/nick-rond.webp" width="96" height="96" loading="lazy" decoding="async"
              alt="Nick Van Langendonck, reward expert bij Teal Partners"
-             class="h-24 w-24 shrink-0 rounded-[50%] object-cover">
+             class="h-24 w-24 shrink-0 rounded-[50%] object-cover"
+             data-inhoud-src="demo.nick_foto" data-inhoud-alt="demo.nick_foto_alt">
         <p class="m-0 text-body text-ink-soft max-w-text">
-          <b class="font-bold text-ink">Nick Van Langendonck</b>, reward expert, laat je zien hoe Youbo
-          aansluit op jullie loonbeleid, structuur en systemen. Hij neemt persoonlijk contact op.
+          <b class="font-bold text-ink" data-inhoud="demo.nick_naam">Nick Van Langendonck</b>, <span data-inhoud="demo.nick_tekst">reward expert, laat je zien hoe Youbo aansluit op jullie loonbeleid, structuur en systemen. Hij neemt persoonlijk contact op.</span>
         </p>
       </div>
     </div>
@@ -2712,52 +2652,49 @@ tailwind.config = {
       <form class="rounded-lg bg-paper border border-line p-6 md:p-8 shadow-card" novalidate>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="naam" class="block text-body font-medium text-ink mb-2">Naam <span class="text-brand-ink" aria-hidden="true">*</span></label>
+            <label for="naam" class="block text-body font-medium text-ink mb-2"><span data-inhoud="formulier.label_naam">Naam</span> <span class="text-brand-ink" aria-hidden="true">*</span></label>
             <input id="naam" name="naam" type="text" autocomplete="name" required
                    class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
                    style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
-                   placeholder="Anne Peeters">
+                   placeholder="Anne Peeters" data-inhoud-placeholder="formulier.plaatshouder_naam">
           </div>
           <div>
-            <label for="email" class="block text-body font-medium text-ink mb-2">E-mailadres <span class="text-brand-ink" aria-hidden="true">*</span></label>
+            <label for="email" class="block text-body font-medium text-ink mb-2"><span data-inhoud="formulier.label_email">E-mailadres</span> <span class="text-brand-ink" aria-hidden="true">*</span></label>
             <input id="email" name="email" type="email" autocomplete="email" required
                    class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
                    style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
-                   placeholder="anne@bedrijf.be">
+                   placeholder="anne@bedrijf.be" data-inhoud-placeholder="formulier.plaatshouder_email">
           </div>
           <div class="sm:col-span-2">
-            <label for="telefoon" class="block text-body font-medium text-ink mb-2">Telefoon</label>
+            <label for="telefoon" class="block text-body font-medium text-ink mb-2" data-inhoud="formulier.label_telefoon">Telefoon</label>
             <input id="telefoon" name="telefoon" type="tel" autocomplete="tel"
                    class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
                    style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
-                   placeholder="+32 4xx xx xx xx">
+                   placeholder="+32 4xx xx xx xx" data-inhoud-placeholder="formulier.plaatshouder_telefoon">
           </div>
           <div class="sm:col-span-2">
-            <label for="bericht" class="block text-body font-medium text-ink mb-2">Stel gerust al je vragen</label>
+            <label for="bericht" class="block text-body font-medium text-ink mb-2" data-inhoud="formulier.label_bericht">Stel gerust al je vragen</label>
             <textarea id="bericht" name="bericht" rows="4"
                       class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
                       style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
-                      placeholder="Hoeveel medewerkers zitten er in jullie looncyclus? Waar loopt het vandaag vast?"></textarea>
+                      placeholder="Hoeveel medewerkers zitten er in jullie looncyclus? Waar loopt het vandaag vast?"
+                      data-inhoud-placeholder="formulier.plaatshouder_bericht"></textarea>
           </div>
         </div>
 
         <div class="mt-6 flex items-start gap-3">
           <input id="nieuwsbrief" name="nieuwsbrief" type="checkbox" value="ja"
                  class="mt-1 h-5 w-5 shrink-0 rounded-sm border border-line-btn accent-brand">
-          <label for="nieuwsbrief" class="text-caption text-ink-soft">
-            Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.
-          </label>
+          <label for="nieuwsbrief" class="text-caption text-ink-soft" data-inhoud="formulier.nieuwsbrief">Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.</label>
         </div>
 
-        <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo">
-          Vraag je demo aan
-        </button>
+        <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo" data-inhoud="formulier.verzendknop">Vraag je demo aan</button>
 
         <p class="mt-4 text-caption text-ink-soft">
-          We gebruiken je gegevens enkel om je demo-aanvraag op te volgen. Lees hoe we daarmee omgaan in
-          de <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener"
+          <span data-inhoud="formulier.privacy_regel">We gebruiken je gegevens enkel om je demo-aanvraag op te volgen. Lees hoe we daarmee omgaan in de</span>
+          <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener"
           class="text-link-licht underline underline-offset-4 hover:text-link-hover"
-          style="transition: color var(--m-base) var(--e-standard)" data-cta="formulier-privacy">privacy policy</a>.
+          style="transition: color var(--m-base) var(--e-standard)" data-cta="formulier-privacy" data-inhoud="formulier.privacy_linktekst">privacy policy</a>.
         </p>
       </form>
 
@@ -2793,24 +2730,20 @@ tailwind.config = {
            De agendalink bestaat nog steeds niet, dus staat daar nog geen knop en
            blijft die TODO staan. -->
       <div class="alt-weg mt-6">
-        <p class="m-0 text-caption text-ink-soft">
-          Of boek rechtstreeks in Nicks agenda
-        </p>
+        <p class="m-0 text-caption text-ink-soft" data-inhoud="anders.agenda_regel">Of boek rechtstreeks in Nicks agenda</p>
         <p class="m-0 mt-2 text-caption text-ink-soft">
-          Of mail hem op
+          <span data-inhoud="anders.mail_aanloop">Of mail hem op</span>
           <a class="alt-link" href="mailto:nick.vanlangendonck@youbo.io"
-             data-cta="formulier-mail-nick">nick.vanlangendonck@youbo.io</a>
+             data-cta="formulier-mail-nick"
+             data-inhoud-href="anders.e_mail_link" data-inhoud="anders.e_mail">nick.vanlangendonck@youbo.io</a>
         </p>
         <p class="m-0 mt-2 text-caption text-ink-soft">
-          Of bel hem op
+          <span data-inhoud="anders.bel_aanloop">Of bel hem op</span>
           <a class="alt-link" href="tel:+32486082765"
-             data-cta="formulier-telefoon-nick">0486 08 27 65</a>
+             data-cta="formulier-telefoon-nick"
+             data-inhoud-href="anders.telefoon_link" data-inhoud="anders.telefoon">0486 08 27 65</a>
         </p>
-        <p class="todo mt-3 max-w-prose">
-          <b>TODO — nodig van klant</b>: de link naar Nicks agenda is aangevraagd en bestaat nog niet.
-          Zolang die er niet is staat hier geen knop, want een knop die nergens naartoe gaat is in een
-          review niet van een werkende te onderscheiden
-        </p>
+        <p class="todo mt-3 max-w-prose" data-inhoud="anders.nota"><b>TODO — nodig van klant</b>: de link naar Nicks agenda is aangevraagd en bestaat nog niet. Zolang die er niet is staat hier geen knop, want een knop die nergens naartoe gaat is in een review niet van een werkende te onderscheiden</p>
       </div>
     </div>
   </div>
@@ -2911,7 +2844,7 @@ tailwind.config = {
 <div class="bg-surface py-10">
   <div class="shell flex justify-center">
     <img src="assets/img/iso-eng.svg" alt="ISO 27001:2022 en GDPR"
-         width="266" height="70" class="h-12 w-auto">
+         width="266" height="70" class="h-12 w-auto" data-inhoud-alt="voet.iso_alt">
   </div>
 </div>
 
@@ -2924,19 +2857,19 @@ tailwind.config = {
     </div>
 
     <div class="footer-links-about">
-      <p>Over Youbo</p>
-      <a href="https://www.youbo.io/nl/cases/" data-cta="footer-cases">Referentie cases</a>
-      <a href="https://www.youbo.io/nl/nieuws/" data-cta="footer-nieuws">Nieuws</a>
-      <a href="https://www.youbo.io/nl/contact.html" data-cta="footer-contact">Contact</a>
+      <p data-inhoud="voet.kop_over">Over Youbo</p>
+      <a href="https://www.youbo.io/nl/cases/" data-cta="footer-cases" data-inhoud="voet.over_1">Referentie cases</a>
+      <a href="https://www.youbo.io/nl/nieuws/" data-cta="footer-nieuws" data-inhoud="voet.over_2">Nieuws</a>
+      <a href="https://www.youbo.io/nl/contact.html" data-cta="footer-contact" data-inhoud="voet.over_3">Contact</a>
     </div>
 
     <div class="footer-links-legal">
-      <p>Legal</p>
-      <a href="https://www.youbo.io/nl/legal/cookie-policy.html" data-cta="footer-cookiebeleid">Cookie policy</a>
-      <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener" data-cta="footer-privacy">Privacy policy</a>
-      <a href="https://www.youbo.io/nl/legal/responsible-disclosure-policy.html" data-cta="footer-rdp">Responsible disclosure policy</a>
-      <a href="https://www.youbo.io/nl/legal/disclaimer.html" data-cta="footer-disclaimer">Disclaimer</a>
-      <a href="https://www.youbo.io/nl/legal/gebruiksvoorwaarden.html" data-cta="footer-voorwaarden">Terms of use</a>
+      <p data-inhoud="voet.kop_legal">Legal</p>
+      <a href="https://www.youbo.io/nl/legal/cookie-policy.html" data-cta="footer-cookiebeleid" data-inhoud="voet.legal_1">Cookie policy</a>
+      <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener" data-cta="footer-privacy" data-inhoud="voet.legal_2">Privacy policy</a>
+      <a href="https://www.youbo.io/nl/legal/responsible-disclosure-policy.html" data-cta="footer-rdp" data-inhoud="voet.legal_3">Responsible disclosure policy</a>
+      <a href="https://www.youbo.io/nl/legal/disclaimer.html" data-cta="footer-disclaimer" data-inhoud="voet.legal_4">Disclaimer</a>
+      <a href="https://www.youbo.io/nl/legal/gebruiksvoorwaarden.html" data-cta="footer-voorwaarden" data-inhoud="voet.legal_5">Terms of use</a>
     </div>
 
   </div>
@@ -2953,24 +2886,18 @@ tailwind.config = {
        openstaande vraag van dit blok onzichtbaar geworden, en dat is precies
        wat deze drafts nergens doen. -->
   <div class="footer-languages">
-    <span class="inert-language">English</span>
-    <span class="active-language">Nederlands</span>
-    <span class="inert-language">Français</span>
+    <span class="inert-language" data-inhoud="voet.taal_1">English</span>
+    <span class="active-language" data-inhoud="voet.taal_2">Nederlands</span>
+    <span class="inert-language" data-inhoud="voet.taal_3">Français</span>
   </div>
 
   <div class="footer-talen-todo">
-    <p class="todo">
-      <b>TODO — te bevestigen</b>: de footer van youbo.io draagt een schakelaar English ·
-      Nederlands · Français. Deze pagina bestaat alleen in het Nederlands, dus staan die
-      twee andere namen er zonder link. Zodra er een Engelse of Franse versie is, worden
-      het weer echte links — op youbo.io vult footer.js ze uit data-url-en en
-      data-url-fr — en dan hoort er ook hreflang in de head
-    </p>
+    <p class="todo" data-inhoud="voet.nota"><b>TODO — te bevestigen</b>: de footer van youbo.io draagt een schakelaar English · Nederlands · Français. Deze pagina bestaat alleen in het Nederlands, dus staan die twee andere namen er zonder link. Zodra er een Engelse of Franse versie is, worden het weer echte links — op youbo.io vult footer.js ze uit data-url-en en data-url-fr — en dan hoort er ook hreflang in de head</p>
   </div>
 
   <div class="footer-copyright">
-    <p>© <span id="currentYear">2026</span> Youbo by <a href="https://www.tealpartners.com/" target="_blank" rel="noopener" data-cta="footer-tealpartners">Teal Partners</a></p>
-    <p class="footer-entiteit">Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542</p>
+    <p>© <span id="currentYear">2026</span> <span data-inhoud="voet.copyright">Youbo by</span> <a href="https://www.tealpartners.com/" target="_blank" rel="noopener" data-cta="footer-tealpartners" data-inhoud="voet.copyright_linktekst">Teal Partners</a></p>
+    <p class="footer-entiteit" data-inhoud="voet.entiteit">Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542</p>
   </div>
 
 </footer>
@@ -3032,20 +2959,16 @@ tailwind.config = {
        role="region" aria-label="Cookies">
     <div class="max-w-shell mx-auto px-4 md:px-6 py-1 flex items-center gap-3">
       <p class="flex-1 min-w-0 m-0 text-[13px] leading-[1.35] text-ink-soft">
-        We plaatsen <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
+        <span data-inhoud="cookiebalk.aanloop">We plaatsen</span> <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
            class="text-link-licht underline underline-offset-2 hover:text-link-hover"
            style="transition: color var(--m-base) var(--e-standard)"
-           data-cta="cookiebalk-beleid">meetcookies</a><span class="hidden sm:inline"> om te zien hoe deze pagina gebruikt wordt</span>.
+           data-cta="cookiebalk-beleid" data-inhoud="cookiebalk.linktekst">meetcookies</a><span class="hidden sm:inline"> <span data-inhoud="cookiebalk.staart">om te zien hoe deze pagina gebruikt wordt</span></span>.
       </p>
       <div class="flex items-center gap-2 shrink-0">
         <button type="button" @click="$store.toestemming.zet('geweigerd')"
-                class="btn-secondary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">
-          Weigeren
-        </button>
+                class="btn-secondary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren" data-inhoud="cookiebalk.weigeren">Weigeren</button>
         <button type="button" @click="$store.toestemming.zet('toegestaan')"
-                class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan">
-          Toestaan
-        </button>
+                class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan" data-inhoud="cookiebalk.toestaan">Toestaan</button>
       </div>
     </div>
   </div>
@@ -3062,11 +2985,9 @@ tailwind.config = {
            een knop over de volle breedte is daar het makkelijkst te raken. -->
       <div class="hidden sm:flex items-center gap-3 min-w-0">
         <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-6 w-auto">
-        <p class="text-caption text-ink-soft m-0">Nick toont je Youbo op jouw eigen looncyclus</p>
+        <p class="text-caption text-ink-soft m-0" data-inhoud="band.regel">Nick toont je Youbo op jouw eigen looncyclus</p>
       </div>
-      <a href="#demo" class="btn-primary w-full sm:w-auto shrink-0 px-5 py-2 min-h-[44px] text-caption" data-cta="vaste-band-demo">
-        Boek een demo
-      </a>
+      <a href="#demo" class="btn-primary w-full sm:w-auto shrink-0 px-5 py-2 min-h-[44px] text-caption" data-cta="vaste-band-demo" data-inhoud="band.knop">Boek een demo</a>
     </div>
   </div>
 </div>
