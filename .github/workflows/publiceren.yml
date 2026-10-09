@@ -69,6 +69,12 @@ concurrency:
 
 permissions:
   contents: read
+  # Voor de melding onderaan. Mislukt de publicatie, dan maakt deze job een
+  # issue in DEZE repo aan en vermeldt daarin de eigenaar en wie de opslag deed.
+  # Dat is nodig omdat GitHub's eigen bericht bij een mislukte Action alleen naar
+  # wie de run STARTTE gaat — bij een opslag in /beheer/ dus naar Jana en niet
+  # naar wie het kan herstellen. Zie de kop van meld-mislukking.mjs.
+  issues: write
 
 jobs:
   publiceren:
@@ -86,19 +92,23 @@ jobs:
       # die horen niet in een publicatie.
 
       - name: 1 · Bouwen — de FAQ in de HTML en de versiestempel erop
+        id: bouwen
         run: node stamp-version.mjs
 
       - name: 2 · Nakijken — komt de gebouwde pagina overeen met faq.yml
+        id: faq_controle
         run: node build-faq.mjs --check
 
       - name: 2 · Nakijken — de 19 paginacontroles
+        id: pagina_controle
         run: node check-drafts.mjs
 
       - name: 3 · De publicatiemap samenstellen
+        id: samenstellen
         run: node publiceer.mjs
 
       - name: 3 · De doelmap op de server opvragen
-        id: doel
+        id: doelmap
         run: echo "map=$(node publiceer.mjs --servermap)" >> "$GITHUB_OUTPUT"
 
       # De upload. protocol: ftps is verplicht — Azure weigert gewone FTP, en
@@ -124,6 +134,7 @@ jobs:
       # Vastgezet op de commit achter v4.4.0 en niet op het label: een label kan
       # verplaatst worden, en deze stap krijgt het FTPS-wachtwoord te zien.
       - name: 4 · Uploaden via FTPS
+        id: uploaden
         uses: SamKirkland/FTP-Deploy-Action@110f9186c050f71550953127052e77650219c287 # v4.4.0
         with:
           server: ${{ secrets.FTPS_HOST }}
@@ -132,7 +143,56 @@ jobs:
           protocol: ftps
           security: strict
           local-dir: ./publicatie-uit/
-          server-dir: ${{ steps.doel.outputs.map }}
+          server-dir: ${{ steps.doelmap.outputs.map }}
           state-name: .ftp-deploy-sync-state.json
           log-level: standard
           dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.proefrit || false }}
+
+      # ─────────────────────────────────────────────────────────────────────
+      # 5 · DE MELDING
+      #
+      # Tot hier kon een publicatie stil mislukken. Jana slaat op, er gaat
+      # onderweg iets mis, de pagina verandert niet — en "het duurt even" ziet
+      # er precies zo uit. Zij slaat dan opnieuw op of besluit dat het niet
+      # werkt, en niemand weet dat de site de tekst van gisteren toont.
+      #
+      # GitHub stuurt zelf wél een bericht bij een mislukte run, en dat is de
+      # val: het gaat naar wie de run STARTTE en naar niemand anders ("you'll
+      # receive a notification when any workflow runs that you've triggered
+      # have completed"). Komt de commit uit /beheer/, dan is dat Jana. Sven,
+      # die het moet herstellen, krijgt niets.
+      #
+      # Dus: een issue in deze repo, met @-vermelding van de eigenaar én van
+      # wie de opslag deed. Dat gebruikt alleen het jeton dat de Action zelf al
+      # heeft, dus is er geen geheim bij te beheren — en een melding die
+      # stilvalt omdat een sleutel verliep, zou erger zijn dan geen melding.
+      #
+      # STAPPEN geeft de uitkomst van elke stap mee, zodat het bericht kan
+      # zeggen wát faalde in gewone taal in plaats van "step 2 failed". De
+      # id's hebben een _ en geen -, want in een expressie leest GitHub een
+      # streepje als minteken.
+      - name: 5 · Als het misliep — zeg het tegen een mens
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          STAPPEN: >-
+            bouwen=${{ steps.bouwen.outcome }};faq_controle=${{ steps.faq_controle.outcome
+            }};pagina_controle=${{ steps.pagina_controle.outcome }};samenstellen=${{
+            steps.samenstellen.outcome }};doelmap=${{ steps.doelmap.outcome
+            }};uploaden=${{ steps.uploaden.outcome }}
+        # Bij een proefrit alleen loggen: dan staat Sven zelf naar de run te
+        # kijken en hoeft daar geen melding voor open te gaan. Zo ziet hij bij
+        # zijn eerste handmatige rit wél hoe het bericht eruitziet.
+        run: >-
+          node meld-mislukking.mjs
+          ${{ (github.event_name == 'workflow_dispatch' && inputs.proefrit) && '--proefrit' || '' }}
+
+      # En de andere kant: lukt het weer, dan gaat de open melding dicht.
+      # Daardoor betekent "er staat een open melding" werkelijk "het is nu
+      # stuk". Niet bij een proefrit — die publiceert niets, dus zou het sluiten
+      # een onwaarheid zijn.
+      - name: 5 · Gelukt — een eerdere melding mag dicht
+        if: success() && !(github.event_name == 'workflow_dispatch' && inputs.proefrit)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node meld-mislukking.mjs --gelukt
