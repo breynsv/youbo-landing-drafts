@@ -287,10 +287,32 @@ try {
   const wegwerp = mkdtempSync(join(tmpdir(), 'youbo-melding-'));
   try {
     mkdirSync(join(wegwerp, 'content'));
-    for (const f of ['build-faq.mjs', 'faq-opmaak.js', 'stamp-version.mjs', 'meld-mislukking.mjs',
+    // Alles wat `node stamp-version.mjs` nodig heeft. Ontbreekt er één, dan
+    // faalt de bouw op een ontbrekende module in plaats van op de fout die we
+    // hier willen uitlokken — en dan is deze toets rood om de verkeerde reden.
+    // Dat is al twee keer gebeurd: met faq-opmaak.js (2026-10-09) en met
+    // build-inhoud.mjs (2026-10-10).
+    for (const f of ['build-faq.mjs', 'faq-opmaak.js', 'build-inhoud.mjs', 'inhoud-opmaak.js',
+                     'lees-yaml.js', 'stamp-version.mjs', 'meld-mislukking.mjs',
                      'VERSION', 'draft-r3-01-definitief.html']) {
       copyFileSync(join(hier, f), join(wegwerp, f));
     }
+    for (const f of ['pagina.yml', 'klanten.yml', 'contact.yml']) {
+      copyFileSync(join(hier, 'content', f), join(wegwerp, 'content', f));
+    }
+    // En de beelden waar die bestanden naar verwijzen, want build-inhoud.mjs
+    // stopt op een ontbrekend bestand — met recht, maar dan zou deze toets
+    // dáárop vastlopen in plaats van op de HTML in het FAQ-antwoord. De lijst
+    // wordt uit de inhoudsbestanden zelf gehaald en niet hier opgeschreven,
+    // zodat een beeldveld dat er morgen bijkomt, meekomt.
+    mkdirSync(join(wegwerp, 'assets', 'img'), { recursive: true });
+    const beelden = new Set();
+    for (const f of ['pagina.yml', 'klanten.yml', 'contact.yml']) {
+      for (const m of readFileSync(join(hier, 'content', f), 'utf8').matchAll(/assets\/img\/[\w.-]+/g)) {
+        beelden.add(m[0]);
+      }
+    }
+    for (const beeld of beelden) copyFileSync(join(hier, beeld), join(wegwerp, beeld));
     // Precies de fout die we van een invulveld vrezen: HTML in de tekst.
     writeFileSync(join(wegwerp, 'content', 'faq.yml'),
       'items:\n  - vraag: Hoeveel kost het?\n    antwoord: |-\n      Een <b>vet</b> antwoord.\n');
