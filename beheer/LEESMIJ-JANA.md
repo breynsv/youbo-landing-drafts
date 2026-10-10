@@ -47,10 +47,67 @@ antwoord open te klappen — net als een bezoeker doet.
 Klik de groep open, verander de tekst in het vak, klaar. Onder elk vak staat een
 regeltje dat zegt wat daar hoort.
 
-Bij **Veelgestelde vragen** werkt het iets anders: boven de lijst staat
-**Vraag toevoegen** voor een nieuwe, het kruisje verwijdert er een, en met het
-streepje in het midden sleep je een vraag naar boven of naar beneden. Die
-volgorde is ook de volgorde op de pagina.
+## Een case, een quote, een stap of een logo erbij zetten of weghalen
+
+Vijf dingen op de pagina zijn **lijsten**: de cases, de quotes, de stappen van
+de rondleiding, de logo's in de balk en de vragen in de FAQ. Daar kun je er een
+bij zetten, een weghalen en de volgorde veranderen.
+
+Het werkt overal hetzelfde:
+
+- **Erbij**: de knop **Toevoegen** boven of onder de lijst. Je krijgt een leeg
+  item met dezelfde vakken als de andere.
+- **Eraf**: het kruisje of het prullenbakje bij dat item.
+- **Verplaatsen**: pak het item bij het streepje links en sleep het naar boven
+  of naar beneden. **De volgorde in de lijst is de volgorde op de pagina.**
+
+Elk item staat dichtgeklapt, met zijn naam ernaast, zodat je de lijst in één
+oogopslag overziet. Klik erop om de vakken te zien.
+
+### Hoeveel er mogen zijn
+
+Hier zit een echte grens aan, en die is gemeten in plaats van bedacht:
+
+| Lijst | Minstens | Hoogstens | Waarom |
+| --- | --- | --- | --- |
+| Cases | 2 | 7 | Het raster op desktop is zes kolommen; boven zeven steken de bolletjes onder de rij op een telefoon buiten de pagina. |
+| Quotes | 3 | 7 | Met twee is er geen half derde kaartje meer dat zegt dat er nog volgen, en doen de pijlen niets. |
+| Stappen rondleiding | 2 | 4 | Elke stap hoort bij één nagetekend scherm, en die vier zijn getekend. **Erbij kan dus niet** — weglaten en verplaatsen wel; het scherm gaat mee. |
+| Logo's in de balk | 6 | 9 | Onder zes staat er een naam twee keer in beeld; boven negen breekt de rij op een smal scherm in twee halve regels. |
+| FAQ-vragen | — | — | Geen grens. |
+
+Het scherm zegt het als je eroverheen gaat en laat je dan niet opslaan. Houd je
+het toch binnen de grens, dan verandert de pagina mee: zet je er een zesde case
+bij, dan herschikt het raster zich vanzelf.
+
+Bij een **stap van de rondleiding** kies je in het vak **Welk scherm hiernaast**
+welke tekening erbij hoort. Elke tekening mag maar bij één stap staan.
+
+## Een foto of een logo vervangen
+
+Bij een quote, bij de ronde foto van Nick en bij elk klantlogo staat een vak met
+een **afbeelding**. Klik erop en je krijgt twee keuzes: een bestand van je
+computer kiezen, of een beeld pakken dat er al staat.
+
+Je hoeft je niets aan te trekken van het formaat. Wat je kiest, wordt
+**automatisch verkleind en omgezet** naar het bestandstype dat een website nodig
+heeft. Een foto van 4 MB uit je telefoon wordt een bestand van een paar tientallen
+kilobytes, zonder dat je er iets voor doet. Alleen boven 15 MB weigert hij.
+
+Twee dingen om te weten:
+
+- **Een logo is vaak twee bestanden.** De casekaarten staan op een lichte
+  achtergrond en de quotes op een donkere. Op donker hoort de witte of de
+  kleurversie van het logo, op licht de donkere. Staat er een donker logo op de
+  donkere band, dan zie je het bijna niet — dat zie je meteen in het voorbeeld.
+- **Naast het logo staat een vakje "Hoogte".** Dat is hoe hoog het logo op de
+  pagina staat, in beeldpunten. Elk logo heeft een eigen hoogte omdat een breed
+  woordmerk anders weegt dan een rond teken: kijk in het voorbeeld naar de
+  logo's ernaast en kies de hoogte waarbij ze alle drie even zwaar lijken. Bij
+  twijfel neem je dezelfde hoogte als het logo dat er eerst stond.
+
+**Alles wat je uploadt staat publiek online.** Er is geen "alleen intern" in
+deze beeldbibliotheek.
 
 ## Vier dingen over de tekst
 
@@ -80,18 +137,19 @@ vak. De balk zegt welk veld het is. Vul het in en de balk verdwijnt.
 
 ## Wat je hier niet kunt veranderen, en waarom
 
-- **De logo's van de klanten, de nagetekende schermen en de foto bovenaan.**
-  Dat is ontwerp: elk logo heeft een gemeten hoogte, de cijfers in de schermen
-  sluiten op elkaar aan, en de foto heeft een vaste verhouding. De **naam**
-  achter een logo is wél een veld, want die wordt voorgelezen aan wie de pagina
-  niet kan zien.
+- **De nagetekende schermen in de rondleiding en de foto bovenaan.** Dat is
+  ontwerp: de cijfers in de vier schermen sluiten op elkaar aan over de schermen
+  heen, en de foto bovenaan heeft een vaste breedte-hoogteverhouding — een beeld
+  met een andere verhouding wordt daar uitgerekt. De **beschrijving** van die
+  foto is wél een veld, want die wordt voorgelezen aan wie de pagina niet kan
+  zien.
 - **De cookiebalk onderaan en de privacyregel onder het formulier.** Dat is
   juridische tekst. Wil je daar iets aan veranderen, mail dan Sven — hij legt
   het eerst voor.
 - **De adressen achter de links en het deelplaatje.** Alleen de tekst van een
   link is een veld, niet waar hij naartoe gaat.
-- **Het aantal cases en quotes.** Er zijn er vijf, en het raster is op precies
-  vijf gemeten. Een zesde erbij is ontwerpwerk.
+- **De opmaak van de pagina.** Welke kleur, welk lettertype, welk blok waar
+  staat. Dat verandert niet mee met wat je typt.
 
 ## Opslaan zet het meteen op de site
 

@@ -6,15 +6,15 @@ In deze map staan VIER bestanden met tekst van draft-r3-01-definitief.html:
   pagina.yml    de koppen en de lopende tekst van de
                 negen andere blokken, en de twee
                 grote cijfers                          (sinds 2026-10-10)
-  klanten.yml   de vijf cases en de vijf quotes        (sinds 2026-10-10)
+  klanten.yml   de cases en de quotes                  (sinds 2026-10-10)
   contact.yml   het formulier, de contactgegevens van
                 Nick, de balk onderaan en de voettekst (sinds 2026-10-10)
 
-Samen zijn ze bijna de hele zichtbare tekst van die pagina — 140 velden. Wat er
-NIET in staat is de vorm: de opmaak, de volgorde van de secties, de negen
-klantlogo's, de vier nagetekende productschermen en de cijfers die daarin staan.
-Dat is ontwerp, en een veld waarmee de marketeer de pagina kan breken hoort er
-niet. En één stuk tekst staat er met opzet niet in: de cookiebalk en de
+Samen zijn ze bijna de hele zichtbare tekst van die pagina — 191 velden, waarvan
+een deel uit vier LIJSTEN komt (zie onder). Wat er NIET in staat is de vorm: de
+opmaak, de volgorde van de secties, de vier nagetekende productschermen en de
+cijfers die daarin staan. Dat is ontwerp, en een veld waarmee de marketeer de
+pagina kan breken hoort er niet. En één stuk tekst staat er met opzet niet in: de cookiebalk en de
 privacyregel onder het formulier. Zie onderaan.
 
 Alle vier worden bij de bouw in de pagina gezet, niet in de browser: 57 van de 81
@@ -131,7 +131,73 @@ Drie regels gelden voor elk veld, en de bouw stopt als ze niet kloppen:
   3. PRECIES DEZE VELDEN. Een veld bijzetten doet niets (de pagina vraagt er niet
      om) en een veld weghalen laat een gat vallen. De bouw weigert dus beide:
      een veld dat nergens in de pagina staat én een plek in de pagina waarvoor
-     geen veld bestaat.
+     geen veld bestaat. Een ITEM bijzetten in een lijst kan wél — zie hieronder.
+
+VIER LIJSTEN, MET EEN ONDERGRENS EN EEN BOVENGRENS (sinds 2026-10-10)
+
+Vier blokken zijn een echte lijst: er kan een item bij, een item af, en de
+volgorde mag veranderen.
+
+  cases.items           in klanten.yml   minstens 2, hoogstens 7
+  quotes.items          in klanten.yml   minstens 3, hoogstens 7
+  rondleiding.stappen   in pagina.yml    minstens 2, hoogstens 4
+  logobalk.logos        in pagina.yml    minstens 6, hoogstens 9
+
+Die acht getallen zijn GEMETEN en niet bedacht. Ze staan met hun reden in
+inhoud-opmaak.js (GRENZEN), en dat is dezelfde bron waaruit de bouw weigert en
+waaruit het voorbeeldvenster zijn melding haalt. De grens staat daarnaast ook in
+beheer/config.yml als min/max op het lijstveld, zodat Jana het merkt terwijl ze
+bezig is in plaats van wanneer de publicatie faalt; een toets bewaakt dat die
+twee getallen niet uiteenlopen.
+
+Waar de grenzen vandaan komen, kort:
+
+  · De casekaarten staan op desktop in een raster van zes kolommen. Een kaart
+    beslaat er twee (drie kaarten op een rij) of drie (twee op een rij); de bouw
+    rekent die verdeling uit. Met één kaart blijft 699 van 1024 beeldpunten leeg.
+    Boven zeven steken de bolletjes onder de rij (44 beeldpunten elk) op een
+    telefoon van 360 buiten de kantlijn.
+  · De quoterij toont op desktop twee kaarten volledig en een derde half. Met
+    twee quotes is die rij nul beeldpunten schuifbaar: dan verdwijnt dat halve
+    kaartje en doen de pijlen en de bolletjes niets.
+  · Elke stap van de rondleiding hoort bij één nagetekend scherm, en die vier
+    zijn getekend. Een stap weglaten of verplaatsen kan — het scherm gaat mee, en
+    een scherm waar geen stap meer bij hoort blijft GEPARKEERD in de pagina
+    staan tussen commentaartekens, zodat het terug kan komen. Een stap bijmaken
+    kan niet zonder dat iemand een vijfde scherm tekent.
+  · De logobalk mag nooit een complete reeks tegelijk tonen, want dan staat er
+    een naam twee keer in beeld. Met vijf logo's gebeurt dat op 1279 en 1919
+    beeldpunten breed. Boven negen breekt de stilstaande terugval (voor wie
+    "beperk beweging" aan heeft) op 1024 beeldpunten in twee halve regels.
+
+En het tempo van die balk rekent zich nu zelf uit. Het tempo is de reeksbreedte
+gedeeld door de duur, dus hing de voorgeschreven 15,9 px/s af van het AANTAL
+logo's: met acht liep de balk gemeten op 17,7 px/s. De duur is daarom
+aantal × seconden-per-logo geworden, en build-inhoud.mjs schrijft het aantal in
+de stylesheet (de markering LOGO-AANTAL).
+
+HOE EEN LIJST IN DE PAGINA KOMT
+
+Om elke lijst staat een markeringspaar, net als om de FAQ-lijst:
+
+  <!-- HERHAAL:cases.items:BEGIN — … -->
+    <li …>de eerste kaart…</li>
+    …
+  <!-- HERHAAL:cases.items:EINDE -->
+
+Het verschil met de FAQ is wáár het sjabloon staat. De FAQ-vorm staat in
+faq-opmaak.js, als HTML in een string; dat kan omdat een vraag zes regels tekst
+is. Een casekaart is dat niet — ze heeft een logoplek met een gemeten hoogte, een
+voordeel met een min-height, een cijferopsomming en een voet met een
+scheidingslijn. Verhuist dat naar een JavaScript-bestand, dan kan de ontwerper er
+niet meer bij. Dus is DE EERSTE ITEM IN DE PAGINA ZELF DE VORM: de bouw leest hem,
+maakt er N van, en zet in elke kopie recht wat per item verschilt (het nummer, de
+teller "2 / 4", de breedte in het raster, de klassen die alleen op het eerste item
+horen, een element dat bij dit item niets te zeggen heeft, en het scherm).
+
+Wie de vorm wil wijzigen, past dus de EERSTE kaart aan. De kaarten eronder worden
+bij de volgende bouw overschreven — net als de FAQ-lijst, en dat staat ook in de
+markering zelf.
 
 "TODO — " doet hier hetzelfde als in de FAQ: het veld krijgt op de pagina het
 kader met de stippellijn, met het stuk tot de eerste dubbele punt in het vet. Vijf
@@ -164,10 +230,14 @@ Twee dingen volgen daaruit en zijn het waard om te weten:
 
 WAT ER NIET IN DEZE BESTANDEN STAAT, EN WAAROM NIET
 
-  · De negen klantlogo's in de balk, op de casekaarten en op de quotes. Elk heeft
-    een eigen, gemeten hoogte en de rolsnelheid van de balk is op de breedte van
-    de hele reeks gemeten. Een logo wisselen is ontwerpwerk. De NAAM achter het
-    logo is wel een veld, want die wordt voorgelezen in plaats van het beeld.
+  · (Tot 2026-10-10 stonden de negen klantlogo's hier als "ontwerp, geen veld".
+    Dat is veranderd: een klantlogo IS inhoud — het zegt wie de klant is, en dat
+    wisselt. Het logobestand en de NAAM erachter zijn nu velden, in alle drie de
+    plekken waar een logo staat. Wat er bij hoort is de HOOGTE, en dat is bewust
+    een ontwerpknop in Jana's handen: de negen hoogtes lopen van 20 tot 32
+    beeldpunten en zijn elk tegen hun buren afgewogen, dus er bestaat geen maat
+    die voor een nieuw logo zomaar klopt. Het bereik staat in de bouw en in het
+    beheerscherm, en het voorbeeldvenster laat het meteen zien.)
   · De vier nagetekende productschermen en de panelen met voorbeeldcijfers. Die
     cijfers sluiten op elkaar aan over vier schermen (38 van 50 managers = 76%,
     en dezelfde bedragen komen in twee schermen terug). Op marketing voor
@@ -176,7 +246,14 @@ WAT ER NIET IN DEZE BESTANDEN STAAT, EN WAAROM NIET
   · Het portret in de hero. Dat is een uitsnede van 900×1140 waarvan de
     breedte-hoogteverhouding in de HTML staat; een ander beeld moet daar passen.
     De vijf quoteportretten en de ronde foto bij het formulier zijn wel velden:
-    die staan in een cirkel met een vaste maat, dus elk beeld past.
+    die staan in een cirkel met een vaste maat, dus elk beeld past. Sinds
+    2026-10-10 zijn dat echte BEELDVELDEN: Jana kiest een bestand en Sveltia zet
+    het in de browser om naar WebP en verkleint het tot wat de pagina werkelijk
+    toont (168 beeldpunten voor een quoteportret, 288 voor de foto bij het
+    formulier, 320 bij 96 voor een logo — drie keer de getoonde maat). Dat is
+    geen netheid: pieter-jan.webp is 2000×1996 en 505 kB voor een cirkel van 56
+    beeldpunten. Wat ze uploadt komt in content/media/ en staat dus publiek
+    online; zie content/media/LEESMIJ.txt.
   · De COOKIEBALK en de PRIVACYREGEL onder het formulier. Tot 2026-10-09 waren
     dat zeven velden in contact.yml; sindsdien staan ze hard in de HTML, met een
     nota erbij op allebei de plekken. Dat is juridische tekst, en een marketeer
