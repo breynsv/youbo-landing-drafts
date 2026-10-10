@@ -49,6 +49,13 @@ on:
       - 'content/klanten.yml'
       - 'content/contact.yml'
       - 'assets/img/**'
+      # En de beelden die Jana zélf uploadt. Sinds 2026-10-10 zijn het portret
+      # bij een quote, de ronde foto bij het formulier en de klantlogo's echte
+      # beeldvelden, en wat ze via /beheer/ uploadt commit Sveltia in
+      # content/media/. Staat deze regel er niet, dan merkt deze workflow die
+      # commit niet op: de site verandert niet, er is geen mislukte publicatie
+      # en dus ook geen melding — er is helemaal geen publicatie.
+      - 'content/media/**'
       - 'publicatie/web.config'
       - 'publiceer.mjs'
       - 'build-faq.mjs'

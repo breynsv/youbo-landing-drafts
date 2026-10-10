@@ -47,7 +47,7 @@
  *     afsluitcode wordt gelezen.
  */
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -221,7 +221,8 @@ const naEenOpslagVan = (bestand, tekst) =>
    worden; de echte pagina wordt door deze toets nooit geschreven. */
 
 const SCRIPTS = ['build-inhoud.mjs', 'build-faq.mjs', 'inhoud-opmaak.js',
-                 'lees-yaml.js', 'faq-opmaak.js'];
+                 'lees-yaml.js', 'faq-opmaak.js', 'publiceer.mjs', 'stamp-version.mjs',
+                 'VERSION'];
 
 function maakWegwerp() {
   const map = mkdtempSync(join(tmpdir(), 'youbo-inhoud-'));
@@ -231,6 +232,20 @@ function maakWegwerp() {
   for (const f of [...BRONNEN, 'faq.yml']) cpSync(join(hier, 'content', f), join(map, 'content', f));
   mkdirSync(join(map, 'assets', 'img'), { recursive: true });
   for (const beeld of beeldenInBronnen()) cpSync(join(hier, beeld), join(map, beeld));
+  return map;
+}
+
+/** Dezelfde wegwerpmap, maar met alles wat publiceer.mjs nodig heeft. */
+function maakWegwerpMetPublicatie() {
+  const map = maakWegwerp();
+  cpSync(join(hier, 'draft-r3-02-bedankt.html'), join(map, 'draft-r3-02-bedankt.html'));
+  cpSync(join(hier, 'robots.txt'), join(map, 'robots.txt'));
+  cpSync(join(hier, 'assets'), join(map, 'assets'), { recursive: true });
+  mkdirSync(join(map, 'publicatie'), { recursive: true });
+  cpSync(join(hier, 'publicatie', 'web.config'), join(map, 'publicatie', 'web.config'));
+  mkdirSync(join(map, 'content', 'media'), { recursive: true });
+  cpSync(join(hier, 'content', 'media', 'LEESMIJ.txt'),
+         join(map, 'content', 'media', 'LEESMIJ.txt'));
   return map;
 }
 
@@ -670,6 +685,72 @@ function zetAantalInGroep(map, bestand, groep, lijstsleutel, aantal) {
   rmSync(tijdelijk, { force: true });
   writeFileSync(pad, heel.slice(0, a) + nieuwStuk + heel.slice(b));
   return true;
+}
+
+/* ------------------------------------------ 3c · een beeld dat Jana uploadt --- */
+
+console.log('\n3c. Een foto die Jana uploadt — komt die mee naar de klant');
+
+{
+  const map = maakWegwerpMetPublicatie();
+  try {
+    const publiceer = (...args) => {
+      const r = spawnSync(process.execPath, [join(map, 'publiceer.mjs'), ...args],
+                          { cwd: map, encoding: 'utf8' });
+      return { code: r.status, uit: `${r.stdout}${r.stderr}` };
+    };
+    // De volle bouw, want publiceer.mjs weigert een pagina zonder versiestempel
+    // — met opzet: zonder stempel is de FAQ misschien ook niet gebouwd.
+    const stempel = () => spawnSync(process.execPath, [join(map, 'stamp-version.mjs')],
+                                    { cwd: map, encoding: 'utf8' });
+    const inDeMap = () => readdirSync(join(map, 'publicatie-uit'), { recursive: true })
+      .map((f) => String(f).replace(/\\/g, '/'));
+
+    // Een echt WebP-bestand in content/media/, net als wat Sveltia daar commit
+    // na de omzetting, en een quote die ernaar wijst met het pad dat het
+    // beeldveld schrijft (public_folder = /content/media).
+    cpSync(join(hier, 'assets', 'img', 'nick-rond.webp'),
+           join(map, 'content', 'media', 'jana-portret.webp'));
+    const kl = join(map, 'content', 'klanten.yml');
+    writeFileSync(kl, readFileSync(kl, 'utf8')
+      .replace('foto: assets/img/pieter-jan.webp', 'foto: /content/media/jana-portret.webp'));
+
+    const b = stempel();
+    eis('de bouw aanvaardt een beeld uit content/media/', b.status === 0,
+        `${b.stdout}${b.stderr}`.trim().slice(0, 240));
+
+    const p = publiceer();
+    eis('publiceer.mjs loopt door', p.code === 0, p.uit.trim().slice(0, 240));
+    const met = inDeMap();
+    eis('en neemt de geüploade foto mee naar de klant',
+        met.some((f) => f.endsWith('content/media/jana-portret.webp')),
+        'de foto staat niet in de publicatiemap, dus zou de site een gebroken plaatje tonen');
+    eis('maar niet de LEESMIJ.txt die in diezelfde map staat',
+        !met.some((f) => f.endsWith('content/media/LEESMIJ.txt')),
+        'publiceer.mjs hoort alleen mee te nemen wat de pagina werkelijk opvraagt');
+    eis('en het portret dat ze verving, gaat er juist uit',
+        !met.some((f) => f.endsWith('assets/img/pieter-jan.webp')),
+        'dan blijft het oude bestand meeverhuizen naar de klant');
+
+    // En weer weghalen.
+    writeFileSync(kl, readFileSync(kl, 'utf8')
+      .replace('foto: /content/media/jana-portret.webp', 'foto: assets/img/pieter-jan.webp'));
+    stempel();
+    publiceer();
+    eis('haalt ze de foto weer weg, dan verdwijnt hij ook uit de publicatie',
+        !inDeMap().some((f) => f.includes('jana-portret')),
+        'een beeld dat niemand meer gebruikt, blijft dan naar de klant gaan');
+
+    // Een beeldveld dat naar een bestand wijst dat er niet is, hoort de bouw te
+    // stoppen — ook wanneer dat pad met een schuine streep begint, want dat is
+    // de vorm die het beeldveld van Sveltia schrijft.
+    writeFileSync(kl, readFileSync(kl, 'utf8')
+      .replace('foto: assets/img/pieter-jan.webp', 'foto: /content/media/bestaat-niet.webp'));
+    const kaput = bouw(map);
+    eis('een beeldveld dat naar een leeg pad wijst, houdt de bouw tegen',
+        kaput.code !== 0 && /ontbrekend bestand/.test(kaput.uit),
+        kaput.uit.trim().slice(0, 240) || 'de bouw liep door');
+  } finally { rmSync(map, { recursive: true, force: true }); }
 }
 
 /* --------------------------------------------- 4 · drie vormen, één tekst --- */

@@ -1,0 +1,35 @@
+DEZE MAP IS VAN JANA
+====================
+
+Hier komt elk beeld dat via /beheer/ geüpload wordt: een portret bij een quote,
+een klantlogo, de ronde foto bij het formulier.
+
+LET OP: ALLES HIER STAAT PUBLIEK ONLINE.
+Deze repo wordt naar GitHub Pages en naar Cloudflare Pages gepubliceerd, en wat
+de landingspagina gebruikt gaat daarbovenop naar demo.youbo.io. Er is geen
+"alleen intern" in deze map. Zet er dus niets in wat niet op de site mag staan.
+
+WAT ER MET EEN UPLOAD GEBEURT
+Sveltia bewerkt het beeld in de browser, vóór het hier belandt:
+ · een PNG, JPG, HEIC of GIF wordt een WebP met kwaliteit 82;
+ · hij wordt verkleind tot de maat die het veld voorschrijft — 168 beeldpunten
+   voor een portret bij een quote, 288 voor de foto bij het formulier, 320 bij
+   96 voor een logo. Nooit opgeschaald: een beeld dat al kleiner is, blijft;
+ · een SVG wordt opgeschoond;
+ · een bestand groter dan 15 MB wordt geweigerd.
+De instellingen staan in beheer/config.yml, met de reden erbij.
+
+WAAROM NIET IN assets/img
+Daar staan de beelden van het ONTWERP: het portret in de hero met zijn vaste
+breedte-hoogteverhouding, de vier nagetekende schermen, de iconen. Die horen
+niet in een beeldbibliotheek waar iemand ze per ongeluk kan vervangen. De negen
+klantlogo's en de vijf portretten die er al staan, blijven daar ook staan: hun
+pad in content/klanten.yml wijst er nog naar en dat blijft werken. Alleen wat
+Jana NIEUW uploadt, komt hier.
+
+WAT HIER NIET IN HOORT
+Een beeld dat niemand op de pagina gebruikt. De bouw weigert een veld dat naar
+een bestand wijst dat er niet is, maar niet een bestand dat er wel is en nergens
+gebruikt wordt — dat blijft stil in de repo staan. publiceer.mjs neemt alleen
+mee wat de pagina werkelijk opvraagt, dus komt zo'n bestand niet op
+demo.youbo.io; het staat dan wel op de twee Pages-sites.

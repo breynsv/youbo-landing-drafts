@@ -82,10 +82,10 @@
  */
 import { alineasUitTekst, ctas, lijstHtml } from '../faq-opmaak.js';
 import {
-  bezwaren, blokkenVoorSleutels, InhoudFout, kenmerkWaardeVoorSlot,
-  sleutelsVan, tekstVoorSlot, vindBlokken, vindSlots,
+  bezwaarTegenLengte, bezwaren, blokkenVoorSleutels, herhaal, InhoudFout,
+  kenmerkWaardeVoorSlot, sleutelsVan, tekstVoorSlot, vindBlokken, vindSlots,
 } from '../inhoud-opmaak.js';
-import { vlak } from '../lees-yaml.js';
+import { vlak, vlakLijsten } from '../lees-yaml.js';
 
 /* --------------------------------------------------------- de pagina lezen --- */
 
@@ -195,6 +195,51 @@ export function lijstVanItems(items) {
  *  precies wat het in de pagina betekent. */
 export function veldenUitEntry(data) {
   return vlak(data && typeof data === 'object' ? data : {});
+}
+
+/** Hoeveel items elke lijst in het formulier nu heeft. */
+export function lijstenUitEntry(data) {
+  return vlakLijsten(data && typeof data === 'object' ? data : {});
+}
+
+/**
+ * DE SCHIL, UITGEKLAPT NAAR HET AANTAL ITEMS DAT NU IN HET FORMULIER STAAT.
+ *
+ * Zonder dit toont het voorbeeld altijd het aantal cases dat in de pagina in
+ * git staat — vijf — ook wanneer Jana er net een zesde bij heeft gezet. Dat is
+ * precies het soort kleine onwaarheid waardoor een voorbeeld niet meer te
+ * vertrouwen is: ze typt een zesde case en ziet er vijf.
+ *
+ * Het klapt uit met herhaal() uit inhoud-opmaak.js, dus met dezelfde code als
+ * de bouw. Daarna worden de slots en de blokken OPNIEUW gelezen, want hun
+ * posities zijn verschoven.
+ *
+ * Gaat het uitklappen niet (te veel items, een scherm dat niet bestaat), dan
+ * blijft de schil staan zoals ze was en komt het bezwaar als tekst terug. Het
+ * voorbeeld toont dan de pagina van vóór die wijziging plús de melding die ook
+ * de bouw zou geven — en niet een pagina die straks niet publiceert.
+ */
+export function schilVoorEntry(schil, data) {
+  const lijsten = lijstenUitEntry(data);
+  if (!lijsten.size) return { schil, bezwaren: [] };
+
+  const grenzen = [];
+  for (const [lijst, aantal] of lijsten) {
+    const bezwaar = bezwaarTegenLengte(lijst, aantal);
+    if (bezwaar) grenzen.push(bezwaar);
+  }
+  if (grenzen.length) return { schil, bezwaren: grenzen };
+
+  try {
+    // negeerOnbekend: de andere twee bestanden staan niet in dit formulier, dus
+    // blijven hun blokken staan zoals ze in de pagina staan. De bouw doet dat
+    // nooit — daar is een gemarkeerde lijst zonder bron een fout.
+    const html = herhaal(schil.html, lijsten, veldenUitEntry(data), { negeerOnbekend: true });
+    return { schil: { ...schil, html, slots: vindSlots(html) }, bezwaren: [] };
+  } catch (e) {
+    if (e instanceof InhoudFout) return { schil, bezwaren: [e.message] };
+    throw e;
+  }
 }
 
 /**
@@ -477,15 +522,33 @@ function maakVoorbeeld(bestand) {
     const html = faq ? lijstVanItems(itemsUitVelden(data.items)) : null;
     const afdruk = JSON.stringify(data);
 
-    const { blokken, buiten } = useMemo(
-      () => (schil && !faq ? blokkenVoorEntry(schil, data) : { blokken: null, buiten: [] }),
+    // DE LIJSTEN. Het uitklappen hangt aan de LENGTES en niet aan de inhoud:
+    // zou het aan elke toetsaanslag hangen, dan wordt het document hieronder
+    // bij elke letter opnieuw gezet, laadt de Tailwind-CDN telkens opnieuw en
+    // knippert het venster. Zet Jana er een item bij, dan verandert de lengte
+    // en komt het venster één keer opnieuw op — en dat is bij een item bijzetten
+    // precies wat je verwacht.
+    const lengtes = useMemo(
+      () => [...lijstenUitEntry(data)].map(([l, n]) => `${l}=${n}`).join(','),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [schil, faq, Object.keys(data).join(',')],
+      [afdruk],
+    );
+    const uitgeklapt = useMemo(
+      () => (schil && !faq ? schilVoorEntry(schil, data) : { schil, bezwaren: [] }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [schil, faq, lengtes],
+    );
+    const werkschil = uitgeklapt.schil;
+
+    const { blokken, buiten } = useMemo(
+      () => (werkschil && !faq ? blokkenVoorEntry(werkschil, data) : { blokken: null, buiten: [] }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [werkschil, faq, Object.keys(data).join(',')],
     );
     const vulling = useMemo(
-      () => (schil && !faq && blokken ? vullingenVoorEntry(schil, data, blokken) : null),
+      () => (werkschil && !faq && blokken ? vullingenVoorEntry(werkschil, data, blokken) : null),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [schil, faq, blokken, afdruk],
+      [werkschil, faq, blokken, afdruk],
     );
 
     // Bij elke toetsaanslag: de nieuwe waarden naar het venster sturen. Het
@@ -500,7 +563,7 @@ function maakVoorbeeld(bestand) {
             soort: 'youbo-voorbeeld',
             html,
             ops: vulling?.ops,
-            bezwaren: vulling?.bezwaren,
+            bezwaren: [...uitgeklapt.bezwaren, ...(vulling?.bezwaren ?? [])],
           }, '*');
         } catch { /* venster weg */ }
       };
@@ -509,7 +572,7 @@ function maakVoorbeeld(bestand) {
       if (klaar) stuur();
       else el.addEventListener('load', stuur, { once: true });
       return () => el.removeEventListener('load', stuur);
-    }, [html, vulling, schil]);
+    }, [html, vulling, werkschil, uitgeklapt]);
 
     if (fout) {
       return h('div', { className: 'youbo-voorbeeld-fout' }, [
@@ -532,7 +595,7 @@ function maakVoorbeeld(bestand) {
       ref: venster,
       title: 'Voorbeeld van de pagina',
       className: 'youbo-voorbeeld',
-      srcDoc: bouwVoorbeeldDocument(schil, { blokken, buiten }),
+      srcDoc: bouwVoorbeeldDocument(werkschil, { blokken, buiten }),
     });
   };
 }

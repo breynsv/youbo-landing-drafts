@@ -790,7 +790,7 @@ export function schermenbank(ruwFragment) {
  * vindSlots()/voegIn() gevuld, net als bij de vaste velden — er is dus maar één
  * plek die weet hoe een veld in de pagina komt.
  */
-export function herhaal(html, lijsten, velden = null) {
+export function herhaal(html, lijsten, velden = null, { negeerOnbekend = false } = {}) {
   const stukken = vindHerhalingen(html);
   if (!stukken.length) return html;
 
@@ -799,6 +799,13 @@ export function herhaal(html, lijsten, velden = null) {
   for (const stuk of [...stukken].reverse()) {
     const aantal = lijsten.get(stuk.lijst);
     if (aantal === undefined) {
+      // `negeerOnbekend` is er voor het voorbeeldvenster: dat heeft maar één
+      // bestand in het formulier staan, dus kent het de lijsten van de andere
+      // twee niet. Zo'n stuk blijft dan staan zoals het in de pagina staat, en
+      // dat is juist — Jana beheert dat blok hier niet. De BOUW laat dit nooit
+      // toe: daar betekent een gemarkeerde lijst zonder bron dat er iets
+      // ontbreekt, en dan hoort de publicatie te stoppen.
+      if (negeerOnbekend) continue;
       stop(`de pagina markeert een lijst "${stuk.lijst}", maar in content/ staat geen lijst ` +
            'met die naam. Zet de items eronder met streepjes, of haal de markering weg.');
     }

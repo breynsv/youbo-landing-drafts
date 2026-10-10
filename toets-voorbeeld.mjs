@@ -660,6 +660,79 @@ try {
      cmsFouten.length === 0, cmsFouten.slice(0, 3).join(' · '));
   await cms2.screenshot({ path: join(KIEKJES, 'beheer-pagina-voorbeeld.png') });
   await cms2.close();
+
+  /* 4 · groeit het voorbeeld mee met een lijst? */
+  console.log('\n4. Een item erbij of eraf — ziet Jana dat in het voorbeeld');
+
+  const groei = await browser.newPage();
+  const groeiFouten = [];
+  groei.on('pageerror', (e) => groeiFouten.push(e.message));
+  await groei.goto(`${ORIGIN}/beheer/`, { waitUntil: 'domcontentloaded' });
+
+  const gemeten = await groei.evaluate(async ({ origin, klanten, pagina }) => {
+    const mod = await import(`${origin}/beheer/voorbeeld.js`);
+    const schil = await mod.haalSchil();
+    // Tel de casekaarten in een uitgeklapte schil: de <li> met de klasse die
+    // alleen een casekaart draagt.
+    const tel = (html, naald) => (html.match(new RegExp(naald, 'g')) || []).length;
+    const uit = {};
+
+    const kaarten = (data) => {
+      const r = mod.schilVoorEntry(schil, data);
+      return { kaarten: tel(r.schil.html, 'class="card case-kaart'),
+               quotes: tel(r.schil.html, 'class="card-inv m-0 h-full'),
+               bezwaren: r.bezwaren };
+    };
+    uit.vijf = kaarten(klanten);
+
+    const zes = JSON.parse(JSON.stringify(klanten));
+    zes.cases.items.push({ ...zes.cases.items[0], bedrijf: 'Zesde klant' });
+    uit.zes = kaarten(zes);
+
+    const drie = JSON.parse(JSON.stringify(klanten));
+    drie.cases.items = drie.cases.items.slice(0, 3);
+    uit.drie = kaarten(drie);
+
+    const teveel = JSON.parse(JSON.stringify(klanten));
+    while (teveel.cases.items.length < 8) teveel.cases.items.push({ ...teveel.cases.items[0] });
+    uit.teveel = kaarten(teveel);
+
+    // en de logo's, in het andere bestand
+    const logos = (data) => {
+      const r = mod.schilVoorEntry(schil, data);
+      return { logos: tel(r.schil.html, '<li><img src="assets/img/'), bezwaren: r.bezwaren };
+    };
+    uit.negen = logos(pagina);
+    const acht = JSON.parse(JSON.stringify(pagina));
+    acht.logobalk.logos = acht.logobalk.logos.slice(0, 8);
+    uit.acht = logos(acht);
+
+    return uit;
+  }, { origin: ORIGIN, klanten: velden.klanten, pagina: velden.pagina });
+
+  ok('vijf cases in content/ geven vijf kaarten in het voorbeeld',
+     gemeten.vijf.kaarten === 5 && gemeten.vijf.bezwaren.length === 0,
+     `${gemeten.vijf.kaarten} kaart(en), bezwaren: ${gemeten.vijf.bezwaren.join(' | ')}`);
+  ok('een zesde case erbij geeft zes kaarten',
+     gemeten.zes.kaarten === 6 && gemeten.zes.bezwaren.length === 0,
+     `${gemeten.zes.kaarten} kaart(en), bezwaren: ${gemeten.zes.bezwaren.join(' | ')}`);
+  ok('twee cases weghalen geeft drie kaarten',
+     gemeten.drie.kaarten === 3 && gemeten.drie.bezwaren.length === 0,
+     `${gemeten.drie.kaarten} kaart(en)`);
+  ok('de quotes blijven er vijf wanneer alleen de cases veranderen',
+     gemeten.zes.quotes === 5, `${gemeten.zes.quotes} quote(s)`);
+  ok('één case te veel: het voorbeeld zegt dat het de publicatie tegenhoudt',
+     gemeten.teveel.bezwaren.some((b) => /Te veel cases/.test(b))
+       && gemeten.teveel.kaarten === 5,
+     `bezwaren: ${gemeten.teveel.bezwaren.join(' | ')} · ${gemeten.teveel.kaarten} kaart(en)`);
+  ok('de negen logo’s staan drie keer in het spoor (27 beelden)',
+     gemeten.negen.logos === 27, `${gemeten.negen.logos} beeld(en)`);
+  ok('acht logo’s geven 24 beelden, dus de balk groeit ook mee',
+     gemeten.acht.logos === 24 && gemeten.acht.bezwaren.length === 0,
+     `${gemeten.acht.logos} beeld(en), bezwaren: ${gemeten.acht.bezwaren.join(' | ')}`);
+  ok('geen enkele fout in de console bij dit alles', groeiFouten.length === 0,
+     groeiFouten.slice(0, 3).join(' · '));
+  await groei.close();
 } finally {
   await browser.close();
   server.close();
