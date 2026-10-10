@@ -14,6 +14,34 @@ hero:
   fototekst: Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch, wel een concrete blik op jouw looncyclus.
 logobalk:
   kop: Deze bedrijven vertrouwen Youbo
+  logos:
+    - naam: SD Worx
+      beeld: assets/img/sdworx-logo-dark.svg
+      hoogte: 24
+    - naam: DPG Media
+      beeld: assets/img/dpg-logo-dark.svg
+      hoogte: 24
+    - naam: Kaneka
+      beeld: assets/img/kaneka-logo-dark.svg
+      hoogte: 20
+    - naam: Aertssen Group
+      beeld: assets/img/aertssen-logo-dark.svg
+      hoogte: 32
+    - naam: Anchr
+      beeld: assets/img/anchr-logo.webp
+      hoogte: 21
+    - naam: Crelan
+      beeld: assets/img/crelan-logo.webp
+      hoogte: 26
+    - naam: Axi
+      beeld: assets/img/axi-logo.webp
+      hoogte: 20
+    - naam: Mourik
+      beeld: assets/img/mourik-logo.webp
+      hoogte: 26
+    - naam: Protime
+      beeld: assets/img/protime-logo.webp
+      hoogte: 24
 kern:
   kop: Van versnipperde excels naar één helder proces
   blok1_titel: Hr en managers werken samen in één platform

@@ -1051,10 +1051,35 @@ tailwind.config = {
      15,83 · 15,83 · 15,88 · 15,90 px/s door de transform zes seconden lang te
      bemonsteren.
      --------------------------------------------------------------------- */
-  .logo-balk { --logo-tussen: 44px; --logo-duur: 86s; }
-  @media (min-width: 768px)  { .logo-balk { --logo-tussen: 96px;  --logo-duur: 145s; } }
-  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 130px; --logo-duur: 183s; } }
-  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 170px; --logo-duur: 228s; } }
+  /* DE DUUR IS SINDS 2026-10-10 EEN REKENSOM EN GEEN VAST GETAL.
+     Het tempo is de reeksbreedte gedeeld door de duur, en de reeksbreedte
+     hangt af van HOEVEEL logo's er staan. Stond hier een vast getal, dan is er
+     precies één aantal waarbij de balk op de voorgeschreven 15,9 px/s loopt —
+     negen — en zou een logo bijzetten of weghalen het tempo stil verzetten.
+     Gemeten met acht logo's liep deze balk op 17,7 px/s; met zes zou hij op
+     10,5 px/s lopen. Dat is niet te zien aan de pagina en het is precies het
+     soort stille verschuiving waar deze opzet tegen bedoeld is.
+
+     Dus: duur = aantal × seconden-per-logo. Eén logo neemt zijn eigen breedte
+     plus twee keer de tussenruimte in; de negen logo's meten samen 573px, dus
+     gemiddeld 63,7px. Seconden per logo = (63,7 + 2 × tussenruimte) ÷ 15,9:
+
+       tussenruimte 44px  → (63,7 + 88)  ÷ 15,9 =  9,541s   × 9 =  85,9s
+       tussenruimte 96px  → (63,7 + 192) ÷ 15,9 = 16,082s   × 9 = 144,7s
+       tussenruimte 130px → (63,7 + 260) ÷ 15,9 = 20,358s   × 9 = 183,2s
+       tussenruimte 170px → (63,7 + 340) ÷ 15,9 = 25,390s   × 9 = 228,5s
+
+     Dat zijn de vier getallen die hier tot vandaag met de hand stonden (86,
+     145, 183 en 228), dus verandert de balk van vandaag geen merkbare haar:
+     het verschil is hoogstens 0,5 van 86 seconden. Het aantal komt uit
+     content/pagina.yml en wordt door build-inhoud.mjs hieronder gezet. */
+  .logo-balk { --logo-tussen: 44px; --logo-duur: calc(var(--logo-n) * 9.541s); }
+  @media (min-width: 768px)  { .logo-balk { --logo-tussen: 96px;  --logo-duur: calc(var(--logo-n) * 16.082s); } }
+  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 130px; --logo-duur: calc(var(--logo-n) * 20.358s); } }
+  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 170px; --logo-duur: calc(var(--logo-n) * 25.390s); } }
+  /* LOGO-AANTAL:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs */
+  .logo-balk { --logo-n: 9; }
+  /* LOGO-AANTAL:EINDE */
 
   /* De statische terugval bij prefers-reduced-motion houdt haar eigen, veel
      kleinere tussenruimte; die regel staat hierboven met !important en blijft
@@ -1365,37 +1390,67 @@ tailwind.config = {
   <div class="logo-balk mt-8">
     <div class="logo-spoor">
     <ul class="logo-reeks">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><img src="assets/img/anchr-logo.webp"  width="214" height="65" alt="Anchr"  class="logo-anchr  w-auto"></li>
-      <li><img src="assets/img/crelan-logo.webp" width="268" height="78" alt="Crelan" class="logo-crelan w-auto"></li>
-      <li><img src="assets/img/axi-logo.webp"    width="244" height="96" alt="Axi"    class="logo-axi    w-auto"></li>
-      <li><img src="assets/img/mourik-logo.webp" width="353" height="96" alt="Mourik" class="logo-mourik w-auto"></li>
-      <li><img src="assets/img/protime-logo.webp" width="206" height="96" alt="Protime" class="logo-protime w-auto"></li>
+    <!-- HERHAAL:logobalk.logos:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs. De EERSTE <li> is de vorm; de rest is een kopie, dus met de hand aanpassen heeft alleen zin in de eerste. -->
+      <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.1.beeld" data-inhoud-alt="logobalk.logos.1.naam" data-inhoud-style="height:{logobalk.logos.1.hoogte}px"></li>
+
+      <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.2.beeld" data-inhoud-alt="logobalk.logos.2.naam" data-inhoud-style="height:{logobalk.logos.2.hoogte}px"></li>
+
+      <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.3.beeld" data-inhoud-alt="logobalk.logos.3.naam" data-inhoud-style="height:{logobalk.logos.3.hoogte}px"></li>
+
+      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px" data-inhoud-src="logobalk.logos.4.beeld" data-inhoud-alt="logobalk.logos.4.naam" data-inhoud-style="height:{logobalk.logos.4.hoogte}px"></li>
+
+      <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="logobalk.logos.5.beeld" data-inhoud-alt="logobalk.logos.5.naam" data-inhoud-style="height:{logobalk.logos.5.hoogte}px"></li>
+
+      <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.6.beeld" data-inhoud-alt="logobalk.logos.6.naam" data-inhoud-style="height:{logobalk.logos.6.hoogte}px"></li>
+
+      <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.7.beeld" data-inhoud-alt="logobalk.logos.7.naam" data-inhoud-style="height:{logobalk.logos.7.hoogte}px"></li>
+
+      <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.8.beeld" data-inhoud-alt="logobalk.logos.8.naam" data-inhoud-style="height:{logobalk.logos.8.hoogte}px"></li>
+
+      <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.9.beeld" data-inhoud-alt="logobalk.logos.9.naam" data-inhoud-style="height:{logobalk.logos.9.hoogte}px"></li>
+    <!-- HERHAAL:logobalk.logos:EINDE -->
     </ul>
     <ul class="logo-reeks" aria-hidden="true">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><img src="assets/img/anchr-logo.webp"  width="214" height="65" alt="Anchr"  class="logo-anchr  w-auto"></li>
-      <li><img src="assets/img/crelan-logo.webp" width="268" height="78" alt="Crelan" class="logo-crelan w-auto"></li>
-      <li><img src="assets/img/axi-logo.webp"    width="244" height="96" alt="Axi"    class="logo-axi    w-auto"></li>
-      <li><img src="assets/img/mourik-logo.webp" width="353" height="96" alt="Mourik" class="logo-mourik w-auto"></li>
-      <li><img src="assets/img/protime-logo.webp" width="206" height="96" alt="Protime" class="logo-protime w-auto"></li>
+    <!-- HERHAAL:logobalk.logos:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs. De EERSTE <li> is de vorm; de rest is een kopie, dus met de hand aanpassen heeft alleen zin in de eerste. Deze reeks staat op aria-hidden: ze is er voor de naadloze lus en niet voor een lezer. -->
+      <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.1.beeld" data-inhoud-alt="logobalk.logos.1.naam" data-inhoud-style="height:{logobalk.logos.1.hoogte}px"></li>
+
+      <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.2.beeld" data-inhoud-alt="logobalk.logos.2.naam" data-inhoud-style="height:{logobalk.logos.2.hoogte}px"></li>
+
+      <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.3.beeld" data-inhoud-alt="logobalk.logos.3.naam" data-inhoud-style="height:{logobalk.logos.3.hoogte}px"></li>
+
+      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px" data-inhoud-src="logobalk.logos.4.beeld" data-inhoud-alt="logobalk.logos.4.naam" data-inhoud-style="height:{logobalk.logos.4.hoogte}px"></li>
+
+      <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="logobalk.logos.5.beeld" data-inhoud-alt="logobalk.logos.5.naam" data-inhoud-style="height:{logobalk.logos.5.hoogte}px"></li>
+
+      <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.6.beeld" data-inhoud-alt="logobalk.logos.6.naam" data-inhoud-style="height:{logobalk.logos.6.hoogte}px"></li>
+
+      <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.7.beeld" data-inhoud-alt="logobalk.logos.7.naam" data-inhoud-style="height:{logobalk.logos.7.hoogte}px"></li>
+
+      <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.8.beeld" data-inhoud-alt="logobalk.logos.8.naam" data-inhoud-style="height:{logobalk.logos.8.hoogte}px"></li>
+
+      <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.9.beeld" data-inhoud-alt="logobalk.logos.9.naam" data-inhoud-style="height:{logobalk.logos.9.hoogte}px"></li>
+    <!-- HERHAAL:logobalk.logos:EINDE -->
     </ul>
     <ul class="logo-reeks" aria-hidden="true">
-      <li><img src="assets/img/sdworx-logo-dark.svg"   alt="SD Worx"        class="h-6 w-auto"></li>
-      <li><img src="assets/img/dpg-logo-dark.svg"      alt="DPG Media"      class="h-6 w-auto"></li>
-      <li><img src="assets/img/kaneka-logo-dark.svg"   alt="Kaneka"         class="h-5 w-auto"></li>
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto"></li>
-      <li><img src="assets/img/anchr-logo.webp"  width="214" height="65" alt="Anchr"  class="logo-anchr  w-auto"></li>
-      <li><img src="assets/img/crelan-logo.webp" width="268" height="78" alt="Crelan" class="logo-crelan w-auto"></li>
-      <li><img src="assets/img/axi-logo.webp"    width="244" height="96" alt="Axi"    class="logo-axi    w-auto"></li>
-      <li><img src="assets/img/mourik-logo.webp" width="353" height="96" alt="Mourik" class="logo-mourik w-auto"></li>
-      <li><img src="assets/img/protime-logo.webp" width="206" height="96" alt="Protime" class="logo-protime w-auto"></li>
+    <!-- HERHAAL:logobalk.logos:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs. De EERSTE <li> is de vorm; de rest is een kopie, dus met de hand aanpassen heeft alleen zin in de eerste. Deze reeks staat op aria-hidden: ze is er voor de naadloze lus en niet voor een lezer. -->
+      <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.1.beeld" data-inhoud-alt="logobalk.logos.1.naam" data-inhoud-style="height:{logobalk.logos.1.hoogte}px"></li>
+
+      <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.2.beeld" data-inhoud-alt="logobalk.logos.2.naam" data-inhoud-style="height:{logobalk.logos.2.hoogte}px"></li>
+
+      <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.3.beeld" data-inhoud-alt="logobalk.logos.3.naam" data-inhoud-style="height:{logobalk.logos.3.hoogte}px"></li>
+
+      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px" data-inhoud-src="logobalk.logos.4.beeld" data-inhoud-alt="logobalk.logos.4.naam" data-inhoud-style="height:{logobalk.logos.4.hoogte}px"></li>
+
+      <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="logobalk.logos.5.beeld" data-inhoud-alt="logobalk.logos.5.naam" data-inhoud-style="height:{logobalk.logos.5.hoogte}px"></li>
+
+      <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.6.beeld" data-inhoud-alt="logobalk.logos.6.naam" data-inhoud-style="height:{logobalk.logos.6.hoogte}px"></li>
+
+      <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.7.beeld" data-inhoud-alt="logobalk.logos.7.naam" data-inhoud-style="height:{logobalk.logos.7.hoogte}px"></li>
+
+      <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.8.beeld" data-inhoud-alt="logobalk.logos.8.naam" data-inhoud-style="height:{logobalk.logos.8.hoogte}px"></li>
+
+      <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.9.beeld" data-inhoud-alt="logobalk.logos.9.naam" data-inhoud-style="height:{logobalk.logos.9.hoogte}px"></li>
+    <!-- HERHAAL:logobalk.logos:EINDE -->
     </ul>
     </div>
   </div>

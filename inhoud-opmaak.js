@@ -634,7 +634,33 @@ export function kopie(vorm, { lijst, nr, totaal, velden, span = null, schermen =
   let uit = vorm.replace(
     new RegExp(`<!--${OPTIONEEL}\\s?([^]*?)\\s?${OPTIONEEL}-->`, 'g'), '$1');
 
-  // 1 · de sleutels: items.1.x wordt items.<nr>.x. Alleen binnen een kenmerk
+  // 1 · het nagetekende scherm dat bij deze stap hoort. Dit moet VÓÓR alles
+  //     wat volgt: het ingezette scherm draagt zelf een teller en een sleutel,
+  //     en die horen daarna net zo recht gezet te worden als de rest van de
+  //     kopie. De schermen worden alleen verplaatst, nooit gegenereerd — zo
+  //     blijven de vier tekeningen met hun op elkaar sluitende cijfers precies
+  //     zoals een mens ze gezet heeft.
+  if (schermen) {
+    const el = elementMet(uit, 'data-herhaal-scherm');
+    if (el) {
+      const sleutel = el.waarde.replace(new RegExp(`^${lijst}\\.\\d+\\.`), `${lijst}.${nr}.`);
+      const naam = velden ? velden.get(sleutel) : null;
+      if (typeof naam !== 'string' || !schermen.has(naam)) {
+        stop(`"${sleutel}" noemt het scherm "${naam}", en dat bestaat niet. De schermen ` +
+             `die er zijn: ${[...schermen.keys()].join(', ')}. Elke stap van de ` +
+             'rondleiding hoort bij één nagetekend scherm; een stap zonder scherm is ' +
+             'een lege kolom op desktop.');
+      }
+      // Het scherm komt uit de bank met de nummers van zijn vorige plaats erin.
+      // Die worden hier op 1 gezet, zodat stap 2 ze samen met de rest van de
+      // kopie in één keer op het juiste nummer zet.
+      const schoon = schermen.get(naam)
+        .replace(new RegExp(`${lijst.replace(/\./g, '\\.')}\\.\\d+\\.`, 'g'), `${lijst}.1.`);
+      uit = vervang(uit, el.tagStart, el.elementEinde, schoon);
+    }
+  }
+
+  // 2 · de sleutels: items.1.x wordt items.<nr>.x. Alleen binnen een kenmerk
   //     dat een sleutel draagt, zodat een "cases.items.1." die ergens in gewone
   //     tekst zou staan niet stil meeverandert.
   uit = uit.replace(SLEUTELKENMERK, (heel, waarde) => {
@@ -642,20 +668,22 @@ export function kopie(vorm, { lijst, nr, totaal, velden, span = null, schermen =
     return nieuw === waarde ? heel : heel.replace(waarde, nieuw);
   });
 
-  // 2 · het nummer als tekst (01, 02, …)
-  for (let el = elementMet(uit, 'data-herhaal-nr'); el; el = elementMet(uit, 'data-herhaal-nr', el.elementEinde)) {
-    const cijfers = Number(el.waarde) || 1;
-    uit = vervang(uit, el.binnenStart, el.binnenEinde, String(nr).padStart(cijfers, '0'));
-    break;
+  // 3 · het nummer als tekst (01, 02, …)
+  {
+    const el = elementMet(uit, 'data-herhaal-nr');
+    if (el) {
+      const cijfers = Number(el.waarde) || 1;
+      uit = vervang(uit, el.binnenStart, el.binnenEinde, String(nr).padStart(cijfers, '0'));
+    }
   }
 
-  // 3 · de teller "2 / 4"
+  // 4 · de teller "2 / 4"
   {
     const el = elementMet(uit, 'data-herhaal-teller');
     if (el) uit = vervang(uit, el.binnenStart, el.binnenEinde, `${nr} / ${totaal}`);
   }
 
-  // 4 · de breedte in het raster
+  // 5 · de breedte in het raster
   if (span !== null) {
     const el = elementMet(uit, 'data-herhaal-span');
     if (el) {
@@ -669,7 +697,7 @@ export function kopie(vorm, { lijst, nr, totaal, velden, span = null, schermen =
     }
   }
 
-  // 5 · de klassen die alleen op het eerste item horen
+  // 6 · de klassen die alleen op het eerste item horen
   {
     const el = elementMet(uit, 'data-herhaal-eerste');
     if (el && nr !== 1) {
@@ -678,7 +706,7 @@ export function kopie(vorm, { lijst, nr, totaal, velden, span = null, schermen =
     }
   }
 
-  // 6 · een element dat niets te zeggen heeft bij dit item
+  // 7 · een element dat niets te zeggen heeft bij dit item
   while (true) {
     const el = elementMet(uit, 'data-herhaal-weg-als-leeg');
     if (!el) break;
@@ -694,23 +722,24 @@ export function kopie(vorm, { lijst, nr, totaal, velden, span = null, schermen =
   }
   uit = uit.split(`${GEDAAN}="`).join('data-herhaal-weg-als-leeg="');
 
-  // 7 · het nagetekende scherm dat bij deze stap hoort
-  {
-    const el = elementMet(uit, 'data-herhaal-scherm');
-    if (el) {
-      const naam = velden ? velden.get(el.waarde) : null;
-      if (schermen) {
-        if (typeof naam !== 'string' || !schermen.has(naam)) {
-          stop(`"${el.waarde}" noemt het scherm "${naam}", en dat bestaat niet. De schermen ` +
-               `die er zijn: ${[...schermen.keys()].join(', ')}. Elke stap van de ` +
-               'rondleiding hoort bij één nagetekend scherm; een stap zonder scherm is ' +
-               'een lege kolom op desktop.');
-        }
-        uit = vervang(uit, el.tagStart, el.elementEinde, schermen.get(naam));
-      }
-    }
-  }
   return uit;
+}
+
+/** Het aantal logo's in de stylesheet, waar de duur van de marquee het uit leest. */
+export function zetLogoAantal(html, aantal) {
+  const begin = '/* LOGO-AANTAL:BEGIN';
+  const einde = '/* LOGO-AANTAL:EINDE */';
+  const a = html.indexOf(begin);
+  const b = html.indexOf(einde, a);
+  if (a === -1 || b === -1) {
+    stop('de markering LOGO-AANTAL:BEGIN/EINDE staat niet in de stylesheet van de pagina. ' +
+         'Zonder die regel rekent de marquee met het aantal van vorige maand en loopt ze ' +
+         'op een ander tempo dan de 15,9 px/s die de briefing voorschrijft.');
+  }
+  const naBegin = html.indexOf('*/', a) + 2;
+  return html.slice(0, naBegin) +
+         `\n  .logo-balk { --logo-n: ${aantal}; }\n  ` +
+         html.slice(b);
 }
 
 /**
@@ -719,7 +748,15 @@ export function kopie(vorm, { lijst, nr, totaal, velden, span = null, schermen =
  * alleen verplaatst, nooit herschreven — zo blijven de vier tekeningen met
  * hun sluitende cijfers precies zoals een mens ze gezet heeft.
  */
-export function schermenbank(fragment) {
+export function schermenbank(ruwFragment) {
+  // Een scherm van een stap die Jana weggehaald heeft, staat in de pagina
+  // geparkeerd tussen commentaartekens. Dat is met opzet en niet uit
+  // zuinigheid: de vier tekeningen zijn samen 20 kB, en ze als onzichtbare
+  // <template> dubbel in de pagina zetten zou elke bezoeker 9% meer HTML
+  // kosten voor markup die niemand ziet. Geparkeerd kost het niets zolang
+  // alle vier in gebruik zijn, en het kan terugkomen.
+  const fragment = ruwFragment.replace(
+    new RegExp(`<!--${OPTIONEEL}\\s?([^]*?)\\s?${OPTIONEEL}-->`, 'g'), '$1');
   const bank = new Map();
   let vanaf = 0;
   while (true) {
@@ -772,8 +809,39 @@ export function herhaal(html, lijsten, velden = null) {
         span: spans ? spans[nr - 1] : null, schermen,
       }));
     }
+
+    // De tekeningen die bij geen enkele stap meer horen, blijven geparkeerd in
+    // de pagina staan. Zonder dit zou één weggehaalde stap de tekening voor
+    // altijd meenemen, en is "een stap weghalen" in de praktijk een
+    // onherstelbare handeling in een CMS.
+    if (schermen) {
+      const gebruikt = new Set();
+      for (let nr = 1; nr <= aantal; nr++) {
+        const naam = velden.get(`${stuk.lijst}.${nr}.scherm`);
+        if (gebruikt.has(naam)) {
+          stop(`twee stappen van de rondleiding kiezen hetzelfde scherm ("${naam}"). ` +
+               'Elk van de vier tekeningen hoort bij één stap: de cijfers erin sluiten op ' +
+               'elkaar aan, dus twee keer hetzelfde scherm laat de rondleiding een stap ' +
+               'overslaan en een andere twee keer vertellen.');
+        }
+        gebruikt.add(naam);
+      }
+      for (const [naam, markup] of schermen) {
+        if (gebruikt.has(naam)) continue;
+        kopieen.push(`<!--${OPTIONEEL} ${markup} ${OPTIONEEL}-->`);
+      }
+    }
+
     const nieuw = `\n${binnen}  ${kopieen.join(`\n\n${binnen}  `)}\n${binnen}`;
     html = vervang(html, stuk.binnenStart, stuk.binnenEinde, nieuw);
+  }
+
+  // Het tempo van de logobalk hangt af van HOEVEEL logo's er staan — zie de
+  // toelichting in de stylesheet. Dus zet de bouw dat aantal in de CSS; anders
+  // is er precies één aantal waarbij de balk op de voorgeschreven 15,9 px/s
+  // loopt, en verzet een logo erbij of eraf het tempo stil.
+  if (lijsten.has('logobalk.logos')) {
+    html = zetLogoAantal(html, lijsten.get('logobalk.logos'));
   }
 
   for (const lijst of lijsten.keys()) {
@@ -788,13 +856,32 @@ export function herhaal(html, lijsten, velden = null) {
 
 /* ----------------------------------------------------------------- sleutels --- */
 
-// Een vaste vorm met een veld erin: "Ga naar stap 1: {rondleiding.stappen.1.titel}".
-// Met "slug:" ervoor komt de waarde als stukje adres in het attribuut te staan;
-// dat is er voor de data-cta-haken, die per kaart verschillend moeten zijn en
-// dus niet zomaar de naam van het bedrijf kunnen dragen.
-const SJABLOON = /\{(?:(slug):)?([A-Za-z_][A-Za-z0-9_.-]*)\}/g;
+/* Een vaste vorm met een veld erin:
+   data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.1.titel}: {rondleiding.stappen.1.titel}"
 
-const BEWERKINGEN = { slug };
+   Vier bewerkingen mogen voor de sleutel staan. Drie ervan lezen de WAARDE
+   niet maar het NUMMER van het item uit de sleutel zelf, en dat is de hele
+   truc: het nummer in de sleutel wordt bij het kopiëren toch al bijgewerkt, dus
+   blijft zo'n vorm na een bouw bestaan. Een letterlijk nummer in het sjabloon
+   zou bij de eerste bouw in de vorm vastgebakken worden, en dan draagt elke
+   kopie het nummer van de eerste. */
+const SJABLOON = /\{(?:(slug|nummer|nummer0|eerste):)?([A-Za-z_][A-Za-z0-9_.-]*)\}/g;
+
+const nummerIn = (sleutel) => {
+  const m = /\.(\d+)\./.exec(sleutel);
+  if (!m) {
+    stop(`"${sleutel}" draagt geen itemnummer, dus valt er geen nummer uit te lezen. ` +
+         'Deze bewerking hoort bij een veld in een lijst.');
+  }
+  return Number(m[1]);
+};
+
+const BEWERKINGEN = {
+  slug: (waarde) => slug(waarde),
+  nummer: (_, sleutel) => String(nummerIn(sleutel)),
+  nummer0: (_, sleutel) => String(nummerIn(sleutel) - 1),
+  eerste: (_, sleutel) => (nummerIn(sleutel) === 1 ? 'true' : 'false'),
+};
 
 export function sleutelsVan(slot) {
   if (slot.soort === 'tekst' || !slot.waarde.includes('{')) return [slot.waarde];
@@ -848,7 +935,7 @@ export function kenmerkWaardeVoorSlot(slot, velden) {
   return slot.waarde.replace(SJABLOON, (_, bewerking, s) => {
     const waarde = velden.get(s);
     if (Array.isArray(waarde)) stop(`"${s}" is een opsomming en past niet in een vaste vorm`);
-    return bewerking ? BEWERKINGEN[bewerking](waarde) : waarde;
+    return bewerking ? BEWERKINGEN[bewerking](waarde, s) : waarde;
   });
 }
 
