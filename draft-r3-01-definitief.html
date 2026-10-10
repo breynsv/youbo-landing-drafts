@@ -885,6 +885,50 @@ tailwind.config = {
   .case-todo  { margin: 0 24px 16px; }
   .case-foot  { padding: 16px 24px; border-top: 1px solid #e1ebf0; }
 
+  /* ---------------------------------------------------------------------
+     HET TODO-KADER STAAT OP TELEFOON ONDER DE RIJ, NIET IN DE KAART
+     ---------------------------------------------------------------------
+     Onder lg is dit een veegbare rij met scroll-snap, en in zo'n rij krijgt
+     ELKE kaart de hoogte van de hoogste. De hoogste is Aertssen Group, want
+     die draagt als enige nog een zichtbaar TODO-kader, en dat kader meet op
+     360 beeldpunten 161px plus 16px marge. Die 177px betaalden alle vijf de
+     kaarten mee: gemeten op 360 bleef er bij SD Worx en DPG Media 246px leeg
+     tussen de sectorregel en de voet, bij Kaneka 223,5px. Bijna een half
+     scherm, en het leest als een kaart die stuk is.
+
+     DE VOOR DE HAND LIGGENDE INGREEP IS GEMETEN EN LOST NIETS OP. Geef je de
+     kaarten hun eigen hoogte (align-items: flex-start), dan houdt de flexrij
+     nog altijd de hoogte van haar hoogste kind: de rij blijft 599,3px en de
+     kaart van Kaneka eindigt 200px boven de onderrand. Hetzelfde gat, nu
+     onder de kaart in plaats van erin — gemeten, de sectie bleef op de px na
+     even hoog (941,8). Laat je de rij wél meekrimpen, en dat kan alleen met
+     JavaScript, dan springt de sectie tijdens het vegen 222px op 360 en
+     199,5px op 390: van kaart 2 naar kaart 3 en meteen weer terug. Dat is
+     erger dan het gat, want het gebeurt onder je duim.
+
+     Het kader compacter zetten (13px, smallere marges) haalde het gat van
+     246 naar 186,7px op 360. Dat is minder lelijk en nog altijd een gat.
+
+     DUS VERHUIST HET KADER, EN VERDWIJNT HET NIET. Op telefoon staat het
+     onder de puntjes, naast het TODO-kader dat daar al over de case-pdf's
+     staat — twee open punten van dezelfde sectie, in dezelfde vorm en op
+     dezelfde breedte. Grootste gat in een kaart: van 246 naar 69px op 360 en
+     van 223,5 naar 52,8px op 390, en de sectie wordt er 14,5px korter van.
+
+     Vanaf lg verandert er niets. Daar is het een raster van drie plus twee,
+     daar is geen gedeelde rijhoogte over een veegrij heen, en daar hoort het
+     kader in de kaart waar het over gaat. Gemeten op 1024 en 1440: dezelfde
+     kaarthoogtes als voorheen, tot op de px.
+     --------------------------------------------------------------------- */
+  /* De plek die de bouw herhaalt. Leeg is hij nul beeldpunten hoog, en met
+     display: contents maakt hij ook geen doos om de nota die er wél is. */
+  .case-notaplek      { display: contents; }
+  .case-nota-telefoon { display: none; }
+  @media (max-width: 1023.98px) {
+    .case-todo          { display: none; }
+    .case-nota-telefoon { display: block; margin-top: 24px; }
+  }
+
   /* De voetlink breekt niet over twee regels. In de smalste kolom van het
      raster — een kaart van 272px op een venster van 1024px — paste "Download
      de case (pdf)" met zijn twee icoontjes nét niet, en dan sprong de pijl
@@ -1877,6 +1921,40 @@ tailwind.config = {
         </button>
       </template>
     </div>
+
+    <!-- DE OPEN PUNTEN VAN DE KAARTEN, OP TELEFOON HIER IN PLAATS VAN IN DE
+         KAART. Waarom, en met welke getallen gemeten: zie "HET TODO-KADER
+         STAAT OP TELEFOON ONDER DE RIJ" bij de stijlbladen. Het kader zelf
+         blijft staan — het is een openstaand punt van de klant en hoort
+         zichtbaar te zijn; alleen de plek verschilt per breedte. Vanaf lg is
+         dit onzichtbaar en staat het kader in de kaart, waar het hoort.
+
+         Het is dezelfde lijst als hierboven en dus dezelfde markering: één
+         nota per case, en een case zonder nota levert niets. De <div> eromheen
+         is de vorm die de bouw herhaalt, en die moet er altijd staan — een
+         vorm die bij kaart 1 tussen commentaartekens verdwijnt, is bij de
+         volgende bouw geen vorm meer. Hij is leeg nul beeldpunten hoog. -->
+    <!-- HERHAAL:cases.items:BEGIN — gegenereerd uit content/klanten.yml door build-inhoud.mjs. -->
+      <div class="case-notaplek">
+        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.1.nota" data-inhoud="cases.items.1.nota"><b>TODO — nodig van klant</b>: deze kaart heeft een open punt</span> HERHAAL-NIETS-TE-ZEGGEN-->
+      </div>
+
+      <div class="case-notaplek">
+        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.2.nota" data-inhoud="cases.items.2.nota"><b>TODO — nodig van klant</b>: deze kaart heeft een open punt</span> HERHAAL-NIETS-TE-ZEGGEN-->
+      </div>
+
+      <div class="case-notaplek">
+        <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.3.nota" data-inhoud="cases.items.3.nota"><b>TODO — te bevestigen bij Bart of Nick</b>: in hoeveel landen. Jana’s campagneplan schrijft hier zelf 450 bedienden in X landen</span>
+      </div>
+
+      <div class="case-notaplek">
+        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.4.nota" data-inhoud="cases.items.4.nota"><b>TODO — nodig van klant</b>: deze kaart heeft een open punt</span> HERHAAL-NIETS-TE-ZEGGEN-->
+      </div>
+
+      <div class="case-notaplek">
+        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.5.nota" data-inhoud="cases.items.5.nota"><b>TODO — nodig van klant</b>: deze kaart heeft een open punt</span> HERHAAL-NIETS-TE-ZEGGEN-->
+      </div>
+    <!-- HERHAAL:cases.items:EINDE -->
 
     <p class="todo mt-10 max-w-prose" id="cases-open" data-inhoud="cases.nota"><b>TODO — nodig van klant</b>: de vijf case-pdf’s bestaan nog niet, dus de downloadlinks wijzen voorlopig naar dit blokje in plaats van naar een bestand dat er niet is</p>
   </div>
