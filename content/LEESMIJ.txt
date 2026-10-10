@@ -10,7 +10,7 @@ In deze map staan VIER bestanden met tekst van draft-r3-01-definitief.html:
   contact.yml   het formulier, de contactgegevens van
                 Nick, de balk onderaan en de voettekst (sinds 2026-10-10)
 
-Samen zijn ze bijna de hele zichtbare tekst van die pagina — 191 velden, waarvan
+Samen zijn ze bijna de hele zichtbare tekst van die pagina — 192 velden, waarvan
 een deel uit vier LIJSTEN komt (zie onder). Wat er NIET in staat is de vorm: de
 opmaak, de volgorde van de secties, de vier nagetekende productschermen en de
 cijfers die daarin staan. Dat is ontwerp, en een veld waarmee de marketeer de
@@ -198,6 +198,31 @@ horen, een element dat bij dit item niets te zeggen heeft, en het scherm).
 Wie de vorm wil wijzigen, past dus de EERSTE kaart aan. De kaarten eronder worden
 bij de volgende bouw overschreven — net als de FAQ-lijst, en dat staat ook in de
 markering zelf.
+
+EEN VELD DAT OP ELK ITEM HETZELFDE IS, STAAT BOVEN DE LIJST
+
+Niet alles wat op een casekaart staat, is van die kaart. "Download de case (pdf)"
+is op alle vijf dezelfde tekst, en sinds 2026-10-10 geldt dat ook voor de
+zinsnede boven de cijfers: "Gebruikt Youbo voor". Zulke velden staan één keer
+BOVEN de lijst (cases.downloadtekst, cases.gebruik) en niet vijf keer erin.
+
+Dat is geen netheid. Vijf vakken met dezelfde tekst zijn vijf plaatsen waar ze
+uiteen kunnen lopen, en de marketeer die er één verandert ziet pas op de pagina
+dat de andere vier zijn blijven staan. Eén veld kan dat niet.
+
+In de pagina werkt het vanzelf: het kopiëren zet alleen sleutels om die met
+"cases.items.1." beginnen, dus een data-inhoud="cases.gebruik" in de vorm van de
+kaart staat na de bouw onveranderd in alle vijf de kopieën.
+
+De zinsnede zelf staat er om een reden die het noteren waard is. Jana, 2026-10-10:
+"we mogen gewoon niet de indruk geven dat ze zo groot zijn (ze gebruiken youbo
+niet altijd voor àl hun medewerkers bvb)". Zonder die woorden leest "204
+medewerkers" als de grootte van Kaneka, en dat is niet wat het cijfer zegt. Ze
+staat daarom klein en gestileerd boven de cijfers — ondergeschikt aan het
+voordeel en aan de cijfers zelf, want het is een verduidelijking en geen kop.
+Tegelijk is de derde cijferregel bij SD Worx weggevallen ("voor een deel van hun
+populatie"): die droeg dezelfde nuance, maar op één van de vijf kaarten en naast
+twee echte cijfers.
 
 "TODO — " doet hier hetzelfde als in de FAQ: het veld krijgt op de pagina het
 kader met de stippellijn, met het stuk tot de eerste dubbele punt in het vet. Vijf

@@ -854,6 +854,31 @@ tailwind.config = {
      hoogte begint. 24px × 1,2 × 2 = 2,4em. */
   .case-voordeel { min-height: 2.4em; }
 
+  /* De zinsnede boven de cijfers, op elke kaart dezelfde. Ze staat er op vraag
+     van Jana (2026-10-10): zonder haar leest "204 medewerkers" als de GROOTTE
+     van Kaneka, en dat is niet wat er staat — het is waarvoor Youbo er
+     gebruikt wordt. Ze moet dus te lezen zijn en tegelijk niet concurreren met
+     het voordeel of met de cijfers zelf. Vandaar 13px in plaats van de 15 van
+     de cijfers, gespatiëerd en in kapitalen: dezelfde vorm als de kolomkop
+     boven de loontabel in de rondleiding, waar ook een label boven cijfers
+     staat.
+
+     Één regel op elke breedte, en dat is gemeten en geen aanname.
+     "GEBRUIKT YOUBO VOOR" meet zo 175,6px. De smalste plek waar ze moet
+     passen is de kaart op een telefoon van 320 beeldpunten: 181px. Daarna
+     komt de smalle kolom van het raster op 1024 (222px), de kaart op 360
+     (215px) en op 390 (241px). Overal één regel, met op 320 dus 5px over.
+
+     Wordt de zinsnede in het CMS lánger, dan wrapt ze — en dat is lelijk maar
+     niet scheef: onder lg is elke kaart even breed, en vanaf lg staan de
+     kaarten met dezelfde kolombreedte altijd op dezelfde rij (kaartspans()
+     geeft eerst de smalle, dan de brede). Een rij wrapt dus in haar geheel of
+     niet, en de cijferlijsten binnen een rij blijven op gelijke hoogte staan.
+     Ruimte tot die tweede regel, gemeten: 20 tekens op 320, 22 op 360, 23 op
+     1024, 29 op 1440. Nu staan er 19. */
+  .case-gebruik { font-size: 13px; line-height: 1.25; letter-spacing: 0.08em;
+                  text-transform: uppercase; }
+
   /* De voet wordt naar de onderkant geduwd, met minstens 24px tussen de
      sectorregel en wat eronder komt — ook in de volste kaart. */
   .case-slot  { margin-top: auto; padding-top: 24px; }
@@ -1667,9 +1692,21 @@ tailwind.config = {
      Per kaart: het logo klein en ondergeschikt bovenaan, het voordeel als
      anker (niet het aantal medewerkers — dat is Jana's eigen regel), en de
      cijfers eronder als opsomming in plaats van als zin. Elke kaart heeft
-     dezelfde vier blokken in dezelfde maatvoering en onderaan dezelfde voet
+     dezelfde blokken in dezelfde maatvoering en onderaan dezelfde voet
      met de downloadlink; de TODO-blokjes staan vlak boven die voet in plaats
      van midden tussen de cijfers.
+
+     BOVEN DIE CIJFERS STAAT SINDS 2026-10-10 ÉÉN ZINSNEDE, OP ELKE KAART
+     DEZELFDE: "Gebruikt Youbo voor". Ze komt uit Jana's eigen opmerking van
+     die dag — zonder haar leest "204 medewerkers" als de grootte van Kaneka,
+     en dat is niet wat het cijfer zegt; het zegt waarvoor Youbo er gebruikt
+     wordt, en dat is vaak niet de hele organisatie. Op een pagina die
+     compensatiesoftware verkoopt is een cijfer dat iets anders beweert dan het
+     lijkt het duurste detail dat er is. Ze staat er klein en gestileerd, in
+     haar maatvoering, en ze is één veld in het CMS (cases.gebruik) en geen
+     vijf, want ze is op elke kaart hetzelfde. Daarmee is ook de derde
+     cijferregel bij SD Worx weg — "voor een deel van hun populatie" — die als
+     enige van de vijf die nuance droeg en naast twee echte cijfers stond.
      ========================================================================= -->
 <!-- x-data="carrousel()" is nieuw sinds 2026-10-08 en staat hier voor de
      puntjes onder de rij. Het is dezelfde component als bij de quotes; de rij
@@ -1701,7 +1738,8 @@ tailwind.config = {
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="cases.items.1.logo" data-inhoud-alt="cases.items.1.bedrijf" data-inhoud-style="height:{cases.items.1.logo_hoogte}px"></span>
             <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.1.voordeel">Twee werkweken tijdswinst</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.1.cijfers">
+            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.1.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">204 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">27 afdelingen</span></li>
             </ul>
@@ -1723,7 +1761,8 @@ tailwind.config = {
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="cases.items.2.logo" data-inhoud-alt="cases.items.2.bedrijf" data-inhoud-style="height:{cases.items.2.logo_hoogte}px"></span>
             <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.2.voordeel">Meerdere werkdagen bespaard</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.2.cijfers">
+            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.2.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">300 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">8 bedrijven</span></li>
             </ul>
@@ -1745,7 +1784,8 @@ tailwind.config = {
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px" data-inhoud-src="cases.items.3.logo" data-inhoud-alt="cases.items.3.bedrijf" data-inhoud-style="height:{cases.items.3.logo_hoogte}px"></span>
             <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.3.voordeel">Live op 3 maanden</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.3.cijfers">
+            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.3.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">450 bedienden</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">van eerste gesprek tot eerste cyclus</span></li>
             </ul>
@@ -1767,10 +1807,10 @@ tailwind.config = {
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="cases.items.4.logo" data-inhoud-alt="cases.items.4.bedrijf" data-inhoud-style="height:{cases.items.4.logo_hoogte}px"></span>
             <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.4.voordeel">Van 2 maanden naar 3 weken</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.4.cijfers">
+            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.4.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">7.000 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">21 landen</span></li>
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">voor een deel van hun populatie</span></li>
             </ul>
             <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.4.sector">Hr-dienstverlener</p>
           </div>
@@ -1790,7 +1830,8 @@ tailwind.config = {
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="cases.items.5.logo" data-inhoud-alt="cases.items.5.bedrijf" data-inhoud-style="height:{cases.items.5.logo_hoogte}px"></span>
             <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.5.voordeel">7× sneller</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.5.cijfers">
+            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.5.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">6.214 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
             </ul>

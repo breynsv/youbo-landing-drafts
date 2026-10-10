@@ -4,10 +4,12 @@
 # "bedrijf" is de naam achter het logo — die wordt voorgelezen in plaats van het beeld.
 # "logo_hoogte" is de hoogte in beeldpunten; kijk ernaast en kies wat even zwaar weegt.
 # "cijfers" is een opsomming: één regel per cijfer, twee of drie regels.
+# "gebruik" staat klein boven die cijfers, op elke kaart dezelfde — het zegt waar ze over gaan.
 # "downloadlink" mag een anker (#cases-open) of een bestand zijn; een bestand dat niet bestaat stopt de bouw.
 # GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
 # Meer uitleg: content/LEESMIJ.txt.
 cases:
+  gebruik: Gebruikt Youbo voor
   downloadtekst: Download de case (pdf)
   items:
     - bedrijf: Kaneka
@@ -45,7 +47,6 @@ cases:
       cijfers:
         - 7.000 medewerkers
         - 21 landen
-        - voor een deel van hun populatie
       sector: Hr-dienstverlener
       downloadlink: '#cases-open'
     - bedrijf: DPG Media

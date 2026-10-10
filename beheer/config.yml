@@ -644,12 +644,21 @@ collections:
               "bedrijf" is de naam achter het logo — die wordt voorgelezen in plaats van het beeld.
               "logo_hoogte" is de hoogte in beeldpunten; kijk ernaast en kies wat even zwaar weegt.
               "cijfers" is een opsomming: één regel per cijfer, twee of drie regels.
+              "gebruik" staat klein boven die cijfers, op elke kaart dezelfde — het zegt waar ze over gaan.
               "downloadlink" mag een anker (#cases-open) of een bestand zijn; een bestand dat niet bestaat stopt de bouw.
               GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
               Meer uitleg: content/LEESMIJ.txt.
             widget: 'object'
             collapsed: true
             fields:
+              - name: 'gebruik'
+                label: 'De zinsnede boven de cijfers'
+                widget: 'string'
+                required: true
+                hint: 'Dezelfde zinsnede op elke kaart, klein boven de cijfers. Ze zegt dat die cijfers gaan over waarvoor Youbo er gebruikt wordt, en niet over de grootte van het bedrijf. Houd het kort: tot ongeveer 20 tekens past het op één regel, ook op de smalste telefoon — langer wordt het twee regels.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
               - name: 'downloadtekst'
                 label: 'Tekst op elke downloadlink'
                 widget: 'string'

@@ -83,6 +83,22 @@ bij, dan herschikt het raster zich vanzelf.
 Bij een **stap van de rondleiding** kies je in het vak **Welk scherm hiernaast**
 welke tekening erbij hoort. Elke tekening mag maar bij één stap staan.
 
+### Twee vakken van de cases staan buiten de lijst
+
+Boven de lijst met cases staan twee vakken die je maar één keer invult en die op
+**alle** kaarten tegelijk veranderen:
+
+- **De zinsnede boven de cijfers** — vandaag *Gebruikt Youbo voor*. Zij staat er
+  omdat "204 medewerkers" anders leest als hoe groot Kaneka is, terwijl het zegt
+  waarvoor Youbo er gebruikt wordt — en dat is lang niet altijd de hele
+  organisatie. Ze staat daarom klein en in kapitalen boven de cijfers, en niet
+  als kop. Houd hem kort: tot ongeveer twintig tekens blijft hij op één regel,
+  ook op de smalste telefoon.
+- **De tekst op elke downloadlink** — vandaag *Download de case (pdf)*.
+
+Eén vak in plaats van vijf, want op elke kaart staat dezelfde tekst. Verander je
+hem, dan verandert hij op alle vijf.
+
 ## Een foto of een logo vervangen
 
 Bij een quote, bij de ronde foto van Nick en bij elk klantlogo staat een vak met
