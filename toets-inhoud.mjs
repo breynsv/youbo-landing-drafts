@@ -54,7 +54,7 @@ import { fileURLToPath } from 'node:url';
 
 import { BRONNEN, dump, vindSlots } from './build-inhoud.mjs';
 import { leesYaml, vlak } from './lees-yaml.js';
-import { tekstHtml } from './inhoud-opmaak.js';
+import { GRENZEN, tekstHtml } from './inhoud-opmaak.js';
 
 const hier = dirname(fileURLToPath(import.meta.url));
 
@@ -111,8 +111,13 @@ const schrijfZoalsSveltia = (obj, comments = {}) => {
 };
 
 // Sveltia trimt de waarde van een string-, text- en list-veld bij het opslaan.
+// Een getal is geen van die drie, en moet hier ongemoeid door: Object.entries()
+// van een getal is een lege lijst, dus maakte deze functie van `hoogte: 24` een
+// `hoogte: {}` — en dan zegt de toets dat een opslag het bestand sloopt terwijl
+// de toets zelf het sloopt. Gevonden toen de logohoogtes getallen werden.
 const trimDiep = (knoop) => {
   if (typeof knoop === 'string') return knoop.trim();
+  if (typeof knoop === 'number' || typeof knoop === 'boolean' || knoop === null) return knoop;
   if (Array.isArray(knoop)) return knoop.map(trimDiep);
   const uit = {};
   for (const [k, v] of Object.entries(knoop)) uit[k] = trimDiep(v);
@@ -128,16 +133,32 @@ const trimDiep = (knoop) => {
 const config = parse(readFileSync(join(hier, 'beheer', 'config.yml'), 'utf8'));
 const CMS_BESTANDEN = (config.collections ?? []).flatMap((c) => c.files ?? []);
 
+// output.omit_empty_optional_fields staat in deze configuratie AAN: een leeg
+// veld dat niet verplicht is, laat Sveltia dan weg uit het bestand in plaats
+// van er een lege waarde in te schrijven. Die stand is hier geen smaak maar
+// noodzaak — de nota op een casekaart is er bijna nooit, en de bouw weigert een
+// leeg veld. Zou deze nabootsing die stand niet volgen, dan zegt de toets groen
+// terwijl Jana's eerste opslag de bouw laat falen op vier lege nota's.
+const LAAT_LEEG_WEG = config.output?.omit_empty_optional_fields === true;
+
 function waardeUitVelden(velden, data) {
   const uit = {};
   for (const v of velden ?? []) {
     const w = data?.[v.name];
-    if (v.widget === 'object') uit[v.name] = waardeUitVelden(v.fields, w ?? {});
-    else if (v.widget === 'list') {
+    if (v.widget === 'object') { uit[v.name] = waardeUitVelden(v.fields, w ?? {}); continue; }
+    if (v.widget === 'list') {
       uit[v.name] = v.fields
         ? (w ?? []).map((item) => waardeUitVelden(v.fields, item))
         : (w ?? []).map((x) => String(x).trim());
-    } else uit[v.name] = String(w ?? '').trim();
+      continue;
+    }
+    const waarde = String(w ?? '').trim();
+    if (LAAT_LEEG_WEG && waarde === '' && v.required === false) continue;
+    // Een getalveld schrijft Sveltia als getal terug, niet als tekst tussen
+    // aanhalingstekens. De logohoogtes zijn getallen, dus zou een tekstwaarde
+    // hier bij elke opslag aanhalingstekens in het bestand zetten.
+    uit[v.name] = v.widget === 'number' && waarde !== '' && !Number.isNaN(Number(waarde))
+      ? Number(waarde) : waarde;
   }
   return uit;
 }
@@ -152,12 +173,26 @@ function commentsUitVelden(velden, pad = '', uit = {}) {
   return uit;
 }
 
-/** De platte sleutels die de configuratie beschrijft, in de volgorde van `fields`. */
-function sleutelsUitVelden(velden, pad = '', uit = []) {
+/**
+ * De platte sleutels die de configuratie beschrijft, in de volgorde van
+ * `fields`. Een lijst van groepjes wordt genummerd uitgeklapt, net als in
+ * vlak() — en dus met de GEGEVENS erbij, want hoeveel items er zijn staat in
+ * het bestand en niet in de configuratie. Alleen zo vergelijkt deze toets twee
+ * dingen van dezelfde vorm; zonder de gegevens zou ze "cases.items" naast
+ * "cases.items.1.bedrijf" leggen en altijd rood staan.
+ */
+function sleutelsUitVelden(velden, data = null, pad = '', uit = []) {
   for (const v of velden ?? []) {
     const hier = pad ? `${pad}.${v.name}` : v.name;
-    if (v.widget === 'object') sleutelsUitVelden(v.fields, hier, uit);
-    else uit.push(hier);
+    const w = data?.[v.name];
+    if (v.widget === 'object') { sleutelsUitVelden(v.fields, w ?? {}, hier, uit); continue; }
+    if (v.widget === 'list' && v.fields) {
+      (w ?? []).forEach((item, k) => sleutelsUitVelden(v.fields, item, `${hier}.${k + 1}`, uit));
+      continue;
+    }
+    if (LAAT_LEEG_WEG && v.required === false
+        && String(w ?? '').trim() === '') continue;
+    uit.push(hier);
   }
   return uit;
 }
@@ -256,7 +291,7 @@ for (const naam of ALLE_BRONNEN) {
   //     Jana's eerste opslag uit het bestand.
   if (naam !== 'faq.yml') {
     const inBestand = [...vlak(leesYaml(was, naam)).keys()];
-    const inConfig = sleutelsUitVelden(bestand.fields);
+    const inConfig = sleutelsUitVelden(bestand.fields, parse(was));
     eis(`${naam}: de configuratie beschrijft precies deze ${inBestand.length} velden, in deze volgorde`,
         JSON.stringify(inBestand) === JSON.stringify(inConfig),
         `in het bestand: ${inBestand.join(', ')}\n        in config.yml: ${inConfig.join(', ')}`);
@@ -332,11 +367,27 @@ function eersteVerschil(a, b) {
       rijk.length === 0,
       rijk.map(([p]) => p).join(', ') + ' — zo\'n veld schrijft HTML in de inhoud');
 
-  const vreemd = velden.filter(([, v]) => !['string', 'text', 'list'].includes(v.widget));
-  eis('en alleen string-, text- en list-velden', vreemd.length === 0,
+  // Zes soorten en geen zevende. Image, number en select zijn er sinds
+  // 2026-10-10 bij, en ze kunnen géén HTML of regelafbreking dragen: een
+  // beeldveld schrijft een pad uit de beeldbibliotheek, een getalveld een
+  // getal, en een keuzeveld één van de waarden die hier in config.yml staan.
+  // Daarom is het patroon hieronder ook alleen voor string en text een eis —
+  // een patroon op een keuzeveld zou een regel zijn die niets kan tegenhouden.
+  const TOEGESTAAN = ['string', 'text', 'list', 'image', 'number', 'select'];
+  const vreemd = velden.filter(([, v]) => !TOEGESTAAN.includes(v.widget));
+  eis(`en alleen ${TOEGESTAAN.join('-, ')}-velden`, vreemd.length === 0,
       vreemd.map(([p, v]) => `${p} is een ${v.widget}-veld`).join(', '));
 
-  const geenPatroon = velden.filter(([, v]) => v.widget !== 'list').filter(([, v]) => {
+  // Een keuzeveld mag alleen waarden aanbieden die de bouw kent.
+  const keuzes = velden.filter(([, v]) => v.widget === 'select');
+  eis(`elk keuzeveld (${keuzes.length}) biedt alleen waarden aan die de pagina kent`,
+      keuzes.every(([, v]) => Array.isArray(v.options) && v.options.length > 0
+                              && v.options.every((o) => typeof o === 'object' && o.value && o.label)),
+      keuzes.filter(([, v]) => !Array.isArray(v.options) || !v.options.length)
+        .map(([p]) => p).join(', ') || 'een optie zonder label of value');
+
+  const tekstsoort = ([, v]) => v.widget === 'string' || v.widget === 'text';
+  const geenPatroon = velden.filter(tekstsoort).filter(([, v]) => {
     const pat = Array.isArray(v.pattern) ? v.pattern[0] : null;
     if (!pat) return true;
     const r = new RegExp(pat);
@@ -352,7 +403,7 @@ function eersteVerschil(a, b) {
   const tekstvelden = CMS_BESTANDEN
     .filter((b) => b.file !== 'content/faq.yml')
     .flatMap((b) => alleVelden(b.fields))
-    .filter(([, v]) => v.widget !== 'list');
+    .filter(tekstsoort);
   const regelDoor = tekstvelden.filter(([, v]) => {
     const pat = Array.isArray(v.pattern) ? v.pattern[0] : null;
     return !pat || new RegExp(pat).test('eerste\ntweede');
@@ -401,7 +452,15 @@ console.log('\n2. De pagina komt overeen met de bron');
     // meer, en dat is hier zichtbaar.
     const faqBegin = paginaHtml.indexOf('<!-- FAQ-LIJST:BEGIN');
     const faqEinde = paginaHtml.indexOf('<!-- FAQ-LIJST:EINDE');
-    const kaders = [...paginaHtml.matchAll(/<(\w+)\s[^>]*class="(?:[^"]*\s)?(todo|todo-inv)(?:\s[^"]*)?"[^>]*>/g)]
+    // Commentaar eerst wegblanken, met dezelfde truc als check-drafts.mjs:
+    // dezelfde lengte eroverheen, zodat de posities hierboven blijven kloppen.
+    // Sinds de cases een lijst zijn, staat de nota van een kaart die er geen
+    // heeft GEPARKEERD tussen commentaartekens in de pagina — zie
+    // inhoud-opmaak.js. Zo'n element staat niet op de pagina, dus hoort het
+    // hier ook niet als kader geteld te worden. Zonder deze regel zou deze
+    // toets vier nota's eisen die er met opzet niet zijn.
+    const zonderCommentaar = paginaHtml.replace(/<!--[\s\S]*?-->/g, (m) => ' '.repeat(m.length));
+    const kaders = [...zonderCommentaar.matchAll(/<(\w+)\s[^>]*class="(?:[^"]*\s)?(todo|todo-inv)(?:\s[^"]*)?"[^>]*>/g)]
       .filter((m) => !(m.index > faqBegin && m.index < faqEinde));
     const metVeld = kaders.filter((m) => /data-inhoud="([^"]+)"/.exec(m[0]));
     eis(`de ${kaders.length} TODO-kaders buiten de FAQ komen allemaal uit een veld`,
@@ -426,13 +485,13 @@ console.log('\n2. De pagina komt overeen met de bron');
     const anders = maakWegwerp();
     try {
       if (verander(anders, 'pagina.yml',
-                   'stap1_titel: Hr houdt realtime het overzicht',
-                   'stap1_titel: Hr ziet alles in één oogopslag')) {
+                   'titel: Hr houdt realtime het overzicht',
+                   'titel: Hr ziet alles in één oogopslag')) {
         const r = bouw(anders);
         const na = readFileSync(join(anders, 'draft-r3-01-definitief.html'), 'utf8');
         eis('de aria-label van een rondleidingknop loopt mee met de kop ernaast',
             r.code === 0 &&
-            na.includes('data-inhoud="rondleiding.stap1_titel">Hr ziet alles in één oogopslag<') &&
+            na.includes('data-inhoud="rondleiding.stappen.1.titel">Hr ziet alles in één oogopslag<') &&
             na.includes('aria-label="Ga naar stap 1: Hr ziet alles in één oogopslag"') &&
             !na.includes('aria-label="Ga naar stap 1: Hr houdt realtime het overzicht"'),
             r.uit.trim() || 'de aria-label bleef op de oude kop staan');
@@ -461,11 +520,11 @@ const grenzen = [
   ['een javascript:-adres in een link houdt de bouw tegen', 'klanten.yml',
    "downloadlink: '#cases-open'", "downloadlink: 'javascript:alert(1)'", /javascript/],
   ['een lijst tussen haken wordt niet stil als tekst gelezen', 'klanten.yml',
-   '    cijfers:\n      - 204 medewerkers\n      - 27 afdelingen', '    cijfers: []', /tussen haken/],
+   '      cijfers:\n        - 204 medewerkers\n        - 27 afdelingen', '      cijfers: []', /tussen haken/],
   ['een opsomming waar één regel tekst hoort, houdt de bouw tegen', 'pagina.yml',
    '  kop: Compensatie zonder kopzorgen', '  kop:\n    - Eerste\n    - Tweede', /doorlopend stuk tekst/],
   ['één regel tekst waar een opsomming hoort, houdt de bouw tegen', 'klanten.yml',
-   '    cijfers:\n      - 204 medewerkers\n      - 27 afdelingen', '    cijfers: 204 medewerkers',
+   '      cijfers:\n        - 204 medewerkers\n        - 27 afdelingen', '      cijfers: 204 medewerkers',
    /opsomming te zijn/],
   ['"null" als waarde wordt niet stil als het woord gelezen', 'pagina.yml',
    '  kop: Deze bedrijven vertrouwen Youbo', '  kop: null', /geen tekst maar een waarde/],
@@ -484,6 +543,133 @@ for (const [wat, bestand, oud, nieuw, verwacht] of grenzen) {
       ok(wat, r.uit.trim().split('\n')[0].replace(/^STOP — /, '').slice(0, 110));
     }
   } finally { rmSync(map, { recursive: true, force: true }); }
+}
+
+/* ----------------------------------------------------- 3b · de lijstgrenzen --- */
+
+/**
+ * Een lijst in een inhoudsbestand op een ander aantal items zetten, door de
+ * items die er staan te herhalen of af te kappen. Ruwe tekst en geen
+ * YAML-schrijver, met opzet: zo is dit precies wat iemand met de hand of met
+ * het CMS zou aanleveren, en niet wat een bibliotheek ervan maakt.
+ */
+function zetAantal(map, bestand, lijstsleutel, aantal) {
+  const pad = join(map, 'content', bestand);
+  const regels = readFileSync(pad, 'utf8').split('\n');
+  const kop = regels.findIndex((r) => r.trim() === `${lijstsleutel}:`);
+  if (kop === -1) {
+    fout(`de toets zelf: "${lijstsleutel}:" staat niet in content/${bestand}`,
+         'de toets is dan vacuüm groen, dus is dit een fout en geen waarschuwing');
+    return false;
+  }
+  const diep = regels[kop].length - regels[kop].trimStart().length + 2;
+  const streep = ' '.repeat(diep) + '- ';
+  const items = [];
+  let i = kop + 1;
+  while (i < regels.length) {
+    if (!regels[i].startsWith(streep)) break;
+    const blok = [regels[i]];
+    i++;
+    while (i < regels.length && regels[i].startsWith(' '.repeat(diep + 2))
+           && !regels[i].startsWith(streep)) { blok.push(regels[i]); i++; }
+    items.push(blok);
+  }
+  if (!items.length) {
+    fout(`de toets zelf: geen enkel item onder "${lijstsleutel}:" in content/${bestand}`,
+         'de toets is dan vacuüm groen');
+    return false;
+  }
+  const nieuw = [];
+  for (let k = 0; k < aantal; k++) nieuw.push(...items[k % items.length]);
+  writeFileSync(pad, [...regels.slice(0, kop + 1), ...nieuw, ...regels.slice(i)].join('\n'));
+  return true;
+}
+
+console.log('\n3b. De grenzen van de lijsten — één te veel en één te weinig');
+
+// De grenzen in de bouw en die in het beheerscherm moeten dezelfde zijn. De
+// interface is een gemak (Jana ziet het terwijl ze bezig is), de bouw is de
+// waarborg — maar twee getallen die uiteenlopen, is een interface die iets
+// toestaat wat de publicatie een uur later laat falen. Precies wat /beheer/
+// niet mag doen.
+{
+  const velden = CMS_BESTANDEN.flatMap((b) => alleVelden(b.fields));
+  for (const [sleutel, g] of Object.entries(GRENZEN)) {
+    // Op het hele pad vergelijken en niet op de laatste naam: "items" bestaat
+    // twee keer (cases en quotes), en met de laatste naam vond deze toets de
+    // grens van de cases terug voor de quotes — en zei dus groen over een
+    // getal dat zij zelf verkeerd had opgezocht.
+    const veld = velden.filter(([p]) => p === sleutel).map(([, v]) => v)
+      .find((v) => v.widget === 'list');
+    eis(`${sleutel}: het beheerscherm toont dezelfde grens als de bouw (${g.min}–${g.max})`,
+        veld && veld.min === g.min && veld.max === g.max,
+        veld ? `config.yml zegt ${veld.min}–${veld.max}, inhoud-opmaak.js zegt ${g.min}–${g.max}`
+             : 'geen list-veld met die naam in beheer/config.yml');
+  }
+}
+
+const lijstgrenzen = [
+  ['cases.items', 'klanten.yml', 'items', 'cases'],
+  ['quotes.items', 'klanten.yml', 'items', 'quotes'],
+  ['rondleiding.stappen', 'pagina.yml', 'stappen', 'rondleiding'],
+  ['logobalk.logos', 'pagina.yml', 'logos', 'logobalk'],
+];
+
+for (const [sleutel, bestand, yamlSleutel, waar] of lijstgrenzen) {
+  const g = GRENZEN[sleutel];
+  for (const [wat, aantal] of [['één te veel', g.max + 1], ['één te weinig', g.min - 1]]) {
+    const map = maakWegwerp();
+    try {
+      // De tweede lijst in hetzelfde bestand draagt dezelfde sleutelnaam
+      // ("items"), dus moet zetAantal de juiste vinden: hij pakt de EERSTE, en
+      // voor de quotes staat die onder de cases. Daarom snijdt deze toets het
+      // bestand op de groep.
+      if (!zetAantalInGroep(map, bestand, waar, yamlSleutel, aantal)) continue;
+      const r = bouw(map);
+      const naam = `${sleutel}: ${wat} (${aantal}) houdt de bouw tegen`;
+      if (r.code === 0) {
+        fout(naam, `de bouw liep gewoon door (afsluitcode 0): ${r.uit.trim().slice(0, 160)}`);
+      } else if (!/Te veel|Te weinig/.test(r.uit)) {
+        fout(naam, `de bouw stopte, maar niet op de grens:\n        ${r.uit.trim().slice(0, 240)}`);
+      } else if (!new RegExp(`hoogstens ${g.max}|minstens ${g.min}`).test(r.uit)) {
+        fout(naam, `de melding noemt de grens niet:\n        ${r.uit.trim().slice(0, 240)}`);
+      } else if (r.uit.length < 200) {
+        fout(naam, 'de melding zegt wel dat het mis is maar niet waarom — ' +
+                   'een grens zonder reden is een grens die de volgende lezer weghaalt');
+      } else {
+        ok(naam, r.uit.trim().split('\n')[0].replace(/^STOP — /, '').slice(0, 95));
+      }
+    } finally { rmSync(map, { recursive: true, force: true }); }
+  }
+}
+
+/**
+ * zetAantal, maar binnen één groep van het bestand — nodig omdat "items" twee
+ * keer voorkomt in klanten.yml (de cases én de quotes).
+ */
+function zetAantalInGroep(map, bestand, groep, lijstsleutel, aantal) {
+  const pad = join(map, 'content', bestand);
+  const heel = readFileSync(pad, 'utf8');
+  const a = heel.indexOf(`\n${groep}:\n`);
+  if (a === -1) {
+    fout(`de toets zelf: groep "${groep}:" staat niet in content/${bestand}`,
+         'de toets is dan vacuüm groen');
+    return false;
+  }
+  const volgende = heel.slice(a + 1).search(/\n[A-Za-z_][A-Za-z0-9_]*:/);
+  const b = volgende === -1 ? heel.length : a + 1 + volgende + 1;
+  const stuk = heel.slice(a, b);
+
+  const tijdelijk = join(map, 'content', '__stuk.yml');
+  writeFileSync(tijdelijk, stuk.replace(new RegExp(`^\\n${groep}:\\n`), ''));
+  // het stuk staat nu één niveau minder diep? Nee — het blijft zoals het is,
+  // zetAantal zoekt op de sleutelregel en niet op de diepte van het bestand.
+  const gelukt = zetAantal(map, '__stuk.yml', lijstsleutel, aantal);
+  if (!gelukt) return false;
+  const nieuwStuk = `\n${groep}:\n` + readFileSync(tijdelijk, 'utf8');
+  rmSync(tijdelijk, { force: true });
+  writeFileSync(pad, heel.slice(0, a) + nieuwStuk + heel.slice(b));
+  return true;
 }
 
 /* --------------------------------------------- 4 · drie vormen, één tekst --- */

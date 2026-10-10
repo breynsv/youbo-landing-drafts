@@ -76,7 +76,7 @@ import { fileURLToPath } from 'node:url';
 
 import { leesYaml, vlak, vlakLijsten, YamlFout } from './lees-yaml.js';
 import {
-  bezwaren, herhaal, InhoudFout, sleutelsVan, vindSlots, voegIn,
+  bezwaren, herhaal, herhaalSleutels, InhoudFout, sleutelsVan, vindSlots, voegIn,
 } from './inhoud-opmaak.js';
 
 // vindSlots stond hier tot 2026-10-09 en staat nu in inhoud-opmaak.js, samen
@@ -208,7 +208,7 @@ function bouwenEcht({ check = false, proef = false } = {}) {
          'dan zet deze bouwstap niets in de pagina en zou ze stil niets doen');
   }
 
-  const gebruikt = new Set();
+  const gebruikt = herhaalSleutels(uitgeklapt);
   for (const slot of slots) {
     for (const sleutel of sleutelsVan(slot)) {
       if (!velden.has(sleutel)) {

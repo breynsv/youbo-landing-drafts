@@ -104,6 +104,74 @@ app_title: Youbo — beheer
 media_folder: content/media
 public_folder: /content/media
 
+# ── WAT ER MET EEN UPLOAD GEBEURT ───────────────────────────────────────────
+#
+# Sveltia bewerkt een beeld bij het uploaden, in de browser, vóór het naar
+# GitHub gaat. Dat is hier geen luxe maar de hele reden dat Jana zelf een foto
+# mag zetten: zonder deze blok landt haar telefoonfoto van 4 MB op de
+# landingspagina. De site van deze klant draagt vandaag een PNG van 1 MB op een
+# nieuwspagina; die fout maken wij niet.
+#
+# Nagekeken in de broncode van precies de versie die /beheer/ laadt
+# (@sveltia/cms@0.233.0), niet uit het hoofd:
+#
+# · De sleutel is `media_libraries.default.config.transformations`. Er bestaat
+#   ook `media_libraries.all.transformations`, en dat is NIET hetzelfde: `all`
+#   geldt ook voor een externe beeldbibliotheek (Cloudinary en dergelijke),
+#   `default.config` alleen voor de git-bibliotheek. Wij hebben de
+#   git-bibliotheek — er staat geen enkele externe dienst in deze configuratie —
+#   dus staat het onder `default.config`, waar het niet meer kan doen dan het
+#   hier moet doen. (`media_libraries.default.transformations`, zonder `config`,
+#   bestaat niet en wordt stil genegeerd.)
+# · `raster_image` is de verzamelnaam voor elk rasterbeeld; `svg` staat
+#   ernaast en kent alleen `optimize`.
+# · `format` kan alleen `webp`. `quality` is een geheel getal 0-100,
+#   standaard 85.
+# · `width` en `height` zijn een BOVENGRENS met behoud van de verhouding, en
+#   nooit opschalen (`fit: scale-down` in hun eigen code). Een beeld dat al
+#   kleiner is, blijft zoals het is.
+#
+# DE MAAT KOMT UIT WAT DE PAGINA WERKELIJK TOONT, niet uit een rond getal.
+# Gemeten in een eigen headless Chromium: de portretten bij de quotes staan op
+# 56 beeldpunten, de ronde foto bij het formulier op 96, en het hoogste logo op
+# 32. Drie keer zo groot is genoeg voor het scherpste scherm dat vandaag
+# bestaat, dus staat de grens per veld op 168, 288 en 96 — zie de nota bij elk
+# beeldveld. Deze algemene waarde is het net ruimere vangnet: 320 bij 320 is
+# precies de maat van de vijf portretten die de klant al aanleverde.
+#
+# Wat Jana uploadt komt in content/media/ en dus PUBLIEK op de site te staan.
+# Dat staat ook in beheer/LEESMIJ-JANA.md.
+#
+# De gemelde fout waarbij een .jfif-upload als "naam.jfifwebp" werd opgeslagen
+# (sveltia-cms#963) is in 0.233.0 OPGELOST: commit 908d3ed4a zit vóór deze tag,
+# en de extensielijst in deze bouw kent jfif, jpe, heif en de rest. Wij hoeven
+# de bestandstypen dus niet te beperken, en dat is nagekeken in de bouw zelf en
+# niet uit een changelog overgenomen.
+media_libraries:
+  default:
+    config:
+      # Vijftien megabyte. Ruim, met opzet: de omzetting hierboven maakt er toch
+      # een kleine WebP van, en een grens die een gewone cameraopname weigert is
+      # een grens waar Jana op vastloopt zonder te weten waarom.
+      max_file_size: 15728640
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 82
+          width: 320
+          height: 320
+        svg:
+          optimize: true
+
+# Een leeg veld dat niet verplicht is, laat Sveltia dan wég uit het bestand in
+# plaats van er een lege waarde in te schrijven. Dat is nodig voor de nota op
+# een casekaart: de bouw weigert een leeg veld (een leeg veld laat een gat op de
+# pagina), en "geen nota" en "een nota die leeg is" moeten dus twee verschillende
+# dingen zijn in het bestand. Standaard staat dit af.
+output:
+  omit_empty_optional_fields: true
+
 collections:
   # TWEE NIVEAUS, TWEE NAMEN.
   #
@@ -147,7 +215,9 @@ collections:
               Elk veld is één doorlopend stuk tekst — geen tweede alinea en geen regelafbreking.
               GEEN HTML: de bouw weigert een bestand met een < erin, met opzet.
               Een veld dat begint met "TODO — " krijgt op de pagina een apart kader met een stippellijn.
-              De volgorde hier is de volgorde op de pagina. Velden bijzetten of weghalen kan niet.
+              De volgorde hier is de volgorde op de pagina.
+              De logo's in de balk en de stappen van de rondleiding zijn lijsten: daar kan er een bij
+              of af. Logo's: minstens 6, hoogstens 9. Stappen: hoogstens 4, want er zijn vier schermen.
               De groep "vindbaarheid" onderaan staat niet op de pagina: dat is Google en het deelbericht.
               Meer uitleg: content/LEESMIJ.txt.
             widget: 'object'
@@ -206,6 +276,51 @@ collections:
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'logos'
+                label: 'De logo’s in de balk'
+                label_singular: 'logo'
+                widget: 'list'
+                min: 6
+                max: 9
+                collapsed: true
+                minimize_collapsed: true
+                allow_reorder: true
+                summary: '{{fields.naam}} · {{fields.hoogte}} px'
+                hint: 'Minstens 6 en hoogstens 9. Onder 6 past een complete reeks in de balk en staat er een naam twee keer in beeld; boven 9 breekt de stilstaande versie van de rij in twee halve regels. Allebei gemeten. Het tempo van de balk rekent zichzelf uit op het aantal.'
+                fields:
+                  - name: 'naam'
+                    label: 'Naam van het bedrijf'
+                    widget: 'string'
+                    required: true
+                    hint: 'Wordt voorgelezen in plaats van het logo. Hij staat niet als tekst op de pagina.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'beeld'
+                    label: 'Het logobestand'
+                    widget: 'image'
+                    required: true
+                    hint: 'Het logobestand. Een PNG of JPG wordt bij het uploaden zelf omgezet naar WebP en verkleind; een SVG wordt opgeschoond. Bestaat het bestand niet, dan stopt de publicatie.'
+                    # Een logo staat hoogstens op 32 beeldpunten hoog, dus is 96 drie keer zo veel. De breedte van 320 is ruim voor het breedste woordmerk (Mourik, 96 bp op de pagina).
+                    media_libraries:
+                      default:
+                        config:
+                          transformations:
+                            raster_image:
+                              format: webp
+                              quality: 82
+                              width: 320
+                              height: 96
+                            svg:
+                              optimize: true
+                  - name: 'hoogte'
+                    label: 'Hoogte in beeldpunten'
+                    widget: 'number'
+                    required: true
+                    hint: 'De hoogte in beeldpunten waarop dit logo staat. Kijk in het voorbeeld naar de buren en kies wat even zwaar weegt: een breed woordmerk mag hoger dan een rond teken. Buiten dit bereik stopt de bouw.'
+                    value_type: 'int'
+                    min: 16
+                    max: 32
           - name: 'kern'
             label: 'De drie kernblokken'
             widget: 'object'
@@ -288,70 +403,45 @@ collections:
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'stap1_titel'
-                label: 'Stap 1 — titel'
-                widget: 'string'
-                required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'stap1_tekst'
-                label: 'Stap 1 — tekst'
-                widget: 'string'
-                required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'stap2_titel'
-                label: 'Stap 2 — titel'
-                widget: 'string'
-                required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'stap2_tekst'
-                label: 'Stap 2 — tekst'
-                widget: 'string'
-                required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'stap3_titel'
-                label: 'Stap 3 — titel'
-                widget: 'string'
-                required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'stap3_tekst'
-                label: 'Stap 3 — tekst'
-                widget: 'string'
-                required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'stap4_titel'
-                label: 'Stap 4 — titel'
-                widget: 'string'
-                required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'stap4_tekst'
-                label: 'Stap 4 — tekst'
-                widget: 'string'
-                required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'stappen'
+                label: 'De stappen van de rondleiding'
+                label_singular: 'stap'
+                widget: 'list'
+                min: 2
+                max: 4
+                collapsed: true
+                minimize_collapsed: true
+                allow_reorder: true
+                allow_add: false
+                summary: '{{fields.titel}}'
+                hint: 'Hoogstens 4, en er kan er geen bij: elke stap hoort bij één nagetekend scherm en die vier zijn getekend. Een stap weglaten of de volgorde omgooien kan wel — het scherm gaat mee. Minstens 2, want met één stap wisselt het beeld nooit.'
+                fields:
+                  - name: 'titel'
+                    label: 'Titel van de stap'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel. Deze titel wordt ook voorgelezen bij de springknop links van het scherm.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'tekst'
+                    label: 'Tekst van de stap'
+                    widget: 'string'
+                    required: true
+                    hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                    pattern:
+                      - '^[^<\n]*$'
+                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'scherm'
+                    label: 'Welk scherm hiernaast'
+                    widget: 'select'
+                    required: true
+                    hint: 'De tekening die bij deze stap hoort. Vier bestaan er, en elk mag maar bij één stap staan: hun cijfers sluiten op elkaar aan. Een vijfde laten tekenen is werk voor een ontwikkelaar.'
+                    options:
+                      - { label: 'Cyclusoverzicht voor hr', value: 'overzicht' }
+                      - { label: 'Medewerkers vergelijken', value: 'vergelijken' }
+                      - { label: 'Budget per soort', value: 'budget' }
+                      - { label: 'Loonpakket oud, nieuw en verschil', value: 'rewardletter' }
               - name: 'knop'
                 label: 'Knop onder de rondleiding'
                 widget: 'string'
@@ -546,11 +636,13 @@ collections:
           preview: true
         fields:
           - name: 'cases'
-            label: 'De vijf cases'
+            label: 'De cases'
             comment: |-
               LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
-              De vijf cases en de vijf quotes. Vijf en niet meer: het raster is op precies vijf gemeten.
+              De cases en de quotes. Allebei een lijst: je mag er een bij zetten, een weghalen en de
+              volgorde veranderen — cases minstens 2 en hoogstens 7, quotes minstens 3 en hoogstens 7.
               "bedrijf" is de naam achter het logo — die wordt voorgelezen in plaats van het beeld.
+              "logo_hoogte" is de hoogte in beeldpunten; kijk ernaast en kies wat even zwaar weegt.
               "cijfers" is een opsomming: één regel per cijfer, twee of drie regels.
               "downloadlink" mag een anker (#cases-open) of een bestand zijn; een bestand dat niet bestaat stopt de bouw.
               GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
@@ -562,257 +654,92 @@ collections:
                 label: 'Tekst op elke downloadlink'
                 widget: 'string'
                 required: true
-                hint: 'Dezelfde tekst op alle vijf de links.'
+                hint: 'Dezelfde tekst op elke downloadlink, op elke kaart.'
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'kaart_1'
-                label: 'Case 1'
-                widget: 'object'
+              - name: 'items'
+                label: 'De cases'
+                label_singular: 'case'
+                widget: 'list'
+                min: 2
+                max: 7
                 collapsed: true
+                minimize_collapsed: true
+                allow_reorder: true
+                summary: '{{fields.bedrijf}} · {{fields.voordeel}}'
+                hint: 'Minstens 2 en hoogstens 7. Het raster op desktop is zes kolommen: de bouw legt er zoveel rijen van drie kaarten in als kan en de rest in rijen van twee. Boven 7 steken de puntjes onder de rij op een telefoon buiten de pagina — gemeten.'
                 fields:
                   - name: 'bedrijf'
                     label: 'Naam achter het logo'
                     widget: 'string'
                     required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    hint: 'Wordt voorgelezen in plaats van het logo, en bepaalt het haakje waarmee de klik op de downloadlink geteld wordt. Hij staat niet als tekst op de pagina.'
                     pattern:
                       - '^[^<\n]*$'
                       - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'logo'
+                    label: 'Het logo op de kaart'
+                    widget: 'image'
+                    required: true
+                    hint: 'Het logobestand. Een PNG of JPG wordt bij het uploaden zelf omgezet naar WebP en verkleind; een SVG wordt opgeschoond. Bestaat het bestand niet, dan stopt de publicatie.'
+                    # Een logo op een kaart staat hoogstens op 32 beeldpunten hoog, dus is 96 drie keer zo veel — genoeg voor het scherpste scherm dat vandaag bestaat.
+                    media_libraries:
+                      default:
+                        config:
+                          transformations:
+                            raster_image:
+                              format: webp
+                              quality: 82
+                              width: 320
+                              height: 96
+                            svg:
+                              optimize: true
+                  - name: 'logo_hoogte'
+                    label: 'Hoogte van het logo'
+                    widget: 'number'
+                    required: true
+                    hint: 'De hoogte in beeldpunten waarop dit logo op de kaart staat. De logoplek is 32 hoog; de vijf van vandaag staan op 20, 21, 32, 24 en 24. Kijk in het voorbeeld naar de buren en kies wat even zwaar weegt.'
+                    value_type: 'int'
+                    min: 16
+                    max: 32
                   - name: 'voordeel'
-                    label: 'Het resultaat in één regel'
+                    label: 'Het voordeel, groot op de kaart'
                     widget: 'string'
                     required: true
-                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
+                    hint: 'De kop van de kaart. Kort: er is plaats voor ongeveer twee regels.'
                     pattern:
                       - '^[^<\n]*$'
                       - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
                   - name: 'cijfers'
                     label: 'De cijfers'
+                    label_singular: 'cijfer'
                     widget: 'list'
                     min: 1
-                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
+                    max: 3
+                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers". Meer dan drie maakt de kaarten ongelijk hoog.'
                     field:
-                      name: 'regel'
-                      label: 'Regel'
+                      name: 'cijfer'
+                      label: 'Cijfer'
                       widget: 'string'
                       required: true
+                      hint: 'Eén regel. Het stipje ervoor zet de pagina zelf.'
                       pattern:
                         - '^[^<\n]*$'
                         - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
                   - name: 'sector'
-                    label: 'Wat voor bedrijf het is'
+                    label: 'De sector'
                     widget: 'string'
                     required: true
-                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'downloadlink'
-                    label: 'Waar de downloadlink naartoe gaat'
-                    widget: 'string'
-                    required: true
-                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'kaart_2'
-                label: 'Case 2'
-                widget: 'object'
-                collapsed: true
-                fields:
-                  - name: 'bedrijf'
-                    label: 'Naam achter het logo'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'voordeel'
-                    label: 'Het resultaat in één regel'
-                    widget: 'string'
-                    required: true
-                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'cijfers'
-                    label: 'De cijfers'
-                    widget: 'list'
-                    min: 1
-                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
-                    field:
-                      name: 'regel'
-                      label: 'Regel'
-                      widget: 'string'
-                      required: true
-                      pattern:
-                        - '^[^<\n]*$'
-                        - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'sector'
-                    label: 'Wat voor bedrijf het is'
-                    widget: 'string'
-                    required: true
-                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'downloadlink'
-                    label: 'Waar de downloadlink naartoe gaat'
-                    widget: 'string'
-                    required: true
-                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'kaart_3'
-                label: 'Case 3'
-                widget: 'object'
-                collapsed: true
-                fields:
-                  - name: 'bedrijf'
-                    label: 'Naam achter het logo'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'voordeel'
-                    label: 'Het resultaat in één regel'
-                    widget: 'string'
-                    required: true
-                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'cijfers'
-                    label: 'De cijfers'
-                    widget: 'list'
-                    min: 1
-                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
-                    field:
-                      name: 'regel'
-                      label: 'Regel'
-                      widget: 'string'
-                      required: true
-                      pattern:
-                        - '^[^<\n]*$'
-                        - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'sector'
-                    label: 'Wat voor bedrijf het is'
-                    widget: 'string'
-                    required: true
-                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
+                    hint: 'Eén regel onder de cijfers.'
                     pattern:
                       - '^[^<\n]*$'
                       - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
                   - name: 'nota'
                     label: 'Open punt op deze kaart'
                     widget: 'string'
-                    required: true
-                    hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'downloadlink'
-                    label: 'Waar de downloadlink naartoe gaat'
-                    widget: 'string'
-                    required: true
-                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'kaart_4'
-                label: 'Case 4'
-                widget: 'object'
-                collapsed: true
-                fields:
-                  - name: 'bedrijf'
-                    label: 'Naam achter het logo'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'voordeel'
-                    label: 'Het resultaat in één regel'
-                    widget: 'string'
-                    required: true
-                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'cijfers'
-                    label: 'De cijfers'
-                    widget: 'list'
-                    min: 1
-                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
-                    field:
-                      name: 'regel'
-                      label: 'Regel'
-                      widget: 'string'
-                      required: true
-                      pattern:
-                        - '^[^<\n]*$'
-                        - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'sector'
-                    label: 'Wat voor bedrijf het is'
-                    widget: 'string'
-                    required: true
-                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'downloadlink'
-                    label: 'Waar de downloadlink naartoe gaat'
-                    widget: 'string'
-                    required: true
-                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'kaart_5'
-                label: 'Case 5'
-                widget: 'object'
-                collapsed: true
-                fields:
-                  - name: 'bedrijf'
-                    label: 'Naam achter het logo'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'voordeel'
-                    label: 'Het resultaat in één regel'
-                    widget: 'string'
-                    required: true
-                    hint: 'Eén korte regel: wat de klant eraan overhield. Dit is de grootste tekst op de kaart.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'cijfers'
-                    label: 'De cijfers'
-                    widget: 'list'
-                    min: 1
-                    hint: 'Eén regel per cijfer, twee of drie regels. Bijvoorbeeld "204 medewerkers".'
-                    field:
-                      name: 'regel'
-                      label: 'Regel'
-                      widget: 'string'
-                      required: true
-                      pattern:
-                        - '^[^<\n]*$'
-                        - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'sector'
-                    label: 'Wat voor bedrijf het is'
-                    widget: 'string'
-                    required: true
-                    hint: 'Eén regel. Staat onderaan de kaart, klein.'
+                    required: false
+                    hint: 'Mag leeg blijven, en blijft dat meestal: dan staat er geen kader op de kaart. Vul je het in, begin dan met "TODO — " en zet een dubbele punt na wie het moet antwoorden.'
                     pattern:
                       - '^[^<\n]*$'
                       - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
@@ -833,7 +760,7 @@ collections:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
           - name: 'quotes'
-            label: 'De vijf quotes'
+            label: 'De quotes'
             widget: 'object'
             collapsed: true
             fields:
@@ -845,232 +772,92 @@ collections:
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'quote_1'
-                label: 'Quote 1'
-                widget: 'object'
+              - name: 'items'
+                label: 'De quotes'
+                label_singular: 'quote'
+                widget: 'list'
+                min: 3
+                max: 7
                 collapsed: true
+                minimize_collapsed: true
+                allow_reorder: true
+                summary: '{{fields.naam}} · {{fields.bedrijf}}'
+                hint: 'Minstens 3 en hoogstens 7. Met twee is de rij op desktop niet meer schuifbaar: dan verdwijnt het halve derde kaartje dat zegt dat er nog volgen, en doen de pijlen en de puntjes niets. Boven 7 steken de puntjes buiten de pagina. Allebei gemeten.'
                 fields:
                   - name: 'bedrijf'
                     label: 'Naam achter het logo'
                     widget: 'string'
                     required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
+                    hint: 'Wordt voorgelezen in plaats van het logo. Hij staat niet als tekst op de pagina — de functieregel noemt alleen de functie, anders hoort een schermlezer de klantnaam twee keer.'
                     pattern:
                       - '^[^<\n]*$'
                       - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                  - name: 'logo'
+                    label: 'Het logo op de kaart'
+                    widget: 'image'
+                    required: true
+                    hint: 'Het logobestand. Een PNG of JPG wordt bij het uploaden zelf omgezet naar WebP en verkleind; een SVG wordt opgeschoond. Bestaat het bestand niet, dan stopt de publicatie. Let op: deze kaart staat op een donkere band, dus hoort hier de witte of de kleurversie van het logo en niet de donkere.'
+                    # Een logo op een kaart staat hoogstens op 32 beeldpunten hoog, dus is 96 drie keer zo veel — genoeg voor het scherpste scherm dat vandaag bestaat.
+                    media_libraries:
+                      default:
+                        config:
+                          transformations:
+                            raster_image:
+                              format: webp
+                              quality: 82
+                              width: 320
+                              height: 96
+                            svg:
+                              optimize: true
+                  - name: 'logo_hoogte'
+                    label: 'Hoogte van het logo'
+                    widget: 'number'
+                    required: true
+                    hint: 'De hoogte in beeldpunten waarop dit logo op de donkere kaart staat. Een maat kleiner dan op een casekaart; de vijf van vandaag staan op 20, 16, 20, 20 en 17.'
+                    value_type: 'int'
+                    min: 14
+                    max: 20
                   - name: 'tekst'
                     label: 'De quote'
                     widget: 'string'
                     required: true
-                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
+                    hint: 'Eén doorlopend stuk tekst, met de aanhalingstekens erbij zoals ze er nu staan.'
                     pattern:
                       - '^[^<\n]*$'
                       - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
                   - name: 'foto'
-                    label: 'Portret'
-                    widget: 'string'
+                    label: 'Het portret'
+                    widget: 'image'
                     required: true
-                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                    hint: 'Het portret naast de naam. Het staat in een cirkel van vaste maat met object-cover, dus past elke verhouding. Een PNG of JPG wordt bij het uploaden omgezet naar WebP en verkleind. Bestaat het bestand niet, dan stopt de publicatie.'
+                    # Het portret staat op 56 beeldpunten (gemeten), dus is 168 drie keer zo veel. De portretten die de klant aanleverde zijn 320x320; die worden hier dus kleiner.
+                    media_libraries:
+                      default:
+                        config:
+                          transformations:
+                            raster_image:
+                              format: webp
+                              quality: 82
+                              width: 168
+                              height: 168
+                            svg:
+                              optimize: true
                   - name: 'naam'
-                    label: 'Naam'
+                    label: 'De naam onder de quote'
                     widget: 'string'
                     required: true
-                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
+                    hint: 'Wordt ook de beschrijving van het portret ernaast, dus hoeft die niet apart.'
                     pattern:
                       - '^[^<\n]*$'
                       - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
                   - name: 'functie'
-                    label: 'Functie'
+                    label: 'De functie'
                     widget: 'string'
                     required: true
-                    hint: 'De functie onder de naam.'
+                    hint: 'Alleen de functie, zonder de bedrijfsnaam: die staat al in het logo erboven.'
                     pattern:
                       - '^[^<\n]*$'
                       - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'quote_2'
-                label: 'Quote 2'
-                widget: 'object'
-                collapsed: true
-                fields:
-                  - name: 'bedrijf'
-                    label: 'Naam achter het logo'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'tekst'
-                    label: 'De quote'
-                    widget: 'string'
-                    required: true
-                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'foto'
-                    label: 'Portret'
-                    widget: 'string'
-                    required: true
-                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'naam'
-                    label: 'Naam'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'functie'
-                    label: 'Functie'
-                    widget: 'string'
-                    required: true
-                    hint: 'De functie onder de naam.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'quote_3'
-                label: 'Quote 3'
-                widget: 'object'
-                collapsed: true
-                fields:
-                  - name: 'bedrijf'
-                    label: 'Naam achter het logo'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'tekst'
-                    label: 'De quote'
-                    widget: 'string'
-                    required: true
-                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'foto'
-                    label: 'Portret'
-                    widget: 'string'
-                    required: true
-                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'naam'
-                    label: 'Naam'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'functie'
-                    label: 'Functie'
-                    widget: 'string'
-                    required: true
-                    hint: 'De functie onder de naam.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'quote_4'
-                label: 'Quote 4'
-                widget: 'object'
-                collapsed: true
-                fields:
-                  - name: 'bedrijf'
-                    label: 'Naam achter het logo'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'tekst'
-                    label: 'De quote'
-                    widget: 'string'
-                    required: true
-                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'foto'
-                    label: 'Portret'
-                    widget: 'string'
-                    required: true
-                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'naam'
-                    label: 'Naam'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'functie'
-                    label: 'Functie'
-                    widget: 'string'
-                    required: true
-                    hint: 'De functie onder de naam.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'quote_5'
-                label: 'Quote 5'
-                widget: 'object'
-                collapsed: true
-                fields:
-                  - name: 'bedrijf'
-                    label: 'Naam achter het logo'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam achter het logo. Hij staat niet als tekst op de pagina, maar wordt voorgelezen in plaats van het beeld. Het logobestand zelf is ontwerp en staat vast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'tekst'
-                    label: 'De quote'
-                    widget: 'string'
-                    required: true
-                    hint: 'De quote zelf, met de aanhalingstekens erin zoals ze op de pagina staan.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'foto'
-                    label: 'Portret'
-                    widget: 'string'
-                    required: true
-                    hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'naam'
-                    label: 'Naam'
-                    widget: 'string'
-                    required: true
-                    hint: 'De naam onder de quote. Hij wordt ook de alt-tekst van het portret ernaast.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-                  - name: 'functie'
-                    label: 'Functie'
-                    widget: 'string'
-                    required: true
-                    hint: 'De functie onder de naam.'
-                    pattern:
-                      - '^[^<\n]*$'
-                      - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-
       - name: contact
         label: Formulier, contact en voet
         icon: mail
@@ -1101,12 +888,22 @@ collections:
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
               - name: 'nick_foto'
                 label: 'Ronde foto van Nick'
-                widget: 'string'
+                widget: 'image'
                 required: true
-                hint: 'Het pad naar het beeld, bijvoorbeeld assets/img/pieter-jan.webp. Het staat in een cirkel van vaste maat, dus elke verhouding past. Bestaat het bestand niet, dan stopt de publicatie.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+                hint: 'Het portret naast de intro van het formulier. Het staat in een cirkel van vaste maat met object-cover, dus past elke verhouding. Een PNG of JPG wordt bij het uploaden omgezet naar WebP en verkleind. Bestaat het bestand niet, dan stopt de publicatie.'
+                # Deze foto staat op 96 beeldpunten (gemeten) — de grootste op de pagina — dus is
+                # 288 drie keer zo veel. nick-rond.webp is vandaag 320x320 en wordt dus iets kleiner.
+                media_libraries:
+                  default:
+                    config:
+                      transformations:
+                        raster_image:
+                          format: webp
+                          quality: 82
+                          width: 288
+                          height: 288
+                        svg:
+                          optimize: true
               - name: 'nick_foto_alt'
                 label: 'Beschrijving van die foto'
                 widget: 'string'

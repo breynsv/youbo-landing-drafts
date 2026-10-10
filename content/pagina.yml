@@ -3,7 +3,9 @@
 # Elk veld is één doorlopend stuk tekst — geen tweede alinea en geen regelafbreking.
 # GEEN HTML: de bouw weigert een bestand met een < erin, met opzet.
 # Een veld dat begint met "TODO — " krijgt op de pagina een apart kader met een stippellijn.
-# De volgorde hier is de volgorde op de pagina. Velden bijzetten of weghalen kan niet.
+# De volgorde hier is de volgorde op de pagina.
+# De logo's in de balk en de stappen van de rondleiding zijn lijsten: daar kan er een bij
+# of af. Logo's: minstens 6, hoogstens 9. Stappen: hoogstens 4, want er zijn vier schermen.
 # De groep "vindbaarheid" onderaan staat niet op de pagina: dat is Google en het deelbericht.
 # Meer uitleg: content/LEESMIJ.txt.
 hero:
@@ -53,14 +55,19 @@ kern:
 rondleiding:
   kop: Ontdek hoe het werkt
   scrollhint: Scroll verder
-  stap1_titel: Hr houdt realtime het overzicht
-  stap1_tekst: Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.
-  stap2_titel: Managers beslissen onderbouwd
-  stap2_tekst: Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele situaties of vergelijk medewerkers.
-  stap3_titel: Elk budget blijft onder controle
-  stap3_tekst: Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.
-  stap4_titel: Rewardletters in één klik
-  stap4_tekst: Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.
+  stappen:
+    - titel: Hr houdt realtime het overzicht
+      tekst: Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.
+      scherm: overzicht
+    - titel: Managers beslissen onderbouwd
+      tekst: Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele situaties of vergelijk medewerkers.
+      scherm: vergelijken
+    - titel: Elk budget blijft onder controle
+      tekst: Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.
+      scherm: budget
+    - titel: Rewardletters in één klik
+      tekst: Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.
+      scherm: rewardletter
   knop: Boek een demo
   nota: 'TODO — te bevestigen: de vier schermen zijn nagetekend met eigen, sluitende voorbeeldcijfers uit één demodataset, omdat het bestaande hero-scherm van youbo.io dezelfde medewerker op twee verschillende bedragen zet. Zodra er toegang is tot de app vervangen we ze door echte schermen met geanonimiseerde data'
 cijfer:

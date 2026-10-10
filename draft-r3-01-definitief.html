@@ -1690,21 +1690,27 @@ tailwind.config = {
         class="scrollhide flex snap-x snap-mandatory gap-4 overflow-x-auto list-none p-0 m-0 -mx-6 px-6 scroll-pl-6 pb-2
                lg:grid lg:grid-cols-6 lg:gap-6 lg:overflow-visible lg:mx-0 lg:px-0 lg:scroll-pl-0 lg:pb-0"
         data-reveal>
-
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
+    <!-- HERHAAL:cases.items:BEGIN — gegenereerd uit content/klanten.yml door build-inhoud.mjs.
+         De EERSTE <li> is de vorm van een casekaart; de kaarten eronder zijn kopieën, dus met
+         de hand aanpassen heeft alleen zin in de eerste. De breedte in het raster (lg:col-span-2
+         of -3) rekent de bouw uit: rijen van zes kolommen, zoveel rijen van drie kaarten als
+         kan en de rest in rijen van twee. Bij vijf kaarten is dat drie smalle boven en twee
+         brede onder, precies de indeling waarin de minste leegte overblijft. -->
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="h-5 w-auto" data-inhoud-alt="cases.kaart_1.bedrijf"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_1.voordeel">Twee werkweken tijdswinst</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_1.cijfers">
+            <span class="case-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="cases.items.1.logo" data-inhoud-alt="cases.items.1.bedrijf" data-inhoud-style="height:{cases.items.1.logo_hoogte}px"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.1.voordeel">Twee werkweken tijdswinst</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.1.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">204 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">27 afdelingen</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_1.sector">Chemie- en technologiebedrijf</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.1.sector">Chemie- en technologiebedrijf</p>
           </div>
           <div class="case-slot">
+            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.1.nota" data-inhoud="cases.items.1.nota"><b>TODO — nodig van klant</b>: deze kaart heeft een open punt</span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-kaneka" data-inhoud-href="cases.kaart_1.downloadlink">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-kaneka" data-inhoud-data-cta="case-pdf-{slug:cases.items.1.bedrijf}" data-inhoud-href="cases.items.1.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
@@ -1712,25 +1718,21 @@ tailwind.config = {
         </article>
       </li>
 
-      <!-- Anchr heeft sinds 2026-10-08 een echt logobestand: Bart De Nil stuurde
-           negen klantlogo's door. Het is één mint-groene letterzetting zonder
-           aparte donkere of witte versie, en dat hoeft ook niet — mint haalt op
-           #f6f8fa én op de donkere band ruim contrast. De typografische
-           plaatsvervanger en de TODO erbij zijn dus weg. -->
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/anchr-logo.webp" width="214" height="65" alt="Anchr" class="logo-anchr-case w-auto" data-inhoud-alt="cases.kaart_2.bedrijf"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_2.voordeel">Meerdere werkdagen bespaard</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_2.cijfers">
+            <span class="case-logo"><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="cases.items.2.logo" data-inhoud-alt="cases.items.2.bedrijf" data-inhoud-style="height:{cases.items.2.logo_hoogte}px"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.2.voordeel">Meerdere werkdagen bespaard</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.2.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">300 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">8 bedrijven</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_2.sector">Softwaregroep</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.2.sector">Softwaregroep</p>
           </div>
           <div class="case-slot">
+            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.2.nota" data-inhoud="cases.items.2.nota"><b>TODO — nodig van klant</b>: deze kaart heeft een open punt</span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-anchr" data-inhoud-href="cases.kaart_2.downloadlink">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-anchr" data-inhoud-data-cta="case-pdf-{slug:cases.items.2.bedrijf}" data-inhoud-href="cases.items.2.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
@@ -1738,21 +1740,21 @@ tailwind.config = {
         </article>
       </li>
 
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2">
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="h-8 w-auto" data-inhoud-alt="cases.kaart_3.bedrijf"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_3.voordeel">Live op 3 maanden</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_3.cijfers">
+            <span class="case-logo"><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px" data-inhoud-src="cases.items.3.logo" data-inhoud-alt="cases.items.3.bedrijf" data-inhoud-style="height:{cases.items.3.logo_hoogte}px"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.3.voordeel">Live op 3 maanden</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.3.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">450 bedienden</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">van eerste gesprek tot eerste cyclus</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_3.sector">Infrastructuur- en logistiekgroep</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.3.sector">Infrastructuur- en logistiekgroep</p>
           </div>
           <div class="case-slot">
-            <span class="todo case-todo" data-inhoud="cases.kaart_3.nota"><b>TODO — te bevestigen bij Bart of Nick</b>: in hoeveel landen. Jana’s campagneplan schrijft hier zelf 450 bedienden in X landen</span>
+            <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.3.nota" data-inhoud="cases.items.3.nota"><b>TODO — te bevestigen bij Bart of Nick</b>: in hoeveel landen. Jana’s campagneplan schrijft hier zelf 450 bedienden in X landen</span>
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-aertssen" data-inhoud-href="cases.kaart_3.downloadlink">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-aertssen-group" data-inhoud-data-cta="case-pdf-{slug:cases.items.3.bedrijf}" data-inhoud-href="cases.items.3.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
@@ -1760,21 +1762,22 @@ tailwind.config = {
         </article>
       </li>
 
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3">
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="h-6 w-auto" data-inhoud-alt="cases.kaart_4.bedrijf"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_4.voordeel">Van 2 maanden naar 3 weken</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_4.cijfers">
+            <span class="case-logo"><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="cases.items.4.logo" data-inhoud-alt="cases.items.4.bedrijf" data-inhoud-style="height:{cases.items.4.logo_hoogte}px"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.4.voordeel">Van 2 maanden naar 3 weken</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.4.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">7.000 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">21 landen</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">voor een deel van hun populatie</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_4.sector">Hr-dienstverlener</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.4.sector">Hr-dienstverlener</p>
           </div>
           <div class="case-slot">
+            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.4.nota" data-inhoud="cases.items.4.nota"><b>TODO — nodig van klant</b>: deze kaart heeft een open punt</span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-sdworx" data-inhoud-href="cases.kaart_4.downloadlink">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-sd-worx" data-inhoud-data-cta="case-pdf-{slug:cases.items.4.bedrijf}" data-inhoud-href="cases.items.4.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
@@ -1782,26 +1785,28 @@ tailwind.config = {
         </article>
       </li>
 
-      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3">
+      <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="h-6 w-auto" data-inhoud-alt="cases.kaart_5.bedrijf"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.kaart_5.voordeel">7× sneller</p>
-            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.kaart_5.cijfers">
+            <span class="case-logo"><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="cases.items.5.logo" data-inhoud-alt="cases.items.5.bedrijf" data-inhoud-style="height:{cases.items.5.logo_hoogte}px"></span>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.5.voordeel">7× sneller</p>
+            <ul class="mt-4 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.5.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">6.214 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.kaart_5.sector">Mediagroep</p>
+            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.5.sector">Mediagroep</p>
           </div>
           <div class="case-slot">
+            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.5.nota" data-inhoud="cases.items.5.nota"><b>TODO — nodig van klant</b>: deze kaart heeft een open punt</span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
-              <a href="#cases-open" class="caselink" data-cta="case-pdf-dpg" data-inhoud-href="cases.kaart_5.downloadlink">
+              <a href="#cases-open" class="caselink" data-cta="case-pdf-dpg-media" data-inhoud-data-cta="case-pdf-{slug:cases.items.5.bedrijf}" data-inhoud-href="cases.items.5.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
           </div>
         </article>
       </li>
+    <!-- HERHAAL:cases.items:EINDE -->
     </ul>
 
     <!-- HET VEEGTEKEN, NIEUW OP 2026-10-08.
@@ -1867,22 +1872,39 @@ tailwind.config = {
         <div class="sc-cue">
           <span class="text-caption on-dark-soft" data-inhoud="rondleiding.scrollhint">Scroll verder</span>
           <div class="sc-bars" role="group" aria-label="Spring naar een stap">
+            <!-- HERHAAL:rondleiding.stappen:BEGIN — één springknop per stap, gegenereerd. -->
             <button type="button" class="sc-bar" data-scrolly-jump="0" aria-current="true"
                     aria-label="Ga naar stap 1: Hr houdt realtime het overzicht"
-                    data-inhoud-aria-label="Ga naar stap 1: {rondleiding.stap1_titel}"
-                    data-cta="rondleiding-stap-1"><span aria-hidden="true"></span></button>
+                    data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.1.titel}: {rondleiding.stappen.1.titel}"
+                    data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.1.titel}"
+                    data-inhoud-aria-current="{eerste:rondleiding.stappen.1.titel}"
+                    data-cta="rondleiding-stap-1"
+                    data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.1.titel}"><span aria-hidden="true"></span></button>
+
             <button type="button" class="sc-bar" data-scrolly-jump="1" aria-current="false"
                     aria-label="Ga naar stap 2: Managers beslissen onderbouwd"
-                    data-inhoud-aria-label="Ga naar stap 2: {rondleiding.stap2_titel}"
-                    data-cta="rondleiding-stap-2"><span aria-hidden="true"></span></button>
+                    data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.2.titel}: {rondleiding.stappen.2.titel}"
+                    data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.2.titel}"
+                    data-inhoud-aria-current="{eerste:rondleiding.stappen.2.titel}"
+                    data-cta="rondleiding-stap-2"
+                    data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.2.titel}"><span aria-hidden="true"></span></button>
+
             <button type="button" class="sc-bar" data-scrolly-jump="2" aria-current="false"
                     aria-label="Ga naar stap 3: Elk budget blijft onder controle"
-                    data-inhoud-aria-label="Ga naar stap 3: {rondleiding.stap3_titel}"
-                    data-cta="rondleiding-stap-3"><span aria-hidden="true"></span></button>
+                    data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.3.titel}: {rondleiding.stappen.3.titel}"
+                    data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.3.titel}"
+                    data-inhoud-aria-current="{eerste:rondleiding.stappen.3.titel}"
+                    data-cta="rondleiding-stap-3"
+                    data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.3.titel}"><span aria-hidden="true"></span></button>
+
             <button type="button" class="sc-bar" data-scrolly-jump="3" aria-current="false"
                     aria-label="Ga naar stap 4: Rewardletters in één klik"
-                    data-inhoud-aria-label="Ga naar stap 4: {rondleiding.stap4_titel}"
-                    data-cta="rondleiding-stap-4"><span aria-hidden="true"></span></button>
+                    data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.4.titel}: {rondleiding.stappen.4.titel}"
+                    data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.4.titel}"
+                    data-inhoud-aria-current="{eerste:rondleiding.stappen.4.titel}"
+                    data-cta="rondleiding-stap-4"
+                    data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.4.titel}"><span aria-hidden="true"></span></button>
+            <!-- HERHAAL:rondleiding.stappen:EINDE -->
           </div>
         </div>
         <div class="sc-stage" data-scrolly-stage></div>
@@ -1890,16 +1912,27 @@ tailwind.config = {
 
       <div class="scrolly-steps">
 
-        <article class="sc-step is-actief" data-scrolly-step>
+        <!-- HERHAAL:rondleiding.stappen:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs.
+             De EERSTE <article> is de vorm van een stap; de stappen eronder zijn kopieën, dus
+             met de hand aanpassen heeft alleen zin in de eerste.
+
+             DE NAGETEKENDE SCHERMEN WORDEN VERPLAATST, NOOIT GEGENEREERD. Elke stap noemt in
+             content/pagina.yml het scherm waar ze bij hoort (data-scherm="overzicht"), en de
+             bouw zet die tekening erin zoals ze is. Hun cijfers sluiten op elkaar aan over de
+             vier schermen heen — 8+12+9+9 van 50 is 76% — dus is er geen vijfde stap te maken
+             zonder dat iemand een vijfde scherm tekent. Een scherm waar geen stap meer bij
+             hoort, blijft hieronder geparkeerd tussen commentaartekens staan in plaats van te
+             verdwijnen: anders is "een stap weghalen" een onherstelbare handeling. -->
+        <article class="sc-step is-actief" data-scrolly-step data-herhaal-eerste="is-actief">
           <span class="sc-mark" aria-hidden="true"></span>
-          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">01</p>
-          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stap1_titel">Hr houdt realtime het overzicht</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stap1_tekst">Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.</p>
-          <figure class="panel m-0 mt-6" data-scrolly-slide>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true" data-herhaal-nr="2">01</p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.1.titel">Hr houdt realtime het overzicht</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.1.tekst">Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.</p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="overzicht" data-herhaal-scherm="rondleiding.stappen.1.scherm">
             <div class="panel-bar">
               <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
               <span class="miniheader">Cyclusoverzicht voor hr</span>
-              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular">1 / 4</span>
+              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>1 / 4</span>
             </div>
             <!-- NAGETEKEND, GEEN SCHERMAFDRUK.
                  Het bestaande hero-scherm van youbo.io (main-visual-nl.webp) stond hier, en
@@ -1967,170 +2000,167 @@ tailwind.config = {
           </figure>
         </article>
 
-        <article class="sc-step" data-scrolly-step>
+        <article class="sc-step" data-scrolly-step data-herhaal-eerste="is-actief">
           <span class="sc-mark" aria-hidden="true"></span>
-          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">02</p>
-          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stap2_titel">Managers beslissen onderbouwd</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stap2_tekst">Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele situaties of vergelijk medewerkers.</p>
-          <figure class="panel m-0 mt-6" data-scrolly-slide>
-            <div class="panel-bar">
-              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
-              <span class="miniheader">Medewerkers vergelijken</span>
-              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular">2 / 4</span>
-            </div>
-            <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
-                 in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
-            <div class="sc-shot">
-              <svg viewBox="0 0 1200 600" class="block h-auto w-full" role="img"
-                   aria-label="Twee medewerkers naast elkaar. Lore Janssens gaat van 4.180 euro naar 4.284 euro en 50 cent, een verschil van 104 euro en 50 cent of 2,5 procent, met een bonus van 8 procent. Tom Verlinden gaat van 3.950 euro naar 4.076 euro en 40 cent, een verschil van 126 euro en 40 cent of 3,2 procent, met een bonus van 7 procent en een promotie."
-                   style="font-family: Inter, system-ui, sans-serif">
-                <rect width="1200" height="600" fill="#ffffff"/>
-                <rect x="40" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="72" y="84" font-size="26" font-weight="700" fill="#0a3327">Lore Janssens</text>
-                <text x="72" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 6 jaar in dienst</text>
-                <line x1="72" y1="146" x2="553" y2="146" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="72" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
-                <text x="553" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.180,00</text>
-                <line x1="72" y1="218" x2="553" y2="218" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="72" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
-                <text x="553" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.284,50</text>
-                <line x1="72" y1="276" x2="553" y2="276" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="72" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
-                <text x="553" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 104,50</text>
-                <line x1="72" y1="334" x2="553" y2="334" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="72" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
-                <text x="553" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 2,5%</text>
-                <line x1="72" y1="392" x2="553" y2="392" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="72" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 8%</text>
-                <text x="553" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.012,80</text>
-                <line x1="72" y1="450" x2="553" y2="450" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="72" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
-                <text x="553" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Nee</text>
-                <rect x="615" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="647" y="84" font-size="26" font-weight="700" fill="#0a3327">Tom Verlinden</text>
-                <text x="647" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 3 jaar in dienst</text>
-                <line x1="647" y1="146" x2="1128" y2="146" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="647" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
-                <text x="1128" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.950,00</text>
-                <line x1="647" y1="218" x2="1128" y2="218" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="647" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
-                <text x="1128" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.076,40</text>
-                <line x1="647" y1="276" x2="1128" y2="276" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="647" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
-                <text x="1128" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 126,40</text>
-                <line x1="647" y1="334" x2="1128" y2="334" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="647" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
-                <text x="1128" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 3,2%</text>
-                <line x1="647" y1="392" x2="1128" y2="392" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="647" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 7%</text>
-                <text x="1128" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.318,00</text>
-                <line x1="647" y1="450" x2="1128" y2="450" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="647" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
-                <text x="1128" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Ja</text>
-              </svg>
-            </div>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true" data-herhaal-nr="2">02</p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.2.titel">Managers beslissen onderbouwd</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.2.tekst">Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele situaties of vergelijk medewerkers.</p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="vergelijken" data-herhaal-scherm="rondleiding.stappen.2.scherm">
+        <div class="panel-bar">
+          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+          <span class="miniheader">Medewerkers vergelijken</span>
+          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>2 / 4</span>
+        </div>
+        <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
+             in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
+        <div class="sc-shot">
+          <svg viewBox="0 0 1200 600" class="block h-auto w-full" role="img"
+               aria-label="Twee medewerkers naast elkaar. Lore Janssens gaat van 4.180 euro naar 4.284 euro en 50 cent, een verschil van 104 euro en 50 cent of 2,5 procent, met een bonus van 8 procent. Tom Verlinden gaat van 3.950 euro naar 4.076 euro en 40 cent, een verschil van 126 euro en 40 cent of 3,2 procent, met een bonus van 7 procent en een promotie."
+               style="font-family: Inter, system-ui, sans-serif">
+            <rect width="1200" height="600" fill="#ffffff"/>
+            <rect x="40" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="84" font-size="26" font-weight="700" fill="#0a3327">Lore Janssens</text>
+            <text x="72" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 6 jaar in dienst</text>
+            <line x1="72" y1="146" x2="553" y2="146" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
+            <text x="553" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.180,00</text>
+            <line x1="72" y1="218" x2="553" y2="218" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
+            <text x="553" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.284,50</text>
+            <line x1="72" y1="276" x2="553" y2="276" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
+            <text x="553" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 104,50</text>
+            <line x1="72" y1="334" x2="553" y2="334" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
+            <text x="553" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 2,5%</text>
+            <line x1="72" y1="392" x2="553" y2="392" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 8%</text>
+            <text x="553" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.012,80</text>
+            <line x1="72" y1="450" x2="553" y2="450" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
+            <text x="553" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Nee</text>
+            <rect x="615" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="84" font-size="26" font-weight="700" fill="#0a3327">Tom Verlinden</text>
+            <text x="647" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 3 jaar in dienst</text>
+            <line x1="647" y1="146" x2="1128" y2="146" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
+            <text x="1128" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.950,00</text>
+            <line x1="647" y1="218" x2="1128" y2="218" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
+            <text x="1128" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.076,40</text>
+            <line x1="647" y1="276" x2="1128" y2="276" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
+            <text x="1128" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 126,40</text>
+            <line x1="647" y1="334" x2="1128" y2="334" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
+            <text x="1128" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 3,2%</text>
+            <line x1="647" y1="392" x2="1128" y2="392" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 7%</text>
+            <text x="1128" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.318,00</text>
+            <line x1="647" y1="450" x2="1128" y2="450" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
+            <text x="1128" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Ja</text>
+          </svg>
+        </div>
           </figure>
         </article>
 
-        <article class="sc-step" data-scrolly-step>
+        <article class="sc-step" data-scrolly-step data-herhaal-eerste="is-actief">
           <span class="sc-mark" aria-hidden="true"></span>
-          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">03</p>
-          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stap3_titel">Elk budget blijft onder controle</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stap3_tekst">Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.</p>
-          <figure class="panel m-0 mt-6" data-scrolly-slide>
-            <div class="panel-bar">
-              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
-              <span class="miniheader">Budget per soort</span>
-              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular">3 / 4</span>
-            </div>
-            <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
-                 in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
-            <div class="sc-shot">
-              <svg viewBox="0 0 1200 640" class="block h-auto w-full" role="img"
-                   aria-label="Budget per soort: loonsverhoging 82 procent, 75.440 euro van 92.000 euro. Bonus 74 procent, 43.105 euro van 58.250 euro. Promotie 61 procent, 20.740 euro van 34.000 euro. Samen 139.285 euro van 184.250 euro, oftewel 75,6 procent."
-                   style="font-family: Inter, system-ui, sans-serif">
-                <rect width="1200" height="640" fill="#ffffff"/>
-                <text x="40" y="52" font-size="21" font-weight="700" fill="#547068" letter-spacing="1.6">BUDGET PER SOORT · MERIT CYCLE 2027</text>
-                <text x="40" y="96" font-size="25" font-weight="700" fill="#0a3327">Loonsverhoging</text>
-                <text x="1160" y="96" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">82%</text>
-                <rect x="40" y="118" width="1120" height="18" rx="9" fill="#f6f8fa"/>
-                <rect x="40" y="118" width="918" height="18" rx="9" fill="#0af29f"/>
-                <text x="40" y="174" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 75.440 toegekend van € 92.000</text>
-                <text x="40" y="244" font-size="25" font-weight="700" fill="#0a3327">Bonus</text>
-                <text x="1160" y="244" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">74%</text>
-                <rect x="40" y="266" width="1120" height="18" rx="9" fill="#f6f8fa"/>
-                <rect x="40" y="266" width="829" height="18" rx="9" fill="#0af29f"/>
-                <text x="40" y="322" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 43.105 toegekend van € 58.250</text>
-                <text x="40" y="392" font-size="25" font-weight="700" fill="#0a3327">Promotie</text>
-                <text x="1160" y="392" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">61%</text>
-                <rect x="40" y="414" width="1120" height="18" rx="9" fill="#f6f8fa"/>
-                <rect x="40" y="414" width="683" height="18" rx="9" fill="#0af29f"/>
-                <text x="40" y="470" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 20.740 toegekend van € 34.000</text>
-                <line x1="40" y1="498" x2="1160" y2="498" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="40" y="544" font-size="25" font-weight="700" fill="#0a3327">Samen</text>
-                <text x="1160" y="544" font-size="25" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 139.285 van € 184.250 · 75,6%</text>
-              </svg>
-            </div>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true" data-herhaal-nr="2">03</p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.3.titel">Elk budget blijft onder controle</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.3.tekst">Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.</p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="budget" data-herhaal-scherm="rondleiding.stappen.3.scherm">
+        <div class="panel-bar">
+          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+          <span class="miniheader">Budget per soort</span>
+          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>3 / 4</span>
+        </div>
+        <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
+             in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
+        <div class="sc-shot">
+          <svg viewBox="0 0 1200 640" class="block h-auto w-full" role="img"
+               aria-label="Budget per soort: loonsverhoging 82 procent, 75.440 euro van 92.000 euro. Bonus 74 procent, 43.105 euro van 58.250 euro. Promotie 61 procent, 20.740 euro van 34.000 euro. Samen 139.285 euro van 184.250 euro, oftewel 75,6 procent."
+               style="font-family: Inter, system-ui, sans-serif">
+            <rect width="1200" height="640" fill="#ffffff"/>
+            <text x="40" y="52" font-size="21" font-weight="700" fill="#547068" letter-spacing="1.6">BUDGET PER SOORT · MERIT CYCLE 2027</text>
+            <text x="40" y="96" font-size="25" font-weight="700" fill="#0a3327">Loonsverhoging</text>
+            <text x="1160" y="96" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">82%</text>
+            <rect x="40" y="118" width="1120" height="18" rx="9" fill="#f6f8fa"/>
+            <rect x="40" y="118" width="918" height="18" rx="9" fill="#0af29f"/>
+            <text x="40" y="174" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 75.440 toegekend van € 92.000</text>
+            <text x="40" y="244" font-size="25" font-weight="700" fill="#0a3327">Bonus</text>
+            <text x="1160" y="244" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">74%</text>
+            <rect x="40" y="266" width="1120" height="18" rx="9" fill="#f6f8fa"/>
+            <rect x="40" y="266" width="829" height="18" rx="9" fill="#0af29f"/>
+            <text x="40" y="322" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 43.105 toegekend van € 58.250</text>
+            <text x="40" y="392" font-size="25" font-weight="700" fill="#0a3327">Promotie</text>
+            <text x="1160" y="392" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">61%</text>
+            <rect x="40" y="414" width="1120" height="18" rx="9" fill="#f6f8fa"/>
+            <rect x="40" y="414" width="683" height="18" rx="9" fill="#0af29f"/>
+            <text x="40" y="470" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 20.740 toegekend van € 34.000</text>
+            <line x1="40" y1="498" x2="1160" y2="498" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="40" y="544" font-size="25" font-weight="700" fill="#0a3327">Samen</text>
+            <text x="1160" y="544" font-size="25" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 139.285 van € 184.250 · 75,6%</text>
+          </svg>
+        </div>
           </figure>
         </article>
 
-        <article class="sc-step" data-scrolly-step>
+        <article class="sc-step" data-scrolly-step data-herhaal-eerste="is-actief">
           <span class="sc-mark" aria-hidden="true"></span>
-          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true">04</p>
-          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stap4_titel">Rewardletters in één klik</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stap4_tekst">Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.</p>
-          <figure class="panel m-0 mt-6" data-scrolly-slide>
-            <div class="panel-bar">
-              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
-              <span class="miniheader">Loonpakket oud, nieuw en verschil</span>
-              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular">4 / 4</span>
-            </div>
-            <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
-                 in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
-            <div class="sc-shot">
-              <svg viewBox="0 0 1200 600" class="block h-auto w-full" role="img"
-                   aria-label="Rewardletter voor Lore Janssens. Brutoloon per maand gaat van 4.180 euro naar 4.284 euro en 50 cent, 104 euro en 50 cent meer. De jaarbonus gaat van 3.700 euro naar 4.012 euro en 80 cent, 312 euro en 80 cent meer. Maaltijdcheques blijven 8 euro per dag. Het totale brutoloon per jaar gaat van 53.860 euro naar 55.426 euro en 80 cent, 1.566 euro en 80 cent meer."
-                   style="font-family: Inter, system-ui, sans-serif">
-                <rect width="1200" height="600" fill="#ffffff"/>
-                <text x="40" y="56" font-size="28" font-weight="700" fill="#0a3327">Lore Janssens</text>
-                <text x="40" y="90" font-size="21" font-weight="500" fill="#547068">Operations · rewardletter, klaar om te versturen</text>
-                <line x1="40" y1="124" x2="1160" y2="124" stroke="#e1ebf0" stroke-width="2"/>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true" data-herhaal-nr="2">04</p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.4.titel">Rewardletters in één klik</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.4.tekst">Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.</p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="rewardletter" data-herhaal-scherm="rondleiding.stappen.4.scherm">
+        <div class="panel-bar">
+          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+          <span class="miniheader">Loonpakket oud, nieuw en verschil</span>
+          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>4 / 4</span>
+        </div>
+        <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
+             in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
+        <div class="sc-shot">
+          <svg viewBox="0 0 1200 600" class="block h-auto w-full" role="img"
+               aria-label="Rewardletter voor Lore Janssens. Brutoloon per maand gaat van 4.180 euro naar 4.284 euro en 50 cent, 104 euro en 50 cent meer. De jaarbonus gaat van 3.700 euro naar 4.012 euro en 80 cent, 312 euro en 80 cent meer. Maaltijdcheques blijven 8 euro per dag. Het totale brutoloon per jaar gaat van 53.860 euro naar 55.426 euro en 80 cent, 1.566 euro en 80 cent meer."
+               style="font-family: Inter, system-ui, sans-serif">
+            <rect width="1200" height="600" fill="#ffffff"/>
+            <text x="40" y="56" font-size="28" font-weight="700" fill="#0a3327">Lore Janssens</text>
+            <text x="40" y="90" font-size="21" font-weight="500" fill="#547068">Operations · rewardletter, klaar om te versturen</text>
+            <line x1="40" y1="124" x2="1160" y2="124" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40"   y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6">ONDERDEEL</text>
-                <text x="720"  y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">VANDAAG</text>
-                <text x="950"  y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">VANAF 1 APRIL</text>
-                <text x="1160" y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">VERSCHIL</text>
-                <line x1="40" y1="190" x2="1160" y2="190" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="40" y="232" font-size="24" font-weight="500" fill="#0a3327">Brutoloon / maand</text>
-                <text x="720" y="232" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.180,00</text>
-                <text x="950" y="232" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.284,50</text>
-                <text x="1160" y="232" font-size="24" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 104,50</text>
-                <line x1="40" y1="260" x2="1160" y2="260" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="40" y="306" font-size="24" font-weight="500" fill="#0a3327">Bonus (jaar)</text>
-                <text x="720" y="306" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.700,00</text>
-                <text x="950" y="306" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.012,80</text>
-                <text x="1160" y="306" font-size="24" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 312,80</text>
-                <line x1="40" y1="334" x2="1160" y2="334" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="40" y="380" font-size="24" font-weight="500" fill="#0a3327">Maaltijdcheques</text>
-                <text x="720" y="380" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 8,00 / dag</text>
-                <text x="950" y="380" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 8,00 / dag</text>
-                <text x="1160" y="380" font-size="24" font-weight="700" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">ongewijzigd</text>
-                <line x1="40" y1="408" x2="1160" y2="408" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="40"   y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6">ONDERDEEL</text>
+            <text x="720"  y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">VANDAAG</text>
+            <text x="950"  y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">VANAF 1 APRIL</text>
+            <text x="1160" y="172" font-size="20" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">VERSCHIL</text>
+            <line x1="40" y1="190" x2="1160" y2="190" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="40" y="232" font-size="24" font-weight="500" fill="#0a3327">Brutoloon / maand</text>
+            <text x="720" y="232" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.180,00</text>
+            <text x="950" y="232" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.284,50</text>
+            <text x="1160" y="232" font-size="24" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 104,50</text>
+            <line x1="40" y1="260" x2="1160" y2="260" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="40" y="306" font-size="24" font-weight="500" fill="#0a3327">Bonus (jaar)</text>
+            <text x="720" y="306" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.700,00</text>
+            <text x="950" y="306" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.012,80</text>
+            <text x="1160" y="306" font-size="24" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 312,80</text>
+            <line x1="40" y1="334" x2="1160" y2="334" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="40" y="380" font-size="24" font-weight="500" fill="#0a3327">Maaltijdcheques</text>
+            <text x="720" y="380" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 8,00 / dag</text>
+            <text x="950" y="380" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 8,00 / dag</text>
+            <text x="1160" y="380" font-size="24" font-weight="700" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">ongewijzigd</text>
+            <line x1="40" y1="408" x2="1160" y2="408" stroke="#e1ebf0" stroke-width="2"/>
 
-                <rect x="40" y="440" width="1120" height="64" rx="8" fill="#f6f8fa"/>
-                <text x="72"  y="480" font-size="24" font-weight="700" fill="#0a3327">Totaal bruto / jaar</text>
-                <text x="720" y="480" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 53.860,00</text>
-                <text x="950" y="480" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 55.426,80</text>
-                <text x="1128" y="480" font-size="24" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 1.566,80</text>
-              </svg>
-            </div>
+            <rect x="40" y="440" width="1120" height="64" rx="8" fill="#f6f8fa"/>
+            <text x="72"  y="480" font-size="24" font-weight="700" fill="#0a3327">Totaal bruto / jaar</text>
+            <text x="720" y="480" font-size="24" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 53.860,00</text>
+            <text x="950" y="480" font-size="24" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 55.426,80</text>
+            <text x="1128" y="480" font-size="24" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 1.566,80</text>
+          </svg>
+        </div>
           </figure>
         </article>
+        <!-- HERHAAL:rondleiding.stappen:EINDE -->
 
-        <!-- Jana ziet deze knop op desktop "plots tussen" staan; daar vangt de vaste
-             band onderaan die behoefte op. Op telefoon blijft hij staan: daar is de
-             rondleiding een lange stapel en is het einde ervan een natuurlijk
-             beslismoment. lg:hidden en niet weggelaten, dus. -->
         <a href="#demo" class="btn-primary mt-8 w-full sm:w-auto lg:hidden" data-cta="rondleiding-boek-demo" data-inhoud="rondleiding.knop">Boek een demo</a>
       </div>
     </div>
@@ -2413,96 +2443,92 @@ tailwind.config = {
         class="scrollhide mt-10 flex snap-x snap-mandatory gap-4 md:gap-6 overflow-x-auto
                list-none p-0 m-0 -mx-6 px-6 scroll-pl-6 md:mx-0 md:px-0 md:scroll-pl-0 pb-2"
         data-reveal>
+    <!-- HERHAAL:quotes.items:BEGIN — gegenereerd uit content/klanten.yml door build-inhoud.mjs.
+         De EERSTE <li> is de vorm van een quotekaart; de kaarten eronder zijn kopieën, dus met
+         de hand aanpassen heeft alleen zin in de eerste.
 
-      <!-- Pieter-Jan Boden — foto aanwezig -->
+         De drie notities die hier per kaart stonden, staan nu boven dit blok: ze gingen over
+         welk logobestand en welk portret er bestaat, en dat is nu een veld. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-5 w-auto self-start" data-inhoud-alt="quotes.quote_1.bedrijf">
-          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_1.tekst">“Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”</blockquote>
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:20px" data-inhoud-src="quotes.items.1.logo" data-inhoud-alt="quotes.items.1.bedrijf" data-inhoud-style="height:{quotes.items.1.logo_hoogte}px">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.1.tekst">“Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/pieter-jan.webp" width="56" height="56" loading="lazy" decoding="async"
                  alt="Pieter-Jan Boden" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
-                 data-inhoud-src="quotes.quote_1.foto" data-inhoud-alt="quotes.quote_1.naam">
+                 data-inhoud-src="quotes.items.1.foto" data-inhoud-alt="quotes.items.1.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_1.naam">Pieter-Jan Boden</span>
-              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_1.functie">People director</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.1.naam">Pieter-Jan Boden</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.1.functie">People director</span>
             </span>
           </figcaption>
         </figure>
       </li>
 
-      <!-- Bart Verhoeven — foto aangeleverd op 2026-10-06. Niet te verwarren met
-           Bart De Nil: deze Bart is klant bij Kaneka, de andere gaf vroeger de
-           demo's en staat met bart_de_nil.webp ongebruikt in assets/img/. Nooit
-           dezelfde foto of naam voor die twee. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="h-4 w-auto self-start" data-inhoud-alt="quotes.quote_2.bedrijf">
-          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_2.tekst">“Toen ik een demo zag, wist ik: hier hebben we op gewacht.”</blockquote>
+          <img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="w-auto self-start" style="height:16px" data-inhoud-src="quotes.items.2.logo" data-inhoud-alt="quotes.items.2.bedrijf" data-inhoud-style="height:{quotes.items.2.logo_hoogte}px">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.2.tekst">“Toen ik een demo zag, wist ik: hier hebben we op gewacht.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/bart-verhoeven.webp" width="56" height="56" loading="lazy" decoding="async"
                  alt="Bart Verhoeven" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
-                 data-inhoud-src="quotes.quote_2.foto" data-inhoud-alt="quotes.quote_2.naam">
+                 data-inhoud-src="quotes.items.2.foto" data-inhoud-alt="quotes.items.2.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_2.naam">Bart Verhoeven</span>
-              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_2.functie">Hr manager</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.2.naam">Bart Verhoeven</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.2.functie">Hr manager</span>
             </span>
           </figcaption>
         </figure>
       </li>
 
-      <!-- Mieke Catthoor — foto aanwezig -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/dpg-logo.svg" alt="DPG Media" class="h-5 w-auto self-start" data-inhoud-alt="quotes.quote_3.bedrijf">
-          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_3.tekst">“Youbo helpt om de loonkloof weg te werken.”</blockquote>
+          <img src="assets/img/dpg-logo.svg" alt="DPG Media" class="w-auto self-start" style="height:20px" data-inhoud-src="quotes.items.3.logo" data-inhoud-alt="quotes.items.3.bedrijf" data-inhoud-style="height:{quotes.items.3.logo_hoogte}px">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.3.tekst">“Youbo helpt om de loonkloof weg te werken.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/mieke-catthoor.webp" width="56" height="56" loading="lazy" decoding="async"
                  alt="Mieke Catthoor" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
-                 data-inhoud-src="quotes.quote_3.foto" data-inhoud-alt="quotes.quote_3.naam">
+                 data-inhoud-src="quotes.items.3.foto" data-inhoud-alt="quotes.items.3.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_3.naam">Mieke Catthoor</span>
-              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_3.functie">Compensation &amp; benefits</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.3.naam">Mieke Catthoor</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.3.functie">Compensation &amp; benefits</span>
             </span>
           </figcaption>
         </figure>
       </li>
 
-      <!-- Joris Valkenborgh — foto aangeleverd op 2026-10-06 -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="h-5 w-auto self-start" data-inhoud-alt="quotes.quote_4.bedrijf">
-          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_4.tekst">“Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu betere inhoudelijke gesprekken met mijn team.”</blockquote>
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:20px" data-inhoud-src="quotes.items.4.logo" data-inhoud-alt="quotes.items.4.bedrijf" data-inhoud-style="height:{quotes.items.4.logo_hoogte}px">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.4.tekst">“Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu betere inhoudelijke gesprekken met mijn team.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/joris-valkenborgh.webp" width="56" height="56" loading="lazy" decoding="async"
                  alt="Joris Valkenborgh" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
-                 data-inhoud-src="quotes.quote_4.foto" data-inhoud-alt="quotes.quote_4.naam">
+                 data-inhoud-src="quotes.items.4.foto" data-inhoud-alt="quotes.items.4.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_4.naam">Joris Valkenborgh</span>
-              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_4.functie">Team manager</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.4.naam">Joris Valkenborgh</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.4.functie">Team manager</span>
             </span>
           </figcaption>
         </figure>
       </li>
 
-      <!-- Evi Van der Vliet — foto aangeleverd op 2026-10-06, logo op 2026-10-08.
-           Hetzelfde mint-groene bestand als op licht: op deze band staat het op
-           bijna zwart en dat is precies waar mint het best leest. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/anchr-logo.webp" width="214" height="65" alt="Anchr" class="logo-anchr-quote w-auto self-start" data-inhoud-alt="quotes.quote_5.bedrijf">
-          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.quote_5.tekst">“Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien we de jaarkost en het totale loonpakket van de werknemer.”</blockquote>
+          <img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto self-start" style="height:17px" data-inhoud-src="quotes.items.5.logo" data-inhoud-alt="quotes.items.5.bedrijf" data-inhoud-style="height:{quotes.items.5.logo_hoogte}px">
+          <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.5.tekst">“Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien we de jaarkost en het totale loonpakket van de werknemer.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <img src="assets/img/evi-van-der-vliet.webp" width="56" height="56" loading="lazy" decoding="async"
                  alt="Evi Van der Vliet" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
-                 data-inhoud-src="quotes.quote_5.foto" data-inhoud-alt="quotes.quote_5.naam">
+                 data-inhoud-src="quotes.items.5.foto" data-inhoud-alt="quotes.items.5.naam">
             <span class="min-w-0">
-              <span class="block text-body font-bold on-dark" data-inhoud="quotes.quote_5.naam">Evi Van der Vliet</span>
-              <span class="block text-caption on-dark-soft" data-inhoud="quotes.quote_5.functie">Hr business partner</span>
+              <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.5.naam">Evi Van der Vliet</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.5.functie">Hr business partner</span>
             </span>
           </figcaption>
         </figure>
       </li>
+    <!-- HERHAAL:quotes.items:EINDE -->
     </ul>
 
     <!-- De puntjes zijn ook de telling: vijf puntjes zeggen hoeveel er zijn,

@@ -725,6 +725,18 @@ export function kopie(vorm, { lijst, nr, totaal, velden, span = null, schermen =
   return uit;
 }
 
+/**
+ * De sleutels die de pagina gebruikt zonder dat er een slot voor is: vandaag
+ * alleen `scherm`, dat een tekening kiest in plaats van tekst te plaatsen.
+ * Zonder deze lijst zou de bouw ze als "veld dat nergens staat" weigeren — en
+ * dat is juist de controle die hier moet blijven werken.
+ */
+export function herhaalSleutels(html) {
+  const uit = new Set();
+  for (const m of html.matchAll(/data-herhaal-scherm="([^"]*)"/g)) uit.add(m[1]);
+  return uit;
+}
+
 /** Het aantal logo's in de stylesheet, waar de duur van de marquee het uit leest. */
 export function zetLogoAantal(html, aantal) {
   const begin = '/* LOGO-AANTAL:BEGIN';
@@ -797,11 +809,15 @@ export function herhaal(html, lijsten, velden = null) {
     const fragment = html.slice(stuk.binnenStart, stuk.binnenEinde);
     const vorm = eersteElement(fragment, stuk.lijst);
     const vormTekst = fragment.slice(vorm.start, vorm.einde);
+    // De inspringing van de vorm zelf, en niet die van de markering: zo houdt
+    // elke kopie dezelfde diepte als het stuk HTML dat een mens geschreven
+    // heeft, en verschuift de pagina niet bij elke bouw.
+    const vormDiep = vorm.start - (fragment.lastIndexOf('\n', vorm.start - 1) + 1);
     const schermen = vormTekst.includes('data-herhaal-scherm')
       ? schermenbank(fragment) : null;
     const spans = stuk.lijst === 'cases.items' ? kaartspans(aantal) : null;
 
-    const binnen = ' '.repeat(stuk.inspringing);
+    const binnen = ' '.repeat(vormDiep);
     const kopieen = [];
     for (let nr = 1; nr <= aantal; nr++) {
       kopieen.push(kopie(vormTekst, {
@@ -832,7 +848,7 @@ export function herhaal(html, lijsten, velden = null) {
       }
     }
 
-    const nieuw = `\n${binnen}  ${kopieen.join(`\n\n${binnen}  `)}\n${binnen}`;
+    const nieuw = `\n${binnen}${kopieen.join(`\n\n${binnen}`)}\n${' '.repeat(stuk.inspringing)}`;
     html = vervang(html, stuk.binnenStart, stuk.binnenEinde, nieuw);
   }
 
