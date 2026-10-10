@@ -74,9 +74,9 @@ import { readFileSync, writeFileSync, existsSync, realpathSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { leesYaml, vlak, YamlFout } from './lees-yaml.js';
+import { leesYaml, vlak, vlakLijsten, YamlFout } from './lees-yaml.js';
 import {
-  bezwaren, InhoudFout, sleutelsVan, vindSlots, voegIn,
+  bezwaren, herhaal, InhoudFout, sleutelsVan, vindSlots, voegIn,
 } from './inhoud-opmaak.js';
 
 // vindSlots stond hier tot 2026-10-09 en staat nu in inhoud-opmaak.js, samen
@@ -110,6 +110,7 @@ function stop(bericht) {
 export function leesBronnen(map = join(hier, 'content')) {
   const velden = new Map();
   const herkomst = new Map();
+  const lijsten = new Map();
   for (const naam of BRONNEN) {
     const pad = join(map, naam);
     if (!existsSync(pad)) {
@@ -131,8 +132,9 @@ export function leesBronnen(map = join(hier, 'content')) {
       velden.set(sleutel, waarde);
       herkomst.set(sleutel, naam);
     }
+    for (const [sleutel, aantal] of vlakLijsten(groep)) lijsten.set(sleutel, aantal);
   }
-  return { velden, herkomst };
+  return { velden, herkomst, lijsten };
 }
 
 export function keurBronnen(velden) {
@@ -188,12 +190,19 @@ export function bouwInhoud(opties = {}) {
 }
 
 function bouwenEcht({ check = false, proef = false } = {}) {
-  const { velden } = leesBronnen();
+  const { velden, lijsten } = leesBronnen();
   keurBronnen(velden);
 
   if (!existsSync(PAGINA)) stop('draft-r3-01-definitief.html ontbreekt');
   const was = readFileSync(PAGINA, 'utf8');
-  const slots = vindSlots(was);
+
+  // Eerst de lijsten uitklappen, dan de velden invullen. In die volgorde, want
+  // de slots van kaart 4 bestaan pas nadat kaart 4 er staat. De grenzen per
+  // lijst zitten in herhaal(): een zesde quote stopt de bouw hier, niet
+  // halverwege een pagina die al half geschreven is.
+  const uitgeklapt = herhaal(was, lijsten, velden);
+
+  const slots = vindSlots(uitgeklapt);
   if (!slots.length) {
     stop('geen enkel data-inhoud-attribuut in draft-r3-01-definitief.html — ' +
          'dan zet deze bouwstap niets in de pagina en zou ze stil niets doen');
@@ -216,11 +225,13 @@ function bouwenEcht({ check = false, proef = false } = {}) {
          'ergens terechtkomt — dat is erger dan geen veld.');
   }
 
-  const wordt = voegIn(was, slots, velden, { bestaat });
+  const wordt = voegIn(uitgeklapt, slots, velden, { bestaat });
 
   const tekstslots = slots.filter((s) => s.soort === 'tekst').length;
+  const lijstTelling = [...lijsten].map(([l, n]) => `${l.split('.')[0]} ${n}`).join(', ');
   const samenvatting = `${velden.size} veld(en) uit ${BRONNEN.length} bestanden · ` +
-                       `${tekstslots} stuk(ken) tekst en ${slots.length - tekstslots} attribu(u)t(en) in de pagina`;
+                       `${tekstslots} stuk(ken) tekst en ${slots.length - tekstslots} attribu(u)t(en) in de pagina` +
+                       (lijstTelling ? ` · lijsten: ${lijstTelling}` : '');
 
   if (check) {
     if (wordt !== was) {

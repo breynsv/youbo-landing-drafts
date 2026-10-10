@@ -73,6 +73,124 @@ export function cijferlijstHtml(lijst, inspringing = 12) {
          '\n' + ' '.repeat(inspringing);
 }
 
+/* =========================================================== DE LIJSTEN ====
+   DE GRENZEN, EN WAAR ELK GETAL VANDAAN KOMT
+   ----------------------------------------------------------------------------
+   Vier blokken van de pagina zijn sinds 2026-10-10 echte lijsten: Jana kan er
+   een item bij zetten, een weghalen en de volgorde veranderen. Maar de pagina
+   rekent op aantallen, en een zesde quote of een tiende logo breekt de
+   indeling STIL — groene bouw, scheve pagina. Dus heeft elke lijst een
+   ondergrens en een bovengrens, en die staan hier, in het bestand dat de bouw
+   én het voorbeeldvenster lezen.
+
+   Geen van deze acht getallen is aangenomen. Ze zijn gemeten in een eigen
+   headless Chromium door het aantal items te variëren en te kijken wat er
+   werkelijk stuk gaat; wat er gemeten is staat per lijst in `waarom`, en dat
+   is ook de tekst die Jana te zien krijgt wanneer de bouw weigert. Een grens
+   zonder reden is een grens die de volgende lezer weghaalt.
+   ========================================================================== */
+
+export const GRENZEN = {
+  'cases.items': {
+    min: 2,
+    max: 7,
+    naam: 'cases',
+    waarom:
+      'Het raster op desktop is zes kolommen breed: een kaart beslaat er twee (drie op ' +
+      'een rij) of drie (twee op een rij). Met één kaart blijft er 699 van de 1024 ' +
+      'beeldpunten leeg — gemeten op 1440px. En onder het raster staat op een telefoon ' +
+      'één puntje per kaart van 44 beeldpunten breed: zeven puntjes zijn 308 en passen ' +
+      'in de 312 die een 360px-telefoon binnen de kantlijn overhoudt, acht zijn 352 en ' +
+      'steken aan beide kanten buiten de pagina.',
+  },
+  'quotes.items': {
+    min: 3,
+    max: 7,
+    naam: 'quotes',
+    waarom:
+      'De veegbare rij toont op desktop twee quotes volledig en een derde half — dat ' +
+      'halve kaartje is wat zonder woorden zegt dat er nog volgen. Met twee quotes is de ' +
+      'rij op 1440px nul beeldpunten schuifbaar (gemeten), dus verdwijnt dat teken en ' +
+      'worden de pijlen en de puntjes knoppen die niets doen. Met drie is ze 191 ' +
+      'beeldpunten schuifbaar. De bovengrens is dezelfde puntjesrij als bij de cases: ' +
+      'zeven van 44 passen op een telefoon, acht niet.',
+  },
+  'rondleiding.stappen': {
+    min: 2,
+    max: 4,
+    naam: 'stappen van de rondleiding',
+    waarom:
+      'Elke stap hoort bij één nagetekend productscherm, en die vier schermen zijn ' +
+      'ontwerp: hun cijfers sluiten op elkaar aan over de vier schermen heen. Een vijfde ' +
+      'stap heeft dus geen scherm om te tonen. Je kunt een stap weglaten of de volgorde ' +
+      'veranderen — het scherm gaat mee — maar een stap bijmaken is werk voor een ' +
+      'ontwikkelaar. En met één stap wisselt de meescrollende kaart nooit, dus is het ' +
+      'geen rondleiding meer.',
+  },
+  'logobalk.logos': {
+    min: 6,
+    max: 9,
+    naam: "logo's in de balk",
+    waarom:
+      'De balk mag nooit een complete reeks tegelijk tonen: dan staat er een naam twee ' +
+      'keer in beeld. Gemeten: met vijf logo\'s past een hele reeks in de balk op 1279 en ' +
+      'op 1919 beeldpunten breed. Zes is het eerste aantal dat op elke breedte veilig is. ' +
+      'Aan de bovenkant beslist de stilstaande terugval voor wie "beperk beweging" aan ' +
+      'heeft: op 1024 beeldpunten — de smalste desktop — blijft de rij met negen logo\'s ' +
+      'op één regel (1004 van 1024) en breekt ze bij tien in twee halve regels, wat als ' +
+      'een fout leest.',
+  },
+};
+
+/**
+ * Het bezwaar tegen een lijstlengte, of null. Het voorbeeldvenster toont deze
+ * tekst terwijl Jana bezig is; de bouw weigert ermee. Eén bron, dus kunnen ze
+ * niet uiteenlopen.
+ */
+export function bezwaarTegenLengte(lijst, aantal) {
+  const g = GRENZEN[lijst];
+  if (!g) return null;
+  if (aantal >= g.min && aantal <= g.max) return null;
+  const teveel = aantal > g.max;
+  return `${teveel ? 'Te veel' : 'Te weinig'} ${g.naam}: er ${aantal === 1 ? 'is' : 'zijn'} er ` +
+         `${aantal} en het mogen er ${teveel ? `hoogstens ${g.max}` : `minstens ${g.min}`} zijn.\n` +
+         `        ${g.waarom}`;
+}
+
+/**
+ * Hoe breed elke casekaart in het raster van zes kolommen staat.
+ *
+ * Een rij is pas vol wanneer de spans samen zes zijn, en de twee breedtes die
+ * het ontwerp heeft zijn twee (drie kaarten op een rij) en drie (twee kaarten
+ * op een rij). Zoveel rijen van drie als kan en de rest in rijen van twee —
+ * dat is de verdeling waarin de minste leegte overblijft, en voor vijf kaarten
+ * levert het precies de indeling op die er vandaag staat: drie smalle boven,
+ * twee brede onder.
+ */
+export function kaartspans(aantal) {
+  for (let rijenVanDrie = Math.floor(aantal / 3); rijenVanDrie >= 0; rijenVanDrie--) {
+    const rest = aantal - rijenVanDrie * 3;
+    if (rest % 2 === 0) {
+      return [...Array(rijenVanDrie * 3).fill(2), ...Array(rest).fill(3)];
+    }
+  }
+  return null;   // alleen bij één kaart; de ondergrens houdt dat al tegen
+}
+
+/**
+ * Een naam als stukje adres: "Aertssen Group" → "aertssen-group". Alleen voor
+ * de data-cta-haken van de analytics, die per kaart verschillend moeten zijn —
+ * check-drafts.mjs waarschuwt bij twee gelijke. Hij staat niet op de pagina en
+ * wordt niet voorgelezen.
+ */
+export function slug(tekst) {
+  return tekst
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'item';
+}
+
 /* ------------------------------------------------------------------- keuren --- */
 
 /**
@@ -327,16 +445,363 @@ export function blokkenVoorSleutels(html, slots, hoort) {
   };
 }
 
+/* ======================================================= HERHALEN ==========
+   EEN LIJST UITKLAPPEN IN DE PAGINA
+   ----------------------------------------------------------------------------
+   De cases, de quotes, de stappen en de logo's zijn N keer dezelfde vorm. Daar
+   geldt wat bij de FAQ geldt en bij de negen vaste blokken niet: die vorm ís
+   code. Dus staat er om elk van die stukken een markeringspaar, net als om de
+   FAQ-lijst:
+
+       <!-- HERHAAL:cases.items:BEGIN — … -->
+         <li …>de eerste kaart…</li>
+         <li …>de tweede kaart…</li>
+       <!-- HERHAAL:cases.items:EINDE -->
+
+   WAAROM ER GEEN SJABLOON IN EEN JAVASCRIPT-BESTAND STAAT
+
+   De verleiding is om de vorm van zo'n kaart hierheen te halen, als een stuk
+   HTML in een backtick-string. Dat is wat build-faq.mjs voor de FAQ doet, en
+   voor zes regels tekst is dat in orde. Een casekaart is het niet: ze heeft
+   een logoplek met een gemeten hoogte, een voordeel met een min-height, een
+   cijferopsomming, een voet met een scheidingslijn en een raamwerk van
+   Tailwind-klassen. Verhuist dat naar hier, dan kan de ontwerper er niet meer
+   bij — en dan is het ontwerp van deze pagina voor de helft programmeerwerk
+   geworden.
+
+   Dus is DE EERSTE ITEM IN DE PAGINA ZELF DE VORM. De bouw leest hem, maakt er
+   N van, en zet in elke kopie de dingen recht die per item verschillen. De
+   vorm blijft dus staan waar ze hoort te staan, zichtbaar en aanpasbaar, en
+   wie haar wil wijzigen past de eerste kaart aan. De kopieën eronder worden bij
+   de volgende bouw overschreven — dat staat in de markering, net als bij de
+   FAQ.
+
+   WAT PER KOPIE VERSCHILT, EN HOE DE PAGINA DAT ZELF ZEGT
+
+   Zes kleine kenmerken, en ze blijven in de uitvoer staan zodat de volgende
+   bouw de vorm opnieuw leest:
+
+     data-herhaal-nr="2"        het nummer van dit item als tekst, hier met twee
+                                cijfers: 01, 02, 03
+     data-herhaal-teller        "2 / 4" — het nummer en het totaal
+     data-herhaal-span          de breedte in het raster (lg:col-span-2 of -3),
+                                berekend met kaartspans()
+     data-herhaal-eerste="x y"  deze klassen staan alleen op het eerste item
+     data-herhaal-weg-als-leeg="sleutel"
+                                laat dit element wég wanneer dat veld geen
+                                waarde heeft. Zonder dit zou een casekaart
+                                zonder nota een leeg kader met een stippellijn
+                                tekenen, want .case-todo heeft eigen marges.
+     data-herhaal-scherm="sleutel"
+                                vervang dit element door het nagetekende scherm
+                                dat in dat veld genoemd staat. De schermen
+                                blijven in de pagina staan en worden alleen
+                                verplaatst, nooit gegenereerd.
+   ========================================================================== */
+
+const HERHAAL_BEGIN = /<!--\s*HERHAAL:([A-Za-z_][A-Za-z0-9_.]*):BEGIN(?:[^]*?)-->/g;
+
+// De kenmerken die een sleutel uit content/ dragen. Alleen in deze wordt bij
+// het kopiëren het itemnummer omgezet; in gewone tekst blijft alles staan.
+const SLEUTELKENMERK =
+  /(?:data-inhoud(?:-[a-z][a-z0-9-]*)?|data-herhaal-weg-als-leeg|data-herhaal-scherm)="([^"]*)"/g;
+
+// Het woord waarmee een element dat bij dit item niets te zeggen heeft, tussen
+// commentaartekens staat. Zo blijft het in de pagina leesbaar aanwezig en kan
+// de volgende bouw de vorm weer heel maken.
+const OPTIONEEL = 'HERHAAL-NIETS-TE-ZEGGEN';
+const GEDAAN = 'data-herhaal-gedaan';
+
+/** De gemarkeerde stukken, in paginavolgorde. Dezelfde lijst mag meer dan één
+    stuk markeren — de logobalk draagt drie reeksen van dezelfde logo's. */
+export function vindHerhalingen(html) {
+  const uit = [];
+  HERHAAL_BEGIN.lastIndex = 0;
+  let m;
+  while ((m = HERHAAL_BEGIN.exec(html)) !== null) {
+    const lijst = m[1];
+    const einde = `HERHAAL:${lijst}:EINDE`;
+    const na = m.index + m[0].length;
+    const sluitStart = html.indexOf('<!--', na);
+    let sluit = -1;
+    let zoek = na;
+    while (true) {
+      const kandidaat = html.indexOf('<!--', zoek);
+      if (kandidaat === -1) break;
+      const dicht = html.indexOf('-->', kandidaat);
+      if (dicht === -1) break;
+      if (html.slice(kandidaat, dicht).includes(einde)) { sluit = kandidaat; break; }
+      zoek = dicht + 3;
+    }
+    if (sluit === -1) {
+      stop(`de markering HERHAAL:${lijst}:BEGIN heeft geen bijhorende ` +
+           `HERHAAL:${lijst}:EINDE. Dan weet de bouw niet waar de lijst ophoudt en ` +
+           'zou ze de rest van de pagina overschrijven.');
+    }
+    void sluitStart;
+    uit.push({
+      lijst,
+      binnenStart: na,
+      binnenEinde: sluit,
+      // De inspringing van de regel waarop het sluitcommentaar staat: daarmee
+      // staat een gegenereerd item net zo diep als de HTML eromheen.
+      inspringing: sluit - (html.lastIndexOf('\n', sluit) + 1),
+    });
+  }
+  return uit;
+}
+
+/** Het eerste element in een stuk HTML, met zijn exacte brontekst. */
+function eersteElement(fragment, lijst) {
+  let i = 0;
+  while (i < fragment.length) {
+    const open = fragment.indexOf('<', i);
+    if (open === -1) break;
+    if (fragment.startsWith('<!--', open)) {
+      const dicht = fragment.indexOf('-->', open);
+      if (dicht === -1) break;
+      i = dicht + 3;
+      continue;
+    }
+    const naam = /^<([a-zA-Z][a-zA-Z0-9-]*)/.exec(fragment.slice(open, open + 32));
+    if (!naam) { i = open + 1; continue; }
+    const tag = naam[1].toLowerCase();
+    const tagEinde = eindeStarttag(fragment, open);
+    if (tagEinde === -1) break;
+    if (LEEG.has(tag) || fragment[tagEinde - 1] === '/') {
+      return { tag, start: open, einde: tagEinde + 1 };
+    }
+    const sluit = eindeElement(fragment, tag, tagEinde + 1);
+    if (sluit === -1) break;
+    return { tag, start: open, einde: fragment.indexOf('>', sluit) + 1 };
+  }
+  stop(`tussen HERHAAL:${lijst}:BEGIN en :EINDE staat geen enkel element. Het eerste ` +
+       'element daar is de vorm van één item; zonder dat valt er niets te herhalen.');
+  return null;
+}
+
+/* ---------------------------------------------------------- één kopie recht zetten --- */
+
+/** Het element waarop dit kenmerk staat, binnen een stuk HTML. */
+function elementMet(fragment, kenmerk, vanaf = 0) {
+  const re = new RegExp(`\\s${kenmerk}(?:="([^"]*)")?`);
+  const treffer = re.exec(fragment.slice(vanaf));
+  if (!treffer) return null;
+  const op = vanaf + treffer.index;
+  const tagStart = fragment.lastIndexOf('<', op);
+  const naam = /^<([a-zA-Z][a-zA-Z0-9-]*)/.exec(fragment.slice(tagStart, tagStart + 32));
+  if (!naam) stop(`kan het element van ${kenmerk} niet lezen`);
+  const tag = naam[1].toLowerCase();
+  const tagEinde = eindeStarttag(fragment, tagStart);
+  const leeg = LEEG.has(tag) || fragment[tagEinde - 1] === '/';
+  const sluit = leeg ? -1 : eindeElement(fragment, tag, tagEinde + 1);
+  return {
+    tag, waarde: treffer[1] ?? '', tagStart, tagEinde,
+    binnenStart: leeg ? -1 : tagEinde + 1,
+    binnenEinde: leeg ? -1 : sluit,
+    elementEinde: leeg ? tagEinde + 1 : fragment.indexOf('>', sluit) + 1,
+    kenmerkStart: op,
+    kenmerkEinde: op + treffer[0].length,
+  };
+}
+
+const vervang = (tekst, van, tot, nieuw) => tekst.slice(0, van) + nieuw + tekst.slice(tot);
+
+/** De klasse-waarde van een starttag aanpassen. */
+function metKlassen(fragment, el, bewerk) {
+  const starttag = fragment.slice(el.tagStart, el.tagEinde + 1);
+  const treffer = /\sclass="([^"]*)"/.exec(starttag);
+  if (!treffer) {
+    stop(`het element <${el.tag}> hierboven heeft geen class-attribuut om aan te passen`);
+  }
+  const van = el.tagStart + treffer.index + treffer[0].indexOf('"') + 1;
+  return vervang(fragment, van, van + treffer[1].length, bewerk(treffer[1]));
+}
+
+/**
+ * Eén kopie van de vorm, recht gezet voor item `nr` van `totaal`.
+ *
+ * `velden` is de platte Map; `schermen` is de bank met nagetekende schermen,
+ * die alleen de rondleiding gebruikt. Allebei mogen leeg zijn — het
+ * voorbeeldvenster heeft geen bank nodig zolang het de pagina zelf uitknipt.
+ */
+export function kopie(vorm, { lijst, nr, totaal, velden, span = null, schermen = null }) {
+  // 0 · de vorm weer heel maken. Een element dat bij dit item niets te zeggen
+  //     had, staat in de pagina tussen commentaartekens in plaats van dat het
+  //     verdwenen is — zie stap 6. Dat is wat de vorm overleefbaar maakt: zou
+  //     het écht verdwijnen, dan is het bij de eerste kaart zonder nota voor
+  //     altijd weg, ook voor de kaarten die er wél een hebben.
+  let uit = vorm.replace(
+    new RegExp(`<!--${OPTIONEEL}\\s?([^]*?)\\s?${OPTIONEEL}-->`, 'g'), '$1');
+
+  // 1 · de sleutels: items.1.x wordt items.<nr>.x. Alleen binnen een kenmerk
+  //     dat een sleutel draagt, zodat een "cases.items.1." die ergens in gewone
+  //     tekst zou staan niet stil meeverandert.
+  uit = uit.replace(SLEUTELKENMERK, (heel, waarde) => {
+    const nieuw = waarde.split(`${lijst}.1.`).join(`${lijst}.${nr}.`);
+    return nieuw === waarde ? heel : heel.replace(waarde, nieuw);
+  });
+
+  // 2 · het nummer als tekst (01, 02, …)
+  for (let el = elementMet(uit, 'data-herhaal-nr'); el; el = elementMet(uit, 'data-herhaal-nr', el.elementEinde)) {
+    const cijfers = Number(el.waarde) || 1;
+    uit = vervang(uit, el.binnenStart, el.binnenEinde, String(nr).padStart(cijfers, '0'));
+    break;
+  }
+
+  // 3 · de teller "2 / 4"
+  {
+    const el = elementMet(uit, 'data-herhaal-teller');
+    if (el) uit = vervang(uit, el.binnenStart, el.binnenEinde, `${nr} / ${totaal}`);
+  }
+
+  // 4 · de breedte in het raster
+  if (span !== null) {
+    const el = elementMet(uit, 'data-herhaal-span');
+    if (el) {
+      uit = metKlassen(uit, el, (k) => {
+        if (!/lg:col-span-\d+/.test(k)) {
+          stop('data-herhaal-span staat op een element zonder lg:col-span-… in zijn ' +
+               'klassen. De bouw past een bestaande klasse aan; hij voegt er geen toe.');
+        }
+        return k.replace(/lg:col-span-\d+/, `lg:col-span-${span}`);
+      });
+    }
+  }
+
+  // 5 · de klassen die alleen op het eerste item horen
+  {
+    const el = elementMet(uit, 'data-herhaal-eerste');
+    if (el && nr !== 1) {
+      const weg = el.waarde.split(/\s+/).filter(Boolean);
+      uit = metKlassen(uit, el, (k) => k.split(/\s+/).filter((c) => c && !weg.includes(c)).join(' '));
+    }
+  }
+
+  // 6 · een element dat niets te zeggen heeft bij dit item
+  while (true) {
+    const el = elementMet(uit, 'data-herhaal-weg-als-leeg');
+    if (!el) break;
+    const waarde = velden ? velden.get(el.waarde) : null;
+    const heeftIets = typeof waarde === 'string' && waarde.trim() !== '';
+    // Het kenmerk tijdelijk omdopen, want anders vindt de volgende ronde van
+    // deze lus hetzelfde element opnieuw.
+    uit = vervang(uit, el.kenmerkStart, el.kenmerkEinde, ` ${GEDAAN}="${el.waarde}"`);
+    if (heeftIets) continue;
+    const opnieuw = elementMet(uit, GEDAAN);
+    uit = vervang(uit, opnieuw.tagStart, opnieuw.elementEinde,
+                  `<!--${OPTIONEEL} ${uit.slice(opnieuw.tagStart, opnieuw.elementEinde)} ${OPTIONEEL}-->`);
+  }
+  uit = uit.split(`${GEDAAN}="`).join('data-herhaal-weg-als-leeg="');
+
+  // 7 · het nagetekende scherm dat bij deze stap hoort
+  {
+    const el = elementMet(uit, 'data-herhaal-scherm');
+    if (el) {
+      const naam = velden ? velden.get(el.waarde) : null;
+      if (schermen) {
+        if (typeof naam !== 'string' || !schermen.has(naam)) {
+          stop(`"${el.waarde}" noemt het scherm "${naam}", en dat bestaat niet. De schermen ` +
+               `die er zijn: ${[...schermen.keys()].join(', ')}. Elke stap van de ` +
+               'rondleiding hoort bij één nagetekend scherm; een stap zonder scherm is ' +
+               'een lege kolom op desktop.');
+        }
+        uit = vervang(uit, el.tagStart, el.elementEinde, schermen.get(naam));
+      }
+    }
+  }
+  return uit;
+}
+
+/**
+ * De schermenbank van de rondleiding: elk nagetekend scherm uit de pagina,
+ * onder de naam die het zelf draagt (data-scherm="overzicht"). Ze worden
+ * alleen verplaatst, nooit herschreven — zo blijven de vier tekeningen met
+ * hun sluitende cijfers precies zoals een mens ze gezet heeft.
+ */
+export function schermenbank(fragment) {
+  const bank = new Map();
+  let vanaf = 0;
+  while (true) {
+    const el = elementMet(fragment, 'data-scherm', vanaf);
+    if (!el) break;
+    if (bank.has(el.waarde)) {
+      stop(`twee nagetekende schermen heten "${el.waarde}". Dan kiest de bouw er stil ` +
+           'één van, en toont een stap het scherm van een andere.');
+    }
+    bank.set(el.waarde, fragment.slice(el.tagStart, el.elementEinde));
+    vanaf = el.elementEinde;
+  }
+  return bank;
+}
+
+/**
+ * Elke gemarkeerde lijst in de pagina uitgeklapt naar het aantal items dat in
+ * content/ staat. Geeft de nieuwe HTML terug; de slots erin worden daarna door
+ * vindSlots()/voegIn() gevuld, net als bij de vaste velden — er is dus maar één
+ * plek die weet hoe een veld in de pagina komt.
+ */
+export function herhaal(html, lijsten, velden = null) {
+  const stukken = vindHerhalingen(html);
+  if (!stukken.length) return html;
+
+  const gezien = new Set();
+  // Van achter naar voren, zodat de posities van de nog te doen stukken kloppen.
+  for (const stuk of [...stukken].reverse()) {
+    const aantal = lijsten.get(stuk.lijst);
+    if (aantal === undefined) {
+      stop(`de pagina markeert een lijst "${stuk.lijst}", maar in content/ staat geen lijst ` +
+           'met die naam. Zet de items eronder met streepjes, of haal de markering weg.');
+    }
+    const bezwaar = bezwaarTegenLengte(stuk.lijst, aantal);
+    if (bezwaar) stop(bezwaar);
+    gezien.add(stuk.lijst);
+
+    const fragment = html.slice(stuk.binnenStart, stuk.binnenEinde);
+    const vorm = eersteElement(fragment, stuk.lijst);
+    const vormTekst = fragment.slice(vorm.start, vorm.einde);
+    const schermen = vormTekst.includes('data-herhaal-scherm')
+      ? schermenbank(fragment) : null;
+    const spans = stuk.lijst === 'cases.items' ? kaartspans(aantal) : null;
+
+    const binnen = ' '.repeat(stuk.inspringing);
+    const kopieen = [];
+    for (let nr = 1; nr <= aantal; nr++) {
+      kopieen.push(kopie(vormTekst, {
+        lijst: stuk.lijst, nr, totaal: aantal, velden,
+        span: spans ? spans[nr - 1] : null, schermen,
+      }));
+    }
+    const nieuw = `\n${binnen}  ${kopieen.join(`\n\n${binnen}  `)}\n${binnen}`;
+    html = vervang(html, stuk.binnenStart, stuk.binnenEinde, nieuw);
+  }
+
+  for (const lijst of lijsten.keys()) {
+    if (!gezien.has(lijst)) {
+      stop(`in content/ staat een lijst "${lijst}", maar de pagina markeert die nergens. ` +
+           'Een lijst die de bouw negeert, is een lijst die Jana vult zonder dat het ' +
+           'ergens terechtkomt.');
+    }
+  }
+  return html;
+}
+
 /* ----------------------------------------------------------------- sleutels --- */
 
-const SJABLOON = /\{([A-Za-z_][A-Za-z0-9_.-]*)\}/g;
+// Een vaste vorm met een veld erin: "Ga naar stap 1: {rondleiding.stappen.1.titel}".
+// Met "slug:" ervoor komt de waarde als stukje adres in het attribuut te staan;
+// dat is er voor de data-cta-haken, die per kaart verschillend moeten zijn en
+// dus niet zomaar de naam van het bedrijf kunnen dragen.
+const SJABLOON = /\{(?:(slug):)?([A-Za-z_][A-Za-z0-9_.-]*)\}/g;
+
+const BEWERKINGEN = { slug };
 
 export function sleutelsVan(slot) {
   if (slot.soort === 'tekst' || !slot.waarde.includes('{')) return [slot.waarde];
   const uit = [];
   let m;
   SJABLOON.lastIndex = 0;
-  while ((m = SJABLOON.exec(slot.waarde)) !== null) uit.push(m[1]);
+  while ((m = SJABLOON.exec(slot.waarde)) !== null) uit.push(m[2]);
   if (!uit.length) stop(`"${slot.waarde}" ziet uit als een vaste vorm maar bevat geen {sleutel}`);
   return uit;
 }
@@ -380,10 +845,10 @@ export function kenmerkWaardeVoorSlot(slot, velden) {
     }
     return waarde;
   }
-  return slot.waarde.replace(SJABLOON, (_, s) => {
+  return slot.waarde.replace(SJABLOON, (_, bewerking, s) => {
     const waarde = velden.get(s);
     if (Array.isArray(waarde)) stop(`"${s}" is een opsomming en past niet in een vaste vorm`);
-    return waarde;
+    return bewerking ? BEWERKINGEN[bewerking](waarde) : waarde;
   });
 }
 
