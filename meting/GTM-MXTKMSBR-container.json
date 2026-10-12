@@ -247,7 +247,7 @@
         "accountId": "0",
         "containerId": "0",
         "tagId": "3",
-        "name": "GA4 — alarm: naam die deze container niet kent",
+        "name": "GA4 — alarm voor een onbekende naam",
         "type": "gaawe",
         "parameter": [
           {
@@ -347,7 +347,7 @@
         "accountId": "0",
         "containerId": "0",
         "tagId": "4",
-        "name": "Uitschakelaar — onthoudt ?meting=uit en ?meting=aan",
+        "name": "Uitschakelaar — onthoudt de keuze uit het webadres",
         "type": "html",
         "parameter": [
           {
