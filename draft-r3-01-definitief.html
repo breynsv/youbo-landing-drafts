@@ -22,8 +22,8 @@ OPEN CIJFERS: SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214 
 -->
 <html lang="nl-BE">
 <head>
-<meta name="ontwerp-versie" content="3.3+20261010">
-<meta name="ontwerp-versie-leesbaar" content="v3.3 — 10 oktober 2026">
+<meta name="ontwerp-versie" content="3.3+20261012">
+<meta name="ontwerp-versie-leesbaar" content="v3.3 — 12 oktober 2026">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -3416,6 +3416,328 @@ tailwind.config = {
      ------------------------------------------------------------------------- */
 
   /* -------------------------------------------------------------------------
+     DE METING — hier worden de data-cta-haken gebeurtenissen
+     ---------------------------------------------------------------------------
+     Op elke knop en elke link van deze twee pagina's staat een haak: data-cta.
+     Tot 2026-10-12 luisterde daar niets naar. Dit blok is dat oor, en het staat
+     op beide pagina's LETTERLIJK hetzelfde — net als de cookiebalk en
+     laadMeettags(), en om dezelfde reden: de toestemming en de meting moeten
+     zich over het hele domein gelijk gedragen. toets-meting.mjs vergelijkt de
+     twee kopieen teken voor teken en gaat rood zodra ze uiteenlopen.
+
+     WAT EEN MARKETEER ZIET. Niet een enkele gebeurtenis "cta_click" met de
+     haaknaam als parameter: dan staat er in het rapport een rij waar veertien
+     vragen onder verstopt zitten. Elke haak krijgt een naam die zelf de vraag
+     beantwoordt — demo_aanvraag_bevestigd, case_pdf_geopend, nick_gebeld. De
+     haaknaam gaat als parameter cta mee, en bij de lijsten ook cta_detail: de
+     naam van de case, de FAQ-vraag of het stapnummer.
+
+     GEEN NAAM DIE GOOGLE AL GEBRUIKT. In de GA4-datastroom staat "Enhanced
+     measurement" aan, dus meet Google zelf al page_view, scroll, click,
+     file_download en de video-gebeurtenissen. Geen enkele naam hieronder is
+     daar een van, en dat is met opzet: twee bronnen met dezelfde naam in
+     hetzelfde rapport zijn niet meer van elkaar te scheiden. Onze namen zijn
+     Nederlands en dus onmiskenbaar van ons. METING.md zet per naam of Google
+     iets vergelijkbaars al automatisch meet. Twee ervan verdienen hier een
+     regel:
+
+     · Form interactions staat UIT in de datastroom, dus meet Google het
+       formulier niet. Onze twee formuliergebeurtenissen zijn de enige bron, en
+       ze zijn met opzet twee: demo_formulier_verstuurd is de poging (het
+       submit-event van het formulier) en demo_aanvraag_bevestigd is de
+       aanvraag die werkelijk aankwam — die vuurt op de bevestigingspagina en
+       nergens anders. DE CONVERSIE IS DE TWEEDE. Dat was al de afspraak in de
+       kop van laadMeettags() op die pagina, en ze staat er nog: een conversie
+       op de knop telt ook de aanvragen die daarna mislukken.
+     · File downloads staat AAN, dus meet Google een case-pdf zelf als
+       file_download. Onze case_pdf_geopend is daar geen dubbel van: ze zegt
+       in cta_detail WELKE case het was, en vandaag wijzen die vijf links nog
+       naar het anker #cases-open, waar Google's file_download helemaal niet op
+       afgaat. Zolang de pdf's er niet zijn, is onze gebeurtenis de enige.
+
+     EEN NAAM PER VOORVOEGSEL WAAR HET CMS DE HAAK MAAKT. De cases, de quotes,
+     de rondleidingstappen en de FAQ zijn lijsten die Jana in /beheer/ kan laten
+     groeien, en hun haak draagt dus een naam of een nummer uit de inhoud
+     (case-pdf-sd-worx, faq-prijs, rondleiding-stap-3). Een vaste tabel per haak
+     zou bij de zesde case stil niets meer meten — precies het soort stilte waar
+     deze repo elders overal tegen bouwt. Daarom staan die drie als voorvoegsel,
+     en wat er achter het voorvoegsel staat gaat als cta_detail mee. De vaste
+     tabel gaat eerst, anders valt rondleiding-boek-demo onder het voorvoegsel
+     "rondleiding-stap-".
+
+     TOESTEMMING: WACHTRIJ, EN ALLEEN IN HET GEHEUGEN. Voor een keuze vertrekt
+     er niets naar Google of LinkedIn. De gebeurtenis gaat in een wachtrij in
+     het geheugen van deze paginaweergave. Zegt de bezoeker ja, dan vertrekt ze
+     alsnog, met wachtrij_ms erbij zodat niemand denkt dat de klik op dat
+     moment gebeurde. Zegt hij nee, dan wordt ze weggegooid en blijft ze weg.
+     De wachtrij staat NIET in localStorage of sessionStorage: dat is opslag op
+     het toestel van de bezoeker, en daarvoor is in Belgie dezelfde toestemming
+     nodig als voor de meting zelf. Ze overleeft dus geen paginawissel. Dat is
+     de prijs van deze keuze, en hij staat verdedigd in METING.md.
+
+     EEN KLIK, EEN GEBEURTENIS. Een luisteraar, op document, in de capture-fase,
+     die met closest() de NAASTE haak zoekt. Een knop binnen een klikbaar
+     element levert daardoor de knop en niet de omhulling. Er luistert niets op
+     scroll, dus een veeg door de cases- of de quoterij vuurt niets; de puntjes
+     en de pijlen vuren, en dat zijn klikken. En twee klikken binnen 500ms op
+     dezelfde haak zijn een gebeurtenis: een dubbele tik op "Vraag je demo aan"
+     is geen twee aanvragen.
+
+     HET FORMULIER. De verzendknop wordt niet op zijn klik gemeten maar op het
+     submit-event van het formulier. Twee redenen: Enter in een veld verzendt
+     ook, en de klik plus het submit zouden van een aanvraag twee gebeurtenissen
+     maken. Het formulier heeft vandaag geen action — dat wacht op de klant — en
+     submit vuurt met of zonder action, dus blijft dit werken zodra het eindpunt
+     er is.
+
+     LINKEDIN. Een conversie bij LinkedIn vraagt een conversie-id uit het
+     advertentieaccount, en dat bestaat nog niet. De plekken staan hieronder
+     leeg. Leeg betekent: er gaat niets naar LinkedIn.
+     ------------------------------------------------------------------------- */
+  var METING = (function () {
+    /* De namen. Links de haak, rechts wat in het rapport komt te staan.
+       null = met opzet niet gemeten. */
+    var NAAM = {
+      'hero-wordmerk':           'logo_geklikt',
+      'hero-boek-demo':          'demo_knop_geklikt',
+      'rondleiding-boek-demo':   'demo_knop_geklikt',
+      'vaste-band-demo':         'demo_knop_geklikt',
+      'formulier-vraag-demo':    'demo_formulier_verstuurd',
+      'formulier-privacy':       'juridische_tekst_geopend',
+      'formulier-mail-nick':     'nick_gemaild',
+      'formulier-telefoon-nick': 'nick_gebeld',
+      /* De agendalink van Nick bestaat nog niet — op de pagina staat daar een
+         TODO. Deze regel staat er alvast, zodat het aansluiten straks één
+         handeling is: data-cta="formulier-agenda-nick" op de link. */
+      'formulier-agenda-nick':   'agenda_geopend',
+      'bedankt-mail-nick':       'nick_gemaild',
+      'bedankt-telefoon-nick':   'nick_gebeld',
+      'bedankt-logo':            'naar_youbo_site',
+      'bedankt-terug-youbo':     'naar_youbo_site',
+      'cases-punt':              'klantverhaal_doorgebladerd',
+      'quotes-punt':             'klantverhaal_doorgebladerd',
+      'quotes-vorige':           'klantverhaal_doorgebladerd',
+      'quotes-volgende':         'klantverhaal_doorgebladerd',
+      'footer-logo':             'naar_youbo_site',
+      'footer-cases':            'naar_youbo_site',
+      'footer-nieuws':           'naar_youbo_site',
+      'footer-contact':          'naar_youbo_site',
+      'footer-linkedin':         'naar_teal_partners',
+      'footer-tealpartners':     'naar_teal_partners',
+      'footer-cookiebeleid':     'juridische_tekst_geopend',
+      'footer-privacy':          'juridische_tekst_geopend',
+      'footer-rdp':              'juridische_tekst_geopend',
+      'footer-disclaimer':       'juridische_tekst_geopend',
+      'footer-voorwaarden':      'juridische_tekst_geopend',
+      'cookiebalk-beleid':       'juridische_tekst_geopend',
+      'cookiebalk-toestaan':     'cookies_toegestaan',
+      /* "Weigeren" wordt NIET gemeten, en dat is geen vergetelheid. Op het
+         moment van die klik is er geen toestemming en komt die er ook niet, dus
+         is er geen grond om er iets over te versturen. Hoeveel mensen weigeren
+         blijft wel te zien: aan het verschil tussen de bezoeken en
+         cookies_toegestaan, en niet aan een meting die juist niet mag. */
+      'cookiebalk-weigeren':     null
+    };
+
+    /* De lijsten uit /beheer/. Zie de uitleg hierboven. Wat achter het
+       voorvoegsel staat, gaat als cta_detail mee. */
+    var VOORVOEGSEL = [
+      ['case-pdf-',         'case_pdf_geopend'],
+      ['faq-',              'vraag_opengeklapt'],
+      ['rondleiding-stap-', 'rondleiding_stap_gekozen']
+    ];
+
+    /* Deze haak wordt op het submit-event gemeten, niet op zijn klik. */
+    var VIA_SUBMIT = { 'formulier-vraag-demo': true };
+
+    /* TODO — nodig van klant: de conversie-id's uit het LinkedIn-
+       advertentieaccount YouboMerit. Een getal per gebeurtenis die bij LinkedIn
+       als conversie moet meetellen. Leeg = er gaat niets naar LinkedIn, en
+       invullen is een handeling: het getal tussen de aanhalingstekens zetten.
+
+       DE EERSTE IS DE ECHTE CONVERSIE. demo_aanvraag_bevestigd vuurt op de
+       bevestigingspagina, dus alleen voor een aanvraag die aankwam. De twee
+       eronder zijn stappen in de trechter; vul die alleen in als LinkedIn ze
+       als apart doel moet zien, en nooit als vervanging van de eerste. */
+    var LINKEDIN_CONVERSIE = {
+      demo_aanvraag_bevestigd:  '',   /* bv. '12345678' — de conversie */
+      demo_formulier_verstuurd: '',   /* bv. '12345679' — de poging */
+      demo_knop_geklikt:        ''    /* bv. '12345680' — de intentie */
+    };
+
+    var DEDUP_MS = 500;
+    var MAX_WACHTRIJ = 20;
+
+    var wachtrij = [];          /* alleen geheugen — nooit localStorage */
+    var vrij = false;           /* staat de toestemming er */
+    var afgewezen = false;      /* heeft de bezoeker geweigerd */
+    var laatste = {};           /* haak -> tijdstip, voor de dubbele tik */
+    var hetKanaal = 'geen';     /* 'gtm', 'ga4' of 'geen'; laadMeettags zet dit */
+
+    function nu() {
+      return (Date && Date.now) ? Date.now() : new Date().getTime();
+    }
+
+    /* Wat is deze haak? { naam, detail } — detail is leeg bij een vaste haak. */
+    function duid(haak) {
+      if (Object.prototype.hasOwnProperty.call(NAAM, haak)) {
+        return { naam: NAAM[haak], detail: '' };
+      }
+      for (var i = 0; i < VOORVOEGSEL.length; i++) {
+        var vv = VOORVOEGSEL[i][0];
+        if (haak.indexOf(vv) === 0) {
+          return { naam: VOORVOEGSEL[i][1], detail: haak.slice(vv.length) };
+        }
+      }
+      /* Een haak zonder naam mag niet stil wegvallen. Dan komt er in het
+         rapport een rij "cta_zonder_naam" met de haak erbij, en die rij IS het
+         alarm. Zwijgen zou betekenen dat een nieuwe knop maanden ongemeten
+         blijft zonder dat iemand het ziet. toets-meting.mjs eist dat geen enkele
+         haak van deze twee pagina's hier terechtkomt. */
+      return { naam: 'cta_zonder_naam', detail: haak };
+    }
+
+    function label(el) {
+      var t = el.getAttribute('aria-label') || el.textContent || '';
+      t = t.replace(/\s+/g, ' ').trim();
+      if (!t && el.querySelector) {
+        var afb = el.querySelector('img[alt]');
+        if (afb) { t = (afb.getAttribute('alt') || '').trim(); }
+      }
+      return t.slice(0, 100);
+    }
+
+    function stuur(naam, gegevens) {
+      window.dataLayer = window.dataLayer || [];
+      /* Tag Manager vuurt op een gewone dataLayer-push met een `event`-sleutel;
+         daar hangt in de container een GA4-gebeurtenistag aan. Staat er geen
+         container maar wel een GA4-id, dan gaat dezelfde gebeurtenis
+         rechtstreeks via gtag(). Precies een van de twee, nooit beide: GA4
+         rechtstreeks naast GA4 achter Tag Manager telt elke klik dubbel. Welke
+         van de twee het is, zegt laadMeettags() hieronder — dezelfde keuze die
+         daar bepaalt welke tag er laadt, zodat er geen tweede plek is die het
+         ook meent te weten. */
+      if (hetKanaal === 'ga4' && typeof gtag === 'function') {
+        gtag('event', naam, gegevens);
+      } else {
+        var rij = { event: naam };
+        for (var k in gegevens) {
+          if (Object.prototype.hasOwnProperty.call(gegevens, k)) { rij[k] = gegevens[k]; }
+        }
+        window.dataLayer.push(rij);
+      }
+      var conversie = LINKEDIN_CONVERSIE[naam];
+      if (conversie && typeof window.lintrk === 'function') {
+        window.lintrk('track', { conversion_id: conversie });
+      }
+    }
+
+    function meet(naam, gegevens) {
+      if (!naam) { return false; }
+      /* Na Weigeren wordt er niets meer bijgehouden. Niet alleen de wachtrij
+         leeggooien maar hem ook dicht houden: een bezoeker die weigert en daarna
+         nog twintig keer klikt, laat anders twintig gebeurtenissen in het
+         geheugen staan die nooit mogen vertrekken. Dat ze niet vertrekken was al
+         waar; dat ze er niet eens komen, is eerlijker. */
+      if (afgewezen) { return false; }
+      var t = nu();
+      var sleutel = naam + '|' + (gegevens.cta || '');
+      if (laatste[sleutel] && t - laatste[sleutel] < DEDUP_MS) { return false; }
+      laatste[sleutel] = t;
+      if (vrij) { stuur(naam, gegevens); return true; }
+      if (wachtrij.length < MAX_WACHTRIJ) {
+        wachtrij.push({ naam: naam, gegevens: gegevens, t: t });
+      }
+      return true;
+    }
+
+    function vanHaak(el, haak) {
+      var d = duid(haak);
+      var gegevens = { cta: haak, cta_tekst: label(el) };
+      if (d.detail) { gegevens.cta_detail = d.detail; }
+      var doel = el.getAttribute ? el.getAttribute('href') : null;
+      if (doel) { gegevens.cta_doel = doel.slice(0, 100); }
+      return { naam: d.naam, gegevens: gegevens };
+    }
+
+    /* EEN luisteraar voor alle haken, in de capture-fase. Capture en niet
+       bubble: zo staat de gebeurtenis in de wachtrij of in dataLayer voordat de
+       browser aan de navigatie begint, en voordat Alpine's @click iets
+       verandert aan wat er op de pagina staat. closest() geeft de naaste haak,
+       dus kan een haak binnen een haak geen twee gebeurtenissen opleveren. */
+    document.addEventListener('click', function (e) {
+      if (typeof e.button === 'number' && e.button !== 0) { return; }
+      var el = (e.target && e.target.closest) ? e.target.closest('[data-cta]') : null;
+      if (!el) { return; }
+      var haak = el.getAttribute('data-cta') || '';
+      if (VIA_SUBMIT[haak]) { return; }
+      var ding = vanHaak(el, haak);
+      meet(ding.naam, ding.gegevens);
+    }, true);
+
+    /* Het formulier. De eerste haak binnen het formulier is de verzendknop. */
+    document.addEventListener('submit', function (e) {
+      var form = e.target;
+      if (!form || !form.querySelector) { return; }
+      var knop = form.querySelector('[data-cta]');
+      var haak = knop ? (knop.getAttribute('data-cta') || '') : 'formulier-vraag-demo';
+      var ding = vanHaak(knop || form, haak);
+      ding.gegevens.cta_doel = (form.getAttribute('action') || '').slice(0, 100);
+      var vink = form.querySelector('[name="newsletter"]');
+      ding.gegevens.nieuwsbrief = (vink && vink.checked) ? 'ja' : 'nee';
+      meet(ding.naam, ding.gegevens);
+
+      /* De nieuwsbriefinschrijving is een eigen handeling en hoort apart
+         rapporteerbaar te zijn, niet alleen als parameter op de aanvraag. Dit is
+         de enige plek waar één handeling van de bezoeker met opzet twee
+         gebeurtenissen geeft, en de reden is dat Sven het aantal inschrijvingen
+         los van het aantal aanvragen moet kunnen zien. */
+      if (vink && vink.checked) {
+        meet('nieuwsbrief_ingeschreven', { cta: haak, cta_tekst: ding.gegevens.cta_tekst });
+      }
+    }, true);
+
+    /* De pagina die zelf een uitkomst IS. De bevestigingspagina draagt
+       data-meting-doel="demo_aanvraag_bevestigd" op haar body; de landingspagina
+       draagt dat attribuut niet en meet dus niets bij het laden. Dit is het
+       beste meetpunt voor een geslaagde aanvraag dat er is: het formulier kan
+       vandaag nog nergens naartoe, maar wie op die pagina staat, is er. En het
+       blijft het beste meetpunt zodra het eindpunt er wel is, want het telt
+       alleen de aanvragen die aankwamen. */
+    function doelVanDePagina() {
+      var doel = document.body ? document.body.getAttribute('data-meting-doel') : null;
+      if (!doel) { return; }
+      meet(doel, { cta: 'pagina', cta_tekst: (document.title || '').slice(0, 100) });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', doelVanDePagina);
+    } else {
+      doelVanDePagina();
+    }
+
+    return {
+      /* laadMeettags() zegt welk kanaal het werd, en geeft daarna vrij. */
+      kanaal: function (welk) { hetKanaal = welk; },
+      vrijgeven: function () {
+        vrij = true;
+        var t = nu();
+        var rij = wachtrij;
+        wachtrij = [];
+        for (var i = 0; i < rij.length; i++) {
+          rij[i].gegevens.wachtrij_ms = t - rij[i].t;
+          stuur(rij[i].naam, rij[i].gegevens);
+        }
+      },
+      vergeten: function () { wachtrij = []; afgewezen = true; },
+      /* Alleen om te kunnen toetsen; de pagina gebruikt deze twee zelf niet. */
+      duid: duid,
+      stand: function () {
+        return { kanaal: hetKanaal, vrij: vrij, afgewezen: afgewezen, wachtrij: wachtrij.length };
+      }
+    };
+  })();
+
+  /* -------------------------------------------------------------------------
      LAADMEETTAGS — het enige punt waar een meettag de pagina binnenkomt
      ---------------------------------------------------------------------------
      Deze functie draait uitsluitend nadat iemand in de cookiebalk op Toestaan
@@ -3423,7 +3745,9 @@ tailwind.config = {
      en Google de pagina binnenkomen; in de <head> staat geen van beide.
 
      · LinkedIn — ACTIEF sinds 2026-10-09, partner ID 10139124 (YouboMerit)
-     · Google   — nog geen id; GTM-XXXXXXX óf G-XXXXXXXXXX, niet allebei
+     · Google   — ACTIEF sinds 2026-10-12, container GTM-MXTKMSBR. GA4 loopt
+       binnen die container; het GA4-id staat er wel, maar is inert zolang er
+       een container is — zie de nota bij GOOGLE_GA4_ID hieronder.
      ------------------------------------------------------------------------- */
   var meettagsGeladen = false;
   function laadMeettags() {
@@ -3452,10 +3776,19 @@ tailwind.config = {
        het geeft toegang tot niets, dus hoeft het niet verborgen te worden en
        hoort het niet in een omgevingsvariabele.
 
-       TODO — nodig van klant: het Google meet-id. Zolang dat leeg is laadt er
-       van Google niets en geeft deze functie alleen de toestemming door. */
-    var GOOGLE_GTM_ID       = '';   /* bv. 'GTM-XXXXXXX'  */
-    var GOOGLE_GA4_ID       = '';   /* bv. 'G-XXXXXXXXXX' */
+       Google staat er sinds 2026-10-12 ook: container GTM-MXTKMSBR en de
+       GA4-datastroom van demo.youbo.io. Wat er nog leeg staat en wat dat
+       betekent, staat per plek in de nota eronder. */
+    var GOOGLE_GTM_ID       = 'GTM-MXTKMSBR';   /* de container, 2026-10-12 */
+    /* GA4 — INERT ZOLANG ER EEN CONTAINER IS. De keuze hieronder neemt Tag
+       Manager, en de GA4-tag wordt dáárbinnen ingericht; deze pagina laadt
+       gtag.js dus niet en er komt hier geen verzoek naar gtag/js. Het id staat
+       er toch, om twee redenen. Het zegt in de pagina zelf naar welke property
+       demo.youbo.io rapporteert — anders staat dat alleen in de console van
+       Google. En verdwijnt de container ooit, dan is GOOGLE_GTM_ID leegmaken
+       genoeg en meet de pagina weer; de else if maakt dubbel laden onmogelijk.
+       Verwacht dus niet dat het invullen hiervan vandaag iets doet. */
+    var GOOGLE_GA4_ID       = 'G-3RMJLLMCKB';   /* de datastroom demo.youbo.io */
     var LINKEDIN_PARTNER_ID = '10139124';   /* YouboMerit — openbaar, zie hierboven */
 
     function laadScript(bron) {
@@ -3465,14 +3798,39 @@ tailwind.config = {
       document.head.appendChild(el);
     }
 
-    /* Google — Tag Manager áls er een container is, anders GA4 rechtstreeks. */
+    /* Google — Tag Manager áls er een container is, anders GA4 rechtstreeks.
+       Sinds 2026-10-12 is er een container, dus is dit de eerste tak.
+
+       HET STANDAARDFRAGMENT VAN GOOGLE STAAT HIER MET OPZET NIET. Dat fragment
+       hoort bovenaan in de head en laadt Tag Manager bij het openen van de
+       pagina, dus vóór de keuze van de bezoeker. In België geldt opt-in, dus is
+       dat precies wat niet mag. De twee regels hieronder doen hetzelfde werk,
+       op het juiste moment.
+
+       EN HET noscript-STUKJE MET DE IFRAME LATEN WE BEWUST WEG. Zonder
+       JavaScript is er geen cookiebalk, dus geen toestemming, dus hoort er ook
+       geen tag te laden. Wie het fragment van Google hiernaast legt, mist dat
+       stukje en denkt dat we iets vergeten zijn: dat is het niet.
+
+       EN window.dataLayer WORDT HIER NOG EEN KEER GEZET, al staat hij in de kop
+       van de pagina. Deze scripts worden namelijk ook ergens anders gedraaid:
+       het voorbeeldvenster van /beheer/ knipt de kop pas vanaf de lettertypen,
+       dus heeft daar geen dataLayer en geen gtag(). Een bare dataLayer.push()
+       gooide daar een ReferenceError, en dan werd de rest van deze functie — de
+       LinkedIn-tag — niet meer bereikt. Gevonden door toets-voorbeeld.mjs, die
+       klaagde dat de browser niets meer tegenhield. */
+    window.dataLayer = window.dataLayer || [];
     if (GOOGLE_GTM_ID) {
-      dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      METING.kanaal('gtm');
+      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
       laadScript('https://www.googletagmanager.com/gtm.js?id=' + GOOGLE_GTM_ID);
     } else if (GOOGLE_GA4_ID) {
+      METING.kanaal('ga4');
       laadScript('https://www.googletagmanager.com/gtag/js?id=' + GOOGLE_GA4_ID);
-      gtag('js', new Date());
-      gtag('config', GOOGLE_GA4_ID);
+      if (typeof gtag === 'function') {
+        gtag('js', new Date());
+        gtag('config', GOOGLE_GA4_ID);
+      }
     }
 
     /* LinkedIn Insight Tag — het blok uit de <head>, nu op het juiste moment. */
@@ -3484,6 +3842,11 @@ tailwind.config = {
       window.lintrk.q = window.lintrk.q || [];
       laadScript('https://snap.licdn.com/li.lms-analytics/insight.min.js');
     }
+
+    /* En nu pas mag de meting vertrekken. Wat de bezoeker vóór zijn keuze deed,
+       staat in de wachtrij van METING en gaat hier alsnog mee — zie het blok
+       DE METING hierboven. */
+    METING.vrijgeven();
   }
 
   /* -------------------------------------------------------------------------
@@ -3540,6 +3903,10 @@ tailwind.config = {
       init() {
         try { this.keuze = localStorage.getItem('youbo-toestemming'); } catch (e) { this.keuze = null; }
         if (this.keuze === 'toegestaan') { laadMeettags(); }
+        /* Wie eerder weigerde, ziet deze balk niet meer — maar hij kan vóór
+           alpine:init al op iets geklikt hebben, en dat staat dan in de
+           wachtrij van METING. Hier wordt het weggegooid. */
+        if (this.keuze === 'geweigerd') { METING.vergeten(); }
       },
       get beantwoord() {
         return this.keuze === 'toegestaan' || this.keuze === 'geweigerd';
@@ -3548,6 +3915,10 @@ tailwind.config = {
         this.keuze = keuze;
         try { localStorage.setItem('youbo-toestemming', keuze); } catch (e) {}
         if (keuze === 'toegestaan') { laadMeettags(); }
+        /* Weigeren gooit de wachtrij weg. Zonder deze regel zou een klik van
+           vóór de keuze blijven staan en alsnog vertrekken als de bezoeker
+           later in dezelfde weergave toch toestemt — zie DE METING hierboven. */
+        if (keuze === 'geweigerd') { METING.vergeten(); }
       }
     });
 
