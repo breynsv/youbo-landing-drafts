@@ -2854,12 +2854,32 @@ tailwind.config = {
     </div>
 
     <div class="lg:col-span-7" data-reveal>
-      <!-- Het endpoint moet nog gekoppeld worden; action blijft bewust leeg tot dan. -->
+      <!-- Het endpoint moet nog gekoppeld worden; action blijft bewust leeg tot dan.
+
+           DE VIJF VELDNAMEN ZIJN ENGELS, EN DAT IS DE ENIGE PLEK IN DIT PROJECT
+           WAAR DAT ZO IS. Alles hier is bewust Nederlands: variabelen, functies,
+           bestandsnamen, commentaar. Deze vijf zijn de uitzondering omdat ze geen
+           interne code zijn maar het KOPPELVLAK met het systeem van de klant.
+           Dat eindpunt bestaat nog niet, en door de namen nu vast te leggen geven
+           wij het contract door aan hun technische man in plaats van erop te
+           wachten. Vastgelegd op 2026-10-12:
+
+               name        (was naam)
+               email       (onveranderd)
+               phone       (was telefoon)
+               message     (was bericht)
+               newsletter  (was nieuwsbrief, waarde blijft "ja")
+
+           De id's lopen mee met de naam, zodat label/for en veld niet uit elkaar
+           kunnen lopen; de zichtbare labels blijven Nederlands en komen uit
+           content/contact.yml. De sleutels dáár (formulier.label_naam,
+           formulier.plaatshouder_telefoon) blijven ook Nederlands: dat zijn
+           velden in /beheer/ en geen koppelvlak. -->
       <form class="rounded-lg bg-paper border border-line p-6 md:p-8 shadow-card" novalidate>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="naam" class="block text-body font-medium text-ink mb-2"><span data-inhoud="formulier.label_naam">Naam</span> <span class="text-brand-ink" aria-hidden="true">*</span></label>
-            <input id="naam" name="naam" type="text" autocomplete="name" required
+            <label for="name" class="block text-body font-medium text-ink mb-2"><span data-inhoud="formulier.label_naam">Naam</span> <span class="text-brand-ink" aria-hidden="true">*</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" required
                    class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
                    style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
                    placeholder="Anne Peeters" data-inhoud-placeholder="formulier.plaatshouder_naam">
@@ -2872,15 +2892,15 @@ tailwind.config = {
                    placeholder="anne@bedrijf.be" data-inhoud-placeholder="formulier.plaatshouder_email">
           </div>
           <div class="sm:col-span-2">
-            <label for="telefoon" class="block text-body font-medium text-ink mb-2" data-inhoud="formulier.label_telefoon">Telefoon</label>
-            <input id="telefoon" name="telefoon" type="tel" autocomplete="tel"
+            <label for="phone" class="block text-body font-medium text-ink mb-2" data-inhoud="formulier.label_telefoon">Telefoon</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel"
                    class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
                    style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
                    placeholder="+32 4xx xx xx xx" data-inhoud-placeholder="formulier.plaatshouder_telefoon">
           </div>
           <div class="sm:col-span-2">
-            <label for="bericht" class="block text-body font-medium text-ink mb-2" data-inhoud="formulier.label_bericht">Stel gerust al je vragen</label>
-            <textarea id="bericht" name="bericht" rows="4"
+            <label for="message" class="block text-body font-medium text-ink mb-2" data-inhoud="formulier.label_bericht">Stel gerust al je vragen</label>
+            <textarea id="message" name="message" rows="4"
                       class="w-full rounded-sm border border-line bg-paper px-3 py-3 text-body text-ink"
                       style="transition: border-color var(--m-base) var(--e-standard), box-shadow var(--m-base) var(--e-standard)"
                       placeholder="Hoeveel medewerkers zitten er in jullie looncyclus? Waar loopt het vandaag vast?"
@@ -2889,9 +2909,9 @@ tailwind.config = {
         </div>
 
         <div class="mt-6 flex items-start gap-3">
-          <input id="nieuwsbrief" name="nieuwsbrief" type="checkbox" value="ja"
+          <input id="newsletter" name="newsletter" type="checkbox" value="ja"
                  class="mt-1 h-5 w-5 shrink-0 rounded-sm border border-line-btn accent-brand">
-          <label for="nieuwsbrief" class="text-caption text-ink-soft" data-inhoud="formulier.nieuwsbrief">Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.</label>
+          <label for="newsletter" class="text-caption text-ink-soft" data-inhoud="formulier.nieuwsbrief">Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.</label>
         </div>
 
         <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo" data-inhoud="formulier.verzendknop">Vraag je demo aan</button>
