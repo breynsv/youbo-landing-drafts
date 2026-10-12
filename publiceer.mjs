@@ -359,3 +359,19 @@ console.log(`\n  pagina's  : ${verwacht.join(', ')}  (in de wortel, dus assets/ 
 console.log(`  drafts    : 0  (van de ${readdirSync(hier).filter((f) => /^draft-.*\.html$/.test(f)).length} in de repo)`);
 console.log(`  afbeeldingen: ${bestanden.size} van de ${readdirSync(join(hier, 'assets', 'img')).length} in assets/img`);
 console.log('');
+
+/* De noindex-kop is bewust tijdelijk, en het vergeten ervan is het grotere
+   risico: een campagnepagina die onvindbaar blijft omdat niemand merkt dat de
+   rem er nog op staat. Daarom wordt hij bij ELKE publicatie hardop gemeld,
+   en meldt dit script het óók als hij weg is — want dan is de pagina vanaf nu
+   zichtbaar voor Google, en dat hoort een bewuste stap te zijn. */
+{
+  const config = readFileSync(join(hier, 'publicatie', 'web.config'), 'utf8');
+  const remt = /X-Robots-Tag[^>]*noindex/i.test(config);
+  console.log(remt
+    ? '  ⚠  NOINDEX STAAT AAN — Google houdt deze pagina volledig uit de\n' +
+      '     zoekresultaten. Dat is nu met opzet, want er staan nog zichtbare\n' +
+      '     TODO-vragen aan de klant op. HAAL HEM WEG BIJ DE LANCERING:\n' +
+      '     de regel X-Robots-Tag in publicatie/web.config.\n'
+    : '  ✓  Geen noindex meer: deze publicatie is zichtbaar voor Google.\n');
+}
