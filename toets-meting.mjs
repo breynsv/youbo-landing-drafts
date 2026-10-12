@@ -427,8 +427,9 @@ for (const [paginaNaam, pad] of [['landingspagina', LANDING], ['bevestigingspagi
        cases.length === 5 && cases.every((u) => u.nieuw[0].cta_detail && u.nieuw[0].cta_detail.length > 1),
        cases.map((u) => u.nieuw[0].cta_detail).join(', '));
     const stap = uitkomst.find((u) => u.haak === 'rondleiding-stap-3');
-    ok('een rondleidingstap zegt welk nummer', stap && stap.nieuw[0].cta_detail === '3',
-       stap ? String(stap.nieuw[0].cta_detail) : '');
+    ok('een rondleidingstap zegt welk nummer',
+       !!stap && stap.nieuw.length === 1 && stap.nieuw[0].cta_detail === '3',
+       stap ? JSON.stringify(stap.nieuw) : 'de haak rondleiding-stap-3 bestaat niet');
   }
   await ctx.close();
 }
