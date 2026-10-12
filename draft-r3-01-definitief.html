@@ -2914,6 +2914,34 @@ tailwind.config = {
           <label for="newsletter" class="text-caption text-ink-soft" data-inhoud="formulier.nieuwsbrief">Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.</label>
         </div>
 
+        <!-- DE VAL VOOR BOTS. Geen display:none, geen label, aria-hidden en
+             tabindex="-1" — de volledige redenering staat bij DE WACHT OP HET
+             FORMULIER onderaan deze pagina, en de keuze van de naam
+             (extra_notes, en niet url of website) ook. Dit vak gaat mee in de
+             inzending; aan de serverkant hoort elke inzending waarin het NIET
+             leeg is weggegooid te worden. -->
+        <div aria-hidden="true"
+             style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);border:0;white-space:nowrap">
+          <input id="extra-notes" name="extra_notes" type="text" tabindex="-1"
+                 autocomplete="off" data-val-voor-bots>
+        </div>
+
+        <!-- DE PLEK VAN TURNSTILE. Leeg zolang er geen sitesleutel is, en een
+             lege div zonder klassen neemt geen hoogte in — de pagina is dus
+             precies zoals ze was. Zet de sleutel en er verschijnt hier het
+             widget, dat in de onzichtbare stand nog altijd niets toont tenzij
+             de bezoeker iets moet doen. -->
+        <div data-turnstile></div>
+
+        <!-- DE MELDING ALS HET NIET LUKT. hidden, dus geen zichtbare tekst
+             zolang er niets misgaat — gemeten. Ze gaat aan wanneer de val, de
+             drempel of Turnstile een inzending tegenhoudt, en ze noemt het
+             alternatief dat onder dit formulier staat. Een formulier dat op de
+             knop drukken stil negeert, is de duurste fout die hier mogelijk is:
+             die verkoopkans zie je nooit meer terug. -->
+        <p data-formulier-melding hidden role="alert"
+           class="mt-4 text-caption text-ink">Je aanvraag is niet verstuurd. Probeer het nog een keer — lukt het dan nog niet, mail Nick dan rechtstreeks; zijn adres staat onder dit formulier.</p>
+
         <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo" data-inhoud="formulier.verzendknop">Vraag je demo aan</button>
 
         <!-- GEEN VELD, MET OPZET. Deze regel en de cookiebalk onderaan zijn de
@@ -3675,12 +3703,40 @@ tailwind.config = {
       meet(ding.naam, ding.gegevens);
     }, true);
 
-    /* Het formulier. De eerste haak binnen het formulier is de verzendknop. */
+    /* Het formulier. De eerste haak binnen het formulier is de verzendknop.
+
+       EEN TEGENGEHOUDEN INZENDING IS GEEN DEMO-AANVRAAG. De wacht hieronder
+       (de val, de tijdsdrempel, en Turnstile zodra die aanstaat) houdt een
+       inzending tegen vóór er iets verstuurd wordt. Zou die als
+       demo_formulier_verstuurd geteld worden, dan staan er in het rapport
+       aanvragen die nooit bij Nick aankwamen — en dat is het ene cijfer op deze
+       pagina dat moet kloppen. Een geweigerde poging krijgt daarom haar eigen
+       naam met de reden erbij.
+
+       LET OP DE ONDERGRENS DIE DAARAAN VASTZIT, en die staat ook in METING.md:
+       een bot klikt geen "Toestaan", dus blijft zijn geweigerde poging in de
+       wachtrij staan en vertrekt ze nooit. formulier_geweigerd is dus een vloer
+       en geen aantal. Hoeveel er werkelijk tegengehouden wordt, weet alleen de
+       server. */
     document.addEventListener('submit', function (e) {
       var form = e.target;
       if (!form || !form.querySelector) { return; }
       var knop = form.querySelector('[data-cta]');
       var haak = knop ? (knop.getAttribute('data-cta') || '') : 'formulier-vraag-demo';
+      var oordeel = (typeof FORMULIERWACHT !== 'undefined' && FORMULIERWACHT)
+        ? FORMULIERWACHT.oordeel(form) : '';
+
+      if (oordeel.indexOf('geweigerd:') === 0) {
+        meet('formulier_geweigerd', {
+          cta: haak, reden: oordeel.slice('geweigerd:'.length)
+        });
+        return;
+      }
+      /* "wacht" betekent dat Turnstile op dit moment een jeton haalt. Binnen een
+         seconde volgt een tweede submit met dat jeton erin, en DAT is de
+         aanvraag. Hier dus niets meten, anders telt één aanvraag twee keer. */
+      if (oordeel === 'wacht') { return; }
+
       var ding = vanHaak(knop || form, haak);
       ding.gegevens.cta_doel = (form.getAttribute('action') || '').slice(0, 100);
       var vink = form.querySelector('[name="newsletter"]');
@@ -3729,10 +3785,249 @@ tailwind.config = {
         }
       },
       vergeten: function () { wachtrij = []; afgewezen = true; },
+      /* Voor de wacht hieronder, die een mislukte beveiligingscontrole moet
+         kunnen melden. Zelfde regels: vóór toestemming de wachtrij in, na
+         Weigeren niets. */
+      meld: function (naam, gegevens) { return meet(naam, gegevens || {}); },
       /* Alleen om te kunnen toetsen; de pagina gebruikt deze twee zelf niet. */
       duid: duid,
       stand: function () {
         return { kanaal: hetKanaal, vrij: vrij, afgewezen: afgewezen, wachtrij: wachtrij.length };
+      }
+    };
+  })();
+
+  /* -------------------------------------------------------------------------
+     DE WACHT OP HET FORMULIER — de val, de drempel, en Turnstile als optie
+     ---------------------------------------------------------------------------
+     Dit formulier stuurt straks een mail naar een echt mens, en tot 2026-10-12
+     stond er geen enkele drempel voor. Net als de meting staat dit blok op beide
+     pagina's letterlijk hetzelfde.
+
+     WAT HET SLOT IS, EN WAT NIET. Het slot waarmee we live gaan is de val plus
+     de drempel. Turnstile staat erin maar staat UIT, en dat is de normale
+     toestand en geen foutsituatie — zie punt 3. De reden is hard: Turnstile
+     werkt alleen als het jeton aan de serverkant geverifieerd wordt, en gebeurt
+     dat niet, dan post een bot gewoon zonder jeton en komt hij erdoor, terwijl
+     iedereen denkt dat er een beveiliging staat. Een eerlijke honeypot is beter
+     dan een slot dat niet op slot zit.
+
+     1 · DE VAL. Een invulvak dat een mens nooit ziet en dus nooit vult, maar dat
+     een bot braaf meeneemt: extra_notes, boven de verzendknop. De uitvoering is
+     hier het hele werk, want de voor de hand liggende oplossing is de verkeerde:
+
+     · GEEN display:none. Dat is precies waar een bot van enig niveau op kijkt;
+       het is het eerste wat een scraper van een veld afleest.
+     · Wél de gewone "visually hidden"-vorm: een vakje van één beeldpunt met
+       clip-path: inset(50%) en overflow: hidden. Dat is geen display:none, dus
+       leest een bot het als een echt veld.
+     · GEEN label, en aria-hidden="true" met tabindex="-1" erop. Dat is de
+       keerzijde van die vorm: een geclipt element staat nog wél in de
+       toegankelijkheidsboom en in de tabvolgorde, dus zou een schermlezer er een
+       naamloos invulvak voorlezen en zou een toetsenbordbezoeker erin belanden.
+       Met die twee attributen bestaat het voor hen niet. En een invulvak zonder
+       label geeft geen tekst in de pagina, dus verandert de zichtbare tekst er
+       niet van — dat is gemeten, niet aangenomen.
+     · De NAAM is extra_notes en niet company_url, website of url. Die drie zijn
+       juist de namen waar een wachtwoordbeheerder of de automatische invulling
+       van de browser op aanslaat, en een veld dat door autofill gevuld wordt is
+       geen val maar een valstrik voor een echte bezoeker. Een bot die alles
+       invult — en dat is het soort dat een honeypot hoort te vangen — kijkt niet
+       naar de naam.
+
+     2 · DE DREMPEL. Een formulier dat binnen 3 seconden na het laden verstuurd
+     wordt, komt niet van iemand die vier velden invult. Die grens staat bewust
+     laag, en ze kan geen mens raken omdat er een EN naast staat: ze geldt alleen
+     als er in het formulier géén menselijke handeling gezien is. Een bezoeker
+     moet op de knop klikken of Enter in een veld geven, en beide zetten die vlag
+     — ook wie met het toetsenbord werkt, ook wie een schermlezer gebruikt, ook
+     wie met een wachtwoordbeheerder alles in één keer invult. Wat de vlag níet
+     zet, is een script dat .value toekent en verzendt. De drempel kan dus alleen
+     een bot raken, en daarom mag ze streng staan.
+
+     EN ALS ER TOCH IEMAND TEGENGEHOUDEN WORDT, ZIET HIJ DAT. Een geweigerde
+     verzending laat een melding zien die zegt dat het niet gelukt is, dat hij
+     het opnieuw kan proberen, en dat hij Nick rechtstreeks kan mailen als het
+     dan nog niet lukt — zijn adres staat onder dit formulier. Dat is het hele
+     punt: een formulier dat op de knop drukken stil negeert, is het ergste wat
+     er met een verkoopkans kan gebeuren, want die zie je nooit. De melding
+     staat met hidden in de pagina en is dus geen zichtbare tekst zolang er
+     niets misgaat.
+
+     3 · TURNSTILE — INGEBOUWD, UIT, EN DAT IS DE STAND WAARIN WE PUBLICEREN.
+     Zolang TURNSTILE_SITEKEY leeg is gebeurt er niets: geen script, geen
+     verzoek naar buiten, geen widget, geen melding, en oordeel() komt nooit op
+     "wacht". Het formulier werkt dan volledig, met de val en de drempel als
+     slot. Precies zoals GOOGLE_GTM_ID zich gedroeg toen dat nog leeg stond.
+     Wat er moet gebeuren om het aan te zetten, staat in METING.md in één
+     alinea; het is een handeling van tien minuten en geen herontwerp.
+
+     Drie dingen over Turnstile die uit hun eigen documentatie komen en niet uit
+     het hoofd (developers.cloudflare.com/turnstile, nagekeken 2026-10-12):
+
+     · Een jeton is 300 seconden geldig en mag één keer gebruikt worden. Zou het
+       widget bij het laden van de pagina al een jeton halen — de standaardstand
+       execution: 'render' — dan heeft een bezoeker die zes minuten leest een
+       verlopen jeton en wordt zijn aanvraag aan de serverkant geweigerd. Daarom
+       staat hier execution: 'execute': het jeton wordt pas gehaald op het moment
+       dat hij verzendt, en de aanvraag vertrekt een seconde later. Daarmee is de
+       hele vraag van verlopen en vernieuwen weg in plaats van afgehandeld.
+     · Het jeton komt in een verborgen vak cf-turnstile-response binnen het
+       formulier. Daar kijkt oordeel() naar: is er een sitesleutel en nog geen
+       jeton, dan luidt het oordeel "wacht", wordt de verzending tegengehouden,
+       haalt turnstile.execute() een jeton, en verzendt de callback opnieuw —
+       nu met jeton, dus nu gaat ze door.
+     · appearance: 'interaction-only' geldt alleen voor een Managed of
+       Non-Interactive widget. Bij een Invisible widget is er nooit iets te zien
+       en doet die stand niets; hij staat er zodat het ook klopt als het widget
+       ooit als Managed aangemaakt wordt.
+
+     ALS HET AANGAAT, LAADT HET ONGEACHT DE COOKIETOESTEMMING, EN DAT IS MET
+     OPZET. Het is een beveiligingsmaatregel en geen meting: zou het pas na
+     Toestaan laden, dan kan iemand die cookies weigert het formulier niet meer
+     versturen, en dat is een verloren verkoopkans om een reden die niets met
+     meten te maken heeft. Verplaats dit dus NIET naar laadMeettags(). De
+     meettags van Google en LinkedIn zijn geen beveiliging en blijven wél achter
+     de grendel.
+
+     HET FAALPAD VAN DE ONZICHTBARE STAND. Een bezoeker die onterecht verdacht
+     wordt, krijgt geen tweede kans: zijn jeton komt niet. Dus dezelfde melding
+     als hierboven, het widget wordt teruggezet zodat een tweede poging wél kan,
+     en formulier_controle_mislukt wordt apart gemeten zodat zichtbaar is hoe
+     vaak dit gebeurt.
+     ------------------------------------------------------------------------- */
+  var FORMULIERWACHT = (function () {
+    /* TODO — nodig van klant: de sitesleutel van het Turnstile-widget, ALS we
+       Turnstile aanzetten. Die sleutel is openbaar van ontwerp, net als het Tag
+       Manager-id, en hoort dus gewoon in de pagina. De GEHEIME sleutel hoort
+       hier nooit te staan: die gaat naar de technische man van de klant, voor de
+       controle aan de serverkant — en zonder die controle is dit versiering.
+       Leeg is de normale stand. */
+    var TURNSTILE_SITEKEY = '';   /* bv. '0x4AAAAAAABkMYinukE8nzYS' */
+
+    /* De drempel. Zie de uitleg hierboven: hij kan alleen een bot raken. */
+    var GRENS_MS = 3000;
+
+    var geopend = (Date && Date.now) ? Date.now() : new Date().getTime();
+    var aangeraakt = false;
+    var widget = null;
+    var bezig = false;
+
+    /* Elke menselijke handeling in een formulier zet de vlag. focusin staat
+       erbij voor wie met het toetsenbord of met een schermlezer werkt: die klikt
+       niet, maar komt wel in een veld. */
+    ['pointerdown', 'keydown', 'focusin'].forEach(function (soort) {
+      document.addEventListener(soort, function (e) {
+        var t = e.target;
+        if (t && t.closest && t.closest('form')) { aangeraakt = true; }
+      }, true);
+    });
+
+    function jeton(f) {
+      var el = f.querySelector('[name="cf-turnstile-response"]');
+      return el ? String(el.value || '') : '';
+    }
+
+    /* HET OORDEEL, ZONDER BIJWERKINGEN. Het wordt twee keer gevraagd — één keer
+       door de meting, die wil weten wat ze moet noemen, en één keer door de
+       wacht zelf, die handelt. Zou deze functie iets veranderen, dan zouden die
+       twee een ander antwoord krijgen. Uitkomsten: '' (door),
+       'geweigerd:honeypot', 'geweigerd:te_snel', 'wacht'. */
+    function oordeel(f) {
+      if (!f || !f.querySelector) { return ''; }
+      var val = f.querySelector('[data-val-voor-bots]');
+      if (val && String(val.value || '').trim() !== '') { return 'geweigerd:honeypot'; }
+      var ms = ((Date && Date.now) ? Date.now() : new Date().getTime()) - geopend;
+      if (ms < GRENS_MS && !aangeraakt) { return 'geweigerd:te_snel'; }
+      if (TURNSTILE_SITEKEY && !jeton(f)) { return 'wacht'; }
+      return '';
+    }
+
+    function melding(aan) {
+      var el = document.querySelector('[data-formulier-melding]');
+      if (!el) { return; }
+      if (aan) { el.removeAttribute('hidden'); } else { el.setAttribute('hidden', ''); }
+    }
+
+    function mislukt(code) {
+      bezig = false;
+      melding(true);
+      /* Terugzetten, anders kan een tweede poging geen nieuw jeton halen en
+         blijft de bezoeker op een knop drukken die niets doet. */
+      if (window.turnstile && widget !== null) {
+        try { window.turnstile.reset(widget); } catch (e) {}
+      }
+      if (typeof METING !== 'undefined' && METING) {
+        METING.meld('formulier_controle_mislukt', {
+          cta: 'formulier-vraag-demo',
+          reden: String(code || 'onbekend').slice(0, 40)
+        });
+      }
+    }
+
+    document.addEventListener('submit', function (e) {
+      var f = e.target;
+      if (!f || !f.querySelector) { return; }
+      melding(false);
+      var oord = oordeel(f);
+      if (oord === '') { return; }
+      e.preventDefault();
+      /* Tegengehouden. De melding gaat aan — ook voor een bot, die er niets mee
+         doet; en als er ooit toch een mens tegengehouden wordt, staat hij niet
+         voor een knop die stil niets deed. */
+      if (oord.indexOf('geweigerd:') === 0) { melding(true); return; }
+      if (bezig) { return; }
+      if (!window.turnstile || widget === null) { mislukt('niet-geladen'); return; }
+      bezig = true;
+      window.turnstile.execute(widget);
+    }, true);
+
+    if (TURNSTILE_SITEKEY) {
+      window.opTurnstileGeladen = function () {
+        var plek = document.querySelector('[data-turnstile]');
+        if (!plek || !window.turnstile) { return; }
+        widget = window.turnstile.render(plek, {
+          sitekey: TURNSTILE_SITEKEY,
+          action: 'demo-aanvraag',
+          execution: 'execute',
+          appearance: 'interaction-only',
+          language: 'nl',
+          callback: function () {
+            bezig = false;
+            melding(false);
+            var f = plek.closest('form');
+            if (!f) { return; }
+            /* requestSubmit() en niet submit(): submit() vuurt het submit-event
+               NIET af, en dan meet de meting deze aanvraag niet. */
+            if (f.requestSubmit) { f.requestSubmit(); } else { f.submit(); }
+          },
+          /* true teruggeven zegt Turnstile dat wij de fout zelf tonen. */
+          'error-callback': function (code) { mislukt(code); return true; },
+          'timeout-callback': function () { mislukt('timeout'); },
+          /* Met execution: 'execute' kan dit nauwelijks gebeuren — het jeton
+             wordt gehaald en een seconde later verstuurd. Staat er toch, want
+             een verlopen jeton dat stil blijft liggen is precies het faalpad
+             waar de uitleg hierboven over gaat. */
+          'expired-callback': function () { mislukt('verlopen'); }
+        });
+      };
+      var tsScript = document.createElement('script');
+      tsScript.async = true;
+      tsScript.defer = true;
+      tsScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
+        + '?render=explicit&onload=opTurnstileGeladen';
+      document.head.appendChild(tsScript);
+    }
+
+    return {
+      oordeel: oordeel,
+      /* Alleen om te kunnen toetsen; de pagina gebruikt dit zelf niet. */
+      stand: function () {
+        return {
+          sitesleutel: TURNSTILE_SITEKEY, grens: GRENS_MS,
+          aangeraakt: aangeraakt, bezig: bezig,
+          turnstile: !!(window.turnstile && widget !== null)
+        };
       }
     };
   })();

@@ -642,7 +642,12 @@ for (const file of drafts) {
   // the src attribute to get past the gate, which is worse than no gate.
   const ALLOWED = ['cdn.tailwindcss.com', 'cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com',
                    'licdn.com', 'px.ads.linkedin.com',
-                   'googletagmanager.com', 'google-analytics.com'];
+                   'googletagmanager.com', 'google-analytics.com',
+                   // Cloudflare Turnstile. Staat hier sinds 2026-10-12: de r3-pagina's laden
+                   // dat script met document.createElement, dus zonder src-attribuut, en dan
+                   // ziet deze poort het niet. Een host die de pagina mag laden maar niet in de
+                   // lijst staat, is een lijst die niet meer zegt wat ze lijkt te zeggen.
+                   'challenges.cloudflare.com'];
   const foreign = [...new Set(fetched
     .map(u => (u.match(/^https?:\/\/([a-z0-9.-]+)/i) || [])[1])
     .filter(Boolean).map(h => h.toLowerCase()))]
