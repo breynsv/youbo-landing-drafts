@@ -1,0 +1,825 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-10-12 00:00:00",
+  "containerVersion": {
+    "path": "accounts/0/containers/0/versions/0",
+    "accountId": "0",
+    "containerId": "0",
+    "containerVersionId": "0",
+    "name": "Meting demo.youbo.io — GA4",
+    "description": "Ingericht naar METING.md: negentien gebeurtenissen van de landingspagina en de bevestigingspagina naar GA4 G-3RMJLLMCKB. Toestemming regelt de pagina zelf.",
+    "container": {
+      "path": "accounts/0/containers/0",
+      "accountId": "0",
+      "containerId": "0",
+      "name": "demo.youbo.io",
+      "publicId": "GTM-MXTKMSBR",
+      "usageContext": [
+        "WEB"
+      ],
+      "fingerprint": "0"
+    },
+    "folder": [
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "folderId": "1",
+        "name": "GA4 — basis",
+        "fingerprint": "0"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "folderId": "2",
+        "name": "GA4 — gebeurtenissen",
+        "fingerprint": "0"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "folderId": "3",
+        "name": "Uitschakelaar voor Sven",
+        "fingerprint": "0"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "folderId": "4",
+        "name": "Google Ads — later, nog leeg",
+        "fingerprint": "0"
+      }
+    ],
+    "tag": [
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "tagId": "1",
+        "name": "Google-tag — GA4 van demo.youbo.io",
+        "type": "googtag",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "tagId",
+            "value": "{{GA4 meet-ID}}"
+          }
+        ],
+        "fingerprint": "0",
+        "firingTriggerId": [
+          "1"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "notes": "Laadt GA4 en stuurt de paginaweergave. Staat op Initialisatie, zoals Google voorschrijft, zodat GA4 er is voordat de eerste gebeurtenis langskomt. Vuurt niet als de uitschakelaar aan staat.",
+        "parentFolderId": "1",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NEEDED",
+          "consentType": {
+            "type": "LIST",
+            "list": [
+              {
+                "type": "TEMPLATE",
+                "value": "analytics_storage"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "tagId": "2",
+        "name": "GA4 — alle gemeten gebeurtenissen",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "{{Event}}"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Gegeven — cta}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta_tekst"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Gegeven — cta_tekst}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta_detail"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Gegeven — cta_detail}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta_doel"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Gegeven — cta_doel}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "nieuwsbrief"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Gegeven — nieuwsbrief}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "reden"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Gegeven — reden}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "wachtrij_ms"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Gegeven — wachtrij_ms}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 meet-ID}}"
+          }
+        ],
+        "fingerprint": "0",
+        "firingTriggerId": [
+          "3"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "notes": "Eén tag voor alle negentien namen: de naam van de gebeurtenis is {{Event}}, dus wat de pagina stuurt heet in GA4 hetzelfde. Een parameter die de pagina niet meestuurt, wordt niet verstuurd.",
+        "parentFolderId": "2",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NEEDED",
+          "consentType": {
+            "type": "LIST",
+            "list": [
+              {
+                "type": "TEMPLATE",
+                "value": "analytics_storage"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "tagId": "3",
+        "name": "GA4 — alarm: naam die deze container niet kent",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "meting_onbekend"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "gebeurtenis"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Event}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Gegeven — cta}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta_detail"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{Gegeven — cta_detail}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 meet-ID}}"
+          }
+        ],
+        "fingerprint": "0",
+        "firingTriggerId": [
+          "4"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "blockingTriggerId": [
+          "3"
+        ],
+        "notes": "Krijgt de pagina ooit een twintigste gebeurtenisnaam, dan komt die hier binnen als meting_onbekend met de echte naam in de parameter gebeurtenis, in plaats van stil nergens aan te komen. Deze rij in GA4 is het alarm; hij hoort nul te zijn.",
+        "parentFolderId": "2",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NEEDED",
+          "consentType": {
+            "type": "LIST",
+            "list": [
+              {
+                "type": "TEMPLATE",
+                "value": "analytics_storage"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "tagId": "4",
+        "name": "Uitschakelaar — onthoudt ?meting=uit en ?meting=aan",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\n  /* ONTHOUDT DE UITSCHAKELAAR VAN SVEN.\n\n     ?meting=uit  -> zet de vlag, in localStorage en in een cookie\n     ?meting=aan  -> wist hem\n     geen parameter en de vlag staat al -> de houdbaarheid verlengen\n\n     Dat verlengen is niet overbodig. Safari kapt een cookie die door\n     JavaScript gezet is af op zeven dagen, dus zou de uitschakelaar op zijn\n     iPhone na een week stil weer aangaan. Door hem bij elk bezoek opnieuw te\n     stempelen blijft hij staan zolang Sven de pagina af en toe opent.\n\n     Twee dragers naast elkaar, en met opzet: localStorage is wat de pagina\n     zelf voor de cookiekeuze gebruikt en overleeft het langst, de cookie is de\n     terugval voor een browser waarin localStorage dicht staat.\n\n     Deze tag meet niets en stuurt niets naar buiten. */\n  (function () {\n    var SLEUTEL = 'youbo-meting-uit';\n    var HOUDBAAR = 400 * 24 * 60 * 60;  /* 400 dagen; meer kapt Chrome af */\n\n    function stempel(waarde, seconden) {\n      try {\n        document.cookie = SLEUTEL + '=' + waarde + ';path=/;max-age=' + seconden\n          + ';SameSite=Lax' + (location.protocol === 'https:' ? ';Secure' : '');\n      } catch (e) {}\n    }\n    function zetUit() {\n      try { localStorage.setItem(SLEUTEL, '1'); } catch (e) {}\n      stempel('1', HOUDBAAR);\n    }\n    function zetAan() {\n      try { localStorage.removeItem(SLEUTEL); } catch (e) {}\n      stempel('', 0);\n    }\n\n    var vraag = '';\n    try {\n      var m = String(location.search || '').match(/[?&]meting=([^&#]*)/);\n      vraag = m ? decodeURIComponent(m[1]).toLowerCase() : '';\n    } catch (e) { vraag = ''; }\n\n    if (vraag === 'uit') { zetUit(); return; }\n    if (vraag === 'aan') { zetAan(); return; }\n\n    var staatUit = false;\n    try { staatUit = localStorage.getItem(SLEUTEL) === '1'; } catch (e) {}\n    if (!staatUit) {\n      try {\n        staatUit = ('; ' + document.cookie).indexOf('; ' + SLEUTEL + '=1') > -1;\n      } catch (e) {}\n    }\n    if (staatUit) { zetUit(); }\n  })();\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "0",
+        "firingTriggerId": [
+          "2"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "priority": {
+          "type": "INTEGER",
+          "value": "1000"
+        },
+        "notes": "Slaat alleen de keuze van de bezoeker over meten op. Staat op Initialisatie — altijd, want deze tag MOET ook lopen als de meting uit staat; anders kan ?meting=aan hem nooit meer terugzetten.",
+        "parentFolderId": "3",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_NEEDED"
+        }
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "triggerId": "1",
+        "name": "Initialisatie — alleen als de meting aan staat",
+        "type": "INIT",
+        "notes": "Vuurt bij het opstarten van de container, behalve wanneer de uitschakelaar van Sven aan staat.",
+        "filter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{Meting aan of uit}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "uit"
+              },
+              {
+                "type": "BOOLEAN",
+                "key": "negate",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "1"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "triggerId": "2",
+        "name": "Initialisatie — altijd",
+        "type": "INIT",
+        "notes": "Zonder voorwaarde, met opzet: hier hangt alleen de tag die de uitschakelaar onthoudt, en die moet ook lopen als de meting uit staat — anders kan ?meting=aan hem nooit terugzetten.",
+        "fingerprint": "0",
+        "parentFolderId": "3"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "triggerId": "3",
+        "name": "Gebeurtenis — een van de negentien gemeten namen",
+        "type": "CUSTOM_EVENT",
+        "notes": "De negentien namen uit METING.md, als vaste lijst. GEEN .* — sinds 8 oktober 2026 zet Tag Manager zijn eigen gtag.config in de dataLayer, en een catch-all zou die naar GA4 doorsturen. Komt er een naam bij op de pagina, zet hem er dan hier bij.",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "^(demo_aanvraag_bevestigd|demo_formulier_verstuurd|nieuwsbrief_ingeschreven|formulier_geweigerd|formulier_controle_mislukt|logo_geklikt|demo_knop_geklikt|case_pdf_geopend|klantverhaal_doorgebladerd|rondleiding_stap_gekozen|vraag_opengeklapt|nick_gemaild|nick_gebeld|agenda_geopend|juridische_tekst_geopend|naar_youbo_site|naar_teal_partners|cookies_toegestaan|cta_zonder_naam)$"
+              }
+            ]
+          }
+        ],
+        "filter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{Meting aan of uit}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "uit"
+              },
+              {
+                "type": "BOOLEAN",
+                "key": "negate",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "2"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "triggerId": "4",
+        "name": "Gebeurtenis — naam die deze container niet kent (alarm)",
+        "type": "CUSTOM_EVENT",
+        "notes": "Alles wat op een naam van deze pagina lijkt maar niet in de lijst van negentien staat. De tag die hieraan hangt heeft die lijst als uitzondering, dus blijft hier alleen het onbekende over.",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "^(demo_|nieuwsbrief_|formulier_|case_pdf_|vraag_|rondleiding_|klantverhaal_|nick_|agenda_|juridische_|naar_|logo_|cookies_|cta_)"
+              }
+            ]
+          }
+        ],
+        "filter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{Meting aan of uit}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "uit"
+              },
+              {
+                "type": "BOOLEAN",
+                "key": "negate",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "2"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "triggerId": "5",
+        "name": "Gebeurtenis — demo-aanvraag bevestigd (de conversie)",
+        "type": "CUSTOM_EVENT",
+        "notes": "Alleen de bevestigde aanvraag. Deze trigger staat er voor Google Ads later: een conversietag erbij zetten en deze trigger kiezen, en dat is het. Vandaag hangt er niets aan.",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "demo_aanvraag_bevestigd"
+              }
+            ]
+          }
+        ],
+        "filter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{Meting aan of uit}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "uit"
+              },
+              {
+                "type": "BOOLEAN",
+                "key": "negate",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "4"
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "1",
+        "name": "GA4 meet-ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "G-3RMJLLMCKB"
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "1"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "2",
+        "name": "Meting aan of uit",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function () {\n  /* Staat de meting aan of uit in DEZE browser?\n\n     Geeft 'uit' of 'aan' terug. Drie bronnen, in deze volgorde:\n       1. ?meting=uit of ?meting=aan in het adres — die wint altijd, zodat de\n          eerste keer dat Sven het adres opent al niets meer meet, ook al heeft\n          de tag die het onthoudt op dat moment nog niet gelopen.\n       2. localStorage, dezelfde drager die de pagina zelf voor de\n          cookiekeuze gebruikt.\n       3. een gewone cookie, voor het geval localStorage dicht staat.\n\n     FAALT NAAR 'aan', met opzet. Gaat hier iets stuk, dan meet de pagina door\n     en zie je Svens eigen bezoeken in het rapport; dat is zichtbaar en te\n     herstellen. Zou dit naar 'uit' falen, dan stopt de hele meting zonder dat\n     iemand het merkt, en dat is de duurdere fout. */\n  var SLEUTEL = 'youbo-meting-uit';\n  var uitAdres = '';\n  try {\n    var m = String(location.search || '').match(/[?&]meting=([^&#]*)/);\n    uitAdres = m ? decodeURIComponent(m[1]).toLowerCase() : '';\n  } catch (e) { uitAdres = ''; }\n  if (uitAdres === 'uit') { return 'uit'; }\n  if (uitAdres === 'aan') { return 'aan'; }\n  try {\n    if (window.localStorage && localStorage.getItem(SLEUTEL) === '1') { return 'uit'; }\n  } catch (e2) {}\n  try {\n    if (('; ' + document.cookie).indexOf('; ' + SLEUTEL + '=1') > -1) { return 'uit'; }\n  } catch (e3) {}\n  return 'aan';\n}"
+          }
+        ],
+        "fingerprint": "0",
+        "notes": "Geeft 'uit' of 'aan'. Leest ?meting= uit het adres, daarna localStorage, daarna een cookie. Alle triggers hangen hieraan.",
+        "parentFolderId": "3"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "10",
+        "name": "Gegeven — cta",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "cta"
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "2"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "11",
+        "name": "Gegeven — cta_tekst",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "cta_tekst"
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "2"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "12",
+        "name": "Gegeven — cta_detail",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "cta_detail"
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "2"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "13",
+        "name": "Gegeven — cta_doel",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "cta_doel"
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "2"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "14",
+        "name": "Gegeven — nieuwsbrief",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "nieuwsbrief"
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "2"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "15",
+        "name": "Gegeven — reden",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "reden"
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "2"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "16",
+        "name": "Gegeven — wachtrij_ms",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "wachtrij_ms"
+          }
+        ],
+        "fingerprint": "0",
+        "parentFolderId": "2"
+      }
+    ],
+    "builtInVariable": [
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "type": "EVENT",
+        "name": "Event"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "type": "PAGE_URL",
+        "name": "Page URL"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "type": "PAGE_PATH",
+        "name": "Page Path"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "type": "PAGE_HOSTNAME",
+        "name": "Page Hostname"
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "type": "REFERRER",
+        "name": "Referrer"
+      }
+    ],
+    "fingerprint": "0"
+  }
+}
