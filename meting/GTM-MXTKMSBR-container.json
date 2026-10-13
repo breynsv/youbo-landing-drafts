@@ -390,7 +390,7 @@
         "notes": "Vuurt bij het opstarten van de container, behalve wanneer de uitschakelaar van Sven aan staat.",
         "filter": [
           {
-            "type": "EQUALS",
+            "type": "NOT_EQUALS",
             "parameter": [
               {
                 "type": "TEMPLATE",
@@ -449,7 +449,7 @@
         ],
         "filter": [
           {
-            "type": "EQUALS",
+            "type": "NOT_EQUALS",
             "parameter": [
               {
                 "type": "TEMPLATE",
@@ -498,7 +498,7 @@
         ],
         "filter": [
           {
-            "type": "EQUALS",
+            "type": "NOT_EQUALS",
             "parameter": [
               {
                 "type": "TEMPLATE",
@@ -547,7 +547,7 @@
         ],
         "filter": [
           {
-            "type": "EQUALS",
+            "type": "NOT_EQUALS",
             "parameter": [
               {
                 "type": "TEMPLATE",
