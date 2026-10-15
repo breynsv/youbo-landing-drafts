@@ -5,7 +5,8 @@
 # "logo_hoogte" is de hoogte in beeldpunten; kijk ernaast en kies wat even zwaar weegt.
 # "cijfers" is een opsomming: één regel per cijfer, twee of drie regels.
 # "gebruik" staat klein boven die cijfers, op elke kaart dezelfde — het zegt waar ze over gaan.
-# "downloadlink" mag een anker (#cases-open) of een bestand zijn; een bestand dat niet bestaat stopt de bouw.
+# "downloadlink" is het pad naar de pdf van die case, bv. cases/youbo-case-kaneka.pdf.
+# Een bestand dat niet bestaat stopt de bouw, dus een typfout komt nooit op de site terecht.
 # GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
 # Meer uitleg: content/LEESMIJ.txt.
 cases:
@@ -20,7 +21,7 @@ cases:
         - 204 medewerkers
         - 27 afdelingen
       sector: Chemie- en technologiebedrijf
-      downloadlink: '#cases-open'
+      downloadlink: cases/youbo-case-kaneka.pdf
     - bedrijf: Anchr
       logo: assets/img/anchr-logo.webp
       logo_hoogte: 21
@@ -29,7 +30,7 @@ cases:
         - 300 medewerkers
         - 8 bedrijven
       sector: Softwaregroep
-      downloadlink: '#cases-open'
+      downloadlink: cases/youbo-case-anchr.pdf
     - bedrijf: Aertssen Group
       logo: assets/img/aertssen-logo-dark.svg
       logo_hoogte: 32
@@ -39,7 +40,7 @@ cases:
         - van eerste gesprek tot eerste cyclus
       sector: Infrastructuur- en logistiekgroep
       nota: 'TODO — te bevestigen bij Bart of Nick: in hoeveel landen Aertssen zit. Jana’s campagneplan schrijft hier zelf 450 bedienden in X landen'
-      downloadlink: '#cases-open'
+      downloadlink: cases/youbo-case-aertssen-group.pdf
     - bedrijf: SD Worx
       logo: assets/img/sdworx-logo-dark.svg
       logo_hoogte: 24
@@ -48,7 +49,7 @@ cases:
         - 7.000 medewerkers
         - 21 landen
       sector: Hr-dienstverlener
-      downloadlink: '#cases-open'
+      downloadlink: cases/youbo-case-sd-worx.pdf
     - bedrijf: DPG Media
       logo: assets/img/dpg-logo-dark.svg
       logo_hoogte: 24
@@ -57,8 +58,7 @@ cases:
         - 6.214 medewerkers
         - 2 landen
       sector: Mediagroep
-      downloadlink: '#cases-open'
-  nota: 'TODO — nodig van klant: de vijf case-pdf’s bestaan nog niet, dus de downloadlinks wijzen voorlopig naar dit blokje in plaats van naar een bestand dat er niet is'
+      downloadlink: cases/youbo-case-dpg-media.pdf
 quotes:
   kop: Waarom klanten voor Youbo kiezen
   items:

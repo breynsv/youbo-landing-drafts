@@ -231,7 +231,7 @@ function maakWegwerp() {
   mkdirSync(join(map, 'content'));
   for (const f of [...BRONNEN, 'faq.yml']) cpSync(join(hier, 'content', f), join(map, 'content', f));
   mkdirSync(join(map, 'assets', 'img'), { recursive: true });
-  for (const beeld of beeldenInBronnen()) cpSync(join(hier, beeld), join(map, beeld));
+  for (const bestand of bestandenInBronnen()) cpSync(join(hier, bestand), join(map, bestand));
   return map;
 }
 
@@ -249,10 +249,21 @@ function maakWegwerpMetPublicatie() {
   return map;
 }
 
-function beeldenInBronnen() {
+/* De bestanden waar een inhoudsveld naar wijst. Tot 2026-10-15 zocht dit
+   alleen naar assets/img/…, want dat waren de enige: logo's en quotefoto's.
+   Sinds de vijf case-pdf's er zijn, wijst "downloadlink" naar cases/…, en die
+   map werd niet meegekopieerd — de bouw in de wegwerpmap viel dan over een
+   bestand dat in de echte map wél bestaat, en dat leest als een kapotte pagina
+   terwijl er niets kapot is. Staat er ooit een derde soort bestand in een veld,
+   dan hoort die map hier bij. */
+/* De staart moet een van deze extensies zijn en niet zomaar "tot het volgende
+   teken dat geen letter is": in de uitleg bovenaan het bronbestand staat zo'n
+   pad midden in een zin, en dan liep de punt van die zin mee in de naam. */
+const MAPPEN_MET_BESTANDEN = /(?:assets\/img|cases)\/[\w.-]+?\.(?:svg|webp|png|jpg|jpeg|pdf|ico)\b/g;
+function bestandenInBronnen() {
   const uit = new Set();
   for (const f of BRONNEN) {
-    for (const m of readFileSync(join(hier, 'content', f), 'utf8').matchAll(/assets\/img\/[\w.-]+/g)) {
+    for (const m of readFileSync(join(hier, 'content', f), 'utf8').matchAll(MAPPEN_MET_BESTANDEN)) {
       uit.add(m[0]);
     }
   }
@@ -533,7 +544,7 @@ const grenzen = [
   ['een verwijzing naar een bestand dat niet bestaat, houdt de bouw tegen', 'klanten.yml',
    'foto: assets/img/pieter-jan.webp', 'foto: assets/img/bestaat-niet.webp', /ontbrekend bestand/],
   ['een javascript:-adres in een link houdt de bouw tegen', 'klanten.yml',
-   "downloadlink: '#cases-open'", "downloadlink: 'javascript:alert(1)'", /javascript/],
+   'downloadlink: cases/youbo-case-kaneka.pdf', "downloadlink: 'javascript:alert(1)'", /javascript/],
   ['een lijst tussen haken wordt niet stil als tekst gelezen', 'klanten.yml',
    '      cijfers:\n        - 204 medewerkers\n        - 27 afdelingen', '      cijfers: []', /tussen haken/],
   ['een opsomming waar één regel tekst hoort, houdt de bouw tegen', 'pagina.yml',

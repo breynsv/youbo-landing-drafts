@@ -645,7 +645,8 @@ collections:
               "logo_hoogte" is de hoogte in beeldpunten; kijk ernaast en kies wat even zwaar weegt.
               "cijfers" is een opsomming: één regel per cijfer, twee of drie regels.
               "gebruik" staat klein boven die cijfers, op elke kaart dezelfde — het zegt waar ze over gaan.
-              "downloadlink" mag een anker (#cases-open) of een bestand zijn; een bestand dat niet bestaat stopt de bouw.
+              "downloadlink" is het pad naar de pdf van die case, bv. cases/youbo-case-kaneka.pdf.
+              Een bestand dat niet bestaat stopt de bouw, dus een typfout komt nooit op de site terecht.
               GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
               Meer uitleg: content/LEESMIJ.txt.
             widget: 'object'
@@ -756,18 +757,10 @@ collections:
                     label: 'Waar de downloadlink naartoe gaat'
                     widget: 'string'
                     required: true
-                    hint: 'Een anker op de pagina (#cases-open) of een bestand in deze repo. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie.'
+                    hint: 'Het pad naar de pdf van deze case, bv. cases/youbo-case-kaneka.pdf. Verwijst het naar een bestand dat er niet is, dan stopt de publicatie — dus een typfout komt nooit op de site terecht. De link opent in een nieuw tabblad, dus blijft de pagina staan.'
                     pattern:
                       - '^[^<\n]*$'
                       - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'nota'
-                label: 'Open punt onder de cases'
-                widget: 'string'
-                required: true
-                hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
           - name: 'quotes'
             label: 'De quotes'
             widget: 'object'

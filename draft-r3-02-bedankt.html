@@ -12,8 +12,8 @@ GEEN TWEEDE SET STIJLEN: alles hieronder komt letterlijk uit draft-r3-01-definit
 -->
 <html lang="nl-BE">
 <head>
-<meta name="ontwerp-versie" content="3.3+20261013">
-<meta name="ontwerp-versie-leesbaar" content="v3.3 — 13 oktober 2026">
+<meta name="ontwerp-versie" content="3.3+20261015">
+<meta name="ontwerp-versie-leesbaar" content="v3.3 — 15 oktober 2026">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -803,10 +803,14 @@ tailwind.config = {
        kop van laadMeettags() op die pagina, en ze staat er nog: een conversie
        op de knop telt ook de aanvragen die daarna mislukken.
      · File downloads staat AAN, dus meet Google een case-pdf zelf als
-       file_download. Onze case_pdf_geopend is daar geen dubbel van: ze zegt
-       in cta_detail WELKE case het was, en vandaag wijzen die vijf links nog
-       naar het anker #cases-open, waar Google's file_download helemaal niet op
-       afgaat. Zolang de pdf's er niet zijn, is onze gebeurtenis de enige.
+       file_download. Sinds 2026-10-15 wijzen die vijf links naar een echt
+       bestand, dus vuren er vanaf nu TWEE gebeurtenissen per klik: Google's
+       file_download en onze case_pdf_geopend. Dat is geen dubbeltelling om op
+       te ruimen, want ze tellen niet hetzelfde. file_download draagt de
+       bestandsnaam en gaat alleen af als de browser het echt ophaalt; onze
+       gebeurtenis draagt in cta_detail WELKE case het was en gaat af op de
+       klik, ook als de download daarna mislukt. Tel in een rapport dus één van
+       de twee, nooit de som.
 
      EEN NAAM PER VOORVOEGSEL WAAR HET CMS DE HAAK MAAKT. De cases, de quotes,
      de rondleidingstappen en de FAQ zijn lijsten die Jana in /beheer/ kan laten
