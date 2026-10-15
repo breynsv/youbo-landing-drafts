@@ -6,7 +6,7 @@ DE REACTIETIJD: «eerstdaags», bewust vaag en op aanwijzing van de klant zo gek
 NOINDEX, EN WAAROM DAT HIER OMGEKEERD IS AAN DE LANDINGSPAGINA: een bevestigingspagina hoort niet in de zoekresultaten. Wie haar via Google binnenkomt, heeft niets aangevraagd en leest een bevestiging van iets wat niet gebeurd is; bovendien vervuilt ze de conversiecijfers, want elk bezoek aan dit adres telt als een aanvraag. check-drafts.mjs verbiedt noindex op elke andere draft — dat was een echte fout die vier drafts eens besmette — dus kent de checker sinds deze pagina twee soorten draft en eist hij noindex hier juist. Zie de meta «pagina-soort» hieronder en de toelichting in check-drafts.mjs.
 GEEN FORMULIER, EN DAT IS AFDWINGBAAR GEMAAKT. De checker eist op een landingspagina een <form> met een e-mailveld en verbiedt die hier. Een bevestigingspagina met een formulier erop is dezelfde fout als de vaste demobalk: je vraagt iets aan iemand die het net gegeven heeft.
 HET ALTERNATIEF: hetzelfde als onder het formulier op de landingspagina — Nicks e-mailadres als mailto: en zijn telefoonnummer als tel:, beide met data-cta zodat ze meetbaar blijven. Het nummer staat Belgisch gezet (0486 08 27 65) en de href draagt +32486082765, want dat is wat een telefoon moet kiezen. De agendalink van Nick bestaat nog niet en staat hier dus niet; op de landingspagina staat daar een TODO bij, en die hoort daar en niet twee keer.
-DE COOKIEBALK STAAT ER WEL, en hij is letterlijk dezelfde: dezelfde balk, dezelfde twee knoppen, dezelfde localStorage-sleutel «youbo-toestemming» en dezelfde laadMeettags(). Dat is geen kopieerwerk uit netheid maar een vereiste: het meten loopt ook op deze pagina — dit is zelfs hét adres dat geteld wordt — en toestemming moet zich over het hele domein hetzelfde gedragen. Wie op de landingspagina Toestaan koos, ziet de balk hier niet meer; wie weigerde, blijft geweigerd. LinkedIn en Google laden nergens in de <head> maar uitsluitend in laadMeettags(), na Toestaan, met Consent Mode v2 op denied tot dan. Sinds 2026-10-09 staat het echte LinkedIn partner ID 10139124 ingevuld, hier en op de landingspagina; van Google is er nog geen id.
+DE COOKIEBALK STAAT ER WEL, en hij is letterlijk dezelfde: dezelfde balk, dezelfde twee knoppen, dezelfde localStorage-sleutel «youbo-toestemming» en dezelfde laadMeettags(). Dat is geen kopieerwerk uit netheid maar een vereiste: het meten loopt ook op deze pagina — dit is zelfs hét adres dat geteld wordt — en toestemming moet zich over het hele domein hetzelfde gedragen. Wie op de landingspagina Toestaan koos, ziet de balk hier niet meer; wie weigerde, blijft geweigerd. LinkedIn en Google laden nergens in de <head> maar uitsluitend in laadMeettags(), na Toestaan, met Consent Mode v2 op denied tot dan. Sinds 2026-10-09 staat het echte LinkedIn partner ID 10139124 ingevuld, hier en op de landingspagina. Sinds 2026-10-12 is Google er ook: container GTM-MXTKMSBR, met de GA4-stroom van demo.youbo.io erin. Op 2026-10-15 is de toestemming nagelopen op de AVG en op drie punten bijgesteld: de zin noemt nu ook de advertentiecookies van LinkedIn (toestemming moet geïnformeerd zijn over álles wat laadt), Weigeren heeft dezelfde donkere rand als de tekst gekregen zodat hij even goed te zien is als Toestaan, en boven de footer staat «Cookievoorkeuren wijzigen» — intrekken moet even makkelijk zijn als toestemmen (AVG artikel 7, lid 3), en dat was het niet: de balk verdween na één klik voorgoed.
 DE FOOTER: hún eigen component, ingesloten, byte voor byte hetzelfde blok als op de landingspagina, met dezelfde comment erboven die uitlegt hoe hij op youbo.io weer door footer.js gevuld wordt. Eén verschil, en het is een weglating: de ISO 27001:2022-badge staat hier niet. Die hoort niet bij hun footer — hij staat op de landingspagina als los element erbóven omdat Jana's campagneplan hem dáár vraagt — en een keurmerk op een bevestigingspagina is precies het soort extra dat deze pagina niet hoort te hebben.
 GEEN TWEEDE SET STIJLEN: alles hieronder komt letterlijk uit draft-r3-01-definitief.html — de tokens, de knoppen, .shell, .band-pad, het TODO-blokje, de focusomlijning, de alternatievenlinks en het volledige footerblok. Overgenomen en niet nagebouwd, zodat deze pagina niet als een neef van de landingspagina leest maar als dezelfde site.
 -->
@@ -639,6 +639,26 @@ tailwind.config = {
      (youbo_logo.svg) is daar dus het juiste bestand, en linkedin.svg is al in
      #547068 getekend — precies de tekstkleur van deze footer.
      ========================================================================= -->
+<!-- DE COOKIEVOORKEUREN — INTREKKEN MOET EVEN MAKKELIJK ZIJN ALS TOESTEMMEN.
+     AVG artikel 7, lid 3. Deze regel staat er altijd, ook vóór de eerste keuze
+     en ook nadat iemand geweigerd heeft, want zonder hem is de cookiebalk een
+     eenrichtingsdeur: hij verdwijnt na de eerste klik en komt nooit terug.
+
+     HIJ STAAT BUITEN DE FOOTER, met opzet. De footer hieronder is hún
+     component, en op youbo.io vult footer.js die opnieuw — een link die wij
+     daarin zetten, overleeft dat niet. Deze staat in ons eigen blok en wel.
+
+     Wat de klik doet, staat bij intrek() onderaan deze pagina.
+     Juridische tekst, dus geen veld in /beheer/ — zie de nota bij de
+     privacyregel in de formuliersectie. -->
+<div class="bg-surface py-8" x-data>
+  <div class="shell text-center">
+    <button type="button" @click="$store.toestemming.intrek()"
+            class="text-caption text-ink-soft underline underline-offset-2 hover:text-link-hover cursor-pointer"
+            data-cta="cookievoorkeuren">Cookievoorkeuren wijzigen</button>
+  </div>
+</div>
+
 <footer class="yb-footer">
 
   <div class="footer-links">
@@ -731,11 +751,11 @@ tailwind.config = {
         We plaatsen <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
            class="text-link-licht underline underline-offset-2 hover:text-link-hover"
            style="transition: color var(--m-base) var(--e-standard)"
-           data-cta="cookiebalk-beleid">meetcookies</a><span class="hidden sm:inline"> om te zien hoe deze pagina gebruikt wordt</span>.
+           data-cta="cookiebalk-beleid">meet- en advertentiecookies</a><span class="hidden sm:inline"> om te zien hoe deze pagina gebruikt wordt en hoe onze LinkedIn-campagne presteert</span>.
       </p>
       <div class="flex items-center gap-2 shrink-0">
         <button type="button" @click="$store.toestemming.zet('geweigerd')"
-                class="btn-secondary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">
+                class="btn-secondary border-ink hover:border-ink min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">
           Weigeren
         </button>
         <button type="button" @click="$store.toestemming.zet('toegestaan')"
@@ -864,6 +884,14 @@ tailwind.config = {
       'footer-voorwaarden':      'juridische_tekst_geopend',
       'cookiebalk-beleid':       'juridische_tekst_geopend',
       'cookiebalk-toestaan':     'cookies_toegestaan',
+      /* "Cookievoorkeuren wijzigen" wordt NIET gemeten. Op het moment van die
+         klik IS er toestemming, dus zou het mogen — maar de pagina herlaadt
+         meteen daarna en die gebeurtenis zou dus een race zijn met het
+         herladen. En een intrekking meetellen in precies het pakket dat zij
+         intrekt, is het verkeerde gebaar. Hij staat hier wel in de tabel:
+         zonder deze regel is het een haak zonder naam en vuurt het alarm
+         cta_zonder_naam. */
+      'cookievoorkeuren':        null,
       /* "Weigeren" wordt NIET gemeten, en dat is geen vergetelheid. Op het
          moment van die klik is er geen toestemming en komt die er ook niet, dus
          is er geen grond om er iets over te versturen. Hoeveel mensen weigeren
@@ -1449,6 +1477,51 @@ tailwind.config = {
   }
 
   /* -------------------------------------------------------------------------
+     WISMEETCOOKIES — wat Google op dit domein heeft neergezet, weer weghalen
+     ---------------------------------------------------------------------------
+     Hoort bij het intrekken hieronder. Toestemming intrekken en de cookies
+     laten staan is geen intrekken: de bezoeker blijft dan herkenbaar tot ze
+     van ouderdom vervallen, en dat is bij _ga twee jaar.
+
+     ALLEEN DE EIGEN COOKIES KUNNEN WEG, en dat is geen slordigheid maar hoe
+     het web werkt. _ga, _ga_<stroom>, _gid en _gcl_au staan op demo.youbo.io
+     zelf, dus mag JavaScript van deze pagina ze overschrijven. De cookies van
+     de LinkedIn-tag (bcookie, lidc, UserMatchHistory, li_sugr) staan op
+     .linkedin.com en zijn vanaf hier onaanraakbaar — die wist de bezoeker in
+     zijn browser, of ze verlopen. Daarom noemt de intrekking hieronder ook
+     uitsluitend wat ze echt doet.
+
+     Een cookie wordt gewist door hem opnieuw te zetten met max-age=0, en dat
+     moet op precies het pad en het domein waar hij staat, anders zet je er een
+     tweede naast in plaats van de eerste weg te halen. Welke van de twee
+     Google gebruikte weten we niet, dus proberen we ze allebei.
+     ------------------------------------------------------------------------- */
+  function wisMeetcookies() {
+    var namen = [];
+    try {
+      var alle = String(document.cookie || '').split(';');
+      for (var i = 0; i < alle.length; i++) {
+        var naam = alle[i].split('=')[0].trim();
+        if (/^(_ga|_gid|_gat|_gcl)/.test(naam) && namen.indexOf(naam) === -1) { namen.push(naam); }
+      }
+    } catch (e) { return; }
+
+    var host = location.hostname;
+    var domeinen = ['', host];
+    var punt = host.indexOf('.');
+    if (punt > -1) { domeinen.push('.' + host.slice(punt + 1)); }
+
+    for (var n = 0; n < namen.length; n++) {
+      for (var d = 0; d < domeinen.length; d++) {
+        try {
+          document.cookie = namen[n] + '=;path=/;max-age=0'
+            + (domeinen[d] ? ';domain=' + domeinen[d] : '');
+        } catch (e) {}
+      }
+    }
+  }
+
+  /* -------------------------------------------------------------------------
      RUIMTE ONDERAAN — de echte hoogte van wat er onderaan staat
      ---------------------------------------------------------------------------
      Hier staat één balk en niet twee, maar de meting blijft dezelfde als op de
@@ -1513,6 +1586,35 @@ tailwind.config = {
         /* Weigeren gooit de wachtrij weg en houdt haar dicht. Zonder deze regel
            zou een klik van vóór de keuze blijven staan — zie DE METING. */
         if (keuze === 'geweigerd') { METING.vergeten(); }
+      },
+
+      /* INTREKKEN — AVG artikel 7, lid 3: even makkelijk als toestemmen.
+         Zonder deze functie was de cookiebalk een eenrichtingsdeur. Hij
+         verdwijnt na de eerste klik en komt nooit terug, want de keuze staat in
+         localStorage; wie zich vergiste of van gedacht veranderde kon alleen
+         nog zijn browseropslag leegmaken, en dat is niet "even makkelijk".
+
+         Vier dingen, in deze volgorde, en de laatste is de belangrijkste:
+         Consent Mode terug op denied (zodat Google het hoort, ook als de tag al
+         draait), de keuze uit localStorage, de meetcookies van Google weg, en
+         dan de pagina herladen. DAT HERLADEN IS GEEN LUIHEID: Tag Manager en de
+         LinkedIn-tag staan al in het geheugen van deze weergave en zijn niet
+         meer te lossen. Een schone pagina is de enige manier om ze echt kwijt
+         te zijn — en meteen daarna staat de balk er weer, omdat de keuze weg
+         is. */
+      intrek() {
+        if (typeof gtag === 'function') {
+          gtag('consent', 'update', {
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            analytics_storage: 'denied'
+          });
+        }
+        try { localStorage.removeItem('youbo-toestemming'); } catch (e) {}
+        wisMeetcookies();
+        this.keuze = null;
+        location.reload();
       }
     });
   });

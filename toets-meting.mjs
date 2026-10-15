@@ -339,8 +339,29 @@ console.log('\n3. Na Toestaan — wat er dan wél vertrekt');
      gtm.join(' · ') || 'geen enkel verzoek — laadt de container wel?');
   ok('en dat is de container uit de pagina',
      gtm.length === 1 && gtm[0].indexOf('id=' + id(bron.landing, 'GOOGLE_GTM_ID')) !== -1, gtm[0]);
-  ok('er gaat geen verzoek naar gtag/js — GA4 loopt via de container',
-     verzoeken.filter((u) => /googletagmanager\.com\/gtag\/js/.test(u)).length === 0);
+  /* GTAG/JS MAG ER WEL ZIJN, ALS HET UIT DE CONTAINER KOMT.
+     Tot 2026-10-15 stond hier dat er géén verzoek naar gtag/js mocht gaan, en
+     dat was groen — maar om de verkeerde reden. De vier triggers van de
+     container stonden tot Versie 3 omgekeerd, dus vuurde de Google-tag voor een
+     gewone bezoeker nooit en laadde er dus ook nooit een gtag/js. Sinds die
+     versie gepubliceerd is, vuurt hij wél, en laadt Tag Manager zélf gtag/js —
+     zo richt GTM een Google-tag in. Deze regel is dus niet verzwakt maar
+     scherpgesteld: wat de pagina niet mag, is gtag/js RECHTSTREEKS laden, want
+     dan telt elke paginaweergave dubbel. Het onderscheid is de parameter cx=c,
+     die alleen Tag Manager erbij zet. */
+  const gtagjs = verzoeken.filter((u) => /googletagmanager\.com\/gtag\/js/.test(u));
+  ok('de pagina laadt gtag/js niet zelf — wat er komt, komt uit de container',
+     gtagjs.every((u) => /[?&]cx=c/.test(u)),
+     gtagjs.filter((u) => !/[?&]cx=c/.test(u)).join(' · '));
+
+  /* En dat de container ook echt iets naar GA4 stuurt, met de toestemming erbij.
+     gcs=G1<ad_storage><analytics_storage>, dus G111 = beide toegestaan. Zonder
+     deze twee regels bewijst het bovenstaande alleen dat er een script laadde. */
+  const collect = verzoeken.filter((u) => /google-analytics\.com\/g\/collect/.test(u));
+  ok('GA4 ontvangt ook echt een hit', collect.length > 0);
+  ok('en die hit draagt de toestemming mee — gcs=G111',
+     collect.length > 0 && collect.some((u) => /[?&]gcs=G111/.test(u)),
+     collect.map((u) => (u.match(/[?&](gcs=[^&]*)/) || [, 'geen gcs'])[1]).join(' · '));
   ok('de LinkedIn Insight Tag laadt nu wel',
      verzoeken.some((u) => /snap\.licdn\.com/.test(u)));
 
@@ -358,16 +379,76 @@ console.log('\n3. Na Toestaan — wat er dan wél vertrekt');
   await ctx.close();
 }
 
-/* ─────────────── 4 · één klik, één gebeurtenis ────────────────────────────── */
-console.log('\n4. Eén klik, één gebeurtenis — elke haak apart');
+/* ─────────────── 4 · intrekken, even makkelijk als toestemmen ─────────────── */
+console.log('\n4. Intrekken — AVG artikel 7, lid 3');
+
+{
+  /* In de bron: intrek() zet alle vier de signalen van Consent Mode v2 terug op
+     denied. Dat is na een herlading niet meer in de browser te zien — de
+     dataLayer is dan weg — dus wordt het hier in de tekst zelf nagekeken. */
+  for (const [naam, html] of Object.entries(bron)) {
+    const m = html.match(/intrek\(\) \{([\s\S]*?)\n      \}/);
+    const vier = ['ad_storage', 'ad_user_data', 'ad_personalization', 'analytics_storage'];
+    ok(`${naam}: intrek() zet alle vier de signalen terug op denied`,
+       !!m && vier.every((s) => new RegExp(s + ":\\s*'denied'").test(m[1])),
+       m ? vier.filter((s) => !new RegExp(s + ":\\s*'denied'").test(m[1])).join(', ') : 'intrek() ontbreekt');
+    ok(`${naam}: en hij wist de keuze, de meetcookies en herlaadt de pagina`,
+       !!m && /removeItem\('youbo-toestemming'\)/.test(m[1])
+           && /wisMeetcookies\(\)/.test(m[1]) && /location\.reload\(\)/.test(m[1]));
+  }
+
+  /* En in de browser: toestemmen, dan intrekken, en kijken wat er overblijft.
+
+     DE TOESTEMMING WORDT HIER GEKLIKT EN NIET VOORGEZET. open({keuze}) zet de
+     sleutel met addInitScript, en dat draait bij ELKE navigatie — ook bij de
+     herlading die het intrekken zelf veroorzaakt. De toets zette de keuze dus
+     terug die ze net had zien verdwijnen, en viel toen op vier punten rood om
+     een reden die niets met de pagina te maken had. Eerst gevonden door deze
+     toets op 2026-10-15, en de les staat hier omdat elke volgende toets rond
+     een herlading er weer in loopt. */
+  const { ctx, pg, verzoeken } = await open('/' + LANDING, { laatNavigeren: true });
+  await pg.evaluate(() => document.querySelector('[data-cta="cookiebalk-toestaan"]').click());
+  await pg.waitForTimeout(3000);
+  const gaVoor = (await ctx.cookies()).filter((c) => /^_ga/.test(c.name));
+  ok('na Toestaan staat er een _ga-cookie op het domein', gaVoor.length > 0,
+     gaVoor.map((c) => c.name).join(', ') || 'geen enkele');
+
+  const voor = verzoeken.length;
+  await Promise.all([
+    pg.waitForNavigation({ waitUntil: 'load' }),
+    pg.evaluate(() => document.querySelector('[data-cta="cookievoorkeuren"]').click()),
+  ]);
+  await pg.waitForTimeout(1500);
+
+  ok('de keuze is uit localStorage gewist',
+     (await pg.evaluate(() => { try { return localStorage.getItem('youbo-toestemming'); } catch (e) { return 'onleesbaar'; } })) === null);
+  const gaNa = (await ctx.cookies()).filter((c) => /^(_ga|_gid|_gcl)/.test(c.name));
+  ok('en de meetcookies van Google staan er niet meer', gaNa.length === 0,
+     gaNa.map((c) => c.name).join(', '));
+  ok('de cookiebalk staat er weer, dus kan de bezoeker opnieuw kiezen',
+     await pg.locator('[data-cookiebalk]').isVisible());
+  const na = verzoeken.slice(voor).filter((u) => MEETHOSTS.test(u));
+  ok('en de herladen pagina haalt niets bij Google of LinkedIn', na.length === 0,
+     na.join(' · '));
+  await ctx.close();
+}
+
+/* ─────────────── 5 · één klik, één gebeurtenis ────────────────────────────── */
+console.log('\n5. Eén klik, één gebeurtenis — elke haak apart');
 
 for (const [paginaNaam, pad] of [['landingspagina', LANDING], ['bevestigingspagina', BEDANKT]]) {
   const { ctx, pg, fout } = await open('/' + pad, { keuze: 'toegestaan', wacht: 2000 });
   /* De verzendknop staat met opzet NIET in deze ronde: hij wordt op het
      submit-event gemeten, en deze ronde houdt juist elke standaardhandeling
      tegen om alle haken achter elkaar te kunnen aanklikken. Hij krijgt zijn
-     eigen controles in deel 5. */
-  const BUITEN_DE_RONDE = ['formulier-vraag-demo'];
+     eigen controles in deel 6.
+
+     «Cookievoorkeuren wijzigen» staat er ook buiten, en om een andere reden:
+     die knop herlaadt de pagina met opzet — de enige manier om een al geladen
+     Tag Manager en LinkedIn-tag kwijt te raken. In deze ronde zou die ene klik
+     het uitvoeringsvenster van de browser slopen en alle haken daarna
+     meesleuren. Hij heeft zijn eigen deel: 4. */
+  const BUITEN_DE_RONDE = ['formulier-vraag-demo', 'cookievoorkeuren'];
   const alle = (await pg.evaluate(() => [...new Set([...document.querySelectorAll('[data-cta]')]
     .map((e) => e.getAttribute('data-cta')))]))
     .filter((h) => BUITEN_DE_RONDE.indexOf(h) === -1);
@@ -514,7 +595,7 @@ for (const [paginaNaam, pad] of [['landingspagina', LANDING], ['bevestigingspagi
 }
 
 /* ─────────────── 5 · het formulier en de bevestigingspagina ───────────────── */
-console.log('\n5. Het formulier — vandaag zonder eindpunt, en straks met');
+console.log('\n6. Het formulier — vandaag zonder eindpunt, en straks met');
 
 {
   const { ctx, pg } = await open('/' + LANDING, { keuze: 'toegestaan', wacht: 2000 });
@@ -584,7 +665,7 @@ console.log('\n5. Het formulier — vandaag zonder eindpunt, en straks met');
 }
 
 /* ─────────────── 6 · wat wegnavigeert ────────────────────────────────────── */
-console.log('\n6. Wat wegnavigeert — gemeten en niet aangenomen');
+console.log('\n7. Wat wegnavigeert — gemeten en niet aangenomen');
 
 {
   /* mailto: en tel:. De vraag is of de pagina daarbij ontladen wordt, want dan
@@ -667,7 +748,7 @@ console.log('\n6. Wat wegnavigeert — gemeten en niet aangenomen');
 }
 
 /* ─────────────── 7 · LinkedIn ─────────────────────────────────────────────── */
-console.log('\n7. LinkedIn — de lege plek, en wat er gebeurt als hij gevuld is');
+console.log('\n8. LinkedIn — de lege plek, en wat er gebeurt als hij gevuld is');
 
 /** Vervangt de Insight Tag door een stuk dat lintrk opschrijft in plaats van
  *  verstuurt, zodat te zien is of wij 'track' aanroepen. */
@@ -714,7 +795,7 @@ for (const [wat, conversie] of [['leeg', null], ['gevuld met 12345678', '1234567
 }
 
 /* ─────────────── 8 · de wacht op het formulier ────────────────────────────── */
-console.log('\n8. De wacht — de val, de drempel, en Turnstile die uit staat');
+console.log('\n9. De wacht — de val, de drempel, en Turnstile die uit staat');
 
 /** Verzendt het formulier en zegt of de verzending door is gegaan. Hier staat
  *  met opzet GEEN preventDefault omheen: de vraag is juist of de wacht hem

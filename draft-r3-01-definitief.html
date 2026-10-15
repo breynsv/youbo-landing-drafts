@@ -3,7 +3,7 @@
 CONCEPT: Ronde 3, het definitieve ontwerp. Kopie van draft-r2-05 (de schakelende variant in de échte huisstijl van youbo.io), met Jana's feedback van 5 oktober 2026 verwerkt — zie BRIEF-R3.md. De schakelende variant, Zelfde structuur en zelfde copy als draft-r2-02, maar elke kleur, maat, radius en overgangsduur komt letterlijk uit DESIGN-youbo-io.md: groen #0af29f met tekst #154e3a, tekst #0a3327 en #547068, oppervlak #f6f8fa, rand #e1ebf0, Inter, radius 8/12/24, en de spatiëringsschaal 8-128. De pagina begint licht en kantelt per blok naar donker en terug — en het donker is hier niet verzonnen: het is hun eigen verloop van #000000 naar #154e3a, het meest kenmerkende element dat ze hebben.
 SCHAKELING: de overgang tussen licht en donker is zelf de belangrijkste beweging, en hij doet negen keer exact hetzelfde: niets. De sectiegrens is scherp — geen lijn erop, geen vervaging eromheen. Het kleurverschil doet het werk al, en alles wat je ertussen zet leest als iets wat stukging: een gekleurde streep over de volle breedte leest als een vergeten rand, en een vervaging tussen zwart en wit loopt altijd door grijs en ziet er altijd vuil uit. Het verloop #000000 → #154e3a blijft, maar het leeft nu bínnen de donkere band: die is zwart aan boven- én onderkant, het groen zwelt op in een vaste zone van 400px (300px op telefoon) vlak boven de onderrand en zakt in de laatste 160px (120px) terug naar zwart. Vaste pixels en niet procenten, zodat een band van 435px dezelfde zwelling krijgt als een van 1545px — een tweestopsverloop over de volle bandhoogte is precies wat hier als vlek las. Vijf stops `in oklab`, zodat het middengebied groen blijft in plaats van te vergrijzen. Dezelfde vorm als de heroband in draft 06, zodat de twee drafts dit identiek behandelen. Het groen zakt bij het binnenscrollen nog altijd in 350ms in de band in plaats van hard aan te knippen. Alle beweging gaat uit bij prefers-reduced-motion: reduce.
 TITELS: één kop per sectie, nooit twee. De negen minititels boven de koppen zijn weg — Jana keurde die expliciet af en de briefing verbiedt ze. "Bonus & Merit" naast het woordmerk is er in ronde 3 ook uit; wat overblijft zijn de vier stapnummers in de rondleiding, die iets anders zijn dan een titel.
-FOOTER EN TOESTEMMING: de footer is sinds 2026-10-08 niet langer nagebouwd maar hún component zelf, ingesloten — de inhoud van /components/nl/footer.html van youbo.io, met hun klassenamen, hun volgorde en hun negen links, waaronder Nieuws dat in de versie van augustus nog in commentaar stond. Hij is daarmee licht geworden in plaats van zwart, want zo staat hij op hun site: wit met een lijn erboven. Ingesloten en niet opgehaald, omdat deze draft op breynsv.github.io staat waar /js/footer.js en /components/ niet bestaan en de footer dus leeg zou blijven; het blok draagt een comment met de twee regels die hem op hun server weer door footer.js laten vullen. Uit /css/global.css zijn alleen de 21 footerregels overgenomen, elk achter .yb-footer gezet — dat bestand in zijn geheel laden zou via 41 globale elementselectors de typografie en elk formulierveld van deze pagina herschrijven. De juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. De ISO 27001:2022-badge staat als los element bóven de footer, want hun sitefooter draagt hem niet en Jana's campagneplan vraagt hem wel. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan. Sinds 2026-10-09 is LinkedIn er echt — partner ID 10139124 — en laadt dus pas na Toestaan in plaats van helemaal niet; van Google is er nog geen id.
+FOOTER EN TOESTEMMING: de footer is sinds 2026-10-08 niet langer nagebouwd maar hún component zelf, ingesloten — de inhoud van /components/nl/footer.html van youbo.io, met hun klassenamen, hun volgorde en hun negen links, waaronder Nieuws dat in de versie van augustus nog in commentaar stond. Hij is daarmee licht geworden in plaats van zwart, want zo staat hij op hun site: wit met een lijn erboven. Ingesloten en niet opgehaald, omdat deze draft op breynsv.github.io staat waar /js/footer.js en /components/ niet bestaan en de footer dus leeg zou blijven; het blok draagt een comment met de twee regels die hem op hun server weer door footer.js laten vullen. Uit /css/global.css zijn alleen de 21 footerregels overgenomen, elk achter .yb-footer gezet — dat bestand in zijn geheel laden zou via 41 globale elementselectors de typografie en elk formulierveld van deze pagina herschrijven. De juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. De ISO 27001:2022-badge staat als los element bóven de footer, want hun sitefooter draagt hem niet en Jana's campagneplan vraagt hem wel. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan. Sinds 2026-10-09 is LinkedIn er echt — partner ID 10139124 — en laadt dus pas na Toestaan. Sinds 2026-10-12 is Google er ook: container GTM-MXTKMSBR, met de GA4-stroom van demo.youbo.io erin. Op 2026-10-15 is de toestemming nagelopen op de AVG en op drie punten bijgesteld: de zin noemt nu ook de advertentiecookies van LinkedIn (toestemming moet geïnformeerd zijn over álles wat laadt), Weigeren heeft dezelfde donkere rand als de tekst gekregen zodat hij even goed te zien is als Toestaan, en boven de footer staat «Cookievoorkeuren wijzigen» — intrekken moet even makkelijk zijn als toestemmen (AVG artikel 7, lid 3), en dat was het niet: de balk verdween na één klik voorgoed.
 HERO: de tekst komt eerst — kop, intro, knop — en het portret van Nick staat eronder op telefoon en ernaast op desktop. Dat is Jana's uitdrukkelijke vraag in ronde 3; in ronde 2 stond de foto bovenaan. De cijferregel en het blokje "Bonus & Merit" zijn uit de hero weg, en de fotoplek is vervangen door de echte foto (assets/img/nick-portret.webp, 900×1140 — exact het formaat dat BRIEF-R3.md noemt).
 LOGOBALK: NEGEN echte logo's sinds 2026-10-08, geen tekstzetting meer. De vier SVG's die er stonden (SD Worx, DPG Media, Kaneka, Aertssen Group) blijven — die bestaan in twee polariteiten en een PNG daarvoor inruilen is achteruit — en Anchr, Crelan, Axi, Mourik en Protime komen uit de map die Bart De Nil doorstuurde. Protime kwam er als laatste bij: het stond bij ons als integratiepartner genoteerd en er was eerder gevraagd de vermelding weg te laten, maar Bart bevestigde op 2026-10-08 dat Protime óók klant is, dus hoort het in een balk die zegt dat deze bedrijven Youbo vertrouwen. De zichtbare vraag eronder is daarmee beantwoord en weg. Verder ongewijzigd: een doorlopende marquee met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de statische rij. De tussenruimte blijft op 44 → 170px per breekpunt, want de reeks is uit zichzelf al ruim breder dan de balk; gemeten over 60 standen van één volle reeks raken er 2 tot 4 van de 9 items de balk op 390px en 4 tot 5 op 1440px, en op geen enkele stand staat een naam twee keer in beeld. Het tempo is opnieuw gemeten op 15,8 à 15,9 px/s; de duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo — met het negende logo erbij ging dat tempo eerst naar 17,7 px/s en zijn de vier duren opnieuw gezet.
 CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px). Sinds Anchr op 2026-10-08 een echt logo kreeg, is het TODO-blokje op die kaart weg en is die leegte opnieuw gemeten op 340px, nu in Kaneka en Anchr; de volgorde ligt vast in het campagneplan, dus de knip blijft waar hij staat.
@@ -3116,6 +3116,26 @@ tailwind.config = {
   </div>
 </div>
 
+<!-- DE COOKIEVOORKEUREN — INTREKKEN MOET EVEN MAKKELIJK ZIJN ALS TOESTEMMEN.
+     AVG artikel 7, lid 3. Deze regel staat er altijd, ook vóór de eerste keuze
+     en ook nadat iemand geweigerd heeft, want zonder hem is de cookiebalk een
+     eenrichtingsdeur: hij verdwijnt na de eerste klik en komt nooit terug.
+
+     HIJ STAAT BUITEN DE FOOTER, met opzet. De footer hieronder is hún
+     component, en op youbo.io vult footer.js die opnieuw — een link die wij
+     daarin zetten, overleeft dat niet. Deze staat in ons eigen blok en wel.
+
+     Wat de klik doet, staat bij intrek() onderaan deze pagina.
+     Juridische tekst, dus geen veld in /beheer/ — zie de nota bij de
+     privacyregel in de formuliersectie. -->
+<div class="bg-surface pb-10 -mt-4" x-data>
+  <div class="shell text-center">
+    <button type="button" @click="$store.toestemming.intrek()"
+            class="text-caption text-ink-soft underline underline-offset-2 hover:text-link-hover cursor-pointer"
+            data-cta="cookievoorkeuren">Cookievoorkeuren wijzigen</button>
+  </div>
+</div>
+
 <footer class="yb-footer">
 
   <div class="footer-links">
@@ -3221,10 +3241,19 @@ tailwind.config = {
        veld.
        Geen overlay, geen blok dat een halve telefoon vult, geen
        voorkeurenpaneel met schuifjes voor categorieën die hier niet bestaan.
-       Er is precies één keuze te maken, want er is precies één soort cookie in
-       het spel: meten. LinkedIn en Google laden niet in de <head> maar in
-       laadMeettags(), en die draait alleen na Toestaan — zolang niemand klikt,
-       vertrekt er geen enkel verzoek naar een meetdienst. -->
+       Er is precies één keuze te maken, want alles wat hier laadt, laadt om
+       dezelfde reden: deze campagne meten. Google Analytics telt het gebruik
+       van de pagina, de LinkedIn Insight Tag telt wat de advertenties opleveren
+       — en DAT TWEEDE STAAT ER OOK IN DE ZIN, sinds 2026-10-15. Stond er niet,
+       en toen las de zin «meetcookies om te zien hoe deze pagina gebruikt
+       wordt» terwijl er ook een advertentietag laadde: dan is de toestemming
+       niet geïnformeerd over waar ze voor geldt. Eén knop voor twee doelen mag,
+       beide doelen noemen moet.
+
+       LinkedIn en Google laden niet in de <head> maar in laadMeettags(), en die
+       draait alleen na Toestaan — zolang niemand klikt, vertrekt er geen enkel
+       verzoek naar een meetdienst. Intrekken kan daarna via «Cookievoorkeuren
+       wijzigen», boven de footer. -->
   <div x-data x-show="!$store.toestemming.beantwoord" x-transition.opacity.duration.200ms x-cloak
        data-cookiebalk
        class="border-t border-line bg-paper/95 backdrop-blur"
@@ -3234,11 +3263,11 @@ tailwind.config = {
         <span>We plaatsen</span> <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
            class="text-link-licht underline underline-offset-2 hover:text-link-hover"
            style="transition: color var(--m-base) var(--e-standard)"
-           data-cta="cookiebalk-beleid">meetcookies</a><span class="hidden sm:inline"> <span>om te zien hoe deze pagina gebruikt wordt</span></span>.
+           data-cta="cookiebalk-beleid">meet- en advertentiecookies</a><span class="hidden sm:inline"> <span>om te zien hoe deze pagina gebruikt wordt en hoe onze LinkedIn-campagne presteert</span></span>.
       </p>
       <div class="flex items-center gap-2 shrink-0">
         <button type="button" @click="$store.toestemming.zet('geweigerd')"
-                class="btn-secondary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">Weigeren</button>
+                class="btn-secondary border-ink hover:border-ink min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">Weigeren</button>
         <button type="button" @click="$store.toestemming.zet('toegestaan')"
                 class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan">Toestaan</button>
       </div>
@@ -3566,6 +3595,14 @@ tailwind.config = {
       'footer-voorwaarden':      'juridische_tekst_geopend',
       'cookiebalk-beleid':       'juridische_tekst_geopend',
       'cookiebalk-toestaan':     'cookies_toegestaan',
+      /* "Cookievoorkeuren wijzigen" wordt NIET gemeten. Op het moment van die
+         klik IS er toestemming, dus zou het mogen — maar de pagina herlaadt
+         meteen daarna en die gebeurtenis zou dus een race zijn met het
+         herladen. En een intrekking meetellen in precies het pakket dat zij
+         intrekt, is het verkeerde gebaar. Hij staat hier wel in de tabel:
+         zonder deze regel is het een haak zonder naam en vuurt het alarm
+         cta_zonder_naam. */
+      'cookievoorkeuren':        null,
       /* "Weigeren" wordt NIET gemeten, en dat is geen vergetelheid. Op het
          moment van die klik is er geen toestemming en komt die er ook niet, dus
          is er geen grond om er iets over te versturen. Hoeveel mensen weigeren
@@ -4152,6 +4189,51 @@ tailwind.config = {
   }
 
   /* -------------------------------------------------------------------------
+     WISMEETCOOKIES — wat Google op dit domein heeft neergezet, weer weghalen
+     ---------------------------------------------------------------------------
+     Hoort bij het intrekken hieronder. Toestemming intrekken en de cookies
+     laten staan is geen intrekken: de bezoeker blijft dan herkenbaar tot ze
+     van ouderdom vervallen, en dat is bij _ga twee jaar.
+
+     ALLEEN DE EIGEN COOKIES KUNNEN WEG, en dat is geen slordigheid maar hoe
+     het web werkt. _ga, _ga_<stroom>, _gid en _gcl_au staan op demo.youbo.io
+     zelf, dus mag JavaScript van deze pagina ze overschrijven. De cookies van
+     de LinkedIn-tag (bcookie, lidc, UserMatchHistory, li_sugr) staan op
+     .linkedin.com en zijn vanaf hier onaanraakbaar — die wist de bezoeker in
+     zijn browser, of ze verlopen. Daarom noemt de intrekking hieronder ook
+     uitsluitend wat ze echt doet.
+
+     Een cookie wordt gewist door hem opnieuw te zetten met max-age=0, en dat
+     moet op precies het pad en het domein waar hij staat, anders zet je er een
+     tweede naast in plaats van de eerste weg te halen. Welke van de twee
+     Google gebruikte weten we niet, dus proberen we ze allebei.
+     ------------------------------------------------------------------------- */
+  function wisMeetcookies() {
+    var namen = [];
+    try {
+      var alle = String(document.cookie || '').split(';');
+      for (var i = 0; i < alle.length; i++) {
+        var naam = alle[i].split('=')[0].trim();
+        if (/^(_ga|_gid|_gat|_gcl)/.test(naam) && namen.indexOf(naam) === -1) { namen.push(naam); }
+      }
+    } catch (e) { return; }
+
+    var host = location.hostname;
+    var domeinen = ['', host];
+    var punt = host.indexOf('.');
+    if (punt > -1) { domeinen.push('.' + host.slice(punt + 1)); }
+
+    for (var n = 0; n < namen.length; n++) {
+      for (var d = 0; d < domeinen.length; d++) {
+        try {
+          document.cookie = namen[n] + '=;path=/;max-age=0'
+            + (domeinen[d] ? ';domain=' + domeinen[d] : '');
+        } catch (e) {}
+      }
+    }
+  }
+
+  /* -------------------------------------------------------------------------
      RUIMTE ONDERAAN — de echte hoogte van wat er onderaan staat
      ---------------------------------------------------------------------------
      Onderaan staat één vaste omhulling met twee balken erin, gestapeld: de
@@ -4221,6 +4303,35 @@ tailwind.config = {
            vóór de keuze blijven staan en alsnog vertrekken als de bezoeker
            later in dezelfde weergave toch toestemt — zie DE METING hierboven. */
         if (keuze === 'geweigerd') { METING.vergeten(); }
+      },
+
+      /* INTREKKEN — AVG artikel 7, lid 3: even makkelijk als toestemmen.
+         Zonder deze functie was de cookiebalk een eenrichtingsdeur. Hij
+         verdwijnt na de eerste klik en komt nooit terug, want de keuze staat in
+         localStorage; wie zich vergiste of van gedacht veranderde kon alleen
+         nog zijn browseropslag leegmaken, en dat is niet "even makkelijk".
+
+         Vier dingen, in deze volgorde, en de laatste is de belangrijkste:
+         Consent Mode terug op denied (zodat Google het hoort, ook als de tag al
+         draait), de keuze uit localStorage, de meetcookies van Google weg, en
+         dan de pagina herladen. DAT HERLADEN IS GEEN LUIHEID: Tag Manager en de
+         LinkedIn-tag staan al in het geheugen van deze weergave en zijn niet
+         meer te lossen. Een schone pagina is de enige manier om ze echt kwijt
+         te zijn — en meteen daarna staat de balk er weer, omdat de keuze weg
+         is. */
+      intrek() {
+        if (typeof gtag === 'function') {
+          gtag('consent', 'update', {
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            analytics_storage: 'denied'
+          });
+        }
+        try { localStorage.removeItem('youbo-toestemming'); } catch (e) {}
+        wisMeetcookies();
+        this.keuze = null;
+        location.reload();
       }
     });
 
