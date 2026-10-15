@@ -427,9 +427,29 @@ console.log('\n4. Intrekken — AVG artikel 7, lid 3');
      gaNa.map((c) => c.name).join(', '));
   ok('de cookiebalk staat er weer, dus kan de bezoeker opnieuw kiezen',
      await pg.locator('[data-cookiebalk]').isVisible());
-  const na = verzoeken.slice(voor).filter((u) => MEETHOSTS.test(u));
-  ok('en de herladen pagina haalt niets bij Google of LinkedIn', na.length === 0,
-     na.join(' · '));
+  /* WAT ER NA HET HERLADEN NIET MEER MAG KOMEN: EEN MEETTAG.
+     Er is met opzet niet gevraagd of er helemaal niets meer vertrekt, want dat
+     is niet waar en de toets zou er grillig van worden. Op de echte pagina
+     bleek het op 2026-10-15: de stervende pagina had nog een scroll-gebeurtenis
+     in de wachtrij van GA4 staan, en die gaat er bij het verlaten alsnog uit.
+     Ze draagt dan gcs=G100 en npa=1 — analytics_storage geweigerd, dus zónder
+     cookie en met een willekeurig id: precies wat Consent Mode hoort te doen
+     als de toestemming net ingetrokken is. Er wordt daarbij niets op het
+     toestel gelezen of gezet, en dat is waar de toestemming over gaat.
+
+     Wat wél beslissend is: de herladen pagina mag geen enkele meettag meer
+     binnenhalen. Geen gtm.js, geen gtag/js, geen insight.min.js. Dat is het
+     verschil tussen een naijlende hit en een pagina die gewoon doormeet. */
+  const nieuweTags = verzoeken.slice(voor)
+    .filter((u) => /gtm\.js|gtag\/js|insight\.min\.js/.test(u));
+  ok('en de herladen pagina haalt geen enkele meettag meer op', nieuweTags.length === 0,
+     nieuweTags.join(' · '));
+
+  const laat = verzoeken.slice(voor).filter((u) => /google-analytics\.com\/g\/collect/.test(u));
+  const metCookie = laat.filter((u) => /[?&]gcs=G1\d1/.test(u) && !/[?&]npa=1/.test(u));
+  ok('en wat er nog naijlt, doet dat zonder cookie',
+     metCookie.length === 0 || laat.length === 0,
+     metCookie.map((u) => (u.match(/[?&]en=([^&]*)/) || [, '?'])[1]).join(' · '));
   await ctx.close();
 }
 
