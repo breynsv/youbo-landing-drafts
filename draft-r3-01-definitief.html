@@ -1467,9 +1467,22 @@ tailwind.config = {
   /* Het middenstuk schuift, en alleen dat. -webkit-overflow-scrolling houdt het
      op oudere iOS soepel; overscroll-behavior houdt de pagina eronder stil
      wanneer je aan het eind van de case blijft doorschuiven. */
+  /* HET MIDDENSTUK SCHUIFT NIET ZELF. In de eerste opzet stonden de twee
+     bladen hier gewoon onder elkaar en was overflow-y: auto precies goed. Sinds
+     de lezer er is, doen de rail en de transform al het werk — en dan is een
+     natuurlijke scrollbalk geen rest maar een tegenstander.
+
+     Gezien in Safari op 2026-10-16: er stond een horizontale scrollbalk onder
+     het paneel en je kon naar bóven scrollen tot er een lege grijze band
+     verscheen, terwijl naar onderen scrollen halverwege stopte. Twee oorzaken,
+     allebei van deze regel. De rail is 200% breed (twee bladen naast elkaar),
+     en CSS maakt van overflow-x automatisch `auto` zodra één van de twee assen
+     niet `visible` is — vandaar die balk. En een blad dat hoger is dan zijn
+     doos wordt door place-items: center half boven de doos gelegd, dus kon je
+     er met de muis naartoe scrollen. Allebei weg met overflow: hidden; wat er
+     te zien valt, bepaalt de transform. */
   .paneel-blad {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
     overscroll-behavior: contain;
     background: #f6f8fa;
   }
@@ -4816,6 +4829,15 @@ tailwind.config = {
     v.img.classList.toggle('glijdt', !!zacht && !stil());
     v.img.style.transform = 'translate(' + v.x.toFixed(1) + 'px,' + v.y.toFixed(1) + 'px) scale(' + v.s.toFixed(3) + ')';
   }
+
+  /* Een blad dat hoger is dan zijn doos begint BOVENAAN, niet in het midden.
+     place-items: center legt het precies halverwege, en dan opent een case op
+     een laptop middenin de tekst — wat eruitziet alsof er iets is afgesneden.
+     Op een telefoon past een blad wél in zijn doos; dan is de grens nul en doet
+     deze functie niets. */
+  function naarTop(v) {
+    v.x = 0; v.y = grens(v).y; zet(v);
+  }
   /* Inzoomen rond het punt waar getikt of geknepen wordt, niet rond het midden:
      anders springt de zin waar je net op mikte uit beeld. px en py zijn gemeten
      vanaf het midden van de doos. */
@@ -4846,7 +4868,7 @@ tailwind.config = {
      blad uit in een hoek waar je nooit om gevraagd hebt. */
   function naarBlad(i, zacht) {
     index = Math.max(0, Math.min(bladen - 1, i));
-    vakken.forEach(function (v) { v.s = 1; v.x = 0; v.y = 0; zet(v); });
+    vakken.forEach(function (v) { v.s = 1; v.x = 0; v.y = 0; naarTop(v); });
     railZet(0, zacht !== false);
     bedieningBij();
   }
@@ -4859,7 +4881,7 @@ tailwind.config = {
       vak.className = 'vak';
       var img = document.createElement('img');
       img.className = 'blad';
-      img.width = 1200; img.height = 1700;
+      img.width = 2000; img.height = 2833;
       img.alt = 'Klantcase ' + naam + ', blad ' + (n + 1) + ' van ' + paden.length;
       img.src = pad;
       if (n > 0) { img.loading = 'lazy'; }
@@ -4868,6 +4890,7 @@ tailwind.config = {
       var v = { el: vak, img: img, s: 1, x: 0, y: 0 };
       vakken.push(v);
       gebaren(v, vakken.length - 1);
+      naarTop(v);
     });
     railZet(0, false);
     bedieningBij();
