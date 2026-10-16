@@ -1,0 +1,555 @@
+<!doctype html>
+<!--
+CONCEPT: De case in een paneel over de pagina in plaats van in een nieuw tabblad, zodat de knop
+«Boek een demo» in beeld blijft terwijl iemand leest. Mobile first, en in twee vormen die je op
+een echt toestel naast elkaar kunt zetten.
+==============================================================================
+     Vandaag opent «Download de case (pdf)» een nieuw tabblad. Dat werkt overal en
+     de landingspagina blijft achter in het eerste tabblad staan — maar de
+     bezoeker kijkt dan wél naar een document zonder knop. Sven's vraag: kan de
+     case in een paneel over de pagina, zodat «Boek een demo» nooit uit beeld is?
+
+     DEZE PAGINA IS HET ANTWOORD IN TWEE VORMEN, want het verschil zit hem niet in
+     het paneel maar in wat erin staat:
+
+       A · DE BLADEN ALS BEELD — elke pagina van de pdf als webp (1200px breed,
+           ~150 KB). Werkt in élke browser, ook op een telefoon, en laadt pas
+           wanneer het paneel opengaat. Dit is de vorm die we zouden bouwen.
+
+       B · DE ECHTE PDF IN EEN IFRAME — één regel minder werk en altijd actueel,
+           maar telefoons doen hier stug over: iOS toont in een iframe vaak alleen
+           de eerste pagina zonder te kunnen scrollen, en Android Chrome weigert
+           soms te renderen en zet er een downloadbalk voor in de plaats. Of dat
+           vandaag nog zo is, weet alleen een echt toestel — vandaar deze knop.
+
+     SCHAKEL BOVENAAN TUSSEN DE TWEE EN OPEN EEN CASE OP JE IPHONE EN JE IPAD.
+     Werkt B daar zonder gedoe, dan is B de eenvoudigere keuze. Zo niet, dan is A
+     het, en dan kost het ons tien beelden die naast de pdf's blijven staan.
+
+     WAT JE IN BEIDE GEVALLEN WINT: de knop «Boek een demo» staat vastgeplakt
+     onderaan het paneel, dus ze is in beeld terwijl iemand de case leest. Dat is
+     precies wat een nieuw tabblad niet kan.
+
+     WAT JE IN BEIDE GEVALLEN VERLIEST tegenover dat tabblad: zoeken in het
+     document, printen, en het bestand bewaren om intern door te sturen — gedrag
+     dat je bij reward- en hr-mensen net wil. Daarom staat «Download de pdf»
+     ernaast in de voet van het paneel, en niet weggestopt.
+
+     GEBOUWD OP <dialog> EN showModal(). Dat levert gratis wat anders met de hand
+     moet: de achtergrond wordt onbereikbaar voor de Tab-toets, Escape sluit, en
+     de focus springt bij het sluiten terug naar de kaart waar je vandaan kwam.
+     Het enige wat <dialog> niet doet is de pagina eronder stilleggen op iOS —
+     daarvoor staat er een regel in open() en sluit().
+     ============================================================================= -->
+<html lang="nl-BE">
+<head>
+<meta name="ontwerp-versie" content="3.3+20261016">
+<meta name="ontwerp-versie-leesbaar" content="v3.3 — 16 oktober 2026">
+<meta name="pagina-soort" content="vergelijking">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voorstel — de case in een paneel | Youbo</title>
+<meta name="description" content="Voorstel voor de Youbo-landingspagina: een klantcase opent in een paneel over de pagina in plaats van in een nieuw tabblad, met de knop Boek een demo vastgeplakt onderaan. Twee vormen, bedoeld om op een telefoon te vergelijken.">
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },   /* primary + primary-text   */
+        ink:     { DEFAULT: '#0a3327', soft: '#547068',    /* text-primary + secondary */
+                   inv: '#ffffff' },
+        paper:   '#ffffff',                                 /* background               */
+        surface: '#f6f8fa',                                 /* surface                  */
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
+        /* Het cyaanblauw van de huisstijl haalt op licht de leesnorm niet:
+           2,67:1 op wit en 2,51:1 op #f6f8fa, waar 4,5:1 nodig is. Op de
+           donkere banden werkt het wél, dus blijft het daar staan. Voor links
+           op een lichte achtergrond gebruikt deze pagina de goedgekeurde
+           donkerder variant #00718c: 5,61:1 op wit en 5,27:1 op #f6f8fa. */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
+        forest:  '#154e3a',                                 /* gradient-dark-end        */
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      /* de spatiëringsschaal 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 80 · 128 */
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionDuration: { fast: '150ms', base: '200ms', medium: '300ms', slow: '350ms' },
+      transitionTimingFunction: {
+        standard:   'ease-in-out',
+        decelerate: 'ease-out',
+        accelerate: 'cubic-bezier(0, 1, 0.3, 1)',
+      },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    :root {
+      --m-fast: 150ms; --m-base: 200ms; --m-medium: 300ms;
+      --e-standard: ease-in-out; --e-decelerate: ease-out;
+      --c-focus: #00718c;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    body { @apply bg-paper text-ink font-sans text-body antialiased; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
+  }
+  @layer components {
+    .shell { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+    .card  { @apply rounded-sm bg-paper shadow-card; }
+    .btn   { @apply inline-flex items-center justify-center gap-2 rounded-sm text-body
+                    font-bold min-h-[48px] px-6 py-[14px] cursor-pointer;
+             transition: background-color var(--m-base) var(--e-standard),
+                         color var(--m-base) var(--e-standard),
+                         border-color var(--m-base) var(--e-standard); }
+    .btn-primary { @apply btn bg-brand text-brand-ink; }
+    .btn-primary:hover { background-color: #000000; color: #0af29f; }
+    .btn-secondary { @apply btn bg-paper text-ink border border-line-btn; }
+    .btn-secondary:hover { background-color: #f6f8fa; border-color: #e1ebf0; }
+    .todo { @apply block rounded-sm border border-dashed border-line-btn bg-surface
+                   px-4 py-3 text-caption text-ink-soft; }
+
+    /* De link op een casekaart, zoals op de echte pagina. */
+    .caselink { @apply inline-flex items-center gap-2 text-body font-bold text-ink cursor-pointer;
+                box-shadow: inset 0 -2px 0 #0af29f; }
+    .caselink:hover { box-shadow: inset 0 -2px 0 #154e3a; }
+  }
+</style>
+
+<style>
+  /* ---------------------------------------------------------------------------
+     HET PANEEL
+     ---------------------------------------------------------------------------
+     TELEFOON EERST. Het paneel is daar geen venstertje in het midden maar een
+     blad dat van onderen opkomt en bijna het hele scherm vult — 100dvh en niet
+     100vh, want vh rekent op een telefoon de adresbalk mee en dan valt de voet
+     met de demoknop er net onderuit. De bovenste 32px blijven vrij, zodat je
+     ziet dat de pagina eronder nog bestaat en je er met één tik op terug bent.
+
+     VANAF md WORDT HET EEN VENSTER: gecentreerd, hoogstens 920px breed en 92%
+     van de hoogte, met ruimte eromheen.
+
+     De drie delen zijn altijd hetzelfde: een kop die blijft staan, een
+     middenstuk dat schuift, en een voet die blijft staan. grid-rows-[auto_1fr_auto]
+     doet dat zonder één regel javascript, en omdat alleen het middenstuk schuift
+     kan de demoknop niet wegglijden.
+     --------------------------------------------------------------------------- */
+  /* HOOGTE EN BREEDTE STAAN HIER EXPLICIET, EN DAT IS GEEN OVERDAAD.
+     De browser geeft <dialog> uit zichzelf `width: fit-content` én
+     `height: fit-content`, en dat wint van `inset: 0`. Het paneel hieronder
+     hangt met position:absolute in deze doos, dus had de doos niets om hoog van
+     te worden: gemeten op 2026-10-16 was ze 390 bij 0 beeldpunten, een
+     onzichtbaar paneel dat wel degelijk «open» stond. Vandaar height en width
+     met de hand, en max-height/max-width eruit — die staan in de stijl van de
+     browser op calc(100% - 6px - 2em) en knijpen er anders weer een rand af. */
+  dialog.paneel {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    margin: 0;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+  }
+  dialog.paneel::backdrop {
+    background: rgba(3, 19, 23, .55);
+    backdrop-filter: blur(2px);
+  }
+  .paneel-doos {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    top: 32px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: #ffffff;
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .paneel-doos {
+      top: 4dvh; bottom: 4dvh;
+      left: 50%; right: auto;
+      transform: translateX(-50%);
+      width: min(920px, 92vw);
+      border-radius: 24px;
+    }
+  }
+
+  /* Het middenstuk schuift, en alleen dat. -webkit-overflow-scrolling houdt het
+     op oudere iOS soepel; overscroll-behavior houdt de pagina eronder stil
+     wanneer je aan het eind van de case blijft doorschuiven. */
+  .paneel-blad {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    background: #f6f8fa;
+  }
+
+  /* De bladen. object-fit is hier niet nodig: het beeld heeft precies de
+     verhouding van het blad, dus width:100% en auto hoogte volstaan — en met
+     width/height op het element zelf reserveert de browser de plek vóór het
+     beeld binnen is, zodat er niets verspringt. */
+  .blad { display: block; width: 100%; height: auto; border-radius: 8px;
+          box-shadow: 0 1px 3px rgba(0,0,0,.08); background: #ffffff; }
+
+  /* Variant B. Een iframe heeft geen natuurlijke hoogte, dus moet die gezegd
+     worden; hij vult hier gewoon het hele middenstuk. */
+  .paneel-pdf { width: 100%; height: 100%; border: 0; display: block; background: #f6f8fa; }
+
+  /* DE TWEEDE KNOP IN DE VOET IS OP TELEFOON EEN LINK.
+     Twee volle knoppen onder elkaar kostten daar samen 139 beeldpunten van een
+     scherm van 812 — ruim een zesde, weggenomen van de case die je net wilde
+     laten lezen. De demoknop blijft een knop, want dat is waarvoor de voet
+     bestaat; de download wordt ernaast een link van 44 hoog, nog altijd ruim
+     genoeg voor een duim. Vanaf 640px krijgt ze haar rand terug en staan er
+     weer twee knoppen. */
+  .voetlink {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; font-weight: 700; color: #0a3327;
+    text-decoration: underline; text-underline-offset: 2px;
+  }
+  @media (min-width: 640px) {
+    .voetlink {
+      min-height: 48px; padding: 14px 24px; border: 1px solid #9dbcc2;
+      border-radius: 8px; background: #ffffff; text-decoration: none;
+    }
+    .voetlink:hover { background: #f6f8fa; border-color: #e1ebf0; }
+  }
+
+  /* Bij wie beweging uitzet verschijnt het paneel zonder te schuiven. */
+  @media (prefers-reduced-motion: no-preference) {
+    dialog.paneel[open] .paneel-doos { animation: opkomen var(--m-medium) var(--e-decelerate); }
+    @keyframes opkomen { from { transform: translateY(24px); opacity: .6; } }
+    @media (min-width: 768px) {
+      @keyframes opkomen { from { transform: translateX(-50%) translateY(16px); opacity: .6; } }
+    }
+  }
+</style>
+</head>
+
+<body class="bg-paper">
+
+<!-- =========================================================================
+     DE UITLEG BOVENAAN — dezelfde opzet als bij de hero-varianten.
+     ========================================================================= -->
+<div class="bg-surface border-b border-line">
+  <div class="shell py-8 md:py-10">
+    <p class="text-caption text-ink-soft">Voorstel · 16 oktober 2026</p>
+    <h1 class="mt-2 text-h1">De case in een paneel, met de demoknop in beeld</h1>
+    <p class="mt-4 text-body text-ink-soft max-w-prose">
+      Vandaag opent een case in een nieuw tabblad. Dat werkt overal, maar de bezoeker kijkt dan
+      naar een document zonder knop. Hieronder opent diezelfde case in een paneel over de pagina,
+      met <b class="text-ink">Boek een demo</b> vastgeplakt onderaan — in beeld zolang hij leest.
+    </p>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      Het verschil tussen de twee vormen zit niet in het paneel maar in wat erin staat. Schakel
+      hieronder en open een case <b class="text-ink">op je telefoon</b>; dat is de enige test die
+      iets beslist.
+    </p>
+
+    <fieldset class="mt-6 border-0 p-0 m-0">
+      <legend class="text-caption font-bold text-ink">Wat staat er in het paneel?</legend>
+      <div class="mt-3 flex flex-col sm:flex-row gap-3">
+        <label class="card border border-line px-4 py-3 flex items-start gap-3 cursor-pointer has-[:checked]:border-brand has-[:checked]:shadow-lift">
+          <input type="radio" name="vorm" value="beeld" checked class="mt-1 h-5 w-5 accent-brand shrink-0">
+          <span>
+            <b class="block">A · De bladen als beeld</b>
+            <span class="block text-caption text-ink-soft">Werkt overal, ook op telefoon. ±150 KB per blad, laadt pas bij openen.</span>
+          </span>
+        </label>
+        <label class="card border border-line px-4 py-3 flex items-start gap-3 cursor-pointer has-[:checked]:border-brand has-[:checked]:shadow-lift">
+          <input type="radio" name="vorm" value="pdf" class="mt-1 h-5 w-5 accent-brand shrink-0">
+          <span>
+            <b class="block">B · De echte pdf</b>
+            <span class="block text-caption text-ink-soft">Altijd actueel, maar telefoons doen er stug over. Dit is wat je moet testen.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <p class="todo mt-6 max-w-prose">
+      <b>Te beslissen</b>: werkt B op je iPhone én je iPad zonder gedoe — scrollen, beide
+      pagina's, geen lege doos — dan bouwen we B en is er niets extra's te onderhouden. Zo niet,
+      dan wordt het A, en dan komen er tien beelden naast de vijf pdf's te staan
+    </p>
+  </div>
+</div>
+
+<!-- =========================================================================
+     DE KAARTEN — ingekort, maar met de echte logo's, cijfers en pdf's, zodat
+     het paneel opent op wat er werkelijk in zit.
+     ========================================================================= -->
+<section class="shell py-10 md:py-12" aria-labelledby="cases-kop">
+  <h2 id="cases-kop" class="text-h2">Vijf cases</h2>
+  <p class="mt-2 text-body text-ink-soft max-w-prose">
+    Tik op een kaart om het paneel te openen.
+  </p>
+
+  <ul class="mt-8 list-none p-0 m-0 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
+    <li>
+      <article class="card border border-line h-full p-5 flex flex-col">
+        <img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" width="120" height="20" class="w-auto" style="height:20px">
+        <p class="mt-5 text-h3 font-bold">Twee werkweken tijdswinst</p>
+        <p class="mt-4 text-caption text-ink-soft">204 medewerkers · 27 afdelingen</p>
+        <div class="mt-5 pt-4 border-t border-line">
+          <button type="button" class="caselink" data-cta="modal-case-kaneka" data-case="kaneka" data-naam="Kaneka"
+                  data-logo="assets/img/kaneka-logo-dark.svg">Bekijk de case</button>
+        </div>
+      </article>
+    </li>
+
+    <li>
+      <article class="card border border-line h-full p-5 flex flex-col">
+        <img src="assets/img/anchr-logo.webp" alt="Anchr" width="120" height="21" class="w-auto" style="height:21px">
+        <p class="mt-5 text-h3 font-bold">Meerdere werkdagen bespaard</p>
+        <p class="mt-4 text-caption text-ink-soft">300 medewerkers · 8 bedrijven</p>
+        <div class="mt-5 pt-4 border-t border-line">
+          <button type="button" class="caselink" data-cta="modal-case-anchr" data-case="anchr" data-naam="Anchr"
+                  data-logo="assets/img/anchr-logo.webp">Bekijk de case</button>
+        </div>
+      </article>
+    </li>
+
+    <li>
+      <article class="card border border-line h-full p-5 flex flex-col">
+        <img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" width="120" height="32" class="w-auto" style="height:32px">
+        <p class="mt-5 text-h3 font-bold">Live op 3 maanden</p>
+        <p class="mt-4 text-caption text-ink-soft">450 bedienden</p>
+        <div class="mt-5 pt-4 border-t border-line">
+          <button type="button" class="caselink" data-cta="modal-case-aertssen-group" data-case="aertssen-group" data-naam="Aertssen Group"
+                  data-logo="assets/img/aertssen-logo-dark.svg">Bekijk de case</button>
+        </div>
+      </article>
+    </li>
+
+    <li>
+      <article class="card border border-line h-full p-5 flex flex-col">
+        <img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" width="120" height="24" class="w-auto" style="height:24px">
+        <p class="mt-5 text-h3 font-bold">Van 2 maanden naar 3 weken</p>
+        <p class="mt-4 text-caption text-ink-soft">7.000 medewerkers · 18 landen</p>
+        <div class="mt-5 pt-4 border-t border-line">
+          <button type="button" class="caselink" data-cta="modal-case-sd-worx" data-case="sd-worx" data-naam="SD Worx"
+                  data-logo="assets/img/sdworx-logo-dark.svg">Bekijk de case</button>
+        </div>
+      </article>
+    </li>
+
+    <li>
+      <article class="card border border-line h-full p-5 flex flex-col">
+        <img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" width="120" height="24" class="w-auto" style="height:24px">
+        <p class="mt-5 text-h3 font-bold">7× sneller</p>
+        <p class="mt-4 text-caption text-ink-soft">1.500 Belgische medewerkers</p>
+        <div class="mt-5 pt-4 border-t border-line">
+          <button type="button" class="caselink" data-cta="modal-case-dpg-media" data-case="dpg-media" data-naam="DPG Media"
+                  data-logo="assets/img/dpg-logo-dark.svg">Bekijk de case</button>
+        </div>
+      </article>
+    </li>
+
+  </ul>
+</section>
+
+<!-- Waar «Boek een demo» naartoe springt, zodat de knop in het paneel iets doet. -->
+<section id="demo" class="bg-surface border-y border-line">
+  <div class="shell py-12 md:py-20">
+    <h2 class="text-h2">Boek een demo</h2>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      Op de echte pagina staat hier het formulier. Hier staat het om te laten zien waar de knop in
+      het paneel je brengt: het paneel sluit en de pagina springt hiernaartoe.
+    </p>
+  </div>
+</section>
+
+<div class="shell py-10">
+  <p class="text-caption text-ink-soft">
+    De echte pagina staat op <a class="underline" href="https://demo.youbo.io/">demo.youbo.io</a>.
+    Daar opent een case vandaag nog in een nieuw tabblad.
+  </p>
+</div>
+
+<!-- =========================================================================
+     HET PANEEL ZELF — één exemplaar voor alle vijf de cases.
+     Vijf panelen in de pagina zetten zou vijf keer dezelfde kop en voet zijn,
+     en vijf plekken om later te vergeten.
+     ========================================================================= -->
+<dialog class="paneel" id="paneel" aria-labelledby="paneel-titel">
+  <div class="paneel-doos">
+
+    <!-- DE KOP BLIJFT STAAN. Het sluitkruis is 44 bij 44, want dat is de
+         kleinste knop die een duim betrouwbaar raakt. -->
+    <header class="flex items-center gap-4 px-5 py-4 border-b border-line bg-paper">
+      <img id="paneel-logo" src="assets/img/kaneka-logo-dark.svg" alt="" aria-hidden="true"
+           width="100" height="20" class="w-auto shrink-0" style="height:20px">
+      <h2 id="paneel-titel" class="text-caption font-bold text-ink-soft m-0 flex-1 min-w-0 truncate">
+        Klantcase
+      </h2>
+      <button type="button" id="paneel-sluit" data-cta="modal-sluiten" aria-label="Sluit de case"
+              class="shrink-0 h-11 w-11 grid place-items-center rounded-sm text-ink hover:bg-surface">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+             stroke-width="1.8" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- HET MIDDENSTUK SCHUIFT. Hier komt A of B in, nooit allebei. -->
+    <div class="paneel-blad" id="paneel-blad">
+      <div id="paneel-beelden" class="p-4 md:p-6 space-y-4"></div>
+      <iframe id="paneel-pdf" class="paneel-pdf hidden" title="De case als pdf"></iframe>
+    </div>
+
+    <!-- DE VOET BLIJFT STAAN, EN DIT IS WAAR HET OM BEGONNEN WAS.
+         Op telefoon staat de demoknop op volle breedte bovenaan en de
+         downloadlink eronder; vanaf sm staan ze naast elkaar met de demoknop
+         rechts, waar de duim zit. pb met safe-area houdt hem vrij van de
+         streep onderaan een iPhone. -->
+    <footer class="border-t border-line bg-paper px-5 py-4"
+            style="padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px))">
+      <!-- ÉÉN RIJ, OOK OP TELEFOON. Onder elkaar kostten de twee samen 139
+           beeldpunten van een scherm van 812; naast elkaar is dat 86, en die
+           53 gaan rechtstreeks naar de case. De demoknop groeit mee met wat er
+           overblijft en staat rechts, waar de duim zit; de download staat
+           links en is daar een link in plaats van een tweede knop, zodat er
+           één duidelijke hoofdhandeling overblijft. -->
+      <div class="flex flex-row-reverse items-center gap-3">
+        <button type="button" id="paneel-demo" data-cta="modal-boek-demo"
+                class="btn-primary shrink-0 whitespace-nowrap">Boek een demo</button>
+        <!-- Deze krimpt, de knop niet. Op 360px kreeg de knop als flex-1 nog
+             maar 168 beeldpunten en brak «Boek een demo» over twee regels: 79
+             hoog in plaats van 54. De hoofdhandeling hoort haar maat te houden
+             en de link eromheen te wijken, niet andersom. -->
+        <a id="paneel-download" href="cases/youbo-case-kaneka.pdf" download data-cta="modal-download-pdf"
+           class="voetlink flex-1 min-w-0 truncate justify-start sm:flex-none sm:justify-center">Download de pdf</a>
+      </div>
+    </footer>
+
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var paneel   = document.getElementById('paneel');
+  var doos     = paneel.querySelector('.paneel-doos');
+  var blad     = document.getElementById('paneel-blad');
+  var beelden  = document.getElementById('paneel-beelden');
+  var pdf      = document.getElementById('paneel-pdf');
+  var titel    = document.getElementById('paneel-titel');
+  var logo     = document.getElementById('paneel-logo');
+  var download = document.getElementById('paneel-download');
+
+  function vorm() {
+    var g = document.querySelector('input[name="vorm"]:checked');
+    return g ? g.value : 'beeld';
+  }
+
+  /* De bladen worden pas hier gemaakt, bij het openen. Zet je ze in de pagina,
+     dan haalt de browser vroeg of laat tien beelden op voor een paneel dat
+     misschien nooit opengaat — 1,5 MB voor niets. */
+  function vulBeelden(slug, naam) {
+    beelden.innerHTML = '';
+    for (var n = 1; n <= 2; n++) {
+      var img = document.createElement('img');
+      img.className = 'blad';
+      img.width = 1200; img.height = 1700;
+      img.alt = 'Klantcase ' + naam + ', pagina ' + n + ' van 2';
+      img.src = 'cases/preview/' + slug + '-' + n + '.webp';
+      if (n > 1) { img.loading = 'lazy'; }
+      beelden.appendChild(img);
+    }
+  }
+
+  function open(knop) {
+    var slug = knop.getAttribute('data-case');
+    var naam = knop.getAttribute('data-naam');
+    titel.textContent = 'Klantcase ' + naam;
+    logo.src = knop.getAttribute('data-logo');
+    download.href = 'cases/youbo-case-' + slug + '.pdf';
+
+    if (vorm() === 'pdf') {
+      beelden.innerHTML = '';
+      beelden.classList.add('hidden');
+      pdf.classList.remove('hidden');
+      pdf.src = 'cases/youbo-case-' + slug + '.pdf';
+    } else {
+      pdf.removeAttribute('src');
+      pdf.classList.add('hidden');
+      beelden.classList.remove('hidden');
+      vulBeelden(slug, naam);
+    }
+
+    blad.scrollTop = 0;
+    /* <dialog> legt de achtergrond stil voor de Tab-toets, maar niet voor de
+       vinger: op iOS schuift de pagina eronder gewoon door. Vandaar deze regel,
+       en de spiegelregel in sluit(). */
+    document.body.style.overflow = 'hidden';
+    paneel.showModal();
+  }
+
+  function sluit() {
+    document.body.style.overflow = '';
+    /* De pdf losmaken, anders blijft een browser hem in het geheugen houden. */
+    pdf.removeAttribute('src');
+    paneel.close();
+  }
+
+  [].forEach.call(document.querySelectorAll('[data-case]'), function (knop) {
+    knop.addEventListener('click', function () { open(knop); });
+  });
+
+  document.getElementById('paneel-sluit').addEventListener('click', sluit);
+
+  /* Escape sluit vanzelf — dat doet <dialog> — maar dan loopt sluit() niet, dus
+     blijft body op overflow:hidden staan. Dit is die vergetelheid. */
+  paneel.addEventListener('close', function () {
+    document.body.style.overflow = '';
+    pdf.removeAttribute('src');
+  });
+
+  /* Klikken náást het paneel sluit het ook. <dialog> vangt die klik op zichzelf
+     op, want de ::backdrop hoort bij het element — dus is de test of de klik
+     buiten de doos viel. */
+  paneel.addEventListener('click', function (e) {
+    if (!doos.contains(e.target)) { sluit(); }
+  });
+
+  document.getElementById('paneel-demo').addEventListener('click', function () {
+    sluit();
+    document.getElementById('demo').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();
+</script>
+
+</body>
+</html>
