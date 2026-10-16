@@ -115,8 +115,14 @@ const VERWACHT = {
   'rondleiding-stap-3': 'rondleiding_stap_gekozen',
 };
 
-/* Een haak die met opzet niets mag opleveren. */
-const STIL = ['cookiebalk-weigeren'];
+/* Een haak die met opzet niets mag opleveren.
+
+   «Weigeren» omdat er op dat moment geen toestemming is en er ook geen komt.
+   «Download de pdf» in het casepaneel omdat de ingebouwde meting van GA4 die
+   klik zelf al als file_download telt, mét de bestandsnaam; er nog eens
+   case_pdf_geopend bovenop leggen zou dezelfde case twee keer tellen. De
+   redenen staan voluit in de naamtabel van de pagina zelf. */
+const STIL = ['cookiebalk-weigeren', 'paneel-download'];
 
 const MEETHOSTS = /googletagmanager\.com|google-analytics\.com|analytics\.google\.com|snap\.licdn\.com|px\.ads\.linkedin\.com|doubleclick/i;
 

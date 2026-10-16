@@ -241,6 +241,12 @@ function maakWegwerpMetPublicatie() {
   cpSync(join(hier, 'draft-r3-02-bedankt.html'), join(map, 'draft-r3-02-bedankt.html'));
   cpSync(join(hier, 'robots.txt'), join(map, 'robots.txt'));
   cpSync(join(hier, 'assets'), join(map, 'assets'), { recursive: true });
+  /* En cases/ in zijn geheel: daar staan de vijf pdf's én de tien bladen die
+     het casepaneel laat zien. Die bladen worden door niets in content/ genoemd
+     — ze staan in data-bladen op de kaart, gevuld uit de bedrijfsnaam — dus
+     bestandenInBronnen() hierboven vindt ze niet, en dan viel publiceer.mjs in
+     deze wegwerpmap over tien bestanden die in de echte map wél bestaan. */
+  cpSync(join(hier, 'cases'), join(map, 'cases'), { recursive: true });
   mkdirSync(join(map, 'publicatie'), { recursive: true });
   cpSync(join(hier, 'publicatie', 'web.config'), join(map, 'publicatie', 'web.config'));
   mkdirSync(join(map, 'content', 'media'), { recursive: true });

@@ -124,7 +124,13 @@ const ADRES_ATTRIBUTEN = new Set([
   'src', 'href', 'poster', 'action', 'formaction',
   'data-src', 'data-poster', 'data-href', 'data-bg', 'data-background',
 ]);
-const SRCSET_ATTRIBUTEN = new Set(['srcset', 'imagesrcset']);
+/* srcset en imagesrcset dragen meerdere adressen met komma's ertussen. Sinds
+   2026-10-16 doet data-bladen dat ook: daarin staan de twee bladen van een
+   klantcase, die het paneel op de landingspagina laat zien. Ze staan NERGENS
+   anders in de pagina — het paneel maakt zijn beelden pas bij het openen — dus
+   zonder deze regel zou deze bouw ze niet kennen, niet uploaden, en zou het
+   paneel op de server leeg blijven terwijl alles hier groen staat. */
+const SRCSET_ATTRIBUTEN = new Set(['srcset', 'imagesrcset', 'data-bladen']);
 const META_MET_ADRES = new Set([
   'og:image', 'og:image:url', 'og:image:secure_url',
   'twitter:image', 'twitter:image:src',

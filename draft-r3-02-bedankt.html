@@ -802,15 +802,18 @@ tailwind.config = {
        nergens anders. DE CONVERSIE IS DE TWEEDE. Dat was al de afspraak in de
        kop van laadMeettags() op die pagina, en ze staat er nog: een conversie
        op de knop telt ook de aanvragen die daarna mislukken.
-     · File downloads staat AAN, dus meet Google een case-pdf zelf als
-       file_download. Sinds 2026-10-15 wijzen die vijf links naar een echt
-       bestand, dus vuren er vanaf nu TWEE gebeurtenissen per klik: Google's
-       file_download en onze case_pdf_geopend. Dat is geen dubbeltelling om op
-       te ruimen, want ze tellen niet hetzelfde. file_download draagt de
-       bestandsnaam en gaat alleen af als de browser het echt ophaalt; onze
-       gebeurtenis draagt in cta_detail WELKE case het was en gaat af op de
-       klik, ook als de download daarna mislukt. Tel in een rapport dus één van
-       de twee, nooit de som.
+     · File downloads staat AAN, dus meet Google een klik op een link naar een
+       document zelf als file_download. Sinds 2026-10-15 wijzen de vijf
+       caselinks naar een echt bestand, en sinds 2026-10-16 opent zo'n klik een
+       paneel in plaats van een tabblad — maar de link blijft een link naar de
+       pdf, dus telt Google hem nog steeds mee. Per case komen er dus twee
+       gebeurtenissen: Google's file_download bij het openen van het paneel, en
+       onze case_pdf_geopend. Dat is geen dubbeltelling om op te ruimen, want
+       ze tellen niet hetzelfde — maar het maakt file_download ONGESCHIKT als
+       maat voor «hoeveel mensen namen de pdf mee», want hij gaat ook af bij wie
+       alleen keek. Lees «gekeken» af van case_pdf_geopend; wil je «meegenomen»
+       weten, dan is dat het verschil tussen file_download en case_pdf_geopend,
+       of een twintigste gebeurtenisnaam in de container.
 
      EEN NAAM PER VOORVOEGSEL WAAR HET CMS DE HAAK MAAKT. De cases, de quotes,
      de rondleidingstappen en de FAQ zijn lijsten die Jana in /beheer/ kan laten
@@ -859,6 +862,20 @@ tailwind.config = {
       'hero-boek-demo':          'demo_knop_geklikt',
       'rondleiding-boek-demo':   'demo_knop_geklikt',
       'vaste-band-demo':         'demo_knop_geklikt',
+      /* De demoknop ónderaan het casepaneel. Dezelfde naam als de drie
+         hierboven, en met opzet: het is dezelfde handeling, alleen op een
+         andere plek, en cta zegt al welke plek dat was. Een eigen naam zou een
+         twintigste zijn, en de container kent er negentien — dan vuurt het
+         alarm cta_zonder_naam voor iets wat gewoon een demoknop is. */
+      'paneel-demo':             'demo_knop_geklikt',
+      /* «Download de pdf» in dat paneel wordt NIET door ons gemeten, en dat is
+         geen gat: de ingebouwde meting van GA4 telt een klik op een link naar
+         een document zelf als file_download, mét de bestandsnaam, dus per case.
+         Zouden wij er case_pdf_geopend van maken, dan telde dezelfde case twee
+         keer — één keer bij het openen van het paneel en nog eens bij het
+         bewaren. Lees «hoeveel mensen keken naar een case» dus af van
+         case_pdf_geopend, en «hoeveel namen hem mee» van file_download. */
+      'paneel-download':         null,
       'formulier-vraag-demo':    'demo_formulier_verstuurd',
       'formulier-privacy':       'juridische_tekst_geopend',
       'formulier-mail-nick':     'nick_gemaild',
