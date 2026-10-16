@@ -14,13 +14,19 @@ een echt toestel naast elkaar kunt zetten.
 
        A · DE BLADEN ALS BEELD — elke pagina van de pdf als webp (1200px breed,
            ~150 KB). Werkt in élke browser, ook op een telefoon, en laadt pas
-           wanneer het paneel opengaat. Dit is de vorm die we zouden bouwen.
+           wanneer het paneel opengaat. Sinds 16 oktober is dit een echte lezer:
+           vegen tussen de bladen, dubbeltikken of knijpen om te zoomen, slepen
+           in alle richtingen zodra je ingezoomd bent. Dit is de vorm die we
+           zouden bouwen.
 
        B · DE ECHTE PDF IN EEN IFRAME — één regel minder werk en altijd actueel,
-           maar telefoons doen hier stug over: iOS toont in een iframe vaak alleen
-           de eerste pagina zonder te kunnen scrollen, en Android Chrome weigert
-           soms te renderen en zet er een downloadbalk voor in de plaats. Of dat
-           vandaag nog zo is, weet alleen een echt toestel — vandaar deze knop.
+           maar telefoons doen hier stug over. GEMETEN OP EEN IPHONE, 16 OKTOBER:
+           de case opent volledig ingezoomd, want het ingebouwde pdf-venster komt
+           terug op de zoom die het zich herinnert. De link draagt daarom nu
+           #view=Fit, wat dat venster vraagt het blad passend te tonen; Chrome en
+           Firefox luisteren daarnaar, van iOS is het onzeker. Dat is de enige
+           reden dat B nog in deze pagina staat: het is één parameter, en als hij
+           werkt is B de eenvoudigere keuze.
 
      SCHAKEL BOVENAAN TUSSEN DE TWEE EN OPEN EEN CASE OP JE IPHONE EN JE IPAD.
      Werkt B daar zonder gedoe, dan is B de eenvoudigere keuze. Zo niet, dan is A
@@ -216,12 +222,65 @@ tailwind.config = {
     background: #f6f8fa;
   }
 
-  /* De bladen. object-fit is hier niet nodig: het beeld heeft precies de
-     verhouding van het blad, dus width:100% en auto hoogte volstaan — en met
-     width/height op het element zelf reserveert de browser de plek vóór het
-     beeld binnen is, zodat er niets verspringt. */
-  .blad { display: block; width: 100%; height: auto; border-radius: 8px;
-          box-shadow: 0 1px 3px rgba(0,0,0,.08); background: #ffffff; }
+  /* ---------------------------------------------------------------------------
+     DE LEZER — vegen tussen de bladen, knijpen om te zoomen, slepen om te pannen
+     ---------------------------------------------------------------------------
+     Eerste versie zette de twee bladen gewoon onder elkaar in een schuivende
+     doos. Dat leest op een telefoon niet: een blad van A4 op 390 beeldpunten
+     breed heeft letters van een millimeter of twee. Je wílt dus inzoomen, en
+     dan wil je ook kunnen rondschuiven — en tussen blad 1 en 2 vegen.
+
+     ALLES LOOPT VIA ÉÉN TRANSFORM EN GEEN ENKELE NATUURLIJKE SCROLLBALK, en dat
+     is een keuze. Zodra je natuurlijk scrollen mengt met een eigen knijpgebaar
+     vecht de browser mee: hij begint te slingeren, pakt de veeg af halverwege
+     een zoom, of zoomt de hele pagina mee in plaats van het blad. touch-action:
+     none zegt "ik doe het zelf", en dan is er precies één plek waar beslist
+     wordt wat een gebaar betekent.
+
+     De rail draagt de twee vakken naast elkaar en schuift per blad. Elk vak
+     draagt één beeld met zijn eigen schaal en verschuiving; ze weten niets van
+     elkaar, dus blijft blad 2 op zijn plek staan terwijl jij in blad 1 zoomt. */
+  .rail { display: flex; height: 100%; width: 100%; will-change: transform; }
+  .rail.glijdt { transition: transform var(--m-medium) var(--e-decelerate); }
+  .vak {
+    flex: 0 0 100%; height: 100%; overflow: hidden;
+    display: grid; place-items: center;
+    touch-action: none;             /* wij doen de gebaren zelf — zie hierboven */
+    user-select: none; -webkit-user-select: none;
+    cursor: grab;
+  }
+  .vak.sleept { cursor: grabbing; }
+  .blad {
+    display: block; width: 100%; height: auto;
+    border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.08); background: #ffffff;
+    transform-origin: center center;
+    -webkit-user-drag: none; user-drag: none; pointer-events: none;
+  }
+  .blad.glijdt { transition: transform var(--m-base) var(--e-decelerate); }
+
+  /* De balk met de bediening. Hij hangt ín het schuivende deel en niet in de
+     voet, want de voet hoort van één ding te zijn: de demoknop. */
+  /* width:max-content is hier niet optioneel. Een absoluut geplaatst element
+     met alleen `left: 50%` krijgt als beschikbare breedte de hélft van zijn
+     doos, dus 195 beeldpunten op een telefoon — en dan viel «1 / 2» over drie
+     regels uiteen. Gezien op 2026-10-16 in de schermafdruk van de eerste test. */
+  .bediening {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: max-content; white-space: nowrap;
+    bottom: 12px; z-index: 2;
+    display: flex; align-items: center; gap: 4px;
+    background: rgba(255,255,255,.94); backdrop-filter: blur(4px);
+    border: 1px solid #e1ebf0; border-radius: 999px;
+    padding: 4px; box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  }
+  .bediening button {
+    height: 40px; min-width: 40px; padding: 0 10px;
+    display: grid; place-items: center; border-radius: 999px;
+    color: #0a3327; font-weight: 700; font-size: 15px; cursor: pointer;
+  }
+  .bediening button:disabled { opacity: .35; cursor: default; }
+  .bediening button:not(:disabled):hover { background: #f6f8fa; }
+  .bediening .teller { font-variant-numeric: tabular-nums; padding: 0 8px; color: #547068; }
 
   /* Variant B. Een iframe heeft geen natuurlijke hoogte, dus moet die gezegd
      worden; hij vult hier gewoon het hele middenstuk. */
@@ -276,6 +335,17 @@ tailwind.config = {
       Het verschil tussen de twee vormen zit niet in het paneel maar in wat erin staat. Schakel
       hieronder en open een case <b class="text-ink">op je telefoon</b>; dat is de enige test die
       iets beslist.
+    </p>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      <b class="text-ink">Bijgewerkt op 16 oktober, na de eerste test op een iPhone.</b> Variant B
+      opende daar volledig ingezoomd — het ingebouwde pdf-venster komt terug op de zoom die het
+      zich herinnert. De link draagt nu <code class="text-caption">#view=Fit</code>, wat dat venster
+      vraagt het blad passend te tonen; of iOS daarnaar luistert, moet je opnieuw proberen. En
+      variant A is geen rij stilstaande beelden meer maar een lezer:
+      <b class="text-ink">veeg</b> opzij voor het volgende blad,
+      <b class="text-ink">dubbeltik of knijp</b> om in te zoomen, en <b class="text-ink">sleep</b>
+      in alle richtingen zodra je ingezoomd bent. Met een muis doen het wiel, Ctrl+wiel en de
+      pijltjestoetsen hetzelfde.
     </p>
 
     <fieldset class="mt-6 border-0 p-0 m-0">
@@ -424,9 +494,30 @@ tailwind.config = {
       </button>
     </header>
 
-    <!-- HET MIDDENSTUK SCHUIFT. Hier komt A of B in, nooit allebei. -->
-    <div class="paneel-blad" id="paneel-blad">
-      <div id="paneel-beelden" class="p-4 md:p-6 space-y-4"></div>
+    <!-- HET MIDDENSTUK. Hier komt A of B in, nooit allebei.
+
+         A is de lezer: een rail met de twee bladen naast elkaar, een balkje met
+         de bediening eroverheen, en de gebaren in het script onderaan.
+         B is het ingebouwde pdf-venster van de browser in een iframe. -->
+    <div class="paneel-blad relative" id="paneel-blad">
+
+      <div id="paneel-lezer" class="h-full w-full">
+        <div class="rail" id="rail"></div>
+
+        <div class="bediening" id="bediening" role="group" aria-label="Bladeren en zoomen">
+          <button type="button" id="bd-vorige" aria-label="Vorig blad">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span class="teller" id="bd-teller" aria-live="polite">1 / 2</span>
+          <button type="button" id="bd-volgende" aria-label="Volgend blad">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span aria-hidden="true" class="w-px h-6 bg-line mx-1"></span>
+          <button type="button" id="bd-uit" aria-label="Uitzoomen">&minus;</button>
+          <button type="button" id="bd-in" aria-label="Inzoomen">+</button>
+        </div>
+      </div>
+
       <iframe id="paneel-pdf" class="paneel-pdf hidden" title="De case als pdf"></iframe>
     </div>
 
@@ -460,36 +551,273 @@ tailwind.config = {
 
 <script>
 (function () {
-  var paneel   = document.getElementById('paneel');
-  var doos     = paneel.querySelector('.paneel-doos');
-  var blad     = document.getElementById('paneel-blad');
-  var beelden  = document.getElementById('paneel-beelden');
-  var pdf      = document.getElementById('paneel-pdf');
-  var titel    = document.getElementById('paneel-titel');
-  var logo     = document.getElementById('paneel-logo');
-  var download = document.getElementById('paneel-download');
+  var paneel    = document.getElementById('paneel');
+  var doos      = paneel.querySelector('.paneel-doos');
+  var lezer     = document.getElementById('paneel-lezer');
+  var rail      = document.getElementById('rail');
+  var pdf       = document.getElementById('paneel-pdf');
+  var titel     = document.getElementById('paneel-titel');
+  var logo      = document.getElementById('paneel-logo');
+  var download  = document.getElementById('paneel-download');
+  var teller    = document.getElementById('bd-teller');
+  var bdVorige  = document.getElementById('bd-vorige');
+  var bdVolgende= document.getElementById('bd-volgende');
+  var bdUit     = document.getElementById('bd-uit');
+  var bdIn      = document.getElementById('bd-in');
 
+  var BLADEN = 2, MIN = 1, MAX = 4;
+  var index = 0;
+  var vakken = [];
+
+  function stil() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
   function vorm() {
     var g = document.querySelector('input[name="vorm"]:checked');
     return g ? g.value : 'beeld';
   }
 
-  /* De bladen worden pas hier gemaakt, bij het openen. Zet je ze in de pagina,
-     dan haalt de browser vroeg of laat tien beelden op voor een paneel dat
-     misschien nooit opengaat — 1,5 MB voor niets. */
-  function vulBeelden(slug, naam) {
-    beelden.innerHTML = '';
-    for (var n = 1; n <= 2; n++) {
+  /* ===========================================================================
+     DE LEZER
+     ===========================================================================
+     Eén vak per blad, elk met zijn eigen schaal en verschuiving. Alles wat je
+     ziet is één transform op het beeld; er is geen enkele natuurlijke
+     scrollbalk in het spel. Zie de nota bij .rail in de stijl hierboven voor
+     waarom dat zo is.
+     ------------------------------------------------------------------------- */
+
+  function maten(v) {
+    var doosje = v.el.getBoundingClientRect();
+    return {
+      bw: doosje.width, bh: doosje.height,
+      w: v.img.offsetWidth * v.s, h: v.img.offsetHeight * v.s
+    };
+  }
+
+  /* Hoe ver mag dit blad verschoven worden voor het van zijn doos af valt?
+     Past het in een richting, dan is de grens nul en staat het dus gecentreerd
+     vast — precies waarom een blad op schaal 1 niet heen en weer wiebelt. */
+  function grens(v) {
+    var m = maten(v);
+    return { x: Math.max(0, (m.w - m.bw) / 2), y: Math.max(0, (m.h - m.bh) / 2) };
+  }
+  function klem(v) {
+    var g = grens(v);
+    v.x = Math.max(-g.x, Math.min(g.x, v.x));
+    v.y = Math.max(-g.y, Math.min(g.y, v.y));
+  }
+  function zet(v, zacht) {
+    v.img.classList.toggle('glijdt', !!zacht && !stil());
+    v.img.style.transform = 'translate(' + v.x.toFixed(1) + 'px,' + v.y.toFixed(1) + 'px) scale(' + v.s.toFixed(3) + ')';
+  }
+
+  /* Inzoomen rond een punt, en niet rond het midden. Zonder dit springt het
+     stuk tekst waar je net op tikte weg uit beeld, en dan is zoomen een loterij.
+     px en py zijn gemeten vanaf het midden van de doos. */
+  function zoom(v, naar, px, py, zacht) {
+    naar = Math.min(MAX, Math.max(MIN, naar));
+    var f = naar / v.s;
+    v.x = px - (px - v.x) * f;
+    v.y = py - (py - v.y) * f;
+    v.s = naar;
+    klem(v); zet(v, zacht); bedieningBij();
+  }
+
+  function huidig() { return vakken[index]; }
+
+  function bedieningBij() {
+    teller.textContent = (index + 1) + ' / ' + BLADEN;
+    bdVorige.disabled   = index === 0;
+    bdVolgende.disabled = index === BLADEN - 1;
+    var v = huidig();
+    bdUit.disabled = !v || v.s <= MIN + 0.01;
+    bdIn.disabled  = !v || v.s >= MAX - 0.01;
+  }
+
+  function railZet(extra, zacht) {
+    rail.classList.toggle('glijdt', !!zacht && !stil());
+    rail.style.transform = 'translateX(' + (-index * 100) + '%)' +
+                           (extra ? ' translateX(' + extra.toFixed(1) + 'px)' : '');
+  }
+
+  /* Van blad wisselen zet de zoom terug op 1. Anders kom je op blad 2 uit in
+     een hoek waar je nooit om gevraagd hebt. */
+  function naarBlad(i, zacht) {
+    index = Math.max(0, Math.min(BLADEN - 1, i));
+    vakken.forEach(function (v) { v.s = 1; v.x = 0; v.y = 0; zet(v); });
+    railZet(0, zacht !== false);
+    bedieningBij();
+  }
+
+  function bouwLezer(slug, naam) {
+    rail.innerHTML = '';
+    vakken = [];
+    index = 0;
+    for (var n = 1; n <= BLADEN; n++) {
+      var vak = document.createElement('div');
+      vak.className = 'vak';
       var img = document.createElement('img');
       img.className = 'blad';
       img.width = 1200; img.height = 1700;
-      img.alt = 'Klantcase ' + naam + ', pagina ' + n + ' van 2';
+      img.alt = 'Klantcase ' + naam + ', blad ' + n + ' van ' + BLADEN;
       img.src = 'cases/preview/' + slug + '-' + n + '.webp';
       if (n > 1) { img.loading = 'lazy'; }
-      beelden.appendChild(img);
+      vak.appendChild(img);
+      rail.appendChild(vak);
+      var v = { el: vak, img: img, s: 1, x: 0, y: 0 };
+      vakken.push(v);
+      gebaren(v, vakken.length - 1);
     }
+    railZet(0, false);
+    bedieningBij();
   }
 
+  /* ---------------------------------------------------------------------------
+     DE GEBAREN
+     ---------------------------------------------------------------------------
+     Twee vingers is altijd knijpen. Eén vinger is pannen óf bladeren, en welke
+     van de twee wordt één keer beslist, bij de eerste acht beeldpunten
+     beweging: kan dit blad in die richting nog schuiven, dan pan je, anders
+     sleep je de rail.
+
+     DIE BESLISSING VALT ÉÉN KEER EN WORDT NIET HERZIEN. Je kunt dus niet
+     bladeren terwijl je ingezoomd bent; daar zijn de pijltjes voor, en die
+     zetten de zoom meteen terug. Dat is met opzet de domme versie: elk gebaar
+     dat halverwege van betekenis verandert, voelt op een telefoon als een
+     haperende pagina.
+     --------------------------------------------------------------------------- */
+  function gebaren(v, i) {
+    var punten = {};          /* actieve vingers */
+    var modus = null;         /* 'pan' | 'rail' | 'knijp' */
+    var richting = null;
+    var start = null;
+    var laatsteTik = 0, laatsteTikX = 0, laatsteTikY = 0;
+
+    function middenVan(doosje, cx, cy) {
+      return { x: cx - (doosje.left + doosje.width / 2), y: cy - (doosje.top + doosje.height / 2) };
+    }
+
+    v.el.addEventListener('pointerdown', function (e) {
+      if (index !== i) { return; }
+      v.el.setPointerCapture(e.pointerId);
+      punten[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var lijst = Object.keys(punten);
+
+      if (lijst.length === 2) {
+        var a = punten[lijst[0]], b = punten[lijst[1]];
+        var doosje = v.el.getBoundingClientRect();
+        modus = 'knijp'; richting = null;
+        start = {
+          afstand: Math.hypot(a.x - b.x, a.y - b.y) || 1,
+          s: v.s,
+          mid: middenVan(doosje, (a.x + b.x) / 2, (a.y + b.y) / 2)
+        };
+        return;
+      }
+
+      modus = null; richting = null;
+      start = { x: e.clientX, y: e.clientY, vx: v.x, vy: v.y, t: Date.now() };
+    });
+
+    v.el.addEventListener('pointermove', function (e) {
+      if (!punten[e.pointerId]) { return; }
+      punten[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var lijst = Object.keys(punten);
+
+      if (modus === 'knijp' && lijst.length >= 2) {
+        var a = punten[lijst[0]], b = punten[lijst[1]];
+        var d = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+        zoom(v, start.s * (d / start.afstand), start.mid.x, start.mid.y);
+        return;
+      }
+      if (lijst.length !== 1 || !start) { return; }
+
+      var dx = e.clientX - start.x, dy = e.clientY - start.y;
+
+      if (!modus) {
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) { return; }
+        richting = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+        var g = grens(v);
+        if (richting === 'x') { modus = g.x > 0.5 ? 'pan' : 'rail'; }
+        else                  { modus = g.y > 0.5 ? 'pan' : 'rail'; }
+        if (modus === 'rail' && richting === 'y') { modus = 'niets'; }
+        v.el.classList.toggle('sleept', modus === 'pan');
+      }
+
+      if (modus === 'pan') {
+        v.x = start.vx + dx; v.y = start.vy + dy;
+        klem(v); zet(v);
+      } else if (modus === 'rail') {
+        railZet(dx, false);
+      }
+    });
+
+    function los(e) {
+      if (!punten[e.pointerId]) { return; }
+      delete punten[e.pointerId];
+      v.el.classList.remove('sleept');
+
+      if (modus === 'rail' && start) {
+        var dx = e.clientX - start.x;
+        var snel = Math.abs(dx) / Math.max(1, Date.now() - start.t) > 0.4;
+        if (dx < -40 && (snel || dx < -80)) { naarBlad(index + 1); }
+        else if (dx > 40 && (snel || dx > 80)) { naarBlad(index - 1); }
+        else { railZet(0, true); }
+      }
+
+      /* Dubbeltik: heen en weer tussen passend en 2,5 keer, op de plek waar je
+         tikte. Op een telefoon is dat wat mensen doen vóór ze aan knijpen
+         denken. */
+      if (!modus && start) {
+        var nu = Date.now();
+        var dichtbij = Math.abs(e.clientX - laatsteTikX) < 30 && Math.abs(e.clientY - laatsteTikY) < 30;
+        if (nu - laatsteTik < 320 && dichtbij) {
+          var doosje = v.el.getBoundingClientRect();
+          var m = middenVan(doosje, e.clientX, e.clientY);
+          zoom(v, v.s > 1.05 ? 1 : 2.5, m.x, m.y, true);
+          laatsteTik = 0;
+        } else {
+          laatsteTik = nu; laatsteTikX = e.clientX; laatsteTikY = e.clientY;
+        }
+      }
+
+      if (!Object.keys(punten).length) { modus = null; richting = null; start = null; }
+    }
+    v.el.addEventListener('pointerup', los);
+    v.el.addEventListener('pointercancel', los);
+
+    /* Het wiel van een muis zoomt mét Ctrl (zoals overal) en pant zonder. */
+    v.el.addEventListener('wheel', function (e) {
+      if (index !== i) { return; }
+      e.preventDefault();
+      var doosje = v.el.getBoundingClientRect();
+      var m = middenVan(doosje, e.clientX, e.clientY);
+      if (e.ctrlKey || e.metaKey) {
+        zoom(v, v.s * (e.deltaY < 0 ? 1.12 : 1 / 1.12), m.x, m.y);
+      } else {
+        v.y -= e.deltaY; v.x -= e.deltaX; klem(v); zet(v);
+      }
+    }, { passive: false });
+  }
+
+  bdVorige.addEventListener('click', function () { naarBlad(index - 1); });
+  bdVolgende.addEventListener('click', function () { naarBlad(index + 1); });
+  bdIn.addEventListener('click', function () { var v = huidig(); if (v) { zoom(v, v.s * 1.6, 0, 0, true); } });
+  bdUit.addEventListener('click', function () { var v = huidig(); if (v) { zoom(v, v.s / 1.6, 0, 0, true); } });
+
+  paneel.addEventListener('keydown', function (e) {
+    if (vorm() !== 'beeld') { return; }
+    var v = huidig();
+    if (e.key === 'ArrowRight') { naarBlad(index + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { naarBlad(index - 1); e.preventDefault(); }
+    else if ((e.key === '+' || e.key === '=') && v) { zoom(v, v.s * 1.6, 0, 0, true); e.preventDefault(); }
+    else if (e.key === '-' && v) { zoom(v, v.s / 1.6, 0, 0, true); e.preventDefault(); }
+    else if (e.key === '0' && v) { zoom(v, 1, 0, 0, true); e.preventDefault(); }
+  });
+
+  /* ===========================================================================
+     HET PANEEL
+     =========================================================================== */
   function open(knop) {
     var slug = knop.getAttribute('data-case');
     var naam = knop.getAttribute('data-naam');
@@ -498,28 +826,30 @@ tailwind.config = {
     download.href = 'cases/youbo-case-' + slug + '.pdf';
 
     if (vorm() === 'pdf') {
-      beelden.innerHTML = '';
-      beelden.classList.add('hidden');
+      rail.innerHTML = '';
+      lezer.classList.add('hidden');
       pdf.classList.remove('hidden');
-      pdf.src = 'cases/youbo-case-' + slug + '.pdf';
+      /* #view=Fit vraagt het pdf-venster om het blad passend te tonen in plaats
+         van op de laatst gebruikte zoom. Chrome en Firefox luisteren; of iOS
+         dat ook doet is precies wat hier getest moet worden — vóór deze regel
+         opende de case daar volledig ingezoomd. */
+      pdf.src = 'cases/youbo-case-' + slug + '.pdf#view=Fit';
     } else {
       pdf.removeAttribute('src');
       pdf.classList.add('hidden');
-      beelden.classList.remove('hidden');
-      vulBeelden(slug, naam);
+      lezer.classList.remove('hidden');
     }
 
-    blad.scrollTop = 0;
-    /* <dialog> legt de achtergrond stil voor de Tab-toets, maar niet voor de
-       vinger: op iOS schuift de pagina eronder gewoon door. Vandaar deze regel,
-       en de spiegelregel in sluit(). */
     document.body.style.overflow = 'hidden';
     paneel.showModal();
+
+    /* Pas ná showModal() heeft het vak een breedte, en zonder breedte zijn alle
+       grenzen nul en kun je niets pannen. */
+    if (vorm() === 'beeld') { bouwLezer(slug, naam); }
   }
 
   function sluit() {
     document.body.style.overflow = '';
-    /* De pdf losmaken, anders blijft een browser hem in het geheugen houden. */
     pdf.removeAttribute('src');
     paneel.close();
   }
@@ -530,16 +860,11 @@ tailwind.config = {
 
   document.getElementById('paneel-sluit').addEventListener('click', sluit);
 
-  /* Escape sluit vanzelf — dat doet <dialog> — maar dan loopt sluit() niet, dus
-     blijft body op overflow:hidden staan. Dit is die vergetelheid. */
   paneel.addEventListener('close', function () {
     document.body.style.overflow = '';
     pdf.removeAttribute('src');
   });
 
-  /* Klikken náást het paneel sluit het ook. <dialog> vangt die klik op zichzelf
-     op, want de ::backdrop hoort bij het element — dus is de test of de klik
-     buiten de doos viel. */
   paneel.addEventListener('click', function (e) {
     if (!doos.contains(e.target)) { sluit(); }
   });
