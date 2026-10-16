@@ -56,6 +56,13 @@ on:
       # commit niet op: de site verandert niet, er is geen mislukte publicatie
       # en dus ook geen melding — er is helemaal geen publicatie.
       - 'content/media/**'
+      # De vijf klantcases. Vandaag verandert een pdf alleen samen met de
+      # pagina, dus zou deze regel overbodig lijken — maar Jana legt ze pro
+      # forma nog voor aan de vijf bedrijven, en een vervangen pdf is een
+      # commit die NIETS anders raakt. Zonder deze regel merkt deze workflow
+      # dat niet op: de oude case blijft op de server staan, er is geen
+      # mislukte publicatie en dus ook geen melding.
+      - 'cases/**'
       - 'publicatie/web.config'
       - 'publiceer.mjs'
       - 'build-faq.mjs'

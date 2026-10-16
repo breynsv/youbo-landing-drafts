@@ -21,6 +21,7 @@ cases:
         - 204 medewerkers
         - 27 afdelingen
       sector: Chemie- en technologiebedrijf
+      nota: 'TODO — te bevestigen bij Jana: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders'
       downloadlink: cases/youbo-case-kaneka.pdf
     - bedrijf: Anchr
       logo: assets/img/anchr-logo.webp
@@ -49,6 +50,7 @@ cases:
         - 7.000 medewerkers
         - 21 landen
       sector: Hr-dienstverlener
+      nota: 'TODO — te bevestigen bij Jana: de kaart zegt 21 landen, haar eigen case-pdf zegt er 18. Het campagneplan zei 18, haar nota van 2026-10-05 zei 21, en de pdf hieronder zegt weer 18'
       downloadlink: cases/youbo-case-sd-worx.pdf
     - bedrijf: DPG Media
       logo: assets/img/dpg-logo-dark.svg
@@ -58,6 +60,7 @@ cases:
         - 6.214 medewerkers
         - 2 landen
       sector: Mediagroep
+      nota: 'TODO — te bevestigen bij Jana: de kaart zegt 6.214 medewerkers, haar eigen case-pdf opent met 1.500 Belgische medewerkers en 130 leidinggevenden. Die 130 zijn op 2026-10-06 bewust van de pagina gehaald'
       downloadlink: cases/youbo-case-dpg-media.pdf
 quotes:
   kop: Waarom klanten voor Youbo kiezen
