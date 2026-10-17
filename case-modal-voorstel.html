@@ -607,17 +607,20 @@ tailwind.config = {
     };
   }
 
-  /* Hoe ver mag dit blad verschoven worden voor het van zijn doos af valt?
-     Past het in een richting, dan is de grens nul en staat het dus gecentreerd
-     vast — precies waarom een blad op schaal 1 niet heen en weer wiebelt. */
-  function grens(v) {
-    var m = maten(v);
-    return { x: Math.max(0, (m.w - m.bw) / 2), y: Math.max(0, (m.h - m.bh) / 2) };
-  }
+  /* Hoe ver mag dit blad schuiven? Het hangt met zijn linkerbovenhoek op (0,0),
+     dus loopt x van 0 tot -(breedte - vakbreedte) en y van 0 tot -(hoogte -
+     vakhoogte). Past het in een richting, dan is die ondergrens 0 en staat het
+     daar vast — daarom wiebelt een blad op schaal 1 niet heen en weer. */
   function klem(v) {
-    var g = grens(v);
-    v.x = Math.max(-g.x, Math.min(g.x, v.x));
-    v.y = Math.max(-g.y, Math.min(g.y, v.y));
+    var m = maten(v);
+    v.x = Math.max(Math.min(0, m.bw - m.w), Math.min(0, v.x));
+    v.y = Math.max(Math.min(0, m.bh - m.h), Math.min(0, v.y));
+  }
+  /* Kan er in deze richting überhaupt geschoven worden? Dat beslist of een
+     veeg pannen is of bladeren. */
+  function kanPannen(v) {
+    var m = maten(v);
+    return { x: m.w > m.bw + 0.5, y: m.h > m.bh + 0.5 };
   }
   function zet(v, zacht) {
     v.img.classList.toggle('glijdt', !!zacht && !stil());
@@ -643,6 +646,13 @@ tailwind.config = {
     v.y = py - (py - v.y) * f;
     v.s = naar;
     klem(v); zet(v, zacht); bedieningBij();
+  }
+
+  /* De knoppen en de toetsen zoomen rond het midden van wat je ziet. Zij hebben
+     geen vinger en geen muisaanwijzer, dus is dat het enige redelijke punt. */
+  function zoomMidden(v, naar) {
+    var d = v.el.getBoundingClientRect();
+    zoom(v, naar, d.width / 2, d.height / 2, true);
   }
 
   function huidig() { return vakken[index]; }
@@ -716,8 +726,13 @@ tailwind.config = {
     var start = null;
     var laatsteTik = 0, laatsteTikX = 0, laatsteTikY = 0;
 
-    function middenVan(doosje, cx, cy) {
-      return { x: cx - (doosje.left + doosje.width / 2), y: cy - (doosje.top + doosje.height / 2) };
+    /* Een punt op het scherm, uitgedrukt vanaf de LINKERBOVENHOEK van het vak.
+       Dat moet ook linksboven zijn, want daar ligt sinds 2026-10-17 de oorsprong
+       van de transform. Stond dit op het midden, dan sprong het blad bij elke
+       zoom een halve doos opzij — gemeten: y zakte 62 beeldpunten bij het
+       uitzoomen, waar hij nul hoorde te zijn. */
+    function puntIn(d, cx, cy) {
+      return { x: cx - d.left, y: cy - d.top };
     }
 
     v.el.addEventListener('pointerdown', function (e) {
@@ -733,7 +748,7 @@ tailwind.config = {
         start = {
           afstand: Math.hypot(a.x - b.x, a.y - b.y) || 1,
           s: v.s,
-          mid: middenVan(doosje, (a.x + b.x) / 2, (a.y + b.y) / 2)
+          mid: puntIn(doosje, (a.x + b.x) / 2, (a.y + b.y) / 2)
         };
         return;
       }
@@ -796,7 +811,7 @@ tailwind.config = {
         var dichtbij = Math.abs(e.clientX - laatsteTikX) < 30 && Math.abs(e.clientY - laatsteTikY) < 30;
         if (nu - laatsteTik < 320 && dichtbij) {
           var doosje = v.el.getBoundingClientRect();
-          var m = middenVan(doosje, e.clientX, e.clientY);
+          var m = puntIn(doosje, e.clientX, e.clientY);
           zoom(v, v.s > 1.05 ? 1 : 2.5, m.x, m.y, true);
           laatsteTik = 0;
         } else {
@@ -814,7 +829,7 @@ tailwind.config = {
       if (index !== i) { return; }
       e.preventDefault();
       var doosje = v.el.getBoundingClientRect();
-      var m = middenVan(doosje, e.clientX, e.clientY);
+      var m = puntIn(doosje, e.clientX, e.clientY);
       if (e.ctrlKey || e.metaKey) {
         zoom(v, v.s * (e.deltaY < 0 ? 1.12 : 1 / 1.12), m.x, m.y);
       } else {
@@ -825,17 +840,17 @@ tailwind.config = {
 
   bdVorige.addEventListener('click', function () { naarBlad(index - 1); });
   bdVolgende.addEventListener('click', function () { naarBlad(index + 1); });
-  bdIn.addEventListener('click', function () { var v = huidig(); if (v) { zoom(v, v.s * 1.6, 0, 0, true); } });
-  bdUit.addEventListener('click', function () { var v = huidig(); if (v) { zoom(v, v.s / 1.6, 0, 0, true); } });
+  bdIn.addEventListener('click', function () { var v = huidig(); if (v) { zoomMidden(v, v.s * 1.6); } });
+  bdUit.addEventListener('click', function () { var v = huidig(); if (v) { zoomMidden(v, v.s / 1.6); } });
 
   paneel.addEventListener('keydown', function (e) {
     if (vorm() !== 'beeld') { return; }
     var v = huidig();
     if (e.key === 'ArrowRight') { naarBlad(index + 1); e.preventDefault(); }
     else if (e.key === 'ArrowLeft') { naarBlad(index - 1); e.preventDefault(); }
-    else if ((e.key === '+' || e.key === '=') && v) { zoom(v, v.s * 1.6, 0, 0, true); e.preventDefault(); }
-    else if (e.key === '-' && v) { zoom(v, v.s / 1.6, 0, 0, true); e.preventDefault(); }
-    else if (e.key === '0' && v) { zoom(v, 1, 0, 0, true); e.preventDefault(); }
+    else if ((e.key === '+' || e.key === '=') && v) { zoomMidden(v, v.s * 1.6); e.preventDefault(); }
+    else if (e.key === '-' && v) { zoomMidden(v, v.s / 1.6); e.preventDefault(); }
+    else if (e.key === '0' && v) { zoomMidden(v, 1); e.preventDefault(); }
   });
 
   /* ===========================================================================

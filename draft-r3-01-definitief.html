@@ -1507,18 +1507,31 @@ tailwind.config = {
      elkaar, dus blijft blad 2 op zijn plek staan terwijl jij in blad 1 zoomt. */
   .rail { display: flex; height: 100%; width: 100%; will-change: transform; }
   .rail.glijdt { transition: transform var(--m-medium) var(--e-decelerate); }
+  /* HET BLAD HANGT ABSOLUUT IN ZIJN VAK, MET DE OORSPRONG LINKSBOVEN.
+     Eerst stond hier `display: grid; place-items: center` en rekende het script
+     met een beeld dat netjes in het midden hangt. Dat is níet wat een browser
+     doet: een grid-item dat gróter is dan zijn vak wordt bovenaan gelegd, niet
+     gecentreerd over de rand heen. Gemeten op 2026-10-17: de bovenkant van het
+     blad lag al op 0, en de correctie die het dáárheen moest brengen duwde het
+     er 320 beeldpunten onder — de lege band die je zag.
+
+     Met top:0, left:0 en transform-origin linksboven is er niets meer te raden:
+     y = 0 is de bovenkant, het blad mag van 0 tot -(hoogte - vakhoogte)
+     schuiven, en bij het zoomen groeit het naar rechtsonder. Alle grenzen staan
+     daarmee in één formule in klem(). */
   .vak {
     flex: 0 0 100%; height: 100%; overflow: hidden;
-    display: grid; place-items: center;
+    position: relative;
     touch-action: none;             /* wij doen de gebaren zelf — zie hierboven */
     user-select: none; -webkit-user-select: none;
     cursor: grab;
   }
   .vak.sleept { cursor: grabbing; }
   .blad {
+    position: absolute; top: 0; left: 0;
     display: block; width: 100%; height: auto;
-    border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.08); background: #ffffff;
-    transform-origin: center center;
+    background: #ffffff;
+    transform-origin: 0 0;
     -webkit-user-drag: none; user-drag: none; pointer-events: none;
   }
   .blad.glijdt { transition: transform var(--m-base) var(--e-decelerate); }
@@ -4814,29 +4827,30 @@ tailwind.config = {
     var d = v.el.getBoundingClientRect();
     return { bw: d.width, bh: d.height, w: v.img.offsetWidth * v.s, h: v.img.offsetHeight * v.s };
   }
-  /* Past het blad in een richting, dan is de grens nul en staat het dus
-     gecentreerd vast — daarom wiebelt een blad op schaal 1 niet heen en weer. */
-  function grens(v) {
-    var m = maten(v);
-    return { x: Math.max(0, (m.w - m.bw) / 2), y: Math.max(0, (m.h - m.bh) / 2) };
-  }
+  /* Hoe ver mag dit blad schuiven? Het hangt met zijn linkerbovenhoek op (0,0),
+     dus loopt x van 0 tot -(breedte - vakbreedte) en y van 0 tot -(hoogte -
+     vakhoogte). Past het in een richting, dan is die ondergrens 0 en staat het
+     daar vast — daarom wiebelt een blad op schaal 1 niet heen en weer. */
   function klem(v) {
-    var g = grens(v);
-    v.x = Math.max(-g.x, Math.min(g.x, v.x));
-    v.y = Math.max(-g.y, Math.min(g.y, v.y));
+    var m = maten(v);
+    v.x = Math.max(Math.min(0, m.bw - m.w), Math.min(0, v.x));
+    v.y = Math.max(Math.min(0, m.bh - m.h), Math.min(0, v.y));
+  }
+  /* Kan er in deze richting überhaupt geschoven worden? Dat beslist of een
+     veeg pannen is of bladeren. */
+  function kanPannen(v) {
+    var m = maten(v);
+    return { x: m.w > m.bw + 0.5, y: m.h > m.bh + 0.5 };
   }
   function zet(v, zacht) {
     v.img.classList.toggle('glijdt', !!zacht && !stil());
     v.img.style.transform = 'translate(' + v.x.toFixed(1) + 'px,' + v.y.toFixed(1) + 'px) scale(' + v.s.toFixed(3) + ')';
   }
 
-  /* Een blad dat hoger is dan zijn doos begint BOVENAAN, niet in het midden.
-     place-items: center legt het precies halverwege, en dan opent een case op
-     een laptop middenin de tekst — wat eruitziet alsof er iets is afgesneden.
-     Op een telefoon past een blad wél in zijn doos; dan is de grens nul en doet
-     deze functie niets. */
+  /* Terug naar de bovenkant van het blad. Sinds het blad linksboven hangt is
+     dat simpelweg (0,0) — zie de nota bij .vak in de stijl. */
   function naarTop(v) {
-    v.x = 0; v.y = grens(v).y; zet(v);
+    v.x = 0; v.y = 0; zet(v);
   }
   /* Inzoomen rond het punt waar getikt of geknepen wordt, niet rond het midden:
      anders springt de zin waar je net op mikte uit beeld. px en py zijn gemeten
@@ -4849,6 +4863,13 @@ tailwind.config = {
     v.s = naar;
     klem(v); zet(v, zacht); bedieningBij();
   }
+  /* De knoppen en de toetsen zoomen rond het midden van wat je ziet. Zij hebben
+     geen vinger en geen muisaanwijzer, dus is dat het enige redelijke punt. */
+  function zoomMidden(v, naar) {
+    var d = v.el.getBoundingClientRect();
+    zoom(v, naar, d.width / 2, d.height / 2, true);
+  }
+
   function huidig() { return vakken[index]; }
 
   function bedieningBij() {
@@ -4915,8 +4936,13 @@ tailwind.config = {
     var punten = {}, modus = null, start = null;
     var laatsteTik = 0, laatsteTikX = 0, laatsteTikY = 0;
 
-    function midden(d, cx, cy) {
-      return { x: cx - (d.left + d.width / 2), y: cy - (d.top + d.height / 2) };
+    /* Een punt op het scherm, uitgedrukt vanaf de LINKERBOVENHOEK van het vak.
+       Dat moet ook linksboven zijn, want daar ligt sinds 2026-10-17 de oorsprong
+       van de transform. Stond dit op het midden, dan sprong het blad bij elke
+       zoom een halve doos opzij — gemeten: y zakte 62 beeldpunten bij het
+       uitzoomen, waar hij nul hoorde te zijn. */
+    function puntIn(d, cx, cy) {
+      return { x: cx - d.left, y: cy - d.top };
     }
 
     v.el.addEventListener('pointerdown', function (e) {
@@ -4930,7 +4956,7 @@ tailwind.config = {
         start = {
           afstand: Math.hypot(a.x - b.x, a.y - b.y) || 1,
           s: v.s,
-          mid: midden(v.el.getBoundingClientRect(), (a.x + b.x) / 2, (a.y + b.y) / 2)
+          mid: puntIn(v.el.getBoundingClientRect(), (a.x + b.x) / 2, (a.y + b.y) / 2)
         };
         return;
       }
@@ -4955,9 +4981,9 @@ tailwind.config = {
       if (!modus) {
         if (Math.abs(dx) < 8 && Math.abs(dy) < 8) { return; }
         var richting = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-        var g = grens(v);
-        if (richting === 'x') { modus = g.x > 0.5 ? 'pan' : 'rail'; }
-        else                  { modus = g.y > 0.5 ? 'pan' : 'niets'; }
+        var kan = kanPannen(v);
+        if (richting === 'x') { modus = kan.x ? 'pan' : 'rail'; }
+        else                  { modus = kan.y ? 'pan' : 'niets'; }
         v.el.classList.toggle('sleept', modus === 'pan');
       }
       if (modus === 'pan') {
@@ -4986,7 +5012,7 @@ tailwind.config = {
         var nu = Date.now();
         var dichtbij = Math.abs(e.clientX - laatsteTikX) < 30 && Math.abs(e.clientY - laatsteTikY) < 30;
         if (nu - laatsteTik < 320 && dichtbij) {
-          var m = midden(v.el.getBoundingClientRect(), e.clientX, e.clientY);
+          var m = puntIn(v.el.getBoundingClientRect(), e.clientX, e.clientY);
           zoom(v, v.s > 1.05 ? 1 : 2.5, m.x, m.y, true);
           laatsteTik = 0;
         } else {
@@ -5002,7 +5028,7 @@ tailwind.config = {
     v.el.addEventListener('wheel', function (e) {
       if (index !== i) { return; }
       e.preventDefault();
-      var m = midden(v.el.getBoundingClientRect(), e.clientX, e.clientY);
+      var m = puntIn(v.el.getBoundingClientRect(), e.clientX, e.clientY);
       if (e.ctrlKey || e.metaKey) {
         zoom(v, v.s * (e.deltaY < 0 ? 1.12 : 1 / 1.12), m.x, m.y);
       } else {
@@ -5013,16 +5039,16 @@ tailwind.config = {
 
   bdVorige.addEventListener('click', function () { naarBlad(index - 1); });
   bdVolgende.addEventListener('click', function () { naarBlad(index + 1); });
-  bdIn.addEventListener('click', function () { var v = huidig(); if (v) { zoom(v, v.s * 1.6, 0, 0, true); } });
-  bdUit.addEventListener('click', function () { var v = huidig(); if (v) { zoom(v, v.s / 1.6, 0, 0, true); } });
+  bdIn.addEventListener('click', function () { var v = huidig(); if (v) { zoomMidden(v, v.s * 1.6); } });
+  bdUit.addEventListener('click', function () { var v = huidig(); if (v) { zoomMidden(v, v.s / 1.6); } });
 
   paneel.addEventListener('keydown', function (e) {
     var v = huidig();
     if (e.key === 'ArrowRight') { naarBlad(index + 1); e.preventDefault(); }
     else if (e.key === 'ArrowLeft') { naarBlad(index - 1); e.preventDefault(); }
-    else if ((e.key === '+' || e.key === '=') && v) { zoom(v, v.s * 1.6, 0, 0, true); e.preventDefault(); }
-    else if (e.key === '-' && v) { zoom(v, v.s / 1.6, 0, 0, true); e.preventDefault(); }
-    else if (e.key === '0' && v) { zoom(v, 1, 0, 0, true); e.preventDefault(); }
+    else if ((e.key === '+' || e.key === '=') && v) { zoomMidden(v, v.s * 1.6); e.preventDefault(); }
+    else if (e.key === '-' && v) { zoomMidden(v, v.s / 1.6); e.preventDefault(); }
+    else if (e.key === '0' && v) { zoomMidden(v, 1); e.preventDefault(); }
   });
 
   function open(link) {
