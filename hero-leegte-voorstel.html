@@ -1,0 +1,417 @@
+<!doctype html>
+<!--
+CONCEPT: De hero leest als een leeg wit blok. Drie manieren om dat op te lossen, elk als een
+echte hero op volle breedte, zodat je ze kunt aanwijzen in plaats van erover te praten.
+==============================================================================
+     WAT ER MIS IS, GEMETEN OP 2026-10-17
+     -----------------------------------------------------------------------------
+     De hero is 502 beeldpunten hoog op een laptop. De tekstkolom stopt na 300
+     daarvan, en de rechterkolom van 352 breed draagt alleen een cirkel van 176
+     met vier regels bijschrift. Daartussen staat niets. Er is ook nergens te
+     zien wát Youbo is: de kop belooft «compensatie zonder kopzorgen», de intro
+     zegt «maak komaf met Excel», en de bezoeker krijgt geen enkel beeld van
+     het ding zelf.
+
+     DAT IS GEEN TOEVAL MAAR EEN GEVOLG. Tot 2026-10-16 vulde Nick die
+     rechterkolom met een rechthoek van 400 bij 505. Die moest kleiner — Jana
+     viel over het kader en over zijn gewicht — en dat is gelukt, maar het liet
+     een gat achter dat nooit opnieuw gevuld is.
+
+     DRIE ANTWOORDEN, EN ZE SLUITEN ELKAAR NIET UIT:
+
+       1 · HET PRODUCT ERBIJ — een nagetekend scherm naast de kop, in dezelfde
+           stijl als de vier in de rondleiding. Nick zakt naar een regel onder
+           de knop, met zijn cirkel op 56. Dit vult niet alleen de ruimte, het
+           beantwoordt ook de vraag die de kop oproept.
+
+       2 · DE KLANTEN ERBIJ — de negen logo's staan nu in een grijze band ónder
+           de hero. Ze schuiven mee naar binnen, zodat het eerste scherm eindigt
+           op bewijs in plaats van op wit. Geen nieuw beeldmateriaal nodig.
+
+       3 · STRAKKER EN GROTER — niets erbij, alleen beter benut: de kop op
+           displayformaat over de volle breedte, de intro eronder, de witruimte
+           eromheen terug. De hero wordt een stuk korter in plaats van voller.
+
+     Mijn voorkeur staat onderaan, na de drie.
+     ============================================================================== -->
+<html lang="nl-BE">
+<head>
+<meta name="ontwerp-versie" content="3.3+20261017">
+<meta name="ontwerp-versie-leesbaar" content="v3.3 — 17 oktober 2026">
+<meta name="pagina-soort" content="vergelijking">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voorstel — de lege hero | Youbo</title>
+<meta name="description" content="Drie manieren om de hero van de Youbo-landingspagina minder leeg te maken: een nagetekend productscherm ernaast, de klantlogo's erin, of strakker en groter zonder iets toe te voegen.">
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },   /* primary + primary-text   */
+        ink:     { DEFAULT: '#0a3327', soft: '#547068',    /* text-primary + secondary */
+                   inv: '#ffffff' },
+        paper:   '#ffffff',                                 /* background               */
+        surface: '#f6f8fa',                                 /* surface                  */
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
+        /* Het cyaanblauw van de huisstijl haalt op licht de leesnorm niet:
+           2,67:1 op wit en 2,51:1 op #f6f8fa, waar 4,5:1 nodig is. Op de
+           donkere banden werkt het wél, dus blijft het daar staan. Voor links
+           op een lichte achtergrond gebruikt deze pagina de goedgekeurde
+           donkerder variant #00718c: 5,61:1 op wit en 5,27:1 op #f6f8fa. */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
+        forest:  '#154e3a',                                 /* gradient-dark-end        */
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      /* de spatiëringsschaal 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 80 · 128 */
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionDuration: { fast: '150ms', base: '200ms', medium: '300ms', slow: '350ms' },
+      transitionTimingFunction: {
+        standard:   'ease-in-out',
+        decelerate: 'ease-out',
+        accelerate: 'cubic-bezier(0, 1, 0.3, 1)',
+      },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    :root {
+      --m-fast: 150ms; --m-base: 200ms; --m-medium: 300ms;
+      --e-standard: ease-in-out; --e-decelerate: ease-out;
+      --c-focus: #00718c;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    body { @apply bg-paper text-ink font-sans text-body antialiased; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
+    /* Deze pagina beweegt nergens uit zichzelf; het enige wat overgaat is de
+       kleur van een knop bij hover. Wie beweging uitzet, krijgt ook dat niet. */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+    h1, h2, h3 { @apply m-0; }
+  }
+  @layer components {
+    .shell { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+    .btn   { @apply inline-flex items-center justify-center gap-2 rounded-sm text-body
+                    font-bold min-h-[48px] px-6 py-[14px] cursor-pointer;
+             transition: background-color var(--m-base) var(--e-standard),
+                         color var(--m-base) var(--e-standard); }
+    .btn-primary { @apply btn bg-brand text-brand-ink; }
+    .btn-primary:hover { background-color: #000000; color: #0af29f; }
+    .koptekst { @apply font-bold text-ink; }
+    .bijschrift { @apply mt-5 text-body text-ink-soft border-l-4 border-brand pl-5; }
+    .panel { @apply rounded-md bg-paper overflow-hidden;
+             box-shadow: 0 24px 60px -28px rgba(0,0,0,.65); }
+    .panel-bar { @apply flex items-center gap-2 border-b border-line px-5 py-3; }
+    .miniheader { @apply text-caption font-bold text-ink; }
+    .label { @apply text-caption font-bold text-ink-soft; letter-spacing: .08em; text-transform: uppercase; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ======================= DE VRAAG ======================= -->
+<div class="bg-surface border-b border-line">
+  <div class="shell py-8 md:py-10">
+    <p class="text-caption text-ink-soft">Voorstel · 17 oktober 2026</p>
+    <h1 class="mt-2 text-h1">De hero is een leeg wit blok</h1>
+    <p class="mt-4 text-body text-ink-soft max-w-prose">
+      Gemeten: de hero is 502 beeldpunten hoog, de tekst stopt na 300, en de rechterkolom van 352
+      breed draagt alleen Nick in een cirkel van 176. Daartussen staat niets — en nergens is te
+      zien <b class="text-ink">wát</b> Youbo is.
+    </p>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      Dat is geen toeval. Tot gisteren vulde Nick die kolom met een rechthoek van 400 bij 505. Die
+      moest kleiner, en dat is gelukt — maar het gat dat hij achterliet is nooit opgevuld. Hieronder
+      drie antwoorden, elk als een echte hero op volle breedte.
+    </p>
+  </div>
+</div>
+
+<!-- ======================= VARIANT 1 ======================= -->
+<section aria-labelledby="v1-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="v1-titel" class="text-h2">Variant 1 — Het product erbij</h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">
+        Een nagetekend scherm naast de kop, in dezelfde stijl als de vier in de rondleiding. Nick
+        zakt naar één regel onder de knop, met zijn cirkel op 56.
+      </p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">
+        Vult niet alleen de ruimte maar beantwoordt ook de vraag die de kop oproept. De cijfers in
+        het scherm kloppen onderling: 2,0 + 3,5 + 2,5 + 3,0 gedeeld door vier is 2,75, en er staan
+        vier van de zes voorstellen in beeld. Geen euro's — zodra twee schermen bedragen tonen, kan
+        een bezoeker ze tegen elkaar natellen.
+      </p>
+    </div>
+  </div>
+
+  <header class="bg-paper">
+    <div class="shell pt-6 md:pt-10">
+      <a href="#" class="inline-flex items-center" data-cta="v1-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+
+      <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
+        <div class="lg:col-span-6">
+          <p class="koptekst text-h1 lg:text-display">Compensatie zonder kopzorgen</p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+          <div class="mt-8">
+            <a href="#" class="btn-primary w-full sm:w-auto" data-cta="v1-boek-demo">Boek een demo</a>
+          </div>
+
+          <!-- Nick, nu als regel in plaats van als kolom. -->
+          <div class="mt-8 flex items-center gap-4">
+            <img src="assets/img/nick-portret.webp" width="900" height="1140"
+                 alt="Nick Van Langendonck"
+                 class="h-14 w-14 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+            <p class="m-0 text-caption text-ink-soft max-w-text">
+              <b class="text-ink">Nick</b> laat je zien hoe Youbo voor jouw organisatie werkt. Geen
+              algemene verkooppitch, wel een concrete blik op jouw looncyclus.
+            </p>
+          </div>
+        </div>
+
+        <figure class="lg:col-span-6 m-0">
+          <div class="panel">
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Voorstel voor jouw team</span>
+              <span class="ml-auto shrink-0 text-caption text-ink-soft">Cyclus 2027</span>
+            </div>
+            <svg viewBox="0 0 1200 820" class="block h-auto w-full" role="img"
+                 aria-label="Voorstel voor jouw team: vier van de zes voorstellen zijn klaar, met verhogingen van 2,0 tot 3,5 procent en een gemiddelde van 2,75 procent tegenover een richtlijn van 3,0 procent."
+                 style="font-family: Inter, system-ui, sans-serif">
+              <rect width="1200" height="820" fill="#ffffff"/>
+
+              <text x="40" y="66" font-size="34" font-weight="700" fill="#0a3327">Jouw team · 6 medewerkers</text>
+              <text x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">4 van 6 klaar</text>
+              <line x1="40" y1="100" x2="1160" y2="100" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40"  y="146" font-size="21" font-weight="700" fill="#547068">MEDEWERKER</text>
+              <text x="560" y="146" font-size="21" font-weight="700" fill="#547068">POSITIE IN DE BAND</text>
+              <text x="940" y="146" font-size="21" font-weight="700" fill="#547068">VOORSTEL</text>
+
+              <g font-size="25" fill="#0a3327">
+                <rect x="30" y="170" width="1140" height="92" rx="9" fill="#f6f8fa"/>
+                <text x="40" y="206" font-weight="700">A. Peeters</text>
+                <text x="40" y="243" font-size="21" fill="#547068">Teamlead support</text>
+                <rect x="560" y="196" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="196" width="222" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="212" font-size="21" fill="#547068">74%</text>
+                <text x="1160" y="212" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,5%</text>
+
+                <text x="40" y="332" font-weight="700">M. Declerck</text>
+                <text x="40" y="369" font-size="21" fill="#547068">Analist</text>
+                <rect x="560" y="322" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="322" width="138" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="338" font-size="21" fill="#547068">46%</text>
+                <text x="1160" y="338" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,0%</text>
+
+                <text x="40" y="458" font-weight="700">S. Janssens</text>
+                <text x="40" y="495" font-size="21" fill="#547068">Projectleider</text>
+                <rect x="560" y="448" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="448" width="264" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="464" font-size="21" fill="#547068">88%</text>
+                <text x="1160" y="464" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,0%</text>
+
+                <text x="40" y="584" font-weight="700">K. Verhaeghe</text>
+                <text x="40" y="621" font-size="21" fill="#547068">Consultant</text>
+                <rect x="560" y="574" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="574" width="186" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="590" font-size="21" fill="#547068">62%</text>
+                <text x="1160" y="590" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,5%</text>
+              </g>
+
+              <line x1="40" y1="650" x2="1160" y2="650" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40" y="706" font-size="25" font-weight="700" fill="#0a3327">Gemiddeld 2,75%</text>
+              <text x="40" y="748" font-size="21" fill="#547068">Richtlijn voor deze cyclus: 3,0%</text>
+
+              <rect x="40" y="772" width="640" height="16" rx="8" fill="#e1ebf0"/>
+              <rect x="40" y="772" width="587" height="16" rx="8" fill="#0af29f"/>
+
+              <rect x="910" y="684" width="250" height="72" rx="9" fill="#f6f8fa"/>
+              <text x="1035" y="718" font-size="21" font-weight="700" fill="#154e3a" text-anchor="middle">Binnen budget</text>
+              <text x="1035" y="746" font-size="21" fill="#547068" text-anchor="middle">nog 0,25% over</text>
+            </svg>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </header>
+  <div class="h-10 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<!-- ======================= VARIANT 2 ======================= -->
+<section aria-labelledby="v2-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="v2-titel" class="text-h2">Variant 2 — De klanten erbij</h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">
+        Dezelfde hero als vandaag, maar de negen klantlogo's schuiven mee naar binnen. Het eerste
+        scherm eindigt dan op bewijs in plaats van op wit.
+      </p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">
+        Geen nieuw beeldmateriaal nodig: die logo's staan er al, alleen in een grijze band eronder.
+        Het blijft wel een hero zonder product.
+      </p>
+    </div>
+  </div>
+
+  <header class="bg-paper">
+    <div class="shell pt-6 md:pt-10 pb-12 md:pb-16">
+      <a href="#" class="inline-flex items-center" data-cta="v2-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+
+      <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div class="lg:col-span-7">
+          <p class="koptekst text-h1 lg:text-display">Compensatie zonder kopzorgen</p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+          <div class="mt-8">
+            <a href="#" class="btn-primary w-full sm:w-auto" data-cta="v2-boek-demo">Boek een demo</a>
+          </div>
+        </div>
+
+        <figure class="lg:col-span-5 m-0 mx-auto w-full max-w-[22rem]">
+          <img src="assets/img/nick-portret.webp" width="900" height="1140"
+               alt="Nick Van Langendonck"
+               class="h-36 w-36 md:h-44 md:w-44 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+          <figcaption class="bijschrift">
+            Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch, wel
+            een concrete blik op jouw looncyclus.
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- De logobalk, nu binnen de hero. -->
+      <div class="mt-12 md:mt-16 border-t border-line pt-8">
+        <p class="label text-center">Deze bedrijven vertrouwen Youbo</p>
+        <ul class="mt-6 list-none p-0 m-0 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+          <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px"></li>
+          <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px"></li>
+          <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px"></li>
+          <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px"></li>
+          <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px"></li>
+          <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:26px"></li>
+          <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:24px"></li>
+          <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:28px"></li>
+          <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:20px"></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+  <div class="h-10 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<!-- ======================= VARIANT 3 ======================= -->
+<section aria-labelledby="v3-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="v3-titel" class="text-h2">Variant 3 — Strakker en groter</h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">
+        Niets erbij. De kop krijgt de volle breedte en gaat één trap omhoog, de intro komt eronder,
+        en Nick staat als regel onder de knop. De hero wordt kórter in plaats van voller.
+      </p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">
+        De goedkoopste van de drie, en de enige die niets toevoegt wat later weer onderhouden moet
+        worden. Maar de vraag «wat is Youbo» blijft ook hier onbeantwoord tot de rondleiding.
+      </p>
+    </div>
+  </div>
+
+  <header class="bg-paper">
+    <div class="shell pt-6 md:pt-10 pb-10 md:pb-14">
+      <a href="#" class="inline-flex items-center" data-cta="v3-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+
+      <div class="mt-10 md:mt-14 max-w-[52rem]">
+        <p class="koptekst text-h1 lg:text-[64px] lg:leading-[1.08]">Compensatie zonder kopzorgen</p>
+        <p class="mt-6 text-h3 text-ink-soft max-w-prose">
+          Maak komaf met Excel. Beheer loon, bonus en promotie in één platform — met voorstellen,
+          budgetbewaking en een spoor van elke beslissing. Ontdek Youbo.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-5">
+          <a href="#" class="btn-primary w-full sm:w-auto" data-cta="v3-boek-demo">Boek een demo</a>
+          <div class="flex items-center gap-3">
+            <img src="assets/img/nick-portret.webp" width="900" height="1140"
+                 alt="Nick Van Langendonck"
+                 class="h-12 w-12 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+            <p class="m-0 text-caption text-ink-soft">
+              Nick toont je Youbo op jouw eigen looncyclus
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="h-10 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<!-- ======================= HET OORDEEL ======================= -->
+<div class="bg-surface border-t border-line">
+  <div class="shell py-10 md:py-12">
+    <h2 class="text-h2">Wat ik zou doen</h2>
+    <p class="mt-4 text-body text-ink-soft max-w-prose">
+      <b class="text-ink">Variant 1.</b> De hero is leeg omdat er niets te zien is, niet omdat er
+      te veel wit omheen staat. Een bezoeker die uit een LinkedIn-advertentie komt, weet na de kop
+      nog altijd niet of dit een tool, een dienst of een adviesbureau is — en het scherm zegt dat
+      in één oogopslag. Dat de rondleiding verderop vier van die tekeningen heeft, maakt het geen
+      nieuw werk maar een vijfde in dezelfde taal.
+    </p>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      <b class="text-ink">Variant 2 is de goede tweede</b>, en hij kan erbovenop: de logo's in de
+      hero kosten niets en SD Worx, DPG Media en Crelan zijn sterker bewijs dan welke zin ook. Op
+      een telefoon duwt dat de rondleiding wel verder naar beneden.
+    </p>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      <b class="text-ink">Variant 3 lost de leegte op zonder de vraag te beantwoorden.</b> Hij is
+      korter en strakker, en als je niets wil toevoegen is dit de juiste keuze — maar dan blijft de
+      eerste indruk tekst op wit.
+    </p>
+    <p class="mt-6 text-caption text-ink-soft">
+      Niets hiervan staat op de echte pagina. Zeg welke het wordt, dan zet ik hem erin.
+    </p>
+  </div>
+</div>
+
+</body>
+</html>
