@@ -1,0 +1,697 @@
+<!doctype html>
+<!--
+CONCEPT: Vijf variaties op de hero mét het nagetekende scherm, gemaakt nadat ik zes concurrenten
+naast elkaar heb gelegd. Geen van hen heeft een witte hero; dat is de rode draad.
+==============================================================================
+     WAT DE CONCURRENTIE DOET — gemeten op 2026-10-17, met echte schermafdrukken
+     op 1440 bij 900, niet uit het hoofd.
+
+       figures.hr   kleurvlak (roze verloop), kop in een serif van zo'n 90px met
+                    één woord gemarkeerd, één knop, en rechts een VERSIMPELD
+                    productscherm dat eerder suggereert dan toont.
+       ravio.com    gecentreerd op gebroken wit, een pilletje boven de kop
+                    («Real-time benchmarks»), serif-kop, twee knoppen, een vaag
+                    rasterpatroon op de achtergrond dat aan een spreadsheet doet
+                    denken, en klantlogo's meteen onder de vouw.
+       payflip.be   een vol gekleurd blok over de hele breedte met abstracte
+                    vormen, witte kop gecentreerd, één knop, en daaronder
+                    «Vertrouwd door» met vijf logo's en «+ 1.800 andere bedrijven».
+       pave.com     blauw verloop over de hele hero met een bewegend veld
+                    cijfers, kop linksonder, en rechts de intro met een
+                    e-mailveld en knop in één.
+       beqom.com    een lopende video van het product in de hero.
+       payscale.com tekst met een beoordelingsbadge, klantlogo's direct eronder.
+
+     DRIE DINGEN DIE ZE ALLEMAAL DOEN en wij geen van drie:
+       1. GEEN WITTE HERO. Kleurvlak, verloop, gebroken wit of beeld — leeg wit
+          komt nergens voor.
+       2. BEWIJS BIJ DE VOUW. Vier van de zes zetten klantlogo's in of direct
+          onder de hero.
+       3. ÉÉN knop en een korte kop. Hooguit twee knoppen, zes woorden of minder.
+
+     Hieronder vijf variaties op het scherm-idee uit hero-leegte-voorstel.html,
+     elk op volle breedte en met hetzelfde nagetekende scherm — alleen de
+     inkadering verschilt.
+     ============================================================================== -->
+<html lang="nl-BE">
+<head>
+<meta name="ontwerp-versie" content="3.3+20261017">
+<meta name="ontwerp-versie-leesbaar" content="v3.3 — 17 oktober 2026">
+<meta name="pagina-soort" content="vergelijking">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vijf variaties op de hero met scherm | Youbo</title>
+<meta name="description" content="Vijf variaties op de Youbo-hero met een nagetekend productscherm, gemaakt na een vergelijking met de hero's van zes concurrenten in compensatiesoftware.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },   /* primary + primary-text   */
+        ink:     { DEFAULT: '#0a3327', soft: '#547068',    /* text-primary + secondary */
+                   inv: '#ffffff' },
+        paper:   '#ffffff',                                 /* background               */
+        surface: '#f6f8fa',                                 /* surface                  */
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
+        /* Het cyaanblauw van de huisstijl haalt op licht de leesnorm niet:
+           2,67:1 op wit en 2,51:1 op #f6f8fa, waar 4,5:1 nodig is. Op de
+           donkere banden werkt het wél, dus blijft het daar staan. Voor links
+           op een lichte achtergrond gebruikt deze pagina de goedgekeurde
+           donkerder variant #00718c: 5,61:1 op wit en 5,27:1 op #f6f8fa. */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
+        forest:  '#154e3a',                                 /* gradient-dark-end        */
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      /* de spatiëringsschaal 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 80 · 128 */
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionDuration: { fast: '150ms', base: '200ms', medium: '300ms', slow: '350ms' },
+      transitionTimingFunction: {
+        standard:   'ease-in-out',
+        decelerate: 'ease-out',
+        accelerate: 'cubic-bezier(0, 1, 0.3, 1)',
+      },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    :root { --m-base: 200ms; --e-standard: ease-in-out; --c-focus: #00718c; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { @apply bg-paper text-ink font-sans text-body antialiased; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
+    h1, h2 { @apply m-0; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  }
+  @layer components {
+    .shell { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-sm text-body font-bold
+                  min-h-[48px] px-6 py-[14px] cursor-pointer;
+           transition: background-color var(--m-base) var(--e-standard), color var(--m-base) var(--e-standard); }
+    .btn-primary { @apply btn bg-brand text-brand-ink; }
+    .btn-primary:hover { background-color: #000000; color: #0af29f; }
+    .koptekst { @apply font-bold text-ink; }
+    .panel { @apply rounded-md bg-paper overflow-hidden; box-shadow: 0 24px 60px -28px rgba(0,0,0,.65); }
+    .panel-bar { @apply flex items-center gap-2 border-b border-line px-5 py-3; }
+    .miniheader { @apply text-caption font-bold text-ink; }
+    .label { @apply text-caption font-bold text-ink-soft; letter-spacing: .08em; text-transform: uppercase; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-surface border-b border-line">
+  <div class="shell py-8 md:py-10">
+    <p class="text-caption text-ink-soft">Voorstel · 17 oktober 2026</p>
+    <h1 class="mt-2 text-h1">Vijf variaties op de hero met het scherm</h1>
+    <p class="mt-4 text-body text-ink-soft max-w-prose">
+      Eerst heb ik zes concurrenten naast elkaar gelegd — beqom, figures, ravio, payscale, pave en
+      het Belgische payflip — met echte schermafdrukken in plaats van uit het hoofd. Drie dingen
+      doen ze allemaal, en wij geen van drie.
+    </p>
+    <ol class="mt-5 list-none p-0 m-0 space-y-3 max-w-prose">
+      <li class="flex gap-3"><b class="text-ink shrink-0">1.</b><span class="text-ink-soft">
+        <b class="text-ink">Geen witte hero.</b> Een kleurvlak (payflip, figures), gebroken wit met
+        een vaag raster (ravio), een verloop met bewegende cijfers (pave) of gewoon een video van
+        het product (beqom). Leeg wit komt nergens voor.</span></li>
+      <li class="flex gap-3"><b class="text-ink shrink-0">2.</b><span class="text-ink-soft">
+        <b class="text-ink">Bewijs bij de vouw.</b> Vier van de zes zetten klantlogo's in of direct
+        onder de hero. Payflip schrijft er zelfs «+ 1.800 andere bedrijven» bij.</span></li>
+      <li class="flex gap-3"><b class="text-ink shrink-0">3.</b><span class="text-ink-soft">
+        <b class="text-ink">Eén knop, korte kop.</b> Hooguit twee knoppen, en een kop van zes
+        woorden of minder — vaak met één woord gemarkeerd.</span></li>
+    </ol>
+    <p class="mt-5 text-caption text-ink-soft max-w-prose">
+      Hieronder vijf variaties op het scherm-idee, elk op volle breedte en met hetzelfde
+      nagetekende scherm. Alleen de inkadering verschilt.
+    </p>
+  </div>
+</div>
+
+<section aria-labelledby="va-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="va-titel" class="text-h2">A — Het scherm loopt van de pagina af</h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">Het scherm is breder dan zijn kolom en loopt rechts het beeld uit. Dat is de klassieke SaaS-hero: je ziet genoeg om te begrijpen wat het is, en de rand suggereert dat er meer achter zit.</p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">Vult de rechterhelft volledig zonder dat het paneel klein hoeft te blijven. De tekstkolom zakt naar vijf van de twaalf, dus de kop breekt over drie regels — dat mag, hij wordt er krachtiger van.</p>
+    </div>
+  </div>
+  <header class="bg-paper overflow-hidden">
+    <div class="shell pt-6 md:pt-10">
+      <a href="#" class="inline-flex items-center" data-cta="va-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+      <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
+        <div class="lg:col-span-5">
+          <p class="koptekst text-h1 lg:text-display">Compensatie zonder kopzorgen</p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+          <div class="mt-8"><a href="#" class="btn-primary w-full sm:w-auto" data-cta="va-boek-demo">Boek een demo</a></div>
+          <div class="mt-8 flex items-center gap-4">
+            <img src="assets/img/nick-portret.webp" width="900" height="1140" alt="Nick Van Langendonck"
+                 class="h-14 w-14 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+            <p class="m-0 text-caption text-ink-soft max-w-text">
+              <b class="text-ink">Nick</b> laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene
+              verkooppitch, wel een concrete blik op jouw looncyclus.
+            </p>
+          </div>
+        </div>
+        <figure class="lg:col-span-7 m-0 lg:w-[132%]">
+          <div class="panel">
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Voorstel voor jouw team</span>
+              <span class="ml-auto shrink-0 text-caption text-ink-soft">Cyclus 2027</span>
+            </div>
+            <svg viewBox="0 0 1200 820" class="block h-auto w-full" role="img"
+                 aria-label="Voorstel voor jouw team: vier van de zes voorstellen zijn klaar, met verhogingen van 2,0 tot 3,5 procent en een gemiddelde van 2,75 procent tegenover een richtlijn van 3,0 procent."
+                 style="font-family: Inter, system-ui, sans-serif">
+              <rect width="1200" height="820" fill="#ffffff"/>
+
+              <text x="40" y="66" font-size="34" font-weight="700" fill="#0a3327">Jouw team · 6 medewerkers</text>
+              <text x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">4 van 6 klaar</text>
+              <line x1="40" y1="100" x2="1160" y2="100" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40"  y="146" font-size="21" font-weight="700" fill="#547068">MEDEWERKER</text>
+              <text x="560" y="146" font-size="21" font-weight="700" fill="#547068">POSITIE IN DE BAND</text>
+              <text x="940" y="146" font-size="21" font-weight="700" fill="#547068">VOORSTEL</text>
+
+              <g font-size="25" fill="#0a3327">
+                <rect x="30" y="170" width="1140" height="92" rx="9" fill="#f6f8fa"/>
+                <text x="40" y="206" font-weight="700">A. Peeters</text>
+                <text x="40" y="243" font-size="21" fill="#547068">Teamlead support</text>
+                <rect x="560" y="196" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="196" width="222" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="212" font-size="21" fill="#547068">74%</text>
+                <text x="1160" y="212" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,5%</text>
+
+                <text x="40" y="332" font-weight="700">M. Declerck</text>
+                <text x="40" y="369" font-size="21" fill="#547068">Analist</text>
+                <rect x="560" y="322" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="322" width="138" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="338" font-size="21" fill="#547068">46%</text>
+                <text x="1160" y="338" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,0%</text>
+
+                <text x="40" y="458" font-weight="700">S. Janssens</text>
+                <text x="40" y="495" font-size="21" fill="#547068">Projectleider</text>
+                <rect x="560" y="448" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="448" width="264" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="464" font-size="21" fill="#547068">88%</text>
+                <text x="1160" y="464" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,0%</text>
+
+                <text x="40" y="584" font-weight="700">K. Verhaeghe</text>
+                <text x="40" y="621" font-size="21" fill="#547068">Consultant</text>
+                <rect x="560" y="574" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="574" width="186" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="590" font-size="21" fill="#547068">62%</text>
+                <text x="1160" y="590" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,5%</text>
+              </g>
+
+              <line x1="40" y1="650" x2="1160" y2="650" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40" y="706" font-size="25" font-weight="700" fill="#0a3327">Gemiddeld 2,75%</text>
+              <text x="40" y="748" font-size="21" fill="#547068">Richtlijn voor deze cyclus: 3,0%</text>
+
+              <rect x="40" y="772" width="640" height="16" rx="8" fill="#e1ebf0"/>
+              <rect x="40" y="772" width="587" height="16" rx="8" fill="#0af29f"/>
+
+              <rect x="910" y="684" width="250" height="72" rx="9" fill="#f6f8fa"/>
+              <text x="1035" y="718" font-size="21" font-weight="700" fill="#154e3a" text-anchor="middle">Binnen budget</text>
+              <text x="1035" y="746" font-size="21" fill="#547068" text-anchor="middle">nog 0,25% over</text>
+            </svg>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </header>
+  <div class="h-10 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<section aria-labelledby="vb-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="vb-titel" class="text-h2">B — Dezelfde opzet, maar op gebroken wit</h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">Identiek aan het vorige voorstel, alleen staat de hele hero op #f6f8fa in plaats van op wit. Het witte paneel met zijn schaduw komt daardoor los van de achtergrond.</p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">De goedkoopste manier om «leeg wit blok» weg te nemen: geen extra inhoud, alleen een ander vlak. Dit is wat ravio doet met gebroken wit, en wat figures en payflip met kleur doen.</p>
+    </div>
+  </div>
+  <header class="bg-surface">
+    <div class="shell pt-6 md:pt-10">
+      <a href="#" class="inline-flex items-center" data-cta="vb-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+      <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
+        <div class="lg:col-span-6">
+          <p class="koptekst text-h1 lg:text-display">Compensatie zonder kopzorgen</p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+          <div class="mt-8"><a href="#" class="btn-primary w-full sm:w-auto" data-cta="vb-boek-demo">Boek een demo</a></div>
+          <div class="mt-8 flex items-center gap-4">
+            <img src="assets/img/nick-portret.webp" width="900" height="1140" alt="Nick Van Langendonck"
+                 class="h-14 w-14 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+            <p class="m-0 text-caption text-ink-soft max-w-text">
+              <b class="text-ink">Nick</b> laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene
+              verkooppitch, wel een concrete blik op jouw looncyclus.
+            </p>
+          </div>
+        </div>
+        <figure class="lg:col-span-6 m-0">
+          <div class="panel">
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Voorstel voor jouw team</span>
+              <span class="ml-auto shrink-0 text-caption text-ink-soft">Cyclus 2027</span>
+            </div>
+            <svg viewBox="0 0 1200 820" class="block h-auto w-full" role="img"
+                 aria-label="Voorstel voor jouw team: vier van de zes voorstellen zijn klaar, met verhogingen van 2,0 tot 3,5 procent en een gemiddelde van 2,75 procent tegenover een richtlijn van 3,0 procent."
+                 style="font-family: Inter, system-ui, sans-serif">
+              <rect width="1200" height="820" fill="#ffffff"/>
+
+              <text x="40" y="66" font-size="34" font-weight="700" fill="#0a3327">Jouw team · 6 medewerkers</text>
+              <text x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">4 van 6 klaar</text>
+              <line x1="40" y1="100" x2="1160" y2="100" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40"  y="146" font-size="21" font-weight="700" fill="#547068">MEDEWERKER</text>
+              <text x="560" y="146" font-size="21" font-weight="700" fill="#547068">POSITIE IN DE BAND</text>
+              <text x="940" y="146" font-size="21" font-weight="700" fill="#547068">VOORSTEL</text>
+
+              <g font-size="25" fill="#0a3327">
+                <rect x="30" y="170" width="1140" height="92" rx="9" fill="#f6f8fa"/>
+                <text x="40" y="206" font-weight="700">A. Peeters</text>
+                <text x="40" y="243" font-size="21" fill="#547068">Teamlead support</text>
+                <rect x="560" y="196" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="196" width="222" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="212" font-size="21" fill="#547068">74%</text>
+                <text x="1160" y="212" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,5%</text>
+
+                <text x="40" y="332" font-weight="700">M. Declerck</text>
+                <text x="40" y="369" font-size="21" fill="#547068">Analist</text>
+                <rect x="560" y="322" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="322" width="138" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="338" font-size="21" fill="#547068">46%</text>
+                <text x="1160" y="338" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,0%</text>
+
+                <text x="40" y="458" font-weight="700">S. Janssens</text>
+                <text x="40" y="495" font-size="21" fill="#547068">Projectleider</text>
+                <rect x="560" y="448" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="448" width="264" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="464" font-size="21" fill="#547068">88%</text>
+                <text x="1160" y="464" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,0%</text>
+
+                <text x="40" y="584" font-weight="700">K. Verhaeghe</text>
+                <text x="40" y="621" font-size="21" fill="#547068">Consultant</text>
+                <rect x="560" y="574" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="574" width="186" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="590" font-size="21" fill="#547068">62%</text>
+                <text x="1160" y="590" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,5%</text>
+              </g>
+
+              <line x1="40" y1="650" x2="1160" y2="650" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40" y="706" font-size="25" font-weight="700" fill="#0a3327">Gemiddeld 2,75%</text>
+              <text x="40" y="748" font-size="21" fill="#547068">Richtlijn voor deze cyclus: 3,0%</text>
+
+              <rect x="40" y="772" width="640" height="16" rx="8" fill="#e1ebf0"/>
+              <rect x="40" y="772" width="587" height="16" rx="8" fill="#0af29f"/>
+
+              <rect x="910" y="684" width="250" height="72" rx="9" fill="#f6f8fa"/>
+              <text x="1035" y="718" font-size="21" font-weight="700" fill="#154e3a" text-anchor="middle">Binnen budget</text>
+              <text x="1035" y="746" font-size="21" fill="#547068" text-anchor="middle">nog 0,25% over</text>
+            </svg>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </header>
+  <div class="h-10 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<section aria-labelledby="vc-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="vc-titel" class="text-h2">C — Scherm én klantlogo’s in de hero</h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">Het scherm rechts, en onder de hele hero de negen klantnamen. Dan staat er bij de vouw zowel wát het is als wíe het gebruikt.</p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">Dit is wat vier van de zes concurrenten doen. Het maakt de hero wel het langst van de vijf, en op telefoon duwt het de rondleiding verder naar beneden.</p>
+    </div>
+  </div>
+  <header class="bg-paper">
+    <div class="shell pt-6 md:pt-10 pb-12 md:pb-16">
+      <a href="#" class="inline-flex items-center" data-cta="vc-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+      <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div class="lg:col-span-6">
+          <p class="koptekst text-h1 lg:text-display">Compensatie zonder kopzorgen</p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+          <div class="mt-8"><a href="#" class="btn-primary w-full sm:w-auto" data-cta="vc-boek-demo">Boek een demo</a></div>
+          <div class="mt-8 flex items-center gap-4">
+            <img src="assets/img/nick-portret.webp" width="900" height="1140" alt="Nick Van Langendonck"
+                 class="h-14 w-14 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+            <p class="m-0 text-caption text-ink-soft max-w-text">
+              <b class="text-ink">Nick</b> laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene
+              verkooppitch, wel een concrete blik op jouw looncyclus.
+            </p>
+          </div>
+        </div>
+        <figure class="lg:col-span-6 m-0">
+          <div class="panel">
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Voorstel voor jouw team</span>
+              <span class="ml-auto shrink-0 text-caption text-ink-soft">Cyclus 2027</span>
+            </div>
+            <svg viewBox="0 0 1200 820" class="block h-auto w-full" role="img"
+                 aria-label="Voorstel voor jouw team: vier van de zes voorstellen zijn klaar, met verhogingen van 2,0 tot 3,5 procent en een gemiddelde van 2,75 procent tegenover een richtlijn van 3,0 procent."
+                 style="font-family: Inter, system-ui, sans-serif">
+              <rect width="1200" height="820" fill="#ffffff"/>
+
+              <text x="40" y="66" font-size="34" font-weight="700" fill="#0a3327">Jouw team · 6 medewerkers</text>
+              <text x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">4 van 6 klaar</text>
+              <line x1="40" y1="100" x2="1160" y2="100" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40"  y="146" font-size="21" font-weight="700" fill="#547068">MEDEWERKER</text>
+              <text x="560" y="146" font-size="21" font-weight="700" fill="#547068">POSITIE IN DE BAND</text>
+              <text x="940" y="146" font-size="21" font-weight="700" fill="#547068">VOORSTEL</text>
+
+              <g font-size="25" fill="#0a3327">
+                <rect x="30" y="170" width="1140" height="92" rx="9" fill="#f6f8fa"/>
+                <text x="40" y="206" font-weight="700">A. Peeters</text>
+                <text x="40" y="243" font-size="21" fill="#547068">Teamlead support</text>
+                <rect x="560" y="196" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="196" width="222" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="212" font-size="21" fill="#547068">74%</text>
+                <text x="1160" y="212" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,5%</text>
+
+                <text x="40" y="332" font-weight="700">M. Declerck</text>
+                <text x="40" y="369" font-size="21" fill="#547068">Analist</text>
+                <rect x="560" y="322" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="322" width="138" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="338" font-size="21" fill="#547068">46%</text>
+                <text x="1160" y="338" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,0%</text>
+
+                <text x="40" y="458" font-weight="700">S. Janssens</text>
+                <text x="40" y="495" font-size="21" fill="#547068">Projectleider</text>
+                <rect x="560" y="448" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="448" width="264" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="464" font-size="21" fill="#547068">88%</text>
+                <text x="1160" y="464" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,0%</text>
+
+                <text x="40" y="584" font-weight="700">K. Verhaeghe</text>
+                <text x="40" y="621" font-size="21" fill="#547068">Consultant</text>
+                <rect x="560" y="574" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="574" width="186" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="590" font-size="21" fill="#547068">62%</text>
+                <text x="1160" y="590" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,5%</text>
+              </g>
+
+              <line x1="40" y1="650" x2="1160" y2="650" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40" y="706" font-size="25" font-weight="700" fill="#0a3327">Gemiddeld 2,75%</text>
+              <text x="40" y="748" font-size="21" fill="#547068">Richtlijn voor deze cyclus: 3,0%</text>
+
+              <rect x="40" y="772" width="640" height="16" rx="8" fill="#e1ebf0"/>
+              <rect x="40" y="772" width="587" height="16" rx="8" fill="#0af29f"/>
+
+              <rect x="910" y="684" width="250" height="72" rx="9" fill="#f6f8fa"/>
+              <text x="1035" y="718" font-size="21" font-weight="700" fill="#154e3a" text-anchor="middle">Binnen budget</text>
+              <text x="1035" y="746" font-size="21" fill="#547068" text-anchor="middle">nog 0,25% over</text>
+            </svg>
+          </div>
+        </figure>
+      </div>
+      <div class="mt-12 md:mt-16 border-t border-line pt-8">
+        <p class="label text-center">Deze bedrijven vertrouwen Youbo</p>
+        <ul class="mt-6 list-none p-0 m-0 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+          <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px"></li>
+          <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px"></li>
+          <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px"></li>
+          <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px"></li>
+          <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px"></li>
+          <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:26px"></li>
+          <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:24px"></li>
+          <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:28px"></li>
+          <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:20px"></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+  <div class="h-10 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<section aria-labelledby="vd-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="vd-titel" class="text-h2">D — Gecentreerd, met het scherm eronder</h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">Het model van ravio: een pilletje boven de kop, alles gecentreerd, en het scherm groot onder de tekst, half over de volgende sectie heen.</p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">Werkt uitzonderlijk goed op een telefoon, want daar is alles toch één kolom — deze variant is daar niet de uitzondering maar de regel. Nick staat naast de knop in plaats van in een eigen blok.</p>
+    </div>
+  </div>
+  <header class="bg-paper overflow-hidden">
+    <div class="shell pt-6 md:pt-10">
+      <a href="#" class="inline-flex items-center" data-cta="vd-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+      <div class="mt-10 md:mt-14 text-center">
+        <p class="label inline-flex items-center gap-2 rounded-[999px] border border-line bg-surface px-4 py-2">
+          <span class="h-2 w-2 rounded-[50%] bg-brand" aria-hidden="true"></span>Loon, bonus en promotie
+        </p>
+        <p class="koptekst mt-6 text-h1 lg:text-display mx-auto max-w-[46rem]">Compensatie zonder kopzorgen</p>
+        <p class="mt-5 text-h3 text-ink-soft mx-auto max-w-prose">
+          Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#" class="btn-primary w-full sm:w-auto" data-cta="vd-boek-demo">Boek een demo</a>
+          <div class="flex items-center gap-3">
+            <img src="assets/img/nick-portret.webp" width="900" height="1140" alt="Nick Van Langendonck"
+                 class="h-10 w-10 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+            <p class="m-0 text-caption text-ink-soft">Nick toont je Youbo op jouw eigen looncyclus</p>
+          </div>
+        </div>
+      </div>
+      <figure class="m-0 mt-12 md:mt-16 mx-auto max-w-[56rem] -mb-24 md:-mb-32">
+        <div class="panel">
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Voorstel voor jouw team</span>
+              <span class="ml-auto shrink-0 text-caption text-ink-soft">Cyclus 2027</span>
+            </div>
+            <svg viewBox="0 0 1200 820" class="block h-auto w-full" role="img"
+                 aria-label="Voorstel voor jouw team: vier van de zes voorstellen zijn klaar, met verhogingen van 2,0 tot 3,5 procent en een gemiddelde van 2,75 procent tegenover een richtlijn van 3,0 procent."
+                 style="font-family: Inter, system-ui, sans-serif">
+              <rect width="1200" height="820" fill="#ffffff"/>
+
+              <text x="40" y="66" font-size="34" font-weight="700" fill="#0a3327">Jouw team · 6 medewerkers</text>
+              <text x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">4 van 6 klaar</text>
+              <line x1="40" y1="100" x2="1160" y2="100" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40"  y="146" font-size="21" font-weight="700" fill="#547068">MEDEWERKER</text>
+              <text x="560" y="146" font-size="21" font-weight="700" fill="#547068">POSITIE IN DE BAND</text>
+              <text x="940" y="146" font-size="21" font-weight="700" fill="#547068">VOORSTEL</text>
+
+              <g font-size="25" fill="#0a3327">
+                <rect x="30" y="170" width="1140" height="92" rx="9" fill="#f6f8fa"/>
+                <text x="40" y="206" font-weight="700">A. Peeters</text>
+                <text x="40" y="243" font-size="21" fill="#547068">Teamlead support</text>
+                <rect x="560" y="196" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="196" width="222" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="212" font-size="21" fill="#547068">74%</text>
+                <text x="1160" y="212" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,5%</text>
+
+                <text x="40" y="332" font-weight="700">M. Declerck</text>
+                <text x="40" y="369" font-size="21" fill="#547068">Analist</text>
+                <rect x="560" y="322" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="322" width="138" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="338" font-size="21" fill="#547068">46%</text>
+                <text x="1160" y="338" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,0%</text>
+
+                <text x="40" y="458" font-weight="700">S. Janssens</text>
+                <text x="40" y="495" font-size="21" fill="#547068">Projectleider</text>
+                <rect x="560" y="448" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="448" width="264" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="464" font-size="21" fill="#547068">88%</text>
+                <text x="1160" y="464" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,0%</text>
+
+                <text x="40" y="584" font-weight="700">K. Verhaeghe</text>
+                <text x="40" y="621" font-size="21" fill="#547068">Consultant</text>
+                <rect x="560" y="574" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="574" width="186" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="590" font-size="21" fill="#547068">62%</text>
+                <text x="1160" y="590" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,5%</text>
+              </g>
+
+              <line x1="40" y1="650" x2="1160" y2="650" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40" y="706" font-size="25" font-weight="700" fill="#0a3327">Gemiddeld 2,75%</text>
+              <text x="40" y="748" font-size="21" fill="#547068">Richtlijn voor deze cyclus: 3,0%</text>
+
+              <rect x="40" y="772" width="640" height="16" rx="8" fill="#e1ebf0"/>
+              <rect x="40" y="772" width="587" height="16" rx="8" fill="#0af29f"/>
+
+              <rect x="910" y="684" width="250" height="72" rx="9" fill="#f6f8fa"/>
+              <text x="1035" y="718" font-size="21" font-weight="700" fill="#154e3a" text-anchor="middle">Binnen budget</text>
+              <text x="1035" y="746" font-size="21" fill="#547068" text-anchor="middle">nog 0,25% over</text>
+            </svg>
+          </div>
+      </figure>
+    </div>
+    <div class="h-24 md:h-32 bg-surface" aria-hidden="true"></div>
+  </header>
+  <div class="h-10 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<section aria-labelledby="ve-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="ve-titel" class="text-h2">E — Het scherm groot en zacht erachter</h2>
+      <p class="mt-3 text-body text-ink-soft max-w-prose">Het scherm staat op ware grootte rechts, maar verzacht tot 18% en uitvloeiend naar links. Het leest als een textuur, niet als een schermafbeelding.</p>
+      <p class="mt-2 text-caption text-ink-soft max-w-prose">De rustigste van de vijf, en het dichtst bij de pagina zoals hij nu is. Keerzijde: wie snel kijkt, ziet géén product — hij ziet alleen dat het er minder leeg uitziet.</p>
+    </div>
+  </div>
+  <header class="bg-paper relative overflow-hidden">
+    <div aria-hidden="true" class="pointer-events-none absolute right-0 top-0 hidden lg:block w-[58%] opacity-[.18]"
+         style="mask-image: linear-gradient(to left, #000 35%, transparent 100%); -webkit-mask-image: linear-gradient(to left, #000 35%, transparent 100%)">
+      <div class="panel">
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Voorstel voor jouw team</span>
+              <span class="ml-auto shrink-0 text-caption text-ink-soft">Cyclus 2027</span>
+            </div>
+            <svg viewBox="0 0 1200 820" class="block h-auto w-full" role="img"
+                 aria-label="Voorstel voor jouw team: vier van de zes voorstellen zijn klaar, met verhogingen van 2,0 tot 3,5 procent en een gemiddelde van 2,75 procent tegenover een richtlijn van 3,0 procent."
+                 style="font-family: Inter, system-ui, sans-serif">
+              <rect width="1200" height="820" fill="#ffffff"/>
+
+              <text x="40" y="66" font-size="34" font-weight="700" fill="#0a3327">Jouw team · 6 medewerkers</text>
+              <text x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">4 van 6 klaar</text>
+              <line x1="40" y1="100" x2="1160" y2="100" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40"  y="146" font-size="21" font-weight="700" fill="#547068">MEDEWERKER</text>
+              <text x="560" y="146" font-size="21" font-weight="700" fill="#547068">POSITIE IN DE BAND</text>
+              <text x="940" y="146" font-size="21" font-weight="700" fill="#547068">VOORSTEL</text>
+
+              <g font-size="25" fill="#0a3327">
+                <rect x="30" y="170" width="1140" height="92" rx="9" fill="#f6f8fa"/>
+                <text x="40" y="206" font-weight="700">A. Peeters</text>
+                <text x="40" y="243" font-size="21" fill="#547068">Teamlead support</text>
+                <rect x="560" y="196" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="196" width="222" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="212" font-size="21" fill="#547068">74%</text>
+                <text x="1160" y="212" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,5%</text>
+
+                <text x="40" y="332" font-weight="700">M. Declerck</text>
+                <text x="40" y="369" font-size="21" fill="#547068">Analist</text>
+                <rect x="560" y="322" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="322" width="138" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="338" font-size="21" fill="#547068">46%</text>
+                <text x="1160" y="338" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">3,0%</text>
+
+                <text x="40" y="458" font-weight="700">S. Janssens</text>
+                <text x="40" y="495" font-size="21" fill="#547068">Projectleider</text>
+                <rect x="560" y="448" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="448" width="264" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="464" font-size="21" fill="#547068">88%</text>
+                <text x="1160" y="464" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,0%</text>
+
+                <text x="40" y="584" font-weight="700">K. Verhaeghe</text>
+                <text x="40" y="621" font-size="21" fill="#547068">Consultant</text>
+                <rect x="560" y="574" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect x="560" y="574" width="186" height="14" rx="7" fill="#154e3a"/>
+                <text x="880" y="590" font-size="21" fill="#547068">62%</text>
+                <text x="1160" y="590" font-weight="700" text-anchor="end" style="font-variant-numeric: tabular-nums">2,5%</text>
+              </g>
+
+              <line x1="40" y1="650" x2="1160" y2="650" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40" y="706" font-size="25" font-weight="700" fill="#0a3327">Gemiddeld 2,75%</text>
+              <text x="40" y="748" font-size="21" fill="#547068">Richtlijn voor deze cyclus: 3,0%</text>
+
+              <rect x="40" y="772" width="640" height="16" rx="8" fill="#e1ebf0"/>
+              <rect x="40" y="772" width="587" height="16" rx="8" fill="#0af29f"/>
+
+              <rect x="910" y="684" width="250" height="72" rx="9" fill="#f6f8fa"/>
+              <text x="1035" y="718" font-size="21" font-weight="700" fill="#154e3a" text-anchor="middle">Binnen budget</text>
+              <text x="1035" y="746" font-size="21" fill="#547068" text-anchor="middle">nog 0,25% over</text>
+            </svg>
+          </div>
+    </div>
+    <div class="shell relative pt-6 md:pt-10">
+      <a href="#" class="inline-flex items-center" data-cta="ve-wordmerk">
+        <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+      </a>
+      <div class="mt-10 md:mt-16 max-w-[40rem] pb-14 md:pb-24">
+          <p class="koptekst text-h1 lg:text-display">Compensatie zonder kopzorgen</p>
+          <p class="mt-5 text-h3 text-ink-soft max-w-text">
+            Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+          </p>
+        <div class="mt-8"><a href="#" class="btn-primary w-full sm:w-auto" data-cta="ve-boek-demo">Boek een demo</a></div>
+          <div class="mt-8 flex items-center gap-4">
+            <img src="assets/img/nick-portret.webp" width="900" height="1140" alt="Nick Van Langendonck"
+                 class="h-14 w-14 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+            <p class="m-0 text-caption text-ink-soft max-w-text">
+              <b class="text-ink">Nick</b> laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene
+              verkooppitch, wel een concrete blik op jouw looncyclus.
+            </p>
+          </div>
+      </div>
+    </div>
+  </header>
+  <div class="h-10 bg-surface border-t border-line" aria-hidden="true"></div>
+</section>
+
+<div class="bg-surface border-t border-line">
+  <div class="shell py-10 md:py-12">
+    <h2 class="text-h2">Wat ik zou doen</h2>
+    <p class="mt-4 text-body text-ink-soft max-w-prose">
+      <b class="text-ink">B als basis, A als het mag opvallen.</b> B is één regel werk — de hero op
+      gebroken wit — en haalt meteen de klacht weg, want het paneel en de tekst staan dan op een
+      vlak in plaats van in het niets. A gaat een stap verder en laat het product echt zien; dat is
+      wat figures en beqom doen, en het is de enige variant die de vraag «wat ís dit» al bij de
+      vouw beantwoordt.
+    </p>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      <b class="text-ink">C is de veiligste voor een advertentiepagina</b>, want bij koud verkeer
+      werkt bewijs beter dan schoonheid — maar hij maakt de hero wel het langst.
+      <b class="text-ink">D</b> is de sterkste op telefoon, en daar komt 70 à 80% van het verkeer
+      vandaan. <b class="text-ink">E</b> is de rustigste en de minst overtuigende: hij vult de
+      leegte zonder iets te zeggen.
+    </p>
+    <p class="mt-6 text-caption text-ink-soft">
+      Niets hiervan staat op de echte pagina. Zeg welke het wordt, dan zet ik hem erin.
+    </p>
+  </div>
+</div>
+
+</body>
+</html>
