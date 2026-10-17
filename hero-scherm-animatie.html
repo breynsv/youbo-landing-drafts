@@ -1,0 +1,750 @@
+<!doctype html>
+<!--
+CONCEPT: Het nagetekende scherm uit de hero, maar nu als animatie: de manager vult zijn vier
+voorstellen in en het budget rekent live mee. Acht seconden, daarna opnieuw.
+==============================================================================
+     WAAROM JUIST DIT BEWEEGT, EN NIET IETS ANDERS
+     -----------------------------------------------------------------------------
+     Een hero-animatie die alleen maar binnenzweeft, voegt niets toe: ze is na
+     één keer kijken op. Deze vertelt het product. Je ziet een manager zijn team
+     doorlopen — de positie in de band verschijnt, hij geeft een percentage, de
+     teller loopt van 0 naar 4 — en zodra hij klaar is rekent Youbo het
+     gemiddelde en het budget voor hem uit. Dat is precies de belofte van de
+     pagina, maar dan getoond in plaats van beweerd.
+
+     DE CIJFERS KLOPPEN, OOK TIJDENS DE ANIMATIE. 3,5 + 3,0 + 2,0 + 2,5 gedeeld
+     door vier is 2,75, en 2,75 van 3,0 is 91,7% — dat is exact waar de
+     budgetbalk stopt. Er staat met opzet geen enkel bedrag in; zodra twee
+     schermen euro's tonen, kan een bezoeker ze tegen elkaar natellen.
+
+     ALLES IS CSS BINNEN DE SVG. Geen javascript, geen bibliotheek, geen tweede
+     bestand: de animatie zit in hetzelfde vectorbestand als de tekening en
+     weegt daardoor niets extra. Dat betekent ook dat ze blijft lopen als er
+     ergens anders op de pagina iets misgaat.
+
+     WIE BEWEGING UITZET, KRIJGT HET EINDBEELD. Niet een uitgeklede versie, maar
+     precies wat er na acht seconden staat: vier ingevulde rijen, het gemiddelde
+     en «binnen budget». prefers-reduced-motion is hier dus geen vangnet maar
+     een tweede, even complete toestand.
+     ============================================================================== -->
+<html lang="nl-BE">
+<head>
+<meta name="ontwerp-versie" content="3.3+20261017">
+<meta name="ontwerp-versie-leesbaar" content="v3.3 — 17 oktober 2026">
+<meta name="pagina-soort" content="vergelijking">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Het scherm in beweging | Youbo</title>
+<meta name="description" content="Het nagetekende productscherm uit de Youbo-hero als animatie: een manager vult vier voorstellen in en het budget rekent live mee. Acht seconden, in CSS, zonder javascript.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },   /* primary + primary-text   */
+        ink:     { DEFAULT: '#0a3327', soft: '#547068',    /* text-primary + secondary */
+                   inv: '#ffffff' },
+        paper:   '#ffffff',                                 /* background               */
+        surface: '#f6f8fa',                                 /* surface                  */
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
+        /* Het cyaanblauw van de huisstijl haalt op licht de leesnorm niet:
+           2,67:1 op wit en 2,51:1 op #f6f8fa, waar 4,5:1 nodig is. Op de
+           donkere banden werkt het wél, dus blijft het daar staan. Voor links
+           op een lichte achtergrond gebruikt deze pagina de goedgekeurde
+           donkerder variant #00718c: 5,61:1 op wit en 5,27:1 op #f6f8fa. */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
+        forest:  '#154e3a',                                 /* gradient-dark-end        */
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      /* de spatiëringsschaal 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 80 · 128 */
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionDuration: { fast: '150ms', base: '200ms', medium: '300ms', slow: '350ms' },
+      transitionTimingFunction: {
+        standard:   'ease-in-out',
+        decelerate: 'ease-out',
+        accelerate: 'cubic-bezier(0, 1, 0.3, 1)',
+      },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    :root { --m-base: 200ms; --e-standard: ease-in-out; --c-focus: #00718c; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { @apply bg-paper text-ink font-sans text-body antialiased; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
+    h1, h2 { @apply m-0; }
+  }
+  @layer components {
+    .shell { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-sm text-body font-bold
+                  min-h-[48px] px-6 py-[14px] cursor-pointer;
+           transition: background-color var(--m-base) var(--e-standard), color var(--m-base) var(--e-standard); }
+    .btn-primary { @apply btn bg-brand text-brand-ink; }
+    .btn-primary:hover { background-color: #000000; color: #0af29f; }
+    .koptekst { @apply font-bold text-ink; }
+    .panel { @apply rounded-md bg-paper overflow-hidden; box-shadow: 0 24px 60px -28px rgba(0,0,0,.65); }
+    .panel-bar { @apply flex items-center gap-2 border-b border-line px-5 py-3; }
+    .miniheader { @apply text-caption font-bold text-ink; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-surface border-b border-line">
+  <div class="shell py-8 md:py-10">
+    <p class="text-caption text-ink-soft">Voorstel · 17 oktober 2026</p>
+    <h1 class="mt-2 text-h1">Het scherm in beweging</h1>
+    <p class="mt-4 text-body text-ink-soft max-w-prose">
+      Een manager loopt zijn team door: de positie in de band verschijnt, hij geeft een percentage,
+      de teller gaat van 0 naar 4. Zodra hij klaar is, rekent Youbo het gemiddelde en het budget
+      voor hem uit. Acht seconden, daarna opnieuw.
+    </p>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      Dat is bewust geen binnenzwevend plaatje. Een hero-animatie die alleen maar beweegt, is na
+      één keer kijken op; deze vertelt wat het product doet — en toont daarmee wat de kop belooft
+      in plaats van het te beweren.
+    </p>
+    <p class="mt-3 text-caption text-ink-soft max-w-prose">
+      Alles zit als CSS in het vectorbestand zelf: geen javascript, geen bibliotheek, geen extra
+      verzoek. En wie in zijn systeem beweging uitzet, krijgt meteen het eindbeeld — niet een
+      uitgeklede versie, maar precies wat er na acht seconden staat.
+    </p>
+  </div>
+</div>
+
+<section class="bg-paper">
+  <div class="shell py-12 md:py-16">
+    <p class="text-caption font-bold text-ink-soft" style="letter-spacing:.08em; text-transform:uppercase">Op ware grootte</p>
+    <figure class="m-0 mt-6 mx-auto max-w-[56rem]">
+      <div class="panel">
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Voorstel voor jouw team</span>
+              <span class="ml-auto shrink-0 text-caption text-ink-soft">Cyclus 2027</span>
+            </div>
+            <svg viewBox="0 0 1200 820" class="block h-auto w-full" role="img"
+                 aria-label="Voorstel voor jouw team: vier van de zes voorstellen worden een voor een ingevuld, met verhogingen van 2,0 tot 3,5 procent, en het gemiddelde komt op 2,75 procent tegenover een richtlijn van 3,0 procent — binnen budget."
+                 style="font-family: Inter, system-ui, sans-serif">
+              <style>
+  @keyframes rij0 {
+      0.0% { opacity:0; transform:translateY(10px) }
+      6.25% { opacity:0; transform:translateY(10px) }
+      11.875% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(10px) }
+  }
+  @keyframes balk0 {
+      0.0% { transform:scaleX(0) }
+      7.5% { transform:scaleX(0) }
+      15.625% { transform:scaleX(1) }
+      81.25% { transform:scaleX(1) }
+      87.5% { transform:scaleX(1) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes waarde0 {
+      0.0% { opacity:0 }
+      10.625% { opacity:0 }
+      15.0% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes rij1 {
+      0.0% { opacity:0; transform:translateY(10px) }
+      12.5% { opacity:0; transform:translateY(10px) }
+      18.125% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(10px) }
+  }
+  @keyframes balk1 {
+      0.0% { transform:scaleX(0) }
+      13.75% { transform:scaleX(0) }
+      21.875% { transform:scaleX(1) }
+      81.25% { transform:scaleX(1) }
+      87.5% { transform:scaleX(1) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes waarde1 {
+      0.0% { opacity:0 }
+      16.875% { opacity:0 }
+      21.25% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes rij2 {
+      0.0% { opacity:0; transform:translateY(10px) }
+      18.75% { opacity:0; transform:translateY(10px) }
+      24.375% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(10px) }
+  }
+  @keyframes balk2 {
+      0.0% { transform:scaleX(0) }
+      20.0% { transform:scaleX(0) }
+      28.125% { transform:scaleX(1) }
+      81.25% { transform:scaleX(1) }
+      87.5% { transform:scaleX(1) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes waarde2 {
+      0.0% { opacity:0 }
+      23.125% { opacity:0 }
+      27.5% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes rij3 {
+      0.0% { opacity:0; transform:translateY(10px) }
+      25.0% { opacity:0; transform:translateY(10px) }
+      30.625% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(10px) }
+  }
+  @keyframes balk3 {
+      0.0% { transform:scaleX(0) }
+      26.25% { transform:scaleX(0) }
+      34.375% { transform:scaleX(1) }
+      81.25% { transform:scaleX(1) }
+      87.5% { transform:scaleX(1) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes waarde3 {
+      0.0% { opacity:0 }
+      29.375% { opacity:0 }
+      33.75% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes teller0 {
+      0.0% { opacity:1 }
+      0.0013% { opacity:1 }
+      11.875% { opacity:1 }
+      11.8762% { opacity:0 }
+      100.0% { opacity:1 }
+  }
+  @keyframes teller1 {
+      0.0% { opacity:0 }
+      11.875% { opacity:1 }
+      18.125% { opacity:1 }
+      18.1262% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes teller2 {
+      0.0% { opacity:0 }
+      18.125% { opacity:1 }
+      24.375% { opacity:1 }
+      24.3762% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes teller3 {
+      0.0% { opacity:0 }
+      24.375% { opacity:1 }
+      30.625% { opacity:1 }
+      30.6263% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes teller4 {
+      0.0% { opacity:0 }
+      30.625% { opacity:1 }
+      87.5% { opacity:1 }
+      87.5012% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes slot {
+      0.0% { opacity:0 }
+      32.5% { opacity:0 }
+      38.75% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes budgetbalk {
+      0.0% { transform:scaleX(0) }
+      35.0% { transform:scaleX(0) }
+      47.5% { transform:scaleX(0.9167) }
+      81.25% { transform:scaleX(0.9167) }
+      87.5% { transform:scaleX(0.9167) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes pil {
+      0.0% { opacity:0; transform:translateY(6px) }
+      42.5% { opacity:0; transform:translateY(6px) }
+      48.75% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(6px) }
+  }
+
+  .rij0 { animation: rij0 8.0s linear infinite; }
+  .balk0 { animation: balk0 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .waarde0 { animation: waarde0 8.0s linear infinite; }
+  .rij1 { animation: rij1 8.0s linear infinite; }
+  .balk1 { animation: balk1 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .waarde1 { animation: waarde1 8.0s linear infinite; }
+  .rij2 { animation: rij2 8.0s linear infinite; }
+  .balk2 { animation: balk2 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .waarde2 { animation: waarde2 8.0s linear infinite; }
+  .rij3 { animation: rij3 8.0s linear infinite; }
+  .balk3 { animation: balk3 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .waarde3 { animation: waarde3 8.0s linear infinite; }
+  .teller0 { animation: teller0 8.0s step-end infinite; }
+  .teller1 { animation: teller1 8.0s step-end infinite; }
+  .teller2 { animation: teller2 8.0s step-end infinite; }
+  .teller3 { animation: teller3 8.0s step-end infinite; }
+  .teller4 { animation: teller4 8.0s step-end infinite; }
+  .slot { animation: slot 8.0s linear infinite; }
+  .budgetbalk { animation: budgetbalk 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .pil { animation: pil 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .rij, .balk, .waarde, .teller, .slot, .budgetbalk, .pil { transform-box: fill-box; }
+  .balk, .budgetbalk { transform-origin: left center; }
+  .pil, .rij { transform-origin: center; }
+
+  /* Wie beweging uitzet, krijgt het eindbeeld zonder één overgang. Dat is geen
+     uitgeklede versie: het is precies wat de animatie na acht seconden toont. */
+  @media (prefers-reduced-motion: reduce) {
+    .rij, .balk, .waarde, .slot, .budgetbalk, .pil { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .teller0, .teller1, .teller2, .teller3 { animation: none !important; opacity: 0 !important; }
+    .teller4 { animation: none !important; opacity: 1 !important; }
+  }
+              </style>
+
+              <rect width="1200" height="820" fill="#ffffff"/>
+
+              <text x="40" y="66" font-size="34" font-weight="700" fill="#0a3327">Jouw team · 6 medewerkers</text>
+      <text class="teller teller0" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">0 van 6 klaar</text>
+      <text class="teller teller1" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">1 van 6 klaar</text>
+      <text class="teller teller2" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">2 van 6 klaar</text>
+      <text class="teller teller3" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">3 van 6 klaar</text>
+      <text class="teller teller4" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">4 van 6 klaar</text>
+              <line x1="40" y1="100" x2="1160" y2="100" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40"  y="146" font-size="21" font-weight="700" fill="#547068">MEDEWERKER</text>
+              <text x="560" y="146" font-size="21" font-weight="700" fill="#547068">POSITIE IN DE BAND</text>
+              <text x="940" y="146" font-size="21" font-weight="700" fill="#547068">VOORSTEL</text>
+
+      <g class="rij rij0">
+        <rect x="30" y="170" width="1140" height="92" rx="9" fill="#f6f8fa"/>
+        <text x="40" y="206" font-size="25" font-weight="700" fill="#0a3327">A. Peeters</text>
+        <text x="40" y="243" font-size="21" fill="#547068">Teamlead support</text>
+        <rect x="560" y="196" width="300" height="14" rx="7" fill="#e1ebf0"/>
+        <rect class="balk balk0" x="560" y="196" width="222" height="14" rx="7" fill="#154e3a"/>
+        <text class="waarde waarde0" x="880" y="212" font-size="21" fill="#547068">74%</text>
+        <text class="waarde waarde0" x="1160" y="212" font-size="25" font-weight="700" fill="#0a3327"
+              text-anchor="end" style="font-variant-numeric: tabular-nums">3,5%</text>
+      </g>
+      <g class="rij rij1">
+        
+        <text x="40" y="332" font-size="25" font-weight="700" fill="#0a3327">M. Declerck</text>
+        <text x="40" y="369" font-size="21" fill="#547068">Analist</text>
+        <rect x="560" y="322" width="300" height="14" rx="7" fill="#e1ebf0"/>
+        <rect class="balk balk1" x="560" y="322" width="138" height="14" rx="7" fill="#154e3a"/>
+        <text class="waarde waarde1" x="880" y="338" font-size="21" fill="#547068">46%</text>
+        <text class="waarde waarde1" x="1160" y="338" font-size="25" font-weight="700" fill="#0a3327"
+              text-anchor="end" style="font-variant-numeric: tabular-nums">3,0%</text>
+      </g>
+      <g class="rij rij2">
+        
+        <text x="40" y="458" font-size="25" font-weight="700" fill="#0a3327">S. Janssens</text>
+        <text x="40" y="495" font-size="21" fill="#547068">Projectleider</text>
+        <rect x="560" y="448" width="300" height="14" rx="7" fill="#e1ebf0"/>
+        <rect class="balk balk2" x="560" y="448" width="264" height="14" rx="7" fill="#154e3a"/>
+        <text class="waarde waarde2" x="880" y="464" font-size="21" fill="#547068">88%</text>
+        <text class="waarde waarde2" x="1160" y="464" font-size="25" font-weight="700" fill="#0a3327"
+              text-anchor="end" style="font-variant-numeric: tabular-nums">2,0%</text>
+      </g>
+      <g class="rij rij3">
+        
+        <text x="40" y="584" font-size="25" font-weight="700" fill="#0a3327">K. Verhaeghe</text>
+        <text x="40" y="621" font-size="21" fill="#547068">Consultant</text>
+        <rect x="560" y="574" width="300" height="14" rx="7" fill="#e1ebf0"/>
+        <rect class="balk balk3" x="560" y="574" width="186" height="14" rx="7" fill="#154e3a"/>
+        <text class="waarde waarde3" x="880" y="590" font-size="21" fill="#547068">62%</text>
+        <text class="waarde waarde3" x="1160" y="590" font-size="25" font-weight="700" fill="#0a3327"
+              text-anchor="end" style="font-variant-numeric: tabular-nums">2,5%</text>
+      </g>
+
+              <line x1="40" y1="650" x2="1160" y2="650" stroke="#e1ebf0" stroke-width="2"/>
+
+              <g class="slot">
+                <text x="40" y="706" font-size="25" font-weight="700" fill="#0a3327">Gemiddeld 2,75%</text>
+                <text x="40" y="748" font-size="21" fill="#547068">Richtlijn voor deze cyclus: 3,0%</text>
+              </g>
+              <rect x="40" y="772" width="640" height="16" rx="8" fill="#e1ebf0"/>
+              <rect class="budgetbalk" x="40" y="772" width="640" height="16" rx="8" fill="#0af29f"/>
+
+              <g class="pil">
+                <rect x="910" y="684" width="250" height="72" rx="9" fill="#f6f8fa"/>
+                <text x="1035" y="718" font-size="21" font-weight="700" fill="#154e3a" text-anchor="middle">Binnen budget</text>
+                <text x="1035" y="746" font-size="21" fill="#547068" text-anchor="middle">nog 0,25% over</text>
+              </g>
+            </svg>
+          </div>
+    </figure>
+  </div>
+</section>
+
+<section class="bg-surface border-y border-line">
+  <div class="shell py-8 md:py-10">
+    <h2 class="text-h2">En zo staat hij in de hero</h2>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      Hetzelfde scherm, in de inkadering van variant B uit het vorige voorstel: de hele hero op
+      gebroken wit, zodat het paneel met zijn schaduw loskomt van de achtergrond.
+    </p>
+  </div>
+</section>
+
+<header class="bg-surface">
+  <div class="shell pt-6 md:pt-10">
+    <a href="#" class="inline-flex items-center" data-cta="anim-wordmerk">
+      <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+    </a>
+    <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
+      <div class="lg:col-span-6">
+        <p class="koptekst text-h1 lg:text-display">Compensatie zonder kopzorgen</p>
+        <p class="mt-5 text-h3 text-ink-soft max-w-text">
+          Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+        </p>
+        <div class="mt-8"><a href="#" class="btn-primary w-full sm:w-auto" data-cta="anim-boek-demo">Boek een demo</a></div>
+        <div class="mt-8 flex items-center gap-4">
+          <img src="assets/img/nick-portret.webp" width="900" height="1140" alt="Nick Van Langendonck"
+               class="h-14 w-14 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
+          <p class="m-0 text-caption text-ink-soft max-w-text">
+            <b class="text-ink">Nick</b> laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene
+            verkooppitch, wel een concrete blik op jouw looncyclus.
+          </p>
+        </div>
+      </div>
+      <figure class="lg:col-span-6 m-0">
+        <div class="panel">
+            <div class="panel-bar">
+              <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+              <span class="miniheader">Voorstel voor jouw team</span>
+              <span class="ml-auto shrink-0 text-caption text-ink-soft">Cyclus 2027</span>
+            </div>
+            <svg viewBox="0 0 1200 820" class="block h-auto w-full" role="img"
+                 aria-label="Voorstel voor jouw team: vier van de zes voorstellen worden een voor een ingevuld, met verhogingen van 2,0 tot 3,5 procent, en het gemiddelde komt op 2,75 procent tegenover een richtlijn van 3,0 procent — binnen budget."
+                 style="font-family: Inter, system-ui, sans-serif">
+              <style>
+  @keyframes rij0 {
+      0.0% { opacity:0; transform:translateY(10px) }
+      6.25% { opacity:0; transform:translateY(10px) }
+      11.875% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(10px) }
+  }
+  @keyframes balk0 {
+      0.0% { transform:scaleX(0) }
+      7.5% { transform:scaleX(0) }
+      15.625% { transform:scaleX(1) }
+      81.25% { transform:scaleX(1) }
+      87.5% { transform:scaleX(1) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes waarde0 {
+      0.0% { opacity:0 }
+      10.625% { opacity:0 }
+      15.0% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes rij1 {
+      0.0% { opacity:0; transform:translateY(10px) }
+      12.5% { opacity:0; transform:translateY(10px) }
+      18.125% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(10px) }
+  }
+  @keyframes balk1 {
+      0.0% { transform:scaleX(0) }
+      13.75% { transform:scaleX(0) }
+      21.875% { transform:scaleX(1) }
+      81.25% { transform:scaleX(1) }
+      87.5% { transform:scaleX(1) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes waarde1 {
+      0.0% { opacity:0 }
+      16.875% { opacity:0 }
+      21.25% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes rij2 {
+      0.0% { opacity:0; transform:translateY(10px) }
+      18.75% { opacity:0; transform:translateY(10px) }
+      24.375% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(10px) }
+  }
+  @keyframes balk2 {
+      0.0% { transform:scaleX(0) }
+      20.0% { transform:scaleX(0) }
+      28.125% { transform:scaleX(1) }
+      81.25% { transform:scaleX(1) }
+      87.5% { transform:scaleX(1) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes waarde2 {
+      0.0% { opacity:0 }
+      23.125% { opacity:0 }
+      27.5% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes rij3 {
+      0.0% { opacity:0; transform:translateY(10px) }
+      25.0% { opacity:0; transform:translateY(10px) }
+      30.625% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(10px) }
+  }
+  @keyframes balk3 {
+      0.0% { transform:scaleX(0) }
+      26.25% { transform:scaleX(0) }
+      34.375% { transform:scaleX(1) }
+      81.25% { transform:scaleX(1) }
+      87.5% { transform:scaleX(1) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes waarde3 {
+      0.0% { opacity:0 }
+      29.375% { opacity:0 }
+      33.75% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes teller0 {
+      0.0% { opacity:1 }
+      0.0013% { opacity:1 }
+      11.875% { opacity:1 }
+      11.8762% { opacity:0 }
+      100.0% { opacity:1 }
+  }
+  @keyframes teller1 {
+      0.0% { opacity:0 }
+      11.875% { opacity:1 }
+      18.125% { opacity:1 }
+      18.1262% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes teller2 {
+      0.0% { opacity:0 }
+      18.125% { opacity:1 }
+      24.375% { opacity:1 }
+      24.3762% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes teller3 {
+      0.0% { opacity:0 }
+      24.375% { opacity:1 }
+      30.625% { opacity:1 }
+      30.6263% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes teller4 {
+      0.0% { opacity:0 }
+      30.625% { opacity:1 }
+      87.5% { opacity:1 }
+      87.5012% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes slot {
+      0.0% { opacity:0 }
+      32.5% { opacity:0 }
+      38.75% { opacity:1 }
+      81.25% { opacity:1 }
+      87.5% { opacity:0 }
+      100.0% { opacity:0 }
+  }
+  @keyframes budgetbalk {
+      0.0% { transform:scaleX(0) }
+      35.0% { transform:scaleX(0) }
+      47.5% { transform:scaleX(0.9167) }
+      81.25% { transform:scaleX(0.9167) }
+      87.5% { transform:scaleX(0.9167) }
+      100.0% { transform:scaleX(0) }
+  }
+  @keyframes pil {
+      0.0% { opacity:0; transform:translateY(6px) }
+      42.5% { opacity:0; transform:translateY(6px) }
+      48.75% { opacity:1; transform:translateY(0) }
+      81.25% { opacity:1; transform:translateY(0) }
+      87.5% { opacity:0; transform:translateY(0) }
+      100.0% { opacity:0; transform:translateY(6px) }
+  }
+
+  .rij0 { animation: rij0 8.0s linear infinite; }
+  .balk0 { animation: balk0 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .waarde0 { animation: waarde0 8.0s linear infinite; }
+  .rij1 { animation: rij1 8.0s linear infinite; }
+  .balk1 { animation: balk1 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .waarde1 { animation: waarde1 8.0s linear infinite; }
+  .rij2 { animation: rij2 8.0s linear infinite; }
+  .balk2 { animation: balk2 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .waarde2 { animation: waarde2 8.0s linear infinite; }
+  .rij3 { animation: rij3 8.0s linear infinite; }
+  .balk3 { animation: balk3 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .waarde3 { animation: waarde3 8.0s linear infinite; }
+  .teller0 { animation: teller0 8.0s step-end infinite; }
+  .teller1 { animation: teller1 8.0s step-end infinite; }
+  .teller2 { animation: teller2 8.0s step-end infinite; }
+  .teller3 { animation: teller3 8.0s step-end infinite; }
+  .teller4 { animation: teller4 8.0s step-end infinite; }
+  .slot { animation: slot 8.0s linear infinite; }
+  .budgetbalk { animation: budgetbalk 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .pil { animation: pil 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+  .rij, .balk, .waarde, .teller, .slot, .budgetbalk, .pil { transform-box: fill-box; }
+  .balk, .budgetbalk { transform-origin: left center; }
+  .pil, .rij { transform-origin: center; }
+
+  /* Wie beweging uitzet, krijgt het eindbeeld zonder één overgang. Dat is geen
+     uitgeklede versie: het is precies wat de animatie na acht seconden toont. */
+  @media (prefers-reduced-motion: reduce) {
+    .rij, .balk, .waarde, .slot, .budgetbalk, .pil { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .teller0, .teller1, .teller2, .teller3 { animation: none !important; opacity: 0 !important; }
+    .teller4 { animation: none !important; opacity: 1 !important; }
+  }
+              </style>
+
+              <rect width="1200" height="820" fill="#ffffff"/>
+
+              <text x="40" y="66" font-size="34" font-weight="700" fill="#0a3327">Jouw team · 6 medewerkers</text>
+      <text class="teller teller0" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">0 van 6 klaar</text>
+      <text class="teller teller1" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">1 van 6 klaar</text>
+      <text class="teller teller2" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">2 van 6 klaar</text>
+      <text class="teller teller3" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">3 van 6 klaar</text>
+      <text class="teller teller4" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">4 van 6 klaar</text>
+              <line x1="40" y1="100" x2="1160" y2="100" stroke="#e1ebf0" stroke-width="2"/>
+
+              <text x="40"  y="146" font-size="21" font-weight="700" fill="#547068">MEDEWERKER</text>
+              <text x="560" y="146" font-size="21" font-weight="700" fill="#547068">POSITIE IN DE BAND</text>
+              <text x="940" y="146" font-size="21" font-weight="700" fill="#547068">VOORSTEL</text>
+
+      <g class="rij rij0">
+        <rect x="30" y="170" width="1140" height="92" rx="9" fill="#f6f8fa"/>
+        <text x="40" y="206" font-size="25" font-weight="700" fill="#0a3327">A. Peeters</text>
+        <text x="40" y="243" font-size="21" fill="#547068">Teamlead support</text>
+        <rect x="560" y="196" width="300" height="14" rx="7" fill="#e1ebf0"/>
+        <rect class="balk balk0" x="560" y="196" width="222" height="14" rx="7" fill="#154e3a"/>
+        <text class="waarde waarde0" x="880" y="212" font-size="21" fill="#547068">74%</text>
+        <text class="waarde waarde0" x="1160" y="212" font-size="25" font-weight="700" fill="#0a3327"
+              text-anchor="end" style="font-variant-numeric: tabular-nums">3,5%</text>
+      </g>
+      <g class="rij rij1">
+        
+        <text x="40" y="332" font-size="25" font-weight="700" fill="#0a3327">M. Declerck</text>
+        <text x="40" y="369" font-size="21" fill="#547068">Analist</text>
+        <rect x="560" y="322" width="300" height="14" rx="7" fill="#e1ebf0"/>
+        <rect class="balk balk1" x="560" y="322" width="138" height="14" rx="7" fill="#154e3a"/>
+        <text class="waarde waarde1" x="880" y="338" font-size="21" fill="#547068">46%</text>
+        <text class="waarde waarde1" x="1160" y="338" font-size="25" font-weight="700" fill="#0a3327"
+              text-anchor="end" style="font-variant-numeric: tabular-nums">3,0%</text>
+      </g>
+      <g class="rij rij2">
+        
+        <text x="40" y="458" font-size="25" font-weight="700" fill="#0a3327">S. Janssens</text>
+        <text x="40" y="495" font-size="21" fill="#547068">Projectleider</text>
+        <rect x="560" y="448" width="300" height="14" rx="7" fill="#e1ebf0"/>
+        <rect class="balk balk2" x="560" y="448" width="264" height="14" rx="7" fill="#154e3a"/>
+        <text class="waarde waarde2" x="880" y="464" font-size="21" fill="#547068">88%</text>
+        <text class="waarde waarde2" x="1160" y="464" font-size="25" font-weight="700" fill="#0a3327"
+              text-anchor="end" style="font-variant-numeric: tabular-nums">2,0%</text>
+      </g>
+      <g class="rij rij3">
+        
+        <text x="40" y="584" font-size="25" font-weight="700" fill="#0a3327">K. Verhaeghe</text>
+        <text x="40" y="621" font-size="21" fill="#547068">Consultant</text>
+        <rect x="560" y="574" width="300" height="14" rx="7" fill="#e1ebf0"/>
+        <rect class="balk balk3" x="560" y="574" width="186" height="14" rx="7" fill="#154e3a"/>
+        <text class="waarde waarde3" x="880" y="590" font-size="21" fill="#547068">62%</text>
+        <text class="waarde waarde3" x="1160" y="590" font-size="25" font-weight="700" fill="#0a3327"
+              text-anchor="end" style="font-variant-numeric: tabular-nums">2,5%</text>
+      </g>
+
+              <line x1="40" y1="650" x2="1160" y2="650" stroke="#e1ebf0" stroke-width="2"/>
+
+              <g class="slot">
+                <text x="40" y="706" font-size="25" font-weight="700" fill="#0a3327">Gemiddeld 2,75%</text>
+                <text x="40" y="748" font-size="21" fill="#547068">Richtlijn voor deze cyclus: 3,0%</text>
+              </g>
+              <rect x="40" y="772" width="640" height="16" rx="8" fill="#e1ebf0"/>
+              <rect class="budgetbalk" x="40" y="772" width="640" height="16" rx="8" fill="#0af29f"/>
+
+              <g class="pil">
+                <rect x="910" y="684" width="250" height="72" rx="9" fill="#f6f8fa"/>
+                <text x="1035" y="718" font-size="21" font-weight="700" fill="#154e3a" text-anchor="middle">Binnen budget</text>
+                <text x="1035" y="746" font-size="21" fill="#547068" text-anchor="middle">nog 0,25% over</text>
+              </g>
+            </svg>
+          </div>
+      </figure>
+    </div>
+  </div>
+</header>
+
+<div class="bg-paper border-t border-line">
+  <div class="shell py-10 md:py-12">
+    <h2 class="text-h2">Wat je moet weten voor je ja zegt</h2>
+    <p class="mt-4 text-body text-ink-soft max-w-prose">
+      <b class="text-ink">Hij loopt eeuwig.</b> Dat is een keuze: een advertentiebezoeker komt
+      midden in de lus binnen, en als de animatie één keer speelt en stopt, ziet de helft alleen
+      het eindbeeld. Keerzijde is dat er altijd iets beweegt in het hoekje van je oog. Eén keer
+      spelen en blijven staan kan ook — zeg maar wat je wil.
+    </p>
+    <p class="mt-3 text-body text-ink-soft max-w-prose">
+      <b class="text-ink">De cijfers kloppen ook tijdens het spelen.</b> 3,5 + 3,0 + 2,0 + 2,5
+      gedeeld door vier is 2,75, en 2,75 van 3,0 is 91,7% — exact waar de budgetbalk stopt.
+    </p>
+    <p class="mt-6 text-caption text-ink-soft">
+      Niets hiervan staat op de echte pagina.
+    </p>
+  </div>
+</div>
+
+</body>
+</html>
