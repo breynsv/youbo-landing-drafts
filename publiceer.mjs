@@ -123,6 +123,11 @@ const blankeerCommentaar = (h) => h.replace(/<!--[\s\S]*?-->/g, (m) => ' '.repea
 const ADRES_ATTRIBUTEN = new Set([
   'src', 'href', 'poster', 'action', 'formaction',
   'data-src', 'data-poster', 'data-href', 'data-bg', 'data-background',
+  /* data-caselinks wijst naar het bestand met de klikvlakken uit de case-pdf's.
+     Het wordt pas opgehaald wanneer iemand een case opent, dus staat het nergens
+     anders in de pagina — en zonder deze regel zou het niet mee naar de server
+     gaan en bleven die vlakken dood. */
+  'data-caselinks',
 ]);
 /* srcset en imagesrcset dragen meerdere adressen met komma's ertussen. Sinds
    2026-10-16 doet data-bladen dat ook: daarin staan de twee bladen van een

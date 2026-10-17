@@ -876,6 +876,15 @@ tailwind.config = {
          bewaren. Lees «hoeveel mensen keken naar een case» dus af van
          case_pdf_geopend, en «hoeveel namen hem mee» van file_download. */
       'paneel-download':         null,
+      /* De drie klikvlakken die in de case-pdf's zelf staan. Ze bestaan pas
+         wanneer een paneel opengaat, dus vind je ze nergens in deze HTML terug;
+         ze worden gemaakt uit cases/preview/links.json. Dat ze hier tóch staan
+         is geen netheid maar noodzaak: zonder naam vuren ze cta_zonder_naam.
+         De namen zijn dezelfde als die van het formulier verderop, want het is
+         dezelfde handeling — Nick mailen, Nick bellen, zijn agenda openen. */
+      'case-mail-nick':          'nick_gemaild',
+      'case-telefoon-nick':      'nick_gebeld',
+      'case-agenda-nick':        'agenda_geopend',
       'formulier-vraag-demo':    'demo_formulier_verstuurd',
       'formulier-privacy':       'juridische_tekst_geopend',
       'formulier-mail-nick':     'nick_gemaild',

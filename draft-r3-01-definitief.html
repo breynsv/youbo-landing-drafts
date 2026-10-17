@@ -1527,14 +1527,33 @@ tailwind.config = {
     cursor: grab;
   }
   .vak.sleept { cursor: grabbing; }
+  /* DE DOOS DRAAGT DE TRANSFORM, HET BLAD ZIT ERIN. Sinds de bladen hun eigen
+     links hebben, is het blad niet meer het enige dat moet meeschuiven en
+     meezoomen: de linkvlakken liggen erbovenop en moeten exact meebewegen.
+     Daarom staan ze samen in één doos en verplaatst die doos. */
+  .bladdoos { position: absolute; top: 0; left: 0; width: 100%; transform-origin: 0 0; }
   .blad {
-    position: absolute; top: 0; left: 0;
     display: block; width: 100%; height: auto;
     background: #ffffff;
-    transform-origin: 0 0;
     -webkit-user-drag: none; user-drag: none; pointer-events: none;
   }
-  .blad.glijdt { transition: transform var(--m-base) var(--e-decelerate); }
+  /* De klikvlakken uit de pdf zelf. Ze staan in procenten van het blad, dus
+     blijven ze kloppen op elke schaal en bij elke vensterbreedte. Onzichtbaar
+     tot je erbij komt — het blad is een document, geen webpagina, en
+     onderstreepte vlakken eroverheen zouden dat tegenspreken. */
+  .bladlink { position: absolute; display: block; }
+  /* Het vlak dat je ziet oplichten is NIET het vlak dat je raakt. De <a> wordt
+     door rekOp() opgerekt tot iets wat een duim kan raken; dit kind houdt de
+     echte maat van de link in de pdf, zodat de markering om de tekst valt en
+     niet om een onzichtbare marge. */
+  .bladlink span {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+    border-radius: 4px;
+  }
+  .bladlink:hover span, .bladlink:focus-visible span {
+    background: rgba(10,242,159,.22); box-shadow: 0 0 0 2px #0af29f;
+  }
+  .bladdoos.glijdt { transition: transform var(--m-base) var(--e-decelerate); }
 
   /* De balk met de bediening. Hij hangt ín het schuivende deel en niet in de
      voet, want de voet hoort van één ding te zijn: de demoknop. */
@@ -2024,7 +2043,7 @@ tailwind.config = {
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.1.nota" data-inhoud="cases.items.1.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
-              <a href="cases/youbo-case-kaneka.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-kaneka" data-bladen="cases/preview/kaneka-1.webp, cases/preview/kaneka-2.webp" data-inhoud-data-cta="case-pdf-{slug:cases.items.1.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.1.bedrijf}-1.webp, cases/preview/{slug:cases.items.1.bedrijf}-2.webp" data-inhoud-href="cases.items.1.downloadlink">
+              <a href="cases/youbo-case-kaneka.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-kaneka" data-bladen="cases/preview/kaneka-1.svg, cases/preview/kaneka-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.1.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.1.bedrijf}-1.svg, cases/preview/{slug:cases.items.1.bedrijf}-2.svg" data-inhoud-href="cases.items.1.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
@@ -2047,7 +2066,7 @@ tailwind.config = {
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.2.nota" data-inhoud="cases.items.2.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
-              <a href="cases/youbo-case-anchr.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-anchr" data-bladen="cases/preview/anchr-1.webp, cases/preview/anchr-2.webp" data-inhoud-data-cta="case-pdf-{slug:cases.items.2.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.2.bedrijf}-1.webp, cases/preview/{slug:cases.items.2.bedrijf}-2.webp" data-inhoud-href="cases.items.2.downloadlink">
+              <a href="cases/youbo-case-anchr.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-anchr" data-bladen="cases/preview/anchr-1.svg, cases/preview/anchr-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.2.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.2.bedrijf}-1.svg, cases/preview/{slug:cases.items.2.bedrijf}-2.svg" data-inhoud-href="cases.items.2.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
@@ -2070,7 +2089,7 @@ tailwind.config = {
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.3.nota" data-inhoud="cases.items.3.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
-              <a href="cases/youbo-case-aertssen-group.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-aertssen-group" data-bladen="cases/preview/aertssen-group-1.webp, cases/preview/aertssen-group-2.webp" data-inhoud-data-cta="case-pdf-{slug:cases.items.3.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.3.bedrijf}-1.webp, cases/preview/{slug:cases.items.3.bedrijf}-2.webp" data-inhoud-href="cases.items.3.downloadlink">
+              <a href="cases/youbo-case-aertssen-group.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-aertssen-group" data-bladen="cases/preview/aertssen-group-1.svg, cases/preview/aertssen-group-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.3.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.3.bedrijf}-1.svg, cases/preview/{slug:cases.items.3.bedrijf}-2.svg" data-inhoud-href="cases.items.3.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
@@ -2093,7 +2112,7 @@ tailwind.config = {
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.4.nota" data-inhoud="cases.items.4.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
-              <a href="cases/youbo-case-sd-worx.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-sd-worx" data-bladen="cases/preview/sd-worx-1.webp, cases/preview/sd-worx-2.webp" data-inhoud-data-cta="case-pdf-{slug:cases.items.4.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.4.bedrijf}-1.webp, cases/preview/{slug:cases.items.4.bedrijf}-2.webp" data-inhoud-href="cases.items.4.downloadlink">
+              <a href="cases/youbo-case-sd-worx.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-sd-worx" data-bladen="cases/preview/sd-worx-1.svg, cases/preview/sd-worx-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.4.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.4.bedrijf}-1.svg, cases/preview/{slug:cases.items.4.bedrijf}-2.svg" data-inhoud-href="cases.items.4.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
@@ -2116,7 +2135,7 @@ tailwind.config = {
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.5.nota" data-inhoud="cases.items.5.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
-              <a href="cases/youbo-case-dpg-media.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-dpg-media" data-bladen="cases/preview/dpg-media-1.webp, cases/preview/dpg-media-2.webp" data-inhoud-data-cta="case-pdf-{slug:cases.items.5.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.5.bedrijf}-1.webp, cases/preview/{slug:cases.items.5.bedrijf}-2.webp" data-inhoud-href="cases.items.5.downloadlink">
+              <a href="cases/youbo-case-dpg-media.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-dpg-media" data-bladen="cases/preview/dpg-media-1.svg, cases/preview/dpg-media-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.5.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.5.bedrijf}-1.svg, cases/preview/{slug:cases.items.5.bedrijf}-2.svg" data-inhoud-href="cases.items.5.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
@@ -3809,6 +3828,15 @@ tailwind.config = {
          bewaren. Lees «hoeveel mensen keken naar een case» dus af van
          case_pdf_geopend, en «hoeveel namen hem mee» van file_download. */
       'paneel-download':         null,
+      /* De drie klikvlakken die in de case-pdf's zelf staan. Ze bestaan pas
+         wanneer een paneel opengaat, dus vind je ze nergens in deze HTML terug;
+         ze worden gemaakt uit cases/preview/links.json. Dat ze hier tóch staan
+         is geen netheid maar noodzaak: zonder naam vuren ze cta_zonder_naam.
+         De namen zijn dezelfde als die van het formulier verderop, want het is
+         dezelfde handeling — Nick mailen, Nick bellen, zijn agenda openen. */
+      'case-mail-nick':          'nick_gemaild',
+      'case-telefoon-nick':      'nick_gebeld',
+      'case-agenda-nick':        'agenda_geopend',
       'formulier-vraag-demo':    'demo_formulier_verstuurd',
       'formulier-privacy':       'juridische_tekst_geopend',
       'formulier-mail-nick':     'nick_gemaild',
@@ -4735,7 +4763,8 @@ tailwind.config = {
      niets over interesse in Youbo en zouden het rapport vullen met ruis. De
      twee die wél iets zeggen — de demoknop en de download — dragen er een.
      ========================================================================= -->
-<dialog class="paneel" id="paneel" aria-labelledby="paneel-titel">
+<dialog class="paneel" id="paneel" aria-labelledby="paneel-titel"
+        data-caselinks="cases/preview/links.json">
   <div class="paneel-doos">
 
     <header class="flex items-center gap-4 px-5 py-4 border-b border-line bg-paper">
@@ -4825,7 +4854,7 @@ tailwind.config = {
 
   function maten(v) {
     var d = v.el.getBoundingClientRect();
-    return { bw: d.width, bh: d.height, w: v.img.offsetWidth * v.s, h: v.img.offsetHeight * v.s };
+    return { bw: d.width, bh: d.height, w: v.doos.offsetWidth * v.s, h: v.doos.offsetHeight * v.s };
   }
   /* Hoe ver mag dit blad schuiven? Het hangt met zijn linkerbovenhoek op (0,0),
      dus loopt x van 0 tot -(breedte - vakbreedte) en y van 0 tot -(hoogte -
@@ -4843,8 +4872,8 @@ tailwind.config = {
     return { x: m.w > m.bw + 0.5, y: m.h > m.bh + 0.5 };
   }
   function zet(v, zacht) {
-    v.img.classList.toggle('glijdt', !!zacht && !stil());
-    v.img.style.transform = 'translate(' + v.x.toFixed(1) + 'px,' + v.y.toFixed(1) + 'px) scale(' + v.s.toFixed(3) + ')';
+    v.doos.classList.toggle('glijdt', !!zacht && !stil());
+    v.doos.style.transform = 'translate(' + v.x.toFixed(1) + 'px,' + v.y.toFixed(1) + 'px) scale(' + v.s.toFixed(3) + ')';
   }
 
   /* Terug naar de bovenkant van het blad. Sinds het blad linksboven hangt is
@@ -4894,24 +4923,152 @@ tailwind.config = {
     bedieningBij();
   }
 
-  function bouwLezer(paden, naam) {
+  /* De klikvlakken die in de pdf zelf staan: een mailadres, een telefoonnummer
+     en de agendalink van Nick. Ze komen uit cases/preview/links.json, dat naast
+     de bladen gemaakt wordt uit dezelfde pdf — zie het kopje DE BLADEN in de
+     stijl. Elk vlak staat in procenten van het blad, dus klopt het op elke
+     schaal.
+
+     DE HAAK HANGT AAN HET SOORT ADRES, niet aan de tekst. mailto is Nick
+     mailen, tel is Nick bellen, en elk webadres in deze vijf pdf's is vandaag
+     zijn agenda. Komt er ooit een pdf met een ánder webadres, dan hoort die
+     derde regel opnieuw bekeken te worden — hij zou dan agenda_geopend heten
+     terwijl het dat niet is. */
+  function haakVan(uri) {
+    if (uri.indexOf('mailto:') === 0) { return 'case-mail-nick'; }
+    if (uri.indexOf('tel:') === 0) { return 'case-telefoon-nick'; }
+    return 'case-agenda-nick';
+  }
+  function labelVan(uri) {
+    if (uri.indexOf('mailto:') === 0) { return 'Mail ' + uri.slice(7); }
+    if (uri.indexOf('tel:') === 0) { return 'Bel ' + uri.slice(4); }
+    return 'Open de agenda van Nick';
+  }
+
+  /* EEN KLIKVLAK UIT EEN PDF IS ZO GROOT ALS DE TEKST, EN DAT IS TE KLEIN.
+     Gemeten op een telefoon: het mailadres is 6 beeldpunten hoog en 86 breed,
+     en de richtlijn voor een raakvlak is 44 bij 44. Zo'n vlak raak je niet met
+     een duim, je raakt het per ongeluk naast.
+
+     Elk vlak wordt daarom opgerekt tot 44 — maar NOOIT tot over zijn buurman.
+     In deze pdf's staat de agendaknop vier beeldpunten boven het mailadres; wie
+     die twee allebei blind oprekt, laat de ene de andere overlappen en dan
+     opent er zomaar de verkeerde. De ruimte tussen twee vlakken wordt dus
+     eerlijk gedeeld: elk mag tot de helft ervan groeien, en geen pixel verder.
+
+     Het rekenen gebeurt in beeldpunten binnen de doos, en die doos wordt als
+     geheel geschaald — dus blijft 44 ook 44 op schaal 1, en groeit het raakvlak
+     netjes mee als je inzoomt. */
+  var RAAK = 44;
+  function rekOp(doos) {
+    var lijst = [].slice.call(doos.querySelectorAll('.bladlink'));
+    if (!lijst.length) { return; }
+    var H = doos.offsetHeight, B = doos.offsetWidth;
+    if (!H || !B) { return; }
+
+    var vl = lijst.map(function (a) {
+      return { a: a, t: a.offsetTop, h: a.offsetHeight, l: a.offsetLeft, b: a.offsetWidth,
+               boven: 0, onder: 0, links: 0, rechts: 0 };
+    });
+
+    /* TWEE DINGEN DIE IK ER EERST NAAST HAD.
+
+       EEN: alleen een buurman die in de ándere richting overlapt telt mee. Het
+       mailadres en het telefoonnummer staan op dezelfde regel naast elkaar; die
+       horen elkaar verticaal niets in de weg te leggen, en deden dat toch —
+       het mailvlak bleef daardoor 9 beeldpunten hoog.
+
+       TWEE: de groei wordt niet eerlijk verdeeld maar opgevuld. Zit de ene kant
+       klem tegen de agendaknop vier beeldpunten hoger, dan gaat wat daar niet
+       kan naar de andere kant. Anders haalt een vlak met één drukke buur de 44
+       nooit, terwijl de ruimte er wel degelijk is. */
+    function ruimte(i, as) {
+      var m = vl[i], voor = Infinity, na = Infinity;
+      for (var j = 0; j < vl.length; j++) {
+        if (j === i) { continue; }
+        var o = vl[j];
+        var overlapt = as === 'y'
+          ? (m.l < o.l + o.b && o.l < m.l + m.b)
+          : (m.t < o.t + o.h && o.t < m.t + m.h);
+        if (!overlapt) { continue; }
+        if (as === 'y') {
+          if (o.t + o.h <= m.t) { voor = Math.min(voor, (m.t - o.t - o.h) / 2); }
+          if (o.t >= m.t + m.h) { na = Math.min(na, (o.t - m.t - m.h) / 2); }
+        } else {
+          if (o.l + o.b <= m.l) { voor = Math.min(voor, (m.l - o.l - o.b) / 2); }
+          if (o.l >= m.l + m.b) { na = Math.min(na, (o.l - m.l - m.b) / 2); }
+        }
+      }
+      var randVoor = as === 'y' ? m.t : m.l;
+      var randNa = as === 'y' ? H - (m.t + m.h) : B - (m.l + m.b);
+      return { voor: Math.max(0, Math.min(voor, randVoor)), na: Math.max(0, Math.min(na, randNa)) };
+    }
+
+    function verdeel(tekort, r) {
+      var voor = Math.min(tekort / 2, r.voor);
+      var na = Math.min(tekort - voor, r.na);
+      voor = Math.min(Math.max(voor, tekort - na), r.voor);   /* wat achteraan niet kan, gaat vooraan */
+      return { voor: voor, na: na };
+    }
+
+    vl.forEach(function (m, i) {
+      var y = verdeel(Math.max(0, RAAK - m.h), ruimte(i, 'y'));
+      m.boven = y.voor; m.onder = y.na;
+      var x = verdeel(Math.max(0, RAAK - m.b), ruimte(i, 'x'));
+      m.links = x.voor; m.rechts = x.na;
+    });
+
+    vl.forEach(function (m) {
+      m.a.style.top = (m.t - m.boven) + 'px';
+      m.a.style.height = (m.h + m.boven + m.onder) + 'px';
+      m.a.style.left = (m.l - m.links) + 'px';
+      m.a.style.width = (m.b + m.links + m.rechts) + 'px';
+      var s = m.a.firstChild;
+      if (s && s.style) {
+        s.style.top = m.boven + 'px'; s.style.bottom = m.onder + 'px';
+        s.style.left = m.links + 'px'; s.style.right = m.rechts + 'px';
+      }
+    });
+  }
+
+  function bouwLezer(paden, naam, linklijst) {
     rail.innerHTML = '';
     vakken = []; index = 0; bladen = paden.length;
     paden.forEach(function (pad, n) {
       var vak = document.createElement('div');
       vak.className = 'vak';
+      var doos = document.createElement('div');
+      doos.className = 'bladdoos';
       var img = document.createElement('img');
       img.className = 'blad';
-      img.width = 2000; img.height = 2833;
+      img.width = 1684; img.height = 2384;
       img.alt = 'Klantcase ' + naam + ', blad ' + (n + 1) + ' van ' + paden.length;
       img.src = pad;
       if (n > 0) { img.loading = 'lazy'; }
-      vak.appendChild(img);
+      doos.appendChild(img);
+
+      ((linklijst && linklijst[n]) || []).forEach(function (l) {
+        var a = document.createElement('a');
+        a.className = 'bladlink';
+        a.href = l.u;
+        a.style.left = (l.x * 100) + '%';
+        a.style.top = (l.y * 100) + '%';
+        a.style.width = (l.b * 100) + '%';
+        a.style.height = (l.h * 100) + '%';
+        a.setAttribute('data-cta', haakVan(l.u));
+        a.setAttribute('aria-label', labelVan(l.u));
+        if (/^https?:/i.test(l.u)) { a.target = '_blank'; a.rel = 'noopener'; }
+        a.appendChild(document.createElement('span'));
+        doos.appendChild(a);
+      });
+
+      vak.appendChild(doos);
       rail.appendChild(vak);
-      var v = { el: vak, img: img, s: 1, x: 0, y: 0 };
+      var v = { el: vak, doos: doos, img: img, s: 1, x: 0, y: 0 };
       vakken.push(v);
       gebaren(v, vakken.length - 1);
       naarTop(v);
+      rekOp(doos);
     });
     railZet(0, false);
     bedieningBij();
@@ -4947,7 +5104,6 @@ tailwind.config = {
 
     v.el.addEventListener('pointerdown', function (e) {
       if (index !== i) { return; }
-      v.el.setPointerCapture(e.pointerId);
       punten[e.pointerId] = { x: e.clientX, y: e.clientY };
       var lijst = Object.keys(punten);
       if (lijst.length === 2) {
@@ -4985,6 +5141,12 @@ tailwind.config = {
         if (richting === 'x') { modus = kan.x ? 'pan' : 'rail'; }
         else                  { modus = kan.y ? 'pan' : 'niets'; }
         v.el.classList.toggle('sleept', modus === 'pan');
+        /* PAS HIER DE VINGER VANGEN, EN NIET BIJ HET NEERZETTEN. Een vak dat
+           de aanwijzer meteen vangt, krijgt zelf de klik — en dan werkt een
+           klikvlak op het blad niet meer, want dat is een kind. Nu vangt hij
+           hem pas zodra vaststaat dat er gesleept wordt, en een tik blijft een
+           tik. */
+        try { v.el.setPointerCapture(e.pointerId); } catch (f) {}
       }
       if (modus === 'pan') {
         v.x = start.vx + dx; v.y = start.vy + dy; klem(v); zet(v);
@@ -5051,6 +5213,23 @@ tailwind.config = {
     else if (e.key === '0' && v) { zoomMidden(v, 1); e.preventDefault(); }
   });
 
+  /* Het linkbestand wordt één keer opgehaald, bij het eerste paneel dat
+     opengaat. Lukt dat niet, dan werkt de lezer gewoon zonder klikvlakken —
+     een case zonder klikbaar mailadres is jammer, een case die niet opent is
+     erger. */
+  var linkbank = null, linkbezig = null;
+  function haalLinks() {
+    if (linkbank) { return Promise.resolve(linkbank); }
+    if (linkbezig) { return linkbezig; }
+    var bron = paneel.getAttribute('data-caselinks');
+    if (!bron || typeof fetch !== 'function') { return Promise.resolve({}); }
+    linkbezig = fetch(bron)
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (j) { linkbank = j || {}; return linkbank; })
+      .catch(function () { linkbank = {}; return linkbank; });
+    return linkbezig;
+  }
+
   function open(link) {
     var paden = (link.getAttribute('data-bladen') || '').split(',')
       .map(function (s) { return s.trim(); })
@@ -5069,7 +5248,13 @@ tailwind.config = {
     paneel.showModal();
     /* Pas ná showModal() heeft een vak een breedte, en zonder breedte zijn alle
        grenzen nul en kun je niets pannen. */
-    bouwLezer(paden, naam);
+    var slug = (link.getAttribute('href') || '').replace(/^.*youbo-case-/, '').replace(/\.pdf.*$/, '');
+    bouwLezer(paden, naam, null);
+    haalLinks().then(function (bank) {
+      /* Het paneel kan intussen alweer dicht zijn, of op een andere case staan. */
+      if (!paneel.open || download.href.indexOf(slug) === -1) { return; }
+      bouwLezer(paden, naam, bank[slug] || null);
+    });
     return true;
   }
 
