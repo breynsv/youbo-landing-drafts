@@ -95,14 +95,12 @@ const VERWACHT = {
   'vaste-band-demo': 'demo_knop_geklikt',
   'formulier-vraag-demo': 'demo_formulier_verstuurd',
   'formulier-privacy': 'juridische_tekst_geopend',
-  'formulier-mail-nick': 'nick_gemaild',
-  'formulier-telefoon-nick': 'nick_gebeld',
+  'formulier-agenda-nick': 'agenda_geopend',
   'bedankt-mail-nick': 'nick_gemaild',
   'bedankt-telefoon-nick': 'nick_gebeld',
   'bedankt-logo': 'naar_youbo_site',
-  'bedankt-terug-youbo': 'naar_youbo_site',
   'footer-logo': 'naar_youbo_site',
-  'footer-linkedin': 'naar_teal_partners',
+  'footer-linkedin': 'naar_youbo_site',
   'footer-tealpartners': 'naar_teal_partners',
   'footer-cookiebeleid': 'juridische_tekst_geopend',
   'cookiebalk-toestaan': 'cookies_toegestaan',
@@ -122,7 +120,12 @@ const VERWACHT = {
    klik zelf al als file_download telt, mét de bestandsnaam; er nog eens
    case_pdf_geopend bovenop leggen zou dezelfde case twee keer tellen. De
    redenen staan voluit in de naamtabel van de pagina zelf. */
-const STIL = ['cookiebalk-weigeren', 'paneel-download'];
+/* Haken die met OPZET niets vuren. Elk met zijn reden in de pagina zelf:
+   "Weigeren" omdat er op dat moment geen grond is om iets te versturen,
+   "Download de pdf" omdat GA4 dat zelf al als file_download telt, en de
+   terugknop op de bevestigingspagina omdat die sinds 2026-10-19 naar de
+   landingspagina gaat en GA4 die terugkomst zelf als page_view meet. */
+const STIL = ['cookiebalk-weigeren', 'paneel-download', 'bedankt-terug-pagina'];
 
 const MEETHOSTS = /googletagmanager\.com|google-analytics\.com|analytics\.google\.com|snap\.licdn\.com|px\.ads\.linkedin\.com|doubleclick/i;
 
@@ -621,6 +624,66 @@ for (const [paginaNaam, pad] of [['landingspagina', LANDING], ['bevestigingspagi
 }
 
 /* ─────────────── 5 · het formulier en de bevestigingspagina ───────────────── */
+console.log('\n5b. De meelopende balk — is die haak wel te bereiken');
+
+/* WAAROM DIT HIER STAAT EN NIET IN EEN ANDER BESTAND.
+   Deel 5 klikt elke haak met JavaScript, ook een die onzichtbaar is. Dat is
+   daar met opzet — het gaat over de naam van de gebeurtenis, niet over de
+   knop. Maar het maakt dit bestand blind voor een balk die nooit verschijnt:
+   vaste-band-demo zou keurig demo_knop_geklikt geven terwijl geen bezoeker
+   die knop ooit ziet. Een haak die niemand kan bereiken is geen meting.
+
+   Jana vroeg op 2026-10-19 om de balk pas te tonen zodra de knop in de hero
+   uit beeld is, "zodat je niet tegelijk de 2 identieke knoppen in beeld
+   hebt". In ronde 2 vroeg zij het omgekeerde. Zonder deze toets kan iemand
+   dat later terugdraaien zonder dat er iets rood wordt. */
+for (const [schermnaam, viewport] of [['telefoon', { width: 390, height: 844 }],
+                                      ['laptop', { width: 1440, height: 900 }]]) {
+  const { ctx, pg } = await open('/' + LANDING, { keuze: 'toegestaan', viewport, wacht: 1500 });
+
+  const zichtbaar = () => pg.evaluate(() => {
+    const el = document.querySelector('[data-vasteband]');
+    if (!el) return null;
+    const st = getComputedStyle(el);
+    return st.display !== 'none' && st.visibility !== 'hidden' && Number(st.opacity) > 0.05;
+  });
+
+  ok(`${schermnaam}: bovenaan staat de balk er niet, naast de knop in de hero`,
+      (await zichtbaar()) === false);
+  ok(`${schermnaam}: en die heroknop staat daar wél`,
+      await pg.locator('#hero-demoknop').isVisible());
+
+  await pg.evaluate(() => {
+    const h = document.getElementById('hero-demoknop').getBoundingClientRect();
+    window.scrollBy(0, h.bottom + 60);
+  });
+  await pg.waitForTimeout(500);
+  ok(`${schermnaam}: zodra de heroknop uit beeld is, komt de balk`,
+      (await zichtbaar()) === true);
+
+  /* En dan is hij ook echt te gebruiken — anders meet deel 5 een knop die
+     wel in de HTML staat maar nooit geraakt wordt. */
+  const voor = (await onzeEvents(pg)).length;
+  await pg.locator('[data-cta="vaste-band-demo"]').click();
+  await pg.waitForTimeout(300);
+  const nieuwe = (await onzeEvents(pg)).slice(voor);
+  ok(`${schermnaam}: en een klik erop geeft demo_knop_geklikt`,
+      nieuwe.length === 1 && nieuwe[0].event === 'demo_knop_geklikt',
+      nieuwe.map((n) => n.event).join(',') || 'niets');
+
+  await pg.evaluate(() => window.scrollTo(0, 0));
+  await pg.waitForTimeout(500);
+  ok(`${schermnaam}: terug bovenaan is de balk weer weg`,
+      (await zichtbaar()) === false);
+
+  await pg.locator('#demo').scrollIntoViewIfNeeded();
+  await pg.waitForTimeout(600);
+  ok(`${schermnaam}: en bij het formulier staat hij niet over de velden`,
+      (await zichtbaar()) === false);
+
+  await ctx.close();
+}
+
 console.log('\n6. Het formulier — vandaag zonder eindpunt, en straks met');
 
 {
@@ -695,13 +758,19 @@ console.log('\n7. Wat wegnavigeert — gemeten en niet aangenomen');
 
 {
   /* mailto: en tel:. De vraag is of de pagina daarbij ontladen wordt, want dan
-     zou de gebeurtenis het vaak niet halen. Gemeten in plaats van aangenomen. */
-  const { ctx, pg } = await open('/' + LANDING, { keuze: 'toegestaan', wacht: 2000, laatNavigeren: true });
+     zou de gebeurtenis het vaak niet halen. Gemeten in plaats van aangenomen.
+
+     DIT GEBEURT OP DE BEVESTIGINGSPAGINA en niet meer op de landingspagina.
+     Tot 2026-10-19 stonden Nicks e-mailadres en telefoonnummer onder het
+     formulier; Jana liet daar één agendalink van maken omdat de bezoeker die
+     twee op het volgende scherm toch al krijgt. Daar staan ze dus nog, en
+     daar hoort deze meting nu. */
+  const { ctx, pg } = await open('/' + BEDANKT, { keuze: 'toegestaan', wacht: 2000, laatNavigeren: true });
   await pg.evaluate(() => {
     window.__ontladen = false;
     window.addEventListener('pagehide', () => { window.__ontladen = true; });
   });
-  for (const haak of ['formulier-mail-nick', 'formulier-telefoon-nick']) {
+  for (const haak of ['bedankt-mail-nick', 'bedankt-telefoon-nick']) {
     const voor = (await onzeEvents(pg)).length;
     await pg.evaluate((h) => document.querySelector('[data-cta="' + h + '"]').click(), haak);
     await pg.waitForTimeout(400);
@@ -711,7 +780,7 @@ console.log('\n7. Wat wegnavigeert — gemeten en niet aangenomen');
     ok(`${haak}: en de pagina werd niet ontladen, dus kan ze niet verloren gaan`, ontladen === false);
   }
   const url = pg.url();
-  ok('de pagina is na mailto: en tel: nog dezelfde', url.indexOf(LANDING) !== -1, url);
+  ok('de pagina is na mailto: en tel: nog dezelfde', url.indexOf(BEDANKT) !== -1, url);
   await ctx.close();
 }
 

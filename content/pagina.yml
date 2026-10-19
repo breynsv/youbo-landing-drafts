@@ -10,12 +10,12 @@
 # Meer uitleg: content/LEESMIJ.txt.
 hero:
   kop: Compensatie zonder kopzorgen
-  intro: Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.
+  intro: Maak komaf met Excel. Beheer loonsverhogingen, bonussen en promoties in één platform. Ontdek Youbo.
   knop: Boek een demo
   foto_alt: Portret van Nick Van Langendonck
   fototekst: Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch, wel een concrete blik op jouw looncyclus.
 logobalk:
-  kop: Deze bedrijven vertrouwen Youbo
+  kop: Deze bedrijven vertrouwen op Youbo
   logos:
     - naam: SD Worx
       beeld: assets/img/sdworx-logo-dark.svg
@@ -45,43 +45,43 @@ logobalk:
       beeld: assets/img/protime-logo.webp
       hoogte: 24
 kern:
-  kop: Van versnipperde excels naar één helder proces
+  kop: Van versnipperde data naar één helder proces
   blok1_titel: Hr en managers werken samen in één platform
-  blok1_tekst: Gedaan met splitsen en consolideren van excels. Bye-bye versies en errors.
-  blok2_titel: Automatische verdeelsuggesties, makkelijk én eerlijker
-  blok2_tekst: Datagedreven volgens je loonbeleid, loonbanden, prestatiescores en andere parameters. Wat jij verkiest.
-  blok3_titel: Realtime inzicht in budgetten
-  blok3_tekst: Minder overschrijdingen. Meer controle, per budget en in totaal. Geen budget slippage meer.
+  blok1_tekst: Gedaan met splitsen en consolideren van spreadsheets. Bye-bye versies en errors. Meer tijd voor kwaliteit.
+  blok2_titel: Houd je loonkosten onder controle
+  blok2_tekst: Zie meteen wat al is toegekend en hoeveel ruimte er nog is, per budget en in totaal. Stuur tijdig bij en voorkom overschrijdingen. Geen budget slippage meer.
+  blok3_titel: Maak je loonbeleid consequent waar
+  blok3_tekst: Help managers om consistente en eerlijkere loonbeslissingen te nemen. Met automatische suggesties volgens loonbanden, prestatiescores, budgetten en andere parameters. Wat jij verkiest.
 rondleiding:
-  kop: Ontdek hoe het werkt
+  kop: Ontdek hoe Youbo werkt
   scrollhint: Scroll verder
   stappen:
-    - titel: Hr houdt realtime het overzicht
-      tekst: Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.
-      scherm: overzicht
     - titel: Managers beslissen onderbouwd
-      tekst: Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele situaties of vergelijk medewerkers.
+      tekst: Elke manager ziet zijn team, vergelijkt medewerkers en onderzoekt uitschieters. Hij neemt loonvoorstellen over of past ze aan binnen de afgesproken marges.
       scherm: vergelijken
-    - titel: Elk budget blijft onder controle
-      tekst: Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.
+    - titel: Finance volgt de budgetten
+      tekst: Beheer de budgetten voor loonsverhoging, bonus en promoties afzonderlijk. Je ziet realtime de impact van elke beslissing. Geef directie en finance een helder overzicht op elk budget.
       scherm: budget
+    - titel: Hr volgt de voortgang
+      tekst: In een oogopslag zie je welke managers hun review al hebben afgerond en waar nog actie nodig is.
+      scherm: overzicht
     - titel: Rewardletters in één klik
       tekst: Gepersonaliseerd en klaar om te versturen wanneer je wil. Geen mailmerge meer.
       scherm: rewardletter
   knop: Boek een demo
   nota: 'TODO — te bevestigen: de vier schermen zijn nagetekend met eigen, sluitende voorbeeldcijfers uit één demodataset, omdat het bestaande hero-scherm van youbo.io dezelfde medewerker op twee verschillende bedragen zet. Zodra er toegang is tot de app vervangen we ze door echte schermen met geanonimiseerde data'
 cijfer:
-  aanloop: De lonen, bonussen en promoties van
+  aanloop: De loonsverhogingen, bonussen en promoties van
   medewerkers: '19.000'
   midden: medewerkers in
   landen: '21'
   slot: landen worden al met Youbo beheerd
 eu:
-  kop: Wees klaar voor EU Pay Transparency
-  tekst: 'Start nu: ontdek loonverschillen en werk ze tijdig weg. Bewijs dat elke loonbeslissing consequent is.'
+  kop: Wees klaar voor de EU Pay Transparency
+  tekst: 'Start nu: ontdek loonverschillen en werk ze tijdig weg. Bewijs dat elke loonbeslissing consequent is. Genereer vlot de rapporten die Europa vraagt.'
 integraties:
   kop: Plug vlot in met al je hr-tools
-  tekst: Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt.
+  tekst: Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.
   functie_1: Payroll
   functie_2: Tijdsregistratie
   functie_3: Performancemanagement
@@ -90,6 +90,6 @@ faq:
   kop: Veelgestelde vragen
 vindbaarheid:
   titel: Loon, bonus en promotie beheren zonder Excel | Youbo
-  omschrijving: Youbo beheert de lonen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.
+  omschrijving: Youbo beheert de loonsverhogingen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.
   deel_titel: Compensatie zonder kopzorgen | Youbo
-  deel_omschrijving: Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Boek een demo en zie het op jouw eigen looncyclus.
+  deel_omschrijving: Maak komaf met Excel. Beheer loonsverhogingen, bonussen en promoties in één platform. Boek een demo en zie het op jouw eigen looncyclus.

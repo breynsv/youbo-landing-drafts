@@ -517,15 +517,15 @@ console.log('\n2. De pagina komt overeen met de bron');
     const anders = maakWegwerp();
     try {
       if (verander(anders, 'pagina.yml',
-                   'titel: Hr houdt realtime het overzicht',
-                   'titel: Hr ziet alles in één oogopslag')) {
+                   'titel: Managers beslissen onderbouwd',
+                   'titel: Managers kiezen met cijfers')) {
         const r = bouw(anders);
         const na = readFileSync(join(anders, 'draft-r3-01-definitief.html'), 'utf8');
         eis('de aria-label van een rondleidingknop loopt mee met de kop ernaast',
             r.code === 0 &&
-            na.includes('data-inhoud="rondleiding.stappen.1.titel">Hr ziet alles in één oogopslag<') &&
-            na.includes('aria-label="Ga naar stap 1: Hr ziet alles in één oogopslag"') &&
-            !na.includes('aria-label="Ga naar stap 1: Hr houdt realtime het overzicht"'),
+            na.includes('data-inhoud="rondleiding.stappen.1.titel">Managers kiezen met cijfers<') &&
+            na.includes('aria-label="Ga naar stap 1: Managers kiezen met cijfers"') &&
+            !na.includes('aria-label="Ga naar stap 1: Managers beslissen onderbouwd"'),
             r.uit.trim() || 'de aria-label bleef op de oude kop staan');
       }
     } finally { rmSync(anders, { recursive: true, force: true }); }
@@ -546,7 +546,7 @@ const grenzen = [
   ['een veld dat de pagina niet vraagt, houdt de bouw tegen', 'pagina.yml',
    'logobalk:\n  kop:', 'logobalk:\n  ondertitel: Een veld dat nergens staat\n  kop:', /nergens in de pagina/],
   ['een veld dat de pagina wél vraagt en dat ontbreekt, houdt de bouw tegen', 'pagina.yml',
-   '  kop: Deze bedrijven vertrouwen Youbo', '  kop_weg: Deze bedrijven vertrouwen Youbo', /logobalk\.kop/],
+   '  kop: Deze bedrijven vertrouwen op Youbo', '  kop_weg: Deze bedrijven vertrouwen op Youbo', /logobalk\.kop/],
   ['een verwijzing naar een bestand dat niet bestaat, houdt de bouw tegen', 'klanten.yml',
    'foto: assets/img/pieter-jan.webp', 'foto: assets/img/bestaat-niet.webp', /ontbrekend bestand/],
   ['een javascript:-adres in een link houdt de bouw tegen', 'klanten.yml',
@@ -559,7 +559,7 @@ const grenzen = [
    '      cijfers:\n        - 370 medewerkers\n        - 27 afdelingen', '      cijfers: 370 medewerkers',
    /opsomming te zijn/],
   ['"null" als waarde wordt niet stil als het woord gelezen', 'pagina.yml',
-   '  kop: Deze bedrijven vertrouwen Youbo', '  kop: null', /geen tekst maar een waarde/],
+   '  kop: Deze bedrijven vertrouwen op Youbo', '  kop: null', /geen tekst maar een waarde/],
 ];
 
 for (const [wat, bestand, oud, nieuw, verwacht] of grenzen) {

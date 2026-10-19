@@ -11,13 +11,13 @@ RONDLEIDING: het meescrollende blok bestaat alleen nog naast elkaar, vanaf 1024p
 HET GROTE CIJFER: de aanpak van draft-r2-04 overgenomen. Één doorlopende zin op displayformaat met 19.000 en 21 inline in dezelfde maat, alleen in kleur onderscheiden. In ronde 2 stond 19.000 op een eigen regel van 40/56px en 21 in gewone koptekst; dat verschil was Jana's klacht. Het optellen van die twee getallen is er in deze ronde uit: gemeten stonden er tijdens die 900ms 107 verschillende volledige zinnen op de pagina die alle 107 feitelijk onjuist waren.
 QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. Alle vijf de quotes hebben sinds 2026-10-06 een echte foto: de klant leverde bart-verhoeven.webp, joris-valkenborgh.webp en evi-van-der-vliet.webp aan (alle drie 320×320, vierkant, hoofd gecentreerd), naast de bestaande pieter-jan.webp en mieke-catthoor.webp. De lege fotoplek en de fotoTODO zijn daarmee weg. Portretten blijven 56px, want marlies.png in het caseblok is maar 360×360 en breekt boven ±120px. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr draagt sinds 2026-10-08 ook hier een echt logo: één mint-groen bestand doet beide banden, gemeten 4,8:1 op de donkere band.
 FAQ: de tekst staat sinds 2026-10-09 NIET MEER IN DIT BESTAND. Ze komt uit content/faq.yml en wordt bij de bouw hierin gezet door build-faq.mjs, dat meeloopt in het ene build command van Cloudflare Pages (node stamp-version.mjs). De blokken tussen FAQ-LIJST:BEGIN/EINDE en FAQ-JSONLD:BEGIN/EINDE zijn dus gegenereerd: aanpassen heeft hier geen zin, want de volgende bouw overschrijft het. Reden: Jana verfijnt de antwoorden zelf met Nick en Bart, en dat was het enige dat de oplevering nog tegenhield — nu kan ze dat zonder ontwikkelaar. Het gebouwde resultaat staat in git omdat GitHub Pages dit bestand rechtstreeks serveert, zonder build; `node build-faq.mjs --check` zegt of het nog overeenkomt. De zichtbare tekst is woord voor woord die van de vorige versie. Alleen de FAQ werkt zo; de cases, de quotes en de hero blijven HTML, want dit is een proef en geen verbouwing.
-FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, en die intro draagt sinds 2026-10-06 zijn volledige naam en titel: Nick Van Langendonck, reward expert. Het formulier komt eerst; eronder staat in de kleine zetting één rustig blok met de drie alternatieven — "Of boek rechtstreeks in Nicks agenda", zijn e-mailadres als mailto: en zijn telefoonnummer als tel:. Die gegevens stonden er in ronde 1, verdwenen in ronde 2 samen met de geschrapte zin "Liever meteen met iemand spreken" en zijn nu door Jana bevestigd — de gegevens komen dus terug, die zin niet. Bij de agenda staat nog geen knop, want die link bestaat nog niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef, met "1x kwartaal" en met de slotpunt — ronde 3 had daar ongemerkt "1× per kwartaal" van gemaakt.
+FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, en die intro draagt zijn volledige naam. De functietitel «reward expert» stond er sinds 2026-10-06 bij en is er op 2026-10-19 weer af: Nick is er zelf niet comfortabel mee (Jana, ronde 4). Het formulier komt eerst; eronder staat in de kleine zetting één rustig blok met één alternatief: "Of boek direct een afspraak in Nicks agenda", als echte link. Zijn e-mailadres en telefoonnummer stonden daar tot 2026-10-19 bij en staan nu alleen nog op de bedankpagina — Jana vond drie keuzes naast elkaar "wat too much". Die gegevens stonden er in ronde 1, verdwenen in ronde 2 samen met de geschrapte zin "Liever meteen met iemand spreken" en zijn nu door Jana bevestigd — de gegevens komen dus terug, die zin niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef, met "1x kwartaal" en met de slotpunt — ronde 3 had daar ongemerkt "1× per kwartaal" van gemaakt.
 VASTE BAND: terug, en nu écht permanent in beeld — ook vóór de cookiekeuze. In ronde 3 wachtte hij op die keuze, waardoor Jana's punt 10 onzichtbaar was voor élke nieuwe bezoeker; hij zet zelf geen cookie, dus is er ook geen reden om te wachten. De cookiebalk staat nu als smalle strook bovenóp hem in één vaste omhulling. Eén actie: Boek een demo. Hij verdwijnt zodra #demo in beeld komt — IntersectionObserver, met 96px marge zodat hij weg is vóórdat hij de kop van die sectie raakt — en ruimte() meet de hoogte van de omhulling (dus de som van wat er staat, niet het maximum van de twee) en zet die als padding-bottom op body, zodat geen van beide over de laatste regels van de footer valt. Gemeten op 390px: 45 + 69 = 114px samen, 69px zodra de cookiebalk weg is. x-show zet display:none, dus een knop in een balk die er niet staat, staat ook niet in de tabvolgorde. Bij prefers-reduced-motion verschijnen ze beide zonder overgang.
 STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency én de hr-tools · quotes · faq · formulier · footer). EU Pay Transparency en de hr-tools waren twee banden en zijn er in ronde 3 één: Jana noemt ze qua belang gelijkwaardig en wil ze op desktop naast elkaar, en naast elkaar bestaat niet over twee banden heen.
 LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten van de vier SVG's; de vijf PNG-logo's van 2026-10-08 zijn volkleurenbestanden en hebben geen tweede versie nodig. Protime staat alleen op de lichte balk: op donker verdwijnt het grijze «time» bijna. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk staat nu drie keer op licht — hero, vaste band en footer — en dus overal als youbo_logo.svg; sinds de footer hun eigen, witte component is, gebruikt deze pagina youbo_logo_white.svg nergens meer.
 AFWIJKING VAN DE TOKENS: geen enkele nieuwe kleurwaarde. De enige afgeleiden zijn witte transparanties (72%, 16%, 6%) voor secundaire tekst, randen en vlakken op de donkere banden — het systeem documenteert daar geen aparte token voor, en #547068 op zwart haalt de contrastdrempel niet.
-TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Op 2026-10-06 zijn er drie blokjes bij weggevallen, elk omdat de vraag een antwoord kreeg: Nicks achternaam en functietitel (Nick Van Langendonck, reward expert), de merklogo's bij de hr-tools (Jana: "Ik denk dat die icoontjes beter zijn, laten we het daar op houden") en de ontbrekende quotefoto's (alle drie aangeleverd). Op 2026-10-08 vielen er drie bij weg, alle drie doordat Bart De Nil de klantlogo's doorstuurde: het logobestand van Anchr op de casekaart, dezelfde vraag op de quoteband, en de vraag of Protime als klant in de logobalk hoort — Bart antwoordde diezelfde dag dat Protime effectief ook klant is, dus rolt het logo mee en is het blokje eronder weg. Op 2026-10-15 viel het kader over de case-pdf's weg: Jana stuurde ze alle vijf door en de downloadlinks wijzen nu naar een echt bestand. Op 2026-10-16 vielen de laatste vier weg, in één mail van Jana: Aertssen zit in 2 landen, en de drie kaarten die hun eigen pdf tegenspraken zijn gelijkgetrokken mét die pdf's — "we hoopten de meest recente cijfers goedgekeurd te krijgen, maar dat is niet gelukt, dus we handhaven de cijfers uit de pdfs". Open blijven: de agendalink van Nick, de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
-NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) — het LinkedIn partner ID is er wél: 10139124, ingevuld op 2026-10-09; (1) de link naar Nicks agenda, aangevraagd en nog niet bestaand; (2) — vervallen op 2026-10-08: het logobestand van Anchr is er, en dat éne mint-groene bestand werkt op licht én op donker; (3) — vervallen op 2026-10-15: de vijf case-pdf's zijn er, staan in cases/ en openen in een nieuw tabblad; pro forma legt Jana ze nog voor aan de vijf bedrijven, dus kan er nog een vervangen worden — zelfde bestandsnaam, dan hoeft er aan de pagina niets te veranderen; (4) — vervallen op 2026-10-08: Bart De Nil bevestigde dat Protime ook klant is, dus staat het logo in de balk; het blijft daarnaast integratiepartner, en dat is geen tegenspraak; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) — half vervallen op 2026-10-09: Jana stuurde de installatiemail van LinkedIn door, dus is het partner ID binnen (10139124, advertentieaccount YouboMerit) en is de Insight Tag actief achter de cookiebalk; open blijft het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt sinds kort een schakelaar English/Nederlands/Français; zolang er geen vertaling is, staan die twee andere namen in de footer zonder link, en bij een ja horen er ook twee adressen bij (data-url-en en data-url-fr) plus hreflang in de head.
+TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Op 2026-10-06 zijn er drie blokjes bij weggevallen, elk omdat de vraag een antwoord kreeg: Nicks achternaam en functietitel (Nick Van Langendonck, reward expert — die titel is op 2026-10-19 weer weggehaald), de merklogo's bij de hr-tools (Jana: "Ik denk dat die icoontjes beter zijn, laten we het daar op houden") en de ontbrekende quotefoto's (alle drie aangeleverd). Op 2026-10-08 vielen er drie bij weg, alle drie doordat Bart De Nil de klantlogo's doorstuurde: het logobestand van Anchr op de casekaart, dezelfde vraag op de quoteband, en de vraag of Protime als klant in de logobalk hoort — Bart antwoordde diezelfde dag dat Protime effectief ook klant is, dus rolt het logo mee en is het blokje eronder weg. Op 2026-10-15 viel het kader over de case-pdf's weg: Jana stuurde ze alle vijf door en de downloadlinks wijzen nu naar een echt bestand. Op 2026-10-16 vielen de laatste vier weg, in één mail van Jana: Aertssen zit in 2 landen, en de drie kaarten die hun eigen pdf tegenspraken zijn gelijkgetrokken mét die pdf's — "we hoopten de meest recente cijfers goedgekeurd te krijgen, maar dat is niet gelukt, dus we handhaven de cijfers uit de pdfs". Op 2026-10-19 viel de agendalink weg: die stond al in Jana's eigen case-pdf's. Open blijven: de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
+NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) — het LinkedIn partner ID is er wél: 10139124, ingevuld op 2026-10-09; (1) — vervallen op 2026-10-19: de agendalink van Nick bestaat en staat onder het formulier; hij zat in de case-pdf's van Jana; (2) — vervallen op 2026-10-08: het logobestand van Anchr is er, en dat éne mint-groene bestand werkt op licht én op donker; (3) — vervallen op 2026-10-15: de vijf case-pdf's zijn er, staan in cases/ en openen in een nieuw tabblad; pro forma legt Jana ze nog voor aan de vijf bedrijven, dus kan er nog een vervangen worden — zelfde bestandsnaam, dan hoeft er aan de pagina niets te veranderen; (4) — vervallen op 2026-10-08: Bart De Nil bevestigde dat Protime ook klant is, dus staat het logo in de balk; het blijft daarnaast integratiepartner, en dat is geen tegenspraak; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) — half vervallen op 2026-10-09: Jana stuurde de installatiemail van LinkedIn door, dus is het partner ID binnen (10139124, advertentieaccount YouboMerit) en is de Insight Tag actief achter de cookiebalk; open blijft het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt sinds kort een schakelaar English/Nederlands/Français; zolang er geen vertaling is, staan die twee andere namen in de footer zonder link, en bij een ja horen er ook twee adressen bij (data-url-en en data-url-fr) plus hreflang in de head.
 DE CIJFERS OP DE KAARTEN KOMEN UIT DE PDF'S, en dat is sinds 2026-10-16 de regel. Jana koos op 2026-10-05 nog nieuwere cijfers (Kaneka 204, SD Worx 21 landen, DPG Media 6.214), maar die raakten bij de bedrijven niet goedgekeurd, dus gelden de cijfers van de case-pdf die onder elke kaart hangt: Kaneka 370 medewerkers, SD Worx 18 landen, DPG Media 1.500 Belgische medewerkers en 130 leidinggevenden, Aertssen 450 bedienden in 2 landen. Dat is geen smaakkwestie maar een controleerbare: de bezoeker heeft die pdf één klik verderop in handen, dus elk cijfer dat ervan afwijkt is voor hém een fout. Wijzigt er ooit een pdf, dan wijzigt de kaart mee. Let op: de 19.000 medewerkers in 21 landen in de paginabeschrijving staan hier los van — dat is het totaalcijfer van Youbo zelf uit FACTS.md, niet dat van SD Worx.
 -->
 <html lang="nl-BE">
@@ -28,14 +28,14 @@ DE CIJFERS OP DE KAARTEN KOMEN UIT DE PDF'S, en dat is sinds 2026-10-16 de regel
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title data-inhoud="vindbaarheid.titel">Loon, bonus en promotie beheren zonder Excel | Youbo</title>
-<meta name="description" data-inhoud-content="vindbaarheid.omschrijving" content="Youbo beheert de lonen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.">
+<meta name="description" data-inhoud-content="vindbaarheid.omschrijving" content="Youbo beheert de loonsverhogingen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.">
 <link rel="canonical" href="https://demo.youbo.io/">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_BE">
 <meta property="og:site_name" content="Youbo">
 <meta property="og:title" data-inhoud-content="vindbaarheid.deel_titel" content="Compensatie zonder kopzorgen | Youbo">
-<meta property="og:description" data-inhoud-content="vindbaarheid.deel_omschrijving" content="Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Boek een demo en zie het op jouw eigen looncyclus.">
+<meta property="og:description" data-inhoud-content="vindbaarheid.deel_omschrijving" content="Maak komaf met Excel. Beheer loonsverhogingen, bonussen en promoties in één platform. Boek een demo en zie het op jouw eigen looncyclus.">
 <!-- og:image, og:url en canonical zijn met opzet GEEN velden: dat zijn adressen
      en geen tekst, en een vergissing daarin is onzichtbaar tot de advertenties
      geen voorbeeldafbeelding meer tonen. De vier tekstvelden hierboven zijn
@@ -1639,10 +1639,10 @@ tailwind.config = {
            portret er vanzelf rechts naast. Daarom is lg:order-last op de figure weg. -->
       <div class="lg:col-span-7" data-reveal>
         <h1 class="text-h1 lg:text-display" data-inhoud="hero.kop">Compensatie zonder kopzorgen</h1>
-        <p class="mt-5 text-h3 text-ink-soft max-w-text" data-inhoud="hero.intro">Maak komaf met Excel. Beheer loon, bonus en promotie in één platform. Ontdek Youbo.</p>
+        <p class="mt-5 text-h3 text-ink-soft max-w-text" data-inhoud="hero.intro">Maak komaf met Excel. Beheer loonsverhogingen, bonussen en promoties in één platform. Ontdek Youbo.</p>
 
         <div class="mt-8">
-          <a href="#demo" class="btn-primary w-full sm:w-auto" data-cta="hero-boek-demo" data-inhoud="hero.knop">Boek een demo</a>
+          <a href="#demo" id="hero-demoknop" class="btn-primary w-full sm:w-auto" data-cta="hero-boek-demo" data-inhoud="hero.knop">Boek een demo</a>
         </div>
       </div>
 
@@ -1704,7 +1704,7 @@ tailwind.config = {
      ========================================================================= -->
 <section class="bg-surface border-y border-line band-pad" aria-labelledby="klanten-titel">
   <div class="shell text-center" data-reveal>
-    <h2 id="klanten-titel" class="text-caption font-bold uppercase tracking-[0.08em] text-ink-soft" data-inhoud="logobalk.kop">Deze bedrijven vertrouwen Youbo</h2>
+    <h2 id="klanten-titel" class="text-caption font-bold uppercase tracking-[0.08em] text-ink-soft" data-inhoud="logobalk.kop">Deze bedrijven vertrouwen op Youbo</h2>
   </div>
 
   <div class="logo-balk mt-8">
@@ -1784,7 +1784,7 @@ tailwind.config = {
   <div class="shell">
 
     <div data-reveal>
-      <h2 id="kern-titel" class="text-h2 md:text-h1 on-dark max-w-[22ch]" data-inhoud="kern.kop">Van versnipperde excels naar één helder proces</h2>
+      <h2 id="kern-titel" class="text-h2 md:text-h1 on-dark max-w-[22ch]" data-inhoud="kern.kop">Van versnipperde data naar één helder proces</h2>
     </div>
 
     <!-- 1 -->
@@ -1792,7 +1792,7 @@ tailwind.config = {
       <div class="lg:col-span-5">
         <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">1</span>
         <h3 class="mt-5 text-h2 on-dark" data-inhoud="kern.blok1_titel">Hr en managers werken samen in één platform</h3>
-        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok1_tekst">Gedaan met splitsen en consolideren van excels. Bye-bye versies en errors.</p>
+        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok1_tekst">Gedaan met splitsen en consolideren van spreadsheets. Bye-bye versies en errors. Meer tijd voor kwaliteit.</p>
       </div>
 
       <div class="lg:col-span-7 min-w-0">
@@ -1833,8 +1833,61 @@ tailwind.config = {
     <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
       <div class="lg:col-span-5 lg:order-last">
         <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">2</span>
-        <h3 class="mt-5 text-h2 on-dark" data-inhoud="kern.blok2_titel">Automatische verdeelsuggesties, makkelijk én eerlijker</h3>
-        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok2_tekst">Datagedreven volgens je loonbeleid, loonbanden, prestatiescores en andere parameters. Wat jij verkiest.</p>
+        <h3 class="mt-5 text-h2 on-dark" data-inhoud="kern.blok2_titel">Houd je loonkosten onder controle</h3>
+        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok2_tekst">Zie meteen wat al is toegekend en hoeveel ruimte er nog is, per budget en in totaal. Stuur tijdig bij en voorkom overschrijdingen. Geen budget slippage meer.</p>
+      </div>
+
+      <div class="lg:col-span-7 min-w-0">
+        <!-- mockup: budgetbalken -->
+        <div class="panel">
+          <div class="panel-bar">
+            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+            <span class="miniheader">Budgetbeheer · cyclus 2027</span>
+          </div>
+          <div class="p-5 md:p-6">
+            <p class="text-caption text-ink-soft">Beschikbaar budget</p>
+            <p class="text-h1 font-bold text-ink tabular mt-1">€ 184.250</p>
+
+            <dl class="mt-6 space-y-5 m-0">
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-caption font-bold text-ink">Loonsverhoging</dt>
+                  <dd class="text-caption tabular text-ink-soft m-0">82%</dd>
+                </div>
+                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
+                  <span class="block h-full rounded-sm bg-brand" style="width:82%"></span>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-caption font-bold text-ink">Bonus</dt>
+                  <dd class="text-caption tabular text-ink-soft m-0">74%</dd>
+                </div>
+                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
+                  <span class="block h-full rounded-sm bg-brand" style="width:74%"></span>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-caption font-bold text-ink">Promotie</dt>
+                  <dd class="text-caption tabular text-ink-soft m-0">61%</dd>
+                </div>
+                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
+                  <span class="block h-full rounded-sm bg-brand" style="width:61%"></span>
+                </div>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
+      <div class="lg:col-span-5">
+        <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">3</span>
+        <h3 class="mt-5 text-h2 on-dark" data-inhoud="kern.blok3_titel">Maak je loonbeleid consequent waar</h3>
+        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok3_tekst">Help managers om consistente en eerlijkere loonbeslissingen te nemen. Met automatische suggesties volgens loonbanden, prestatiescores, budgetten en andere parameters. Wat jij verkiest.</p>
       </div>
 
       <div class="lg:col-span-7 min-w-0">
@@ -1878,59 +1931,6 @@ tailwind.config = {
                 </tr>
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3 -->
-    <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
-      <div class="lg:col-span-5">
-        <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">3</span>
-        <h3 class="mt-5 text-h2 on-dark" data-inhoud="kern.blok3_titel">Realtime inzicht in budgetten</h3>
-        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok3_tekst">Minder overschrijdingen. Meer controle, per budget en in totaal. Geen budget slippage meer.</p>
-      </div>
-
-      <div class="lg:col-span-7 min-w-0">
-        <!-- mockup: budgetbalken -->
-        <div class="panel">
-          <div class="panel-bar">
-            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
-            <span class="miniheader">Budgetbeheer · cyclus 2027</span>
-          </div>
-          <div class="p-5 md:p-6">
-            <p class="text-caption text-ink-soft">Beschikbaar budget</p>
-            <p class="text-h1 font-bold text-ink tabular mt-1">€ 184.250</p>
-
-            <dl class="mt-6 space-y-5 m-0">
-              <div>
-                <div class="flex items-baseline justify-between gap-4">
-                  <dt class="text-caption font-bold text-ink">Loonsverhoging</dt>
-                  <dd class="text-caption tabular text-ink-soft m-0">82%</dd>
-                </div>
-                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
-                  <span class="block h-full rounded-sm bg-brand" style="width:82%"></span>
-                </div>
-              </div>
-              <div>
-                <div class="flex items-baseline justify-between gap-4">
-                  <dt class="text-caption font-bold text-ink">Bonus</dt>
-                  <dd class="text-caption tabular text-ink-soft m-0">74%</dd>
-                </div>
-                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
-                  <span class="block h-full rounded-sm bg-brand" style="width:74%"></span>
-                </div>
-              </div>
-              <div>
-                <div class="flex items-baseline justify-between gap-4">
-                  <dt class="text-caption font-bold text-ink">Promotie</dt>
-                  <dd class="text-caption tabular text-ink-soft m-0">61%</dd>
-                </div>
-                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
-                  <span class="block h-full rounded-sm bg-brand" style="width:61%"></span>
-                </div>
-              </div>
-            </dl>
           </div>
         </div>
       </div>
@@ -2032,7 +2032,7 @@ tailwind.config = {
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="cases.items.1.logo" data-inhoud-alt="cases.items.1.bedrijf" data-inhoud-style="height:{cases.items.1.logo_hoogte}px"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.1.voordeel">Twee werkweken tijdswinst</p>
+            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.1.voordeel">2 werkweken tijdswinst</p>
             <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
             <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.1.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">370 medewerkers</span></li>
@@ -2127,8 +2127,8 @@ tailwind.config = {
             <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.5.voordeel">7× sneller</p>
             <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
             <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.5.cijfers">
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">1.500 Belgische medewerkers</span></li>
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">130 leidinggevenden</span></li>
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">+6000 medewerkers</span></li>
+              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
             </ul>
             <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.5.sector">Mediagroep</p>
           </div>
@@ -2230,7 +2230,7 @@ tailwind.config = {
   <div class="shell">
 
     <div data-reveal>
-      <h2 id="hoe-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="rondleiding.kop">Ontdek hoe het werkt</h2>
+      <h2 id="hoe-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="rondleiding.kop">Ontdek hoe Youbo werkt</h2>
     </div>
 
     <div class="scrolly mt-8 md:mt-10" data-scrolly>
@@ -2243,7 +2243,7 @@ tailwind.config = {
           <div class="sc-bars" role="group" aria-label="Spring naar een stap">
             <!-- HERHAAL:rondleiding.stappen:BEGIN — één springknop per stap, gegenereerd. -->
             <button type="button" class="sc-bar" data-scrolly-jump="0" aria-current="true"
-                    aria-label="Ga naar stap 1: Hr houdt realtime het overzicht"
+                    aria-label="Ga naar stap 1: Managers beslissen onderbouwd"
                     data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.1.titel}: {rondleiding.stappen.1.titel}"
                     data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.1.titel}"
                     data-inhoud-aria-current="{eerste:rondleiding.stappen.1.titel}"
@@ -2251,7 +2251,7 @@ tailwind.config = {
                     data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.1.titel}"><span aria-hidden="true"></span></button>
 
             <button type="button" class="sc-bar" data-scrolly-jump="1" aria-current="false"
-                    aria-label="Ga naar stap 2: Managers beslissen onderbouwd"
+                    aria-label="Ga naar stap 2: Finance volgt de budgetten"
                     data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.2.titel}: {rondleiding.stappen.2.titel}"
                     data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.2.titel}"
                     data-inhoud-aria-current="{eerste:rondleiding.stappen.2.titel}"
@@ -2259,7 +2259,7 @@ tailwind.config = {
                     data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.2.titel}"><span aria-hidden="true"></span></button>
 
             <button type="button" class="sc-bar" data-scrolly-jump="2" aria-current="false"
-                    aria-label="Ga naar stap 3: Elk budget blijft onder controle"
+                    aria-label="Ga naar stap 3: Hr volgt de voortgang"
                     data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.3.titel}: {rondleiding.stappen.3.titel}"
                     data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.3.titel}"
                     data-inhoud-aria-current="{eerste:rondleiding.stappen.3.titel}"
@@ -2295,13 +2295,120 @@ tailwind.config = {
         <article class="sc-step is-actief" data-scrolly-step data-herhaal-eerste="is-actief">
           <span class="sc-mark" aria-hidden="true"></span>
           <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true" data-herhaal-nr="2">01</p>
-          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.1.titel">Hr houdt realtime het overzicht</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.1.tekst">Zie wie klaar is en waar nog actie nodig is. Managers zien enkel hun team en hun data.</p>
-          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="overzicht" data-herhaal-scherm="rondleiding.stappen.1.scherm">
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.1.titel">Managers beslissen onderbouwd</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.1.tekst">Elke manager ziet zijn team, vergelijkt medewerkers en onderzoekt uitschieters. Hij neemt loonvoorstellen over of past ze aan binnen de afgesproken marges.</p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="vergelijken" data-herhaal-scherm="rondleiding.stappen.1.scherm">
+        <div class="panel-bar">
+          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+          <span class="miniheader">Medewerkers vergelijken</span>
+          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>1 / 4</span>
+        </div>
+        <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
+             in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
+        <div class="sc-shot">
+          <svg viewBox="0 0 1200 600" class="block h-auto w-full" role="img"
+               aria-label="Twee medewerkers naast elkaar. Lore Janssens gaat van 4.180 euro naar 4.284 euro en 50 cent, een verschil van 104 euro en 50 cent of 2,5 procent, met een bonus van 8 procent. Tom Verlinden gaat van 3.950 euro naar 4.076 euro en 40 cent, een verschil van 126 euro en 40 cent of 3,2 procent, met een bonus van 7 procent en een promotie."
+               style="font-family: Inter, system-ui, sans-serif">
+            <rect width="1200" height="600" fill="#ffffff"/>
+            <rect x="40" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="84" font-size="26" font-weight="700" fill="#0a3327">Lore Janssens</text>
+            <text x="72" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 6 jaar in dienst</text>
+            <line x1="72" y1="146" x2="553" y2="146" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
+            <text x="553" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.180,00</text>
+            <line x1="72" y1="218" x2="553" y2="218" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
+            <text x="553" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.284,50</text>
+            <line x1="72" y1="276" x2="553" y2="276" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
+            <text x="553" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 104,50</text>
+            <line x1="72" y1="334" x2="553" y2="334" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
+            <text x="553" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 2,5%</text>
+            <line x1="72" y1="392" x2="553" y2="392" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 8%</text>
+            <text x="553" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.012,80</text>
+            <line x1="72" y1="450" x2="553" y2="450" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="72" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
+            <text x="553" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Nee</text>
+            <rect x="615" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="84" font-size="26" font-weight="700" fill="#0a3327">Tom Verlinden</text>
+            <text x="647" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 3 jaar in dienst</text>
+            <line x1="647" y1="146" x2="1128" y2="146" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
+            <text x="1128" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.950,00</text>
+            <line x1="647" y1="218" x2="1128" y2="218" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
+            <text x="1128" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.076,40</text>
+            <line x1="647" y1="276" x2="1128" y2="276" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
+            <text x="1128" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 126,40</text>
+            <line x1="647" y1="334" x2="1128" y2="334" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
+            <text x="1128" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 3,2%</text>
+            <line x1="647" y1="392" x2="1128" y2="392" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 7%</text>
+            <text x="1128" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.318,00</text>
+            <line x1="647" y1="450" x2="1128" y2="450" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="647" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
+            <text x="1128" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Ja</text>
+          </svg>
+        </div>
+          </figure>
+        </article>
+
+        <article class="sc-step" data-scrolly-step data-herhaal-eerste="is-actief">
+          <span class="sc-mark" aria-hidden="true"></span>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true" data-herhaal-nr="2">02</p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.2.titel">Finance volgt de budgetten</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.2.tekst">Beheer de budgetten voor loonsverhoging, bonus en promoties afzonderlijk. Je ziet realtime de impact van elke beslissing. Geef directie en finance een helder overzicht op elk budget.</p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="budget" data-herhaal-scherm="rondleiding.stappen.2.scherm">
+        <div class="panel-bar">
+          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+          <span class="miniheader">Budget per soort</span>
+          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>2 / 4</span>
+        </div>
+        <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
+             in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
+        <div class="sc-shot">
+          <svg viewBox="0 0 1200 640" class="block h-auto w-full" role="img"
+               aria-label="Budget per soort: loonsverhoging 82 procent, 75.440 euro van 92.000 euro. Bonus 74 procent, 43.105 euro van 58.250 euro. Promotie 61 procent, 20.740 euro van 34.000 euro. Samen 139.285 euro van 184.250 euro, oftewel 75,6 procent."
+               style="font-family: Inter, system-ui, sans-serif">
+            <rect width="1200" height="640" fill="#ffffff"/>
+            <text x="40" y="52" font-size="21" font-weight="700" fill="#547068" letter-spacing="1.6">BUDGET PER SOORT · MERIT CYCLE 2027</text>
+            <text x="40" y="96" font-size="25" font-weight="700" fill="#0a3327">Loonsverhoging</text>
+            <text x="1160" y="96" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">82%</text>
+            <rect x="40" y="118" width="1120" height="18" rx="9" fill="#f6f8fa"/>
+            <rect x="40" y="118" width="918" height="18" rx="9" fill="#0af29f"/>
+            <text x="40" y="174" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 75.440 toegekend van € 92.000</text>
+            <text x="40" y="244" font-size="25" font-weight="700" fill="#0a3327">Bonus</text>
+            <text x="1160" y="244" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">74%</text>
+            <rect x="40" y="266" width="1120" height="18" rx="9" fill="#f6f8fa"/>
+            <rect x="40" y="266" width="829" height="18" rx="9" fill="#0af29f"/>
+            <text x="40" y="322" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 43.105 toegekend van € 58.250</text>
+            <text x="40" y="392" font-size="25" font-weight="700" fill="#0a3327">Promotie</text>
+            <text x="1160" y="392" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">61%</text>
+            <rect x="40" y="414" width="1120" height="18" rx="9" fill="#f6f8fa"/>
+            <rect x="40" y="414" width="683" height="18" rx="9" fill="#0af29f"/>
+            <text x="40" y="470" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 20.740 toegekend van € 34.000</text>
+            <line x1="40" y1="498" x2="1160" y2="498" stroke="#e1ebf0" stroke-width="2"/>
+            <text x="40" y="544" font-size="25" font-weight="700" fill="#0a3327">Samen</text>
+            <text x="1160" y="544" font-size="25" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 139.285 van € 184.250 · 75,6%</text>
+          </svg>
+        </div>
+          </figure>
+        </article>
+
+        <article class="sc-step" data-scrolly-step data-herhaal-eerste="is-actief">
+          <span class="sc-mark" aria-hidden="true"></span>
+          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true" data-herhaal-nr="2">03</p>
+          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.3.titel">Hr volgt de voortgang</h3>
+          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.3.tekst">In een oogopslag zie je welke managers hun review al hebben afgerond en waar nog actie nodig is.</p>
+          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="overzicht" data-herhaal-scherm="rondleiding.stappen.3.scherm">
             <div class="panel-bar">
               <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
               <span class="miniheader">Cyclusoverzicht voor hr</span>
-              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>1 / 4</span>
+              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>3 / 4</span>
             </div>
             <!-- NAGETEKEND, GEEN SCHERMAFDRUK.
                  Het bestaande hero-scherm van youbo.io (main-visual-nl.webp) stond hier, en
@@ -2366,113 +2473,6 @@ tailwind.config = {
 
               </svg>
             </div>
-          </figure>
-        </article>
-
-        <article class="sc-step" data-scrolly-step data-herhaal-eerste="is-actief">
-          <span class="sc-mark" aria-hidden="true"></span>
-          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true" data-herhaal-nr="2">02</p>
-          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.2.titel">Managers beslissen onderbouwd</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.2.tekst">Volg het voorstel of wijk gemotiveerd af. Bekijk uitschieters, onderzoek individuele situaties of vergelijk medewerkers.</p>
-          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="vergelijken" data-herhaal-scherm="rondleiding.stappen.2.scherm">
-        <div class="panel-bar">
-          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
-          <span class="miniheader">Medewerkers vergelijken</span>
-          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>2 / 4</span>
-        </div>
-        <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
-             in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
-        <div class="sc-shot">
-          <svg viewBox="0 0 1200 600" class="block h-auto w-full" role="img"
-               aria-label="Twee medewerkers naast elkaar. Lore Janssens gaat van 4.180 euro naar 4.284 euro en 50 cent, een verschil van 104 euro en 50 cent of 2,5 procent, met een bonus van 8 procent. Tom Verlinden gaat van 3.950 euro naar 4.076 euro en 40 cent, een verschil van 126 euro en 40 cent of 3,2 procent, met een bonus van 7 procent en een promotie."
-               style="font-family: Inter, system-ui, sans-serif">
-            <rect width="1200" height="600" fill="#ffffff"/>
-            <rect x="40" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="72" y="84" font-size="26" font-weight="700" fill="#0a3327">Lore Janssens</text>
-            <text x="72" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 6 jaar in dienst</text>
-            <line x1="72" y1="146" x2="553" y2="146" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="72" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
-            <text x="553" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.180,00</text>
-            <line x1="72" y1="218" x2="553" y2="218" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="72" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
-            <text x="553" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.284,50</text>
-            <line x1="72" y1="276" x2="553" y2="276" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="72" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
-            <text x="553" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 104,50</text>
-            <line x1="72" y1="334" x2="553" y2="334" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="72" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
-            <text x="553" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 2,5%</text>
-            <line x1="72" y1="392" x2="553" y2="392" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="72" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 8%</text>
-            <text x="553" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.012,80</text>
-            <line x1="72" y1="450" x2="553" y2="450" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="72" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
-            <text x="553" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Nee</text>
-            <rect x="615" y="32" width="545" height="500" rx="8" fill="#ffffff" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="647" y="84" font-size="26" font-weight="700" fill="#0a3327">Tom Verlinden</text>
-            <text x="647" y="118" font-size="21" font-weight="500" fill="#547068">Operations · 3 jaar in dienst</text>
-            <line x1="647" y1="146" x2="1128" y2="146" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="647" y="192" font-size="22" font-weight="500" fill="#547068">Brutoloon / maand</text>
-            <text x="1128" y="192" font-size="23" font-weight="500" fill="#547068" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.950,00</text>
-            <line x1="647" y1="218" x2="1128" y2="218" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="647" y="250" font-size="22" font-weight="500" fill="#547068">Voorstel Youbo</text>
-            <text x="1128" y="250" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 4.076,40</text>
-            <line x1="647" y1="276" x2="1128" y2="276" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="647" y="308" font-size="22" font-weight="500" fill="#547068">Verschil</text>
-            <text x="1128" y="308" font-size="23" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">+ € 126,40</text>
-            <line x1="647" y1="334" x2="1128" y2="334" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="647" y="366" font-size="22" font-weight="500" fill="#547068">Voorstel in %</text>
-            <text x="1128" y="366" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">+ 3,2%</text>
-            <line x1="647" y1="392" x2="1128" y2="392" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="647" y="424" font-size="22" font-weight="500" fill="#547068">Bonus (jaar) · 7%</text>
-            <text x="1128" y="424" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 3.318,00</text>
-            <line x1="647" y1="450" x2="1128" y2="450" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="647" y="482" font-size="22" font-weight="500" fill="#547068">Promotie</text>
-            <text x="1128" y="482" font-size="23" font-weight="500" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">Ja</text>
-          </svg>
-        </div>
-          </figure>
-        </article>
-
-        <article class="sc-step" data-scrolly-step data-herhaal-eerste="is-actief">
-          <span class="sc-mark" aria-hidden="true"></span>
-          <p class="mt-4 text-caption font-bold text-brand tabular" aria-hidden="true" data-herhaal-nr="2">03</p>
-          <h3 class="sc-titel mt-3 text-h2" data-inhoud="rondleiding.stappen.3.titel">Elk budget blijft onder controle</h3>
-          <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="rondleiding.stappen.3.tekst">Zie meteen de impact van elke beslissing. Beheer het loonsverhoging-, bonus- en promotiebudget apart, en geef directie en finance een overzicht over het hele bedrijf.</p>
-          <figure class="panel m-0 mt-6" data-scrolly-slide data-scherm="budget" data-herhaal-scherm="rondleiding.stappen.3.scherm">
-        <div class="panel-bar">
-          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
-          <span class="miniheader">Budget per soort</span>
-          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>3 / 4</span>
-        </div>
-        <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
-             in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
-        <div class="sc-shot">
-          <svg viewBox="0 0 1200 640" class="block h-auto w-full" role="img"
-               aria-label="Budget per soort: loonsverhoging 82 procent, 75.440 euro van 92.000 euro. Bonus 74 procent, 43.105 euro van 58.250 euro. Promotie 61 procent, 20.740 euro van 34.000 euro. Samen 139.285 euro van 184.250 euro, oftewel 75,6 procent."
-               style="font-family: Inter, system-ui, sans-serif">
-            <rect width="1200" height="640" fill="#ffffff"/>
-            <text x="40" y="52" font-size="21" font-weight="700" fill="#547068" letter-spacing="1.6">BUDGET PER SOORT · MERIT CYCLE 2027</text>
-            <text x="40" y="96" font-size="25" font-weight="700" fill="#0a3327">Loonsverhoging</text>
-            <text x="1160" y="96" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">82%</text>
-            <rect x="40" y="118" width="1120" height="18" rx="9" fill="#f6f8fa"/>
-            <rect x="40" y="118" width="918" height="18" rx="9" fill="#0af29f"/>
-            <text x="40" y="174" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 75.440 toegekend van € 92.000</text>
-            <text x="40" y="244" font-size="25" font-weight="700" fill="#0a3327">Bonus</text>
-            <text x="1160" y="244" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">74%</text>
-            <rect x="40" y="266" width="1120" height="18" rx="9" fill="#f6f8fa"/>
-            <rect x="40" y="266" width="829" height="18" rx="9" fill="#0af29f"/>
-            <text x="40" y="322" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 43.105 toegekend van € 58.250</text>
-            <text x="40" y="392" font-size="25" font-weight="700" fill="#0a3327">Promotie</text>
-            <text x="1160" y="392" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">61%</text>
-            <rect x="40" y="414" width="1120" height="18" rx="9" fill="#f6f8fa"/>
-            <rect x="40" y="414" width="683" height="18" rx="9" fill="#0af29f"/>
-            <text x="40" y="470" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 20.740 toegekend van € 34.000</text>
-            <line x1="40" y1="498" x2="1160" y2="498" stroke="#e1ebf0" stroke-width="2"/>
-            <text x="40" y="544" font-size="25" font-weight="700" fill="#0a3327">Samen</text>
-            <text x="1160" y="544" font-size="25" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 139.285 van € 184.250 · 75,6%</text>
-          </svg>
-        </div>
           </figure>
         </article>
 
@@ -2592,7 +2592,7 @@ tailwind.config = {
 <section class="bg-surface band-pad" aria-labelledby="cijfer-titel">
   <div class="shell text-center" data-reveal>
     <h2 id="cijfer-titel" class="mx-auto max-w-[24ch] text-[28px] leading-[1.2] md:text-h1 lg:text-display">
-      <span data-inhoud="cijfer.aanloop">De lonen, bonussen en promoties van</span>
+      <span data-inhoud="cijfer.aanloop">De loonsverhogingen, bonussen en promoties van</span>
       <span class="tabular text-brand-ink" data-inhoud="cijfer.medewerkers">19.000</span>
       <span data-inhoud="cijfer.midden">medewerkers in</span>
       <span class="tabular text-brand-ink" data-inhoud="cijfer.landen">21</span>
@@ -2626,8 +2626,8 @@ tailwind.config = {
   <div class="shell grid lg:grid-cols-2 gap-10 lg:gap-12 items-start">
 
     <section aria-labelledby="eu-titel" data-reveal>
-      <h2 id="eu-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="eu.kop">Wees klaar voor EU Pay Transparency</h2>
-      <p class="mt-5 text-h3 on-dark-soft max-w-text" data-inhoud="eu.tekst">Start nu: ontdek loonverschillen en werk ze tijdig weg. Bewijs dat elke loonbeslissing consequent is.</p>
+      <h2 id="eu-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="eu.kop">Wees klaar voor de EU Pay Transparency</h2>
+      <p class="mt-5 text-h3 on-dark-soft max-w-text" data-inhoud="eu.tekst">Start nu: ontdek loonverschillen en werk ze tijdig weg. Bewijs dat elke loonbeslissing consequent is. Genereer vlot de rapporten die Europa vraagt.</p>
 
       <div class="panel mt-8">
         <div class="panel-bar">
@@ -2671,7 +2671,7 @@ tailwind.config = {
 
     <section aria-labelledby="integraties-titel" data-reveal>
       <h2 id="integraties-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</h2>
-      <p class="mt-5 text-h3 on-dark-soft max-w-text" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt.</p>
+      <p class="mt-5 text-h3 on-dark-soft max-w-text" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
 
       <!-- FUNCTIES, GEEN MERKNAMEN. Elk met een eigen icoon, zelf getekend op
            hetzelfde raster van 24px en met dezelfde lijndikte — de iconen van
@@ -3092,11 +3092,11 @@ tailwind.config = {
 
       <div class="mt-6 flex items-start gap-5">
         <img src="assets/img/nick-rond.webp" width="96" height="96" loading="lazy" decoding="async"
-             alt="Nick Van Langendonck, reward expert bij Teal Partners"
+             alt="Nick Van Langendonck van Teal Partners"
              class="h-24 w-24 shrink-0 rounded-[50%] object-cover"
              data-inhoud-src="demo.nick_foto" data-inhoud-alt="demo.nick_foto_alt">
         <p class="m-0 text-body text-ink-soft max-w-text">
-          <b class="font-bold text-ink" data-inhoud="demo.nick_naam">Nick Van Langendonck</b>, <span data-inhoud="demo.nick_tekst">reward expert, laat je zien hoe Youbo aansluit op jullie loonbeleid, structuur en systemen. Hij neemt persoonlijk contact op.</span>
+          <b class="font-bold text-ink" data-inhoud="demo.nick_naam">Nick Van Langendonck</b> <span data-inhoud="demo.nick_tekst">luistert graag naar jouw vragen. Laat je gegevens na en hij contacteert je.</span>
         </p>
       </div>
     </div>
@@ -3231,52 +3231,29 @@ tailwind.config = {
         </p>
       </form>
 
-      <!-- Onder het formulier, klein: de drie alternatieven voor wie het
-           formulier niet wil invullen — de agenda, zijn e-mailadres en zijn
-           telefoonnummer. Eén rustig blok, want het zijn drie varianten van
-           hetzelfde antwoord en niet drie losse aanbiedingen.
+      <!-- Onder het formulier, klein: één alternatief voor wie het formulier
+           niet wil invullen — de agenda van Nick.
 
-           RONDE 3, GEGEVENS NICK. De contactgegevens staan er weer, en dat
-           heeft een geschiedenis die je moet kennen om ze niet opnieuw fout te
-           zetten. In ronde 1 vond Jana dit juist goed: "niet iedereen wil
-           direct demo's gaan boeken, da's ook een goeie". In ronde 2 vroeg ze
-           om de zin "Liever meteen met iemand spreken" te schrappen, en toen
-           verdwenen de gegevens mee — dat was te veel. Zij heeft de gegevens nu
-           bevestigd, dus komt het alternatief terug en die ZIN NIET. Zet hier
-           dus nooit opnieuw een kopregel in de trant van "Liever meteen met
-           iemand spreken".
+           RONDE 4. Hier stonden drie regels: de agenda, zijn e-mailadres en
+           zijn telefoonnummer, elk met de aanloop "Of …". Jana vroeg op
+           2026-10-19 om er één van te maken: "zijn mail en gsm krijg je toch in
+           het volgende scherm ook al, het was wat too much". Die twee staan dus
+           alleen nog op de bedankpagina, waar ze al stonden. Zet ze hier niet
+           opnieuw bij zonder dat zij het vraagt.
 
-           Het telefoonnummer staat Belgisch gezet (0486 08 27 65) omdat de
-           bezoeker Belgisch is; de href draagt het internationale +32486082765,
-           want dat is wat een telefoon moet kiezen. Beide verwijzen naar
-           hetzelfde nummer, alleen in de notatie van hun eigen publiek.
-
-           ELK ALTERNATIEF STAAT OP ZIJN EIGEN REGEL, en dat is gemeten en niet
-           gekozen. De eerste opzet zette de twee links achter elkaar met een
-           scheidingspunt ertussen; op 390px past het adres niet meer naast de
-           aanloopzin, wikkelt het naar de volgende regel en begint de regel
-           dáárna met die punt. Een punt bovenaan een regel leest als vuil.
-           Drie regels met dezelfde aanloop ("Of …") lossen dat op zonder
-           uitzonderingsregel, en geven elke link bovendien zijn eigen
-           focusomlijning zonder dat die van de buur hem raakt.
-
-           De agendalink bestaat nog steeds niet, dus staat daar nog geen knop en
-           blijft die TODO staan. -->
+           EN DE AGENDALINK BESTAAT NU. Hij stond wekenlang als TODO op deze
+           plek omdat niemand hem had; hij zat intussen in de case-pdf's van
+           Jana. Daarom geen TODO-kader meer maar een echte link, met de haak
+           formulier-agenda-nick — de naam die hiervoor al in de meetlijst
+           klaarstond. target="_blank", want een agenda is een
+           afspraak maken en niet de pagina verlaten. -->
       <div class="alt-weg mt-6">
-        <p class="m-0 text-caption text-ink-soft" data-inhoud="anders.agenda_regel">Of boek rechtstreeks in Nicks agenda</p>
-        <p class="m-0 mt-2 text-caption text-ink-soft">
-          <span data-inhoud="anders.mail_aanloop">Of mail hem op</span>
-          <a class="alt-link" href="mailto:nick.vanlangendonck@youbo.io"
-             data-cta="formulier-mail-nick"
-             data-inhoud-href="anders.e_mail_link" data-inhoud="anders.e_mail">nick.vanlangendonck@youbo.io</a>
+        <p class="m-0 text-caption text-ink-soft">
+          <a class="alt-link" href="https://calendar.app.google/SRRf7apKCjZ6yKuT6"
+             target="_blank" rel="noopener"
+             data-cta="formulier-agenda-nick"
+             data-inhoud-href="anders.agenda_link" data-inhoud="anders.agenda_regel">Of boek direct een afspraak in Nicks agenda</a>
         </p>
-        <p class="m-0 mt-2 text-caption text-ink-soft">
-          <span data-inhoud="anders.bel_aanloop">Of bel hem op</span>
-          <a class="alt-link" href="tel:+32486082765"
-             data-cta="formulier-telefoon-nick"
-             data-inhoud-href="anders.telefoon_link" data-inhoud="anders.telefoon">0486 08 27 65</a>
-        </p>
-        <p class="todo mt-3 max-w-prose" data-inhoud="anders.nota"><b>TODO — nodig van klant</b>: de link naar Nicks agenda is aangevraagd en bestaat nog niet. Zolang die er niet is staat hier geen knop, want een knop die nergens naartoe gaat is in een review niet van een werkende te onderscheiden</p>
       </div>
     </div>
   </div>
@@ -3406,7 +3383,7 @@ tailwind.config = {
   <div class="footer-links">
     <div class="footer-links-logo">
       <a href="https://www.youbo.io/nl/" data-cta="footer-logo"><img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28"></a>
-      <a class="footer-linkedin" href="https://www.linkedin.com/company/teal-partners/" target="_blank" rel="noopener" data-cta="footer-linkedin"><img src="assets/img/linkedin.svg" alt="" aria-hidden="true" width="14" height="14">LinkedIn</a>
+      <a class="footer-linkedin" href="https://www.linkedin.com/company/youbomerit/" target="_blank" rel="noopener" data-cta="footer-linkedin"><img src="assets/img/linkedin.svg" alt="" aria-hidden="true" width="14" height="14">LinkedIn</a>
     </div>
 
     <div class="footer-links-about">
@@ -3539,7 +3516,7 @@ tailwind.config = {
     </div>
   </div>
 
-  <!-- DE MEELOPENDE DEMOBALK — één actie, vanaf de eerste pixel. -->
+  <!-- DE MEELOPENDE DEMOBALK — één actie, zodra de knop in de hero uit beeld is. -->
   <div x-data="vasteband()" x-show="toon" x-transition.opacity.duration.200ms x-cloak
        data-vasteband
        class="border-t border-line bg-paper/95 backdrop-blur shadow-lift">
@@ -3856,23 +3833,31 @@ tailwind.config = {
          wanneer een paneel opengaat, dus vind je ze nergens in deze HTML terug;
          ze worden gemaakt uit cases/preview/links.json. Dat ze hier tóch staan
          is geen netheid maar noodzaak: zonder naam vuren ze cta_zonder_naam.
-         De namen zijn dezelfde als die van het formulier verderop, want het is
-         dezelfde handeling — Nick mailen, Nick bellen, zijn agenda openen. */
+         De namen zijn dezelfde als die van het formulier en van de
+         bevestigingspagina, want het is dezelfde handeling — Nick mailen, Nick
+         bellen, zijn agenda openen. */
       'case-mail-nick':          'nick_gemaild',
       'case-telefoon-nick':      'nick_gebeld',
       'case-agenda-nick':        'agenda_geopend',
       'formulier-vraag-demo':    'demo_formulier_verstuurd',
       'formulier-privacy':       'juridische_tekst_geopend',
-      'formulier-mail-nick':     'nick_gemaild',
-      'formulier-telefoon-nick': 'nick_gebeld',
-      /* De agendalink van Nick bestaat nog niet — op de pagina staat daar een
-         TODO. Deze regel staat er alvast, zodat het aansluiten straks één
-         handeling is: data-cta="formulier-agenda-nick" op de link. */
+      /* De agendalink van Nick is sinds 2026-10-19 het enige alternatief onder
+         het formulier. Deze regel stond hier al klaar voor het moment dat de
+         link zou bestaan — hij bestaat nu. Zijn e-mailadres en telefoonnummer
+         staan niet meer onder het formulier maar alleen op de bevestigingspagina,
+         en daarom zijn formulier-mail-nick en formulier-telefoon-nick hier weg
+         terwijl bedankt-mail-nick en bedankt-telefoon-nick blijven. */
       'formulier-agenda-nick':   'agenda_geopend',
       'bedankt-mail-nick':       'nick_gemaild',
       'bedankt-telefoon-nick':   'nick_gebeld',
       'bedankt-logo':            'naar_youbo_site',
-      'bedankt-terug-youbo':     'naar_youbo_site',
+      /* De knop ging naar youbo.io; Jana vroeg op 2026-10-19 om hem naar de
+         landingspagina te laten gaan, "anders begrijp je niet goed waar je
+         terechtkomt". Daarmee verlaat hij de site niet meer, dus is
+         naar_youbo_site de verkeerde naam geworden — en een nieuwe verzinnen
+         hoeft niet: GA4 meet met page_view zelf al dat de bezoeker weer op de
+         landingspagina staat. Dus niet gemeten, zoals paneel-download. */
+      'bedankt-terug-pagina':    null,
       'cases-punt':              'klantverhaal_doorgebladerd',
       'quotes-punt':             'klantverhaal_doorgebladerd',
       'quotes-vorige':           'klantverhaal_doorgebladerd',
@@ -3881,7 +3866,12 @@ tailwind.config = {
       'footer-cases':            'naar_youbo_site',
       'footer-nieuws':           'naar_youbo_site',
       'footer-contact':          'naar_youbo_site',
-      'footer-linkedin':         'naar_teal_partners',
+      /* Deze link ging naar de LinkedIn-pagina van Teal Partners, zoals in
+         hun eigen footercomponent. Jana wees er op 2026-10-11 op — opmerking
+         70 in de reviewtool, niet in haar mail van de 19de — dat hij op een
+         Youbo-pagina naar Youbo hoort te gaan, en gaf het adres mee. De
+         gebeurtenis heet daarom niet langer naar_teal_partners. */
+      'footer-linkedin':         'naar_youbo_site',
       'footer-tealpartners':     'naar_teal_partners',
       'footer-cookiebeleid':     'juridische_tekst_geopend',
       'footer-privacy':          'juridische_tekst_geopend',
@@ -4757,38 +4747,80 @@ tailwind.config = {
     }));
 
 
-    /* DE VASTE BAND. Hij staat er vanaf de eerste pixel — dat is het punt van
-       Jana's opmerking dat de band "de hele tijd in beeld blijft" — en gaat
-       alleen weg zodra het formulier zelf in beeld komt, zodat hij nooit over
-       de velden staat waar hij naartoe stuurt.
+    /* DE VASTE BAND. Hij staat er NIET vanaf de eerste pixel, en dat is ronde 4.
+       Jana vroeg op 2026-10-19: "kan de permanente 'boek een demo' pas
+       verschijnen als die van de top wordt weggescrolld? zodat je niet
+       tegelijk de 2 identieke knoppen in beeld hebt?" Twee keer dezelfde knop
+       naast elkaar maakt de ene namelijk niet dringender maar de andere
+       overbodig, en de bezoeker moet kiezen tussen twee dingen die hetzelfde
+       doen.
 
-       Dat wegvallen is een IntersectionObserver op #demo en geen scrollteller.
-       Een scrollteller rekent zelf uit waar #demo staat, en rekent dus fout
+       In ronde 2 vroeg zij het omgekeerde — de band moest "de hele tijd in
+       beeld blijven" — en zo stond hij hier tot vandaag. Dat is geen
+       tegenspraak die iemand moet oplossen: toen stond er in de hero geen
+       tweede knop in beeld. Zet hem dus niet terug op altijd-zichtbaar zonder
+       dat zij het opnieuw vraagt.
+
+       Hij hangt nu aan TWEE voorwaarden, en de band is er alleen als beide
+       kloppen: de knop in de hero is uit beeld, én het formulier zelf is nog
+       niet in beeld. Die tweede bestond al en blijft om dezelfde reden: de
+       band mag nooit over de velden staan waar hij naartoe stuurt.
+
+       Beide zijn een IntersectionObserver en geen scrollteller. Een
+       scrollteller rekent zelf uit waar een element staat, en rekent dus fout
        zodra de pagina van hoogte verandert: een FAQ-antwoord dat openklapt,
        een lettertype dat later inlaadt, of een gedraaide telefoon. De browser
        weet het exact, en vertelt het ook nog eens buiten het scrollpad om.
 
-       rootMargin -96px aan de onderkant: #demo geldt pas als "in beeld" zodra
-       hij 96px voorbij de onderrand van het venster is. De balk is 56 à 64px
-       hoog, dus hij is weg vóórdat hij de kop van die sectie zou raken. */
+       rootMargin -96px aan de onderkant van #demo: die geldt pas als "in
+       beeld" zodra hij 96px voorbij de onderrand van het venster is. De balk is
+       56 à 64px hoog, dus hij is weg vóórdat hij de kop van die sectie raakt.
+
+       Op de heroknop staat GEEN rootMargin. Zodra die knop de bovenrand van het
+       venster uit schuift, neemt de band het over — precies op het moment dat
+       de bezoeker hem niet meer heeft.
+
+       Hij wordt gezocht op id en niet op zijn meethaak. Een selector met
+       data-cta erin is voor check-drafts niet van een echte haak te
+       onderscheiden, en die meldt dan een dubbele haak die er niet is. Een
+       waarschuwing die altijd onwaar is, is een waarschuwing die niemand nog
+       leest. */
     Alpine.data('vasteband', () => ({
-      toon: true,
+      heroWeg: false,
+      demoDichtbij: false,
+      get toon() { return this.heroWeg && !this.demoDichtbij; },
       init() {
+        const hero = document.getElementById('hero-demoknop');
         const demo = document.getElementById('demo');
         if (!demo) { return; }
 
+        /* Staat die heroknop er niet (een draft zonder hero), dan is er niets om
+           op te wachten en gedraagt de band zich als voorheen. Anders zou hij
+           nooit verschijnen, en dat is stiller fout dan te vroeg verschijnen. */
+        if (!hero) { this.heroWeg = true; }
+
         if ('IntersectionObserver' in window) {
           new IntersectionObserver((rijen) => {
-            rijen.forEach((rij) => { this.toon = !rij.isIntersecting; });
+            rijen.forEach((rij) => { this.demoDichtbij = rij.isIntersecting; });
           }, { rootMargin: '0px 0px -96px 0px', threshold: 0 }).observe(demo);
+
+          if (hero) {
+            new IntersectionObserver((rijen) => {
+              rijen.forEach((rij) => { this.heroWeg = !rij.isIntersecting; });
+            }, { threshold: 0 }).observe(hero);
+          }
           return;
         }
 
-        /* Terugval voor een browser zonder observer: dezelfde grens, met de
-           hand gemeten. Zonder deze tak zou de balk daar over het formulier
-           blijven staan. */
+        /* Terugval voor een browser zonder observer: dezelfde twee grenzen, met
+           de hand gemeten. Zonder deze tak zou de band daar over het formulier
+           blijven staan, of helemaal niet komen. */
         const kijk = () => {
-          this.toon = demo.getBoundingClientRect().top > window.innerHeight - 96;
+          this.demoDichtbij = demo.getBoundingClientRect().top <= window.innerHeight - 96;
+          if (hero) {
+            const h = hero.getBoundingClientRect();
+            this.heroWeg = h.bottom <= 0 || h.top >= window.innerHeight;
+          }
         };
         kijk();
         window.addEventListener('scroll', kijk, { passive: true });

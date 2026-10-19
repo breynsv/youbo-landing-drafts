@@ -5,7 +5,7 @@ WAT EEN BEVESTIGINGSPAGINA DOET, EN NIETS MEER: zeggen dat de aanvraag binnen is
 DE REACTIETIJD: «eerstdaags», bewust vaag en op aanwijzing van de klant zo gekozen. Er stond in het concept «binnen één werkdag», en niemand heeft nagekeken of Nick die termijn kan halen. Een exacte termijn is een belofte die gebroken kan worden, en een bevestigingspagina is precies het verkeerde moment om dat risico te nemen: hier wordt het vertrouwen gevestigd dat de rest van de pagina heeft opgebouwd. «Eerstdaags» zegt genoeg zonder iets te beloven. Dit is dus géén open punt meer en er staat geen TODO over.
 NOINDEX, EN WAAROM DAT HIER OMGEKEERD IS AAN DE LANDINGSPAGINA: een bevestigingspagina hoort niet in de zoekresultaten. Wie haar via Google binnenkomt, heeft niets aangevraagd en leest een bevestiging van iets wat niet gebeurd is; bovendien vervuilt ze de conversiecijfers, want elk bezoek aan dit adres telt als een aanvraag. check-drafts.mjs verbiedt noindex op elke andere draft — dat was een echte fout die vier drafts eens besmette — dus kent de checker sinds deze pagina twee soorten draft en eist hij noindex hier juist. Zie de meta «pagina-soort» hieronder en de toelichting in check-drafts.mjs.
 GEEN FORMULIER, EN DAT IS AFDWINGBAAR GEMAAKT. De checker eist op een landingspagina een <form> met een e-mailveld en verbiedt die hier. Een bevestigingspagina met een formulier erop is dezelfde fout als de vaste demobalk: je vraagt iets aan iemand die het net gegeven heeft.
-HET ALTERNATIEF: hetzelfde als onder het formulier op de landingspagina — Nicks e-mailadres als mailto: en zijn telefoonnummer als tel:, beide met data-cta zodat ze meetbaar blijven. Het nummer staat Belgisch gezet (0486 08 27 65) en de href draagt +32486082765, want dat is wat een telefoon moet kiezen. De agendalink van Nick bestaat nog niet en staat hier dus niet; op de landingspagina staat daar een TODO bij, en die hoort daar en niet twee keer.
+HET ALTERNATIEF: Nicks e-mailadres als mailto: en zijn telefoonnummer als tel:. Tot 2026-10-19 stonden die ook onder het formulier op de landingspagina; op vraag van Jana staan ze nu alleen hier, beide met data-cta zodat ze meetbaar blijven. Het nummer staat Belgisch gezet (0486 08 27 65) en de href draagt +32486082765, want dat is wat een telefoon moet kiezen. De agendalink van Nick bestaat nog niet en staat hier dus niet; op de landingspagina staat daar een TODO bij, en die hoort daar en niet twee keer.
 DE COOKIEBALK STAAT ER WEL, en hij is letterlijk dezelfde: dezelfde balk, dezelfde twee knoppen, dezelfde localStorage-sleutel «youbo-toestemming» en dezelfde laadMeettags(). Dat is geen kopieerwerk uit netheid maar een vereiste: het meten loopt ook op deze pagina — dit is zelfs hét adres dat geteld wordt — en toestemming moet zich over het hele domein hetzelfde gedragen. Wie op de landingspagina Toestaan koos, ziet de balk hier niet meer; wie weigerde, blijft geweigerd. LinkedIn en Google laden nergens in de <head> maar uitsluitend in laadMeettags(), na Toestaan, met Consent Mode v2 op denied tot dan. Sinds 2026-10-09 staat het echte LinkedIn partner ID 10139124 ingevuld, hier en op de landingspagina. Sinds 2026-10-12 is Google er ook: container GTM-MXTKMSBR, met de GA4-stroom van demo.youbo.io erin. Op 2026-10-15 is de toestemming nagelopen op de AVG en op drie punten bijgesteld: de zin noemt nu ook de advertentiecookies van LinkedIn (toestemming moet geïnformeerd zijn over álles wat laadt), Weigeren heeft dezelfde donkere rand als de tekst gekregen zodat hij even goed te zien is als Toestaan, en boven de footer staat «Cookievoorkeuren wijzigen» — intrekken moet even makkelijk zijn als toestemmen (AVG artikel 7, lid 3), en dat was het niet: de balk verdween na één klik voorgoed.
 DE FOOTER: hún eigen component, ingesloten, byte voor byte hetzelfde blok als op de landingspagina, met dezelfde comment erboven die uitlegt hoe hij op youbo.io weer door footer.js gevuld wordt. Eén verschil, en het is een weglating: de ISO 27001:2022-badge staat hier niet. Die hoort niet bij hun footer — hij staat op de landingspagina als los element erbóven omdat Jana's campagneplan hem dáár vraagt — en een keurmerk op een bevestigingspagina is precies het soort extra dat deze pagina niet hoort te hebben.
 GEEN TWEEDE SET STIJLEN: alles hieronder komt letterlijk uit draft-r3-01-definitief.html — de tokens, de knoppen, .shell, .band-pad, het TODO-blokje, de focusomlijning, de alternatievenlinks en het volledige footerblok. Overgenomen en niet nagebouwd, zodat deze pagina niet als een neef van de landingspagina leest maar als dezelfde site.
@@ -25,7 +25,7 @@ GEEN TWEEDE SET STIJLEN: alles hieronder komt letterlijk uit draft-r3-01-definit
 <meta name="pagina-soort" content="bevestiging">
 
 <title>Je aanvraag is binnen | Youbo</title>
-<meta name="description" content="Bedankt voor je demo-aanvraag. Nick Van Langendonck, reward expert, neemt eerstdaags contact met je op en laat je Youbo zien op jullie eigen looncyclus.">
+<meta name="description" content="Bedankt voor je demo-aanvraag. Nick Van Langendonck neemt eerstdaags contact met je op en laat je Youbo zien op jullie eigen looncyclus.">
 
 <!-- NOINDEX — zie de toelichting bovenaan dit bestand. Kort: wie deze pagina
      via een zoekmachine binnenkomt heeft niets aangevraagd, en elk bezoek aan
@@ -499,20 +499,21 @@ tailwind.config = {
            vertrouwen gevestigd wordt dat de rest heeft opgebouwd. Zet er dus
            nooit een getal in zonder dat iemand het bevestigd heeft. -->
       <p class="mt-4 text-body text-ink-soft">
-        <b class="font-bold text-ink">Nick Van Langendonck</b>, reward expert, neemt eerstdaags
-        contact met je op. Hij bekijkt samen met jou hoe Youbo aansluit op jullie loonbeleid,
-        structuur en systemen, en laat het zien op jullie eigen looncyclus.
+        <b class="font-bold text-ink">Nick</b> neemt eerstdaags contact met je op.
+        Wil je hem graag al eerder contacteren?
       </p>
 
-      <!-- Hetzelfde alternatief als onder het formulier op de landingspagina,
-           met dezelfde data-cta-logica zodat beide wegen meetbaar blijven.
-           Zijn agenda staat er niet bij: die link bestaat nog niet, en de TODO
-           daarover hoort op de landingspagina en niet twee keer. -->
+      <!-- DE TWEE SNELLE WEGEN NAAR NICK, en sinds 2026-10-19 staan ze alleen
+           hier. Onder het formulier op de landingspagina stonden ze er ook,
+           naast zijn agenda; Jana vroeg om daar alleen de agenda te laten staan
+           omdat je mail en gsm "toch in het volgende scherm ook al" krijgt. Dit
+           is dat volgende scherm. Zet ze hier dus niet weg.
+
+           Zijn agenda staat hier níet bij, met opzet: wie dit scherm ziet heeft
+           het formulier al verstuurd, dus is een afspraak inboeken niet meer de
+           volgende stap maar een dubbele aanvraag. -->
       <div class="alt-weg mt-10">
         <p class="m-0 text-caption text-ink-soft">
-          Kan het niet wachten, of wil je er nog iets bij vermelden?
-        </p>
-        <p class="m-0 mt-2 text-caption text-ink-soft">
           Mail hem op
           <a class="alt-link" href="mailto:nick.vanlangendonck@youbo.io"
              data-cta="bedankt-mail-nick">nick.vanlangendonck@youbo.io</a>
@@ -528,12 +529,17 @@ tailwind.config = {
            doodlopende straat: de bezoeker heeft gedaan waarvoor hij kwam en
            heeft geen reden meer om hier te blijven staan. Een secundaire knop
            en niet de primaire mint: de enige actie die deze pagina kende is al
-           uitgevoerd, dus hoeft hier niets te schreeuwen. /nl/ is de echte
-           homepage — live nagemeten op 2026-10-08: 200 zonder omleiding,
-           terwijl /nl/merit/ hiernaartoe doorstuurt. -->
+           uitgevoerd, dus hoeft hier niets te schreeuwen.
+
+           DE KNOP GAAT NAAR DE LANDINGSPAGINA en niet meer naar youbo.io. Jana
+           op 2026-10-19: "die mag gaan naar de landingspagina, anders begrijp je
+           niet goed waar je terechtkomt". Dat is ook het eerlijke gebaar: deze
+           pagina staat op demo.youbo.io en de bezoeker kwam van daar, niet van
+           de hoofdsite. De voettekst eronder is hún eigen component en houdt de
+           weg naar youbo.io open. -->
       <p class="mt-10 m-0">
-        <a href="https://www.youbo.io/nl/" class="btn-secondary" data-cta="bedankt-terug-youbo">
-          Terug naar youbo.io
+        <a href="/" class="btn-secondary" data-cta="bedankt-terug-pagina">
+          Terug naar de pagina
         </a>
       </p>
 
@@ -664,7 +670,7 @@ tailwind.config = {
   <div class="footer-links">
     <div class="footer-links-logo">
       <a href="https://www.youbo.io/nl/" data-cta="footer-logo"><img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28"></a>
-      <a class="footer-linkedin" href="https://www.linkedin.com/company/teal-partners/" target="_blank" rel="noopener" data-cta="footer-linkedin"><img src="assets/img/linkedin.svg" alt="" aria-hidden="true" width="14" height="14">LinkedIn</a>
+      <a class="footer-linkedin" href="https://www.linkedin.com/company/youbomerit/" target="_blank" rel="noopener" data-cta="footer-linkedin"><img src="assets/img/linkedin.svg" alt="" aria-hidden="true" width="14" height="14">LinkedIn</a>
     </div>
 
     <div class="footer-links-about">
@@ -880,23 +886,31 @@ tailwind.config = {
          wanneer een paneel opengaat, dus vind je ze nergens in deze HTML terug;
          ze worden gemaakt uit cases/preview/links.json. Dat ze hier tóch staan
          is geen netheid maar noodzaak: zonder naam vuren ze cta_zonder_naam.
-         De namen zijn dezelfde als die van het formulier verderop, want het is
-         dezelfde handeling — Nick mailen, Nick bellen, zijn agenda openen. */
+         De namen zijn dezelfde als die van het formulier en van de
+         bevestigingspagina, want het is dezelfde handeling — Nick mailen, Nick
+         bellen, zijn agenda openen. */
       'case-mail-nick':          'nick_gemaild',
       'case-telefoon-nick':      'nick_gebeld',
       'case-agenda-nick':        'agenda_geopend',
       'formulier-vraag-demo':    'demo_formulier_verstuurd',
       'formulier-privacy':       'juridische_tekst_geopend',
-      'formulier-mail-nick':     'nick_gemaild',
-      'formulier-telefoon-nick': 'nick_gebeld',
-      /* De agendalink van Nick bestaat nog niet — op de pagina staat daar een
-         TODO. Deze regel staat er alvast, zodat het aansluiten straks één
-         handeling is: data-cta="formulier-agenda-nick" op de link. */
+      /* De agendalink van Nick is sinds 2026-10-19 het enige alternatief onder
+         het formulier. Deze regel stond hier al klaar voor het moment dat de
+         link zou bestaan — hij bestaat nu. Zijn e-mailadres en telefoonnummer
+         staan niet meer onder het formulier maar alleen op de bevestigingspagina,
+         en daarom zijn formulier-mail-nick en formulier-telefoon-nick hier weg
+         terwijl bedankt-mail-nick en bedankt-telefoon-nick blijven. */
       'formulier-agenda-nick':   'agenda_geopend',
       'bedankt-mail-nick':       'nick_gemaild',
       'bedankt-telefoon-nick':   'nick_gebeld',
       'bedankt-logo':            'naar_youbo_site',
-      'bedankt-terug-youbo':     'naar_youbo_site',
+      /* De knop ging naar youbo.io; Jana vroeg op 2026-10-19 om hem naar de
+         landingspagina te laten gaan, "anders begrijp je niet goed waar je
+         terechtkomt". Daarmee verlaat hij de site niet meer, dus is
+         naar_youbo_site de verkeerde naam geworden — en een nieuwe verzinnen
+         hoeft niet: GA4 meet met page_view zelf al dat de bezoeker weer op de
+         landingspagina staat. Dus niet gemeten, zoals paneel-download. */
+      'bedankt-terug-pagina':    null,
       'cases-punt':              'klantverhaal_doorgebladerd',
       'quotes-punt':             'klantverhaal_doorgebladerd',
       'quotes-vorige':           'klantverhaal_doorgebladerd',
@@ -905,7 +919,12 @@ tailwind.config = {
       'footer-cases':            'naar_youbo_site',
       'footer-nieuws':           'naar_youbo_site',
       'footer-contact':          'naar_youbo_site',
-      'footer-linkedin':         'naar_teal_partners',
+      /* Deze link ging naar de LinkedIn-pagina van Teal Partners, zoals in
+         hun eigen footercomponent. Jana wees er op 2026-10-11 op — opmerking
+         70 in de reviewtool, niet in haar mail van de 19de — dat hij op een
+         Youbo-pagina naar Youbo hoort te gaan, en gaf het adres mee. De
+         gebeurtenis heet daarom niet langer naar_teal_partners. */
+      'footer-linkedin':         'naar_youbo_site',
       'footer-tealpartners':     'naar_teal_partners',
       'footer-cookiebeleid':     'juridische_tekst_geopend',
       'footer-privacy':          'juridische_tekst_geopend',

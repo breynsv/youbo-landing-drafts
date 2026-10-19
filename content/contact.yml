@@ -1,16 +1,16 @@
 # LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
 # Het formulier, de gegevens van Nick, de balk onderaan en de voettekst.
-# E-mail en telefoon staan er twee keer: de leesbare vorm en de vorm die de telefoon kiest.
-# Verander die twee altijd samen, anders belt de link een ander nummer dan er staat.
+# Onder het formulier staat één alternatief: de agenda van Nick. Zijn e-mailadres en
+# telefoonnummer staan op de bedankpagina, en die staat niet in dit bestand.
 # De cookiebalk en de privacyregel staan hier NIET: dat is juridische tekst en die blijft vast.
 # GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
 # Meer uitleg: content/LEESMIJ.txt.
 demo:
   kop: Met Youbo starten is makkelijk
   nick_foto: assets/img/nick-rond.webp
-  nick_foto_alt: Nick Van Langendonck, reward expert bij Teal Partners
+  nick_foto_alt: Nick Van Langendonck van Teal Partners
   nick_naam: Nick Van Langendonck
-  nick_tekst: reward expert, laat je zien hoe Youbo aansluit op jullie loonbeleid, structuur en systemen. Hij neemt persoonlijk contact op.
+  nick_tekst: luistert graag naar jouw vragen. Laat je gegevens na en hij contacteert je.
 formulier:
   label_naam: Naam
   plaatshouder_naam: Anne Peeters
@@ -23,14 +23,8 @@ formulier:
   nieuwsbrief: Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.
   verzendknop: Vraag je demo aan
 anders:
-  agenda_regel: Of boek rechtstreeks in Nicks agenda
-  mail_aanloop: Of mail hem op
-  e_mail_link: mailto:nick.vanlangendonck@youbo.io
-  e_mail: nick.vanlangendonck@youbo.io
-  bel_aanloop: Of bel hem op
-  telefoon_link: tel:+32486082765
-  telefoon: 0486 08 27 65
-  nota: 'TODO — nodig van klant: de link naar Nicks agenda is aangevraagd en bestaat nog niet. Zolang die er niet is staat hier geen knop, want een knop die nergens naartoe gaat is in een review niet van een werkende te onderscheiden'
+  agenda_regel: Of boek direct een afspraak in Nicks agenda
+  agenda_link: https://calendar.app.google/SRRf7apKCjZ6yKuT6
 band:
   regel: Nick toont je Youbo op jouw eigen looncyclus
   knop: Boek een demo

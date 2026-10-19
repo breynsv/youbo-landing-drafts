@@ -16,7 +16,7 @@ cases:
     - bedrijf: Kaneka
       logo: assets/img/kaneka-logo-dark.svg
       logo_hoogte: 20
-      voordeel: Twee werkweken tijdswinst
+      voordeel: 2 werkweken tijdswinst
       cijfers:
         - 370 medewerkers
         - 27 afdelingen
@@ -54,8 +54,8 @@ cases:
       logo_hoogte: 24
       voordeel: 7× sneller
       cijfers:
-        - 1.500 Belgische medewerkers
-        - 130 leidinggevenden
+        - +6000 medewerkers
+        - 2 landen
       sector: Mediagroep
       downloadlink: cases/youbo-case-dpg-media.pdf
 quotes:

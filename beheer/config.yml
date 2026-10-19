@@ -872,8 +872,8 @@ collections:
             comment: |-
               LET OP: een opslag in /beheer/ gaat rechtstreeks naar de live site; er kijkt niemand meer tussen.
               Het formulier, de gegevens van Nick, de balk onderaan en de voettekst.
-              E-mail en telefoon staan er twee keer: de leesbare vorm en de vorm die de telefoon kiest.
-              Verander die twee altijd samen, anders belt de link een ander nummer dan er staat.
+              Onder het formulier staat één alternatief: de agenda van Nick. Zijn e-mailadres en
+              telefoonnummer staan op de bedankpagina, en die staat niet in dit bestand.
               De cookiebalk en de privacyregel staan hier NIET: dat is juridische tekst en die blijft vast.
               GEEN HTML, en elk veld is één doorlopend stuk tekst. "TODO — " geeft het kader met de stippellijn.
               Meer uitleg: content/LEESMIJ.txt.
@@ -1016,7 +1016,7 @@ collections:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
           - name: 'anders'
-            label: 'De andere manieren om Nick te bereiken'
+            label: 'De andere manier om Nick te bereiken'
             widget: 'object'
             collapsed: true
             fields:
@@ -1024,63 +1024,15 @@ collections:
                 label: 'De agendaregel'
                 widget: 'string'
                 required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                hint: 'De enige regel onder het formulier, en hij is zelf de link naar de agenda van Nick. Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'mail_aanloop'
-                label: 'De zin vóór het e-mailadres'
+              - name: 'agenda_link'
+                label: 'Waar die regel naartoe gaat'
                 widget: 'string'
                 required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'e_mail_link'
-                label: 'Wat de e-maillink doet'
-                widget: 'string'
-                required: true
-                hint: 'Wat de link doet, niet wat er staat: mailto:… Verander dit altijd samen met het veld eronder.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'e_mail'
-                label: 'Het e-mailadres zoals het er staat'
-                widget: 'string'
-                required: true
-                hint: 'Het adres zoals de bezoeker het leest. Verander dit altijd samen met het veld erboven.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'bel_aanloop'
-                label: 'De zin vóór het nummer'
-                widget: 'string'
-                required: true
-                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'telefoon_link'
-                label: 'Wat de telefoonlink doet'
-                widget: 'string'
-                required: true
-                hint: 'Wat de link doet, niet wat er staat: tel:+32… Verander dit altijd samen met het veld eronder.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'telefoon'
-                label: 'Het nummer zoals het er staat'
-                widget: 'string'
-                required: true
-                hint: 'Het nummer zoals de bezoeker het leest, Belgisch gezet. Verander dit altijd samen met het veld erboven.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'nota'
-                label: 'Open punt'
-                widget: 'string'
-                required: true
-                hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
+                hint: 'Het volledige webadres van de agenda van Nick, dus met https:// ervoor. Hij opent in een nieuw tabblad, dus blijft de pagina staan.'
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
