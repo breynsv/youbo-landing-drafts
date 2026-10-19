@@ -828,13 +828,30 @@ console.log('\n9. De wacht — de val, de drempel, en Turnstile die uit staat');
  *  tegenhoudt, en dat is alleen te zien aan de pagina die wel of niet
  *  wegnavigeert. Het formulier heeft geen action en geen method, dus een
  *  geslaagde verzending is een GET naar dezelfde pagina met de velden erachter. */
+/* «Doorgegaan» betekent sinds 2026-10-19: er is een POST naar /request-demo
+   vertrokken. Daarvoor stond hier dat de URL een vraagteken moest krijgen — een
+   formulier zonder action en zonder method verstuurt namelijk een GET naar
+   zichzelf, en dat was het enige zichtbare gevolg zolang er geen eindpunt was.
+   Nu er wél een eindpunt is, houdt het script die navigatie tegen en gaat de
+   aanvraag met fetch de deur uit; de oude maatstaf zou dus bij élke weg «niet
+   doorgegaan» zeggen, ook als alles werkt.
+
+   Het antwoord is met opzet een 400: dan blijft de bezoeker op het formulier
+   staan en navigeert deze toets nergens heen. Of de geslaagde weg naar de
+   bedankpagina leidt, wordt elders gemeten. */
 async function verzend(pg, voorbereiding) {
+  let pogingen = 0;
+  await pg.route('**/request-demo', async (route) => {
+    pogingen += 1;
+    await route.fulfill({ status: 400, contentType: 'application/json',
+                          body: '{"success":false,"error":"toets"}' });
+  });
   const was = pg.url();
   if (voorbereiding) { await voorbereiding(pg); }
   await pg.evaluate(() => document.querySelector('form').requestSubmit());
-  try { await pg.waitForURL((u) => String(u).indexOf('?') !== -1, { timeout: 3000 }); }
-  catch (e) { /* niet weggenavigeerd — dat is een van de twee antwoorden */ }
-  return { doorgegaan: pg.url().indexOf('?') !== -1, was, nu: pg.url() };
+  await pg.waitForTimeout(700);
+  await pg.unroute('**/request-demo');
+  return { doorgegaan: pogingen > 0, was, nu: pg.url() + ' · ' + pogingen + ' poging(en)' };
 }
 
 {

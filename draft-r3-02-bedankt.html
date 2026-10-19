@@ -12,8 +12,8 @@ GEEN TWEEDE SET STIJLEN: alles hieronder komt letterlijk uit draft-r3-01-definit
 -->
 <html lang="nl-BE">
 <head>
-<meta name="ontwerp-versie" content="3.3+20261017">
-<meta name="ontwerp-versie-leesbaar" content="v3.3 — 17 oktober 2026">
+<meta name="ontwerp-versie" content="3.3+20261019">
+<meta name="ontwerp-versie-leesbaar" content="v3.3 — 19 oktober 2026">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -1327,6 +1327,89 @@ tailwind.config = {
         });
       }
     }
+
+    /* ─────────────────────────────────────────────────────────────────────
+       HET VERSTUREN
+       ─────────────────────────────────────────────────────────────────────
+       Deze luisteraar staat in de BUBBLE-fase, dus na de wacht hieronder die in
+       de capture-fase oordeelt. Hield die de inzending tegen, dan staat
+       defaultPrevented aan en doet deze niets — zo kan een inzending die
+       geweigerd is onmogelijk alsnog vertrekken.
+
+       Lukt het, dan gaat de bezoeker naar de bedankpagina, en daar vuurt
+       demo_aanvraag_bevestigd. Die volgorde is het hele punt van de meting: de
+       conversie telt alleen aanvragen die werkelijk aangekomen zijn.
+       ───────────────────────────────────────────────────────────────────── */
+    var EINDPUNT = '/request-demo';
+
+    function veld(f, naam) {
+      var el = f.querySelector('[name="' + naam + '"]');
+      return el ? String(el.value || '').trim() : '';
+    }
+
+    /* Waar de bedankpagina staat, hangt af van waar deze pagina staat. Op de
+       server van de klant is dat /bedankt, via een herschrijfregel in
+       web.config; op de draftsite is het het losse bestand ernaast. Een voorstel
+       voor Jana werkt daardoor net zo goed als de echte pagina. */
+    function bedanktadres() {
+      var hier = location.pathname.split('/').pop();
+      return hier.indexOf('draft-r3-01') === 0 ? 'draft-r3-02-bedankt.html' : '/bedankt';
+    }
+
+    function verstuur(f) {
+      var knop = f.querySelector('button[type="submit"]');
+      var knoptekst = knop ? knop.textContent : '';
+      if (knop) { knop.disabled = true; knop.textContent = 'Bezig met versturen…'; }
+
+      var tel = veld(f, 'phone');
+      var vink = f.querySelector('[name="newsletter"]');
+      var nieuwsbrief = (vink && vink.checked) ? 'ja' : 'nee';
+
+      /* Het eindpunt mailt alleen name, email en message, en message is
+         verplicht. Wie niets schrijft, stuurt dus deze regels; wie wel iets
+         schrijft, krijgt ze eronder. */
+      var regels = [];
+      var bericht = veld(f, 'message');
+      if (bericht) { regels.push(bericht, ''); }
+      if (tel) { regels.push('Telefoon: ' + tel); }
+      regels.push('Nieuwsbrief: ' + nieuwsbrief);
+      regels.push('Via: de landingspagina op demo.youbo.io');
+
+      var lading = {
+        name: veld(f, 'name'),
+        email: veld(f, 'email'),
+        phone: tel,
+        newsletter: nieuwsbrief,
+        message: regels.join('\n')
+      };
+
+      fetch(EINDPUNT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(lading)
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          return { goed: r.ok && j.success !== false, reden: j.error || ('status ' + r.status) };
+        });
+      }).then(function (u) {
+        if (u.goed) { location.href = bedanktadres(); return; }
+        if (knop) { knop.disabled = false; knop.textContent = knoptekst; }
+        mislukt(u.reden);
+      }).catch(function () {
+        if (knop) { knop.disabled = false; knop.textContent = knoptekst; }
+        mislukt('netwerk');
+      });
+    }
+
+    document.addEventListener('submit', function (e) {
+      if (e.defaultPrevented) { return; }
+      var f = e.target;
+      if (!f || !f.querySelector || !f.querySelector('[name="name"]')) { return; }
+      e.preventDefault();
+      if (bezig) { return; }
+      bezig = true;
+      verstuur(f);
+    });
 
     document.addEventListener('submit', function (e) {
       var f = e.target;
