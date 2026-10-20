@@ -753,6 +753,79 @@ console.log('\n6. Het formulier — vandaag zonder eindpunt, en straks met');
   await b.ctx.close();
 }
 
+console.log('\n6b. Wat er werkelijk op de lijn gaat');
+
+/* WAAROM DIT BESTAAT. Deel 6 kijkt naar de veldnamen in het formulier en naar
+   de gebeurtenis die een verzending geeft. Geen van beide zegt iets over wat er
+   in het verzoek staat. Dat was tot 2026-10-20 niet onschuldig: het eindpunt
+   mailde toen alleen name, email en message, dus schreven wij telefoon en
+   nieuwsbrief óók in de tekst. Thomas mailt ze nu zelf als veld, en die twee
+   regels zijn eruit. Zonder deze toets zou het terugzetten ervan — of het
+   vergeten van de vertaling van de val — nergens rood worden, en zou Nick een
+   mail krijgen waarin alles dubbel staat. */
+{
+  const { ctx, pg } = await open('/' + LANDING, { keuze: 'toegestaan', wacht: 3500, laatNavigeren: true });
+  let lichaam = null;
+  await pg.route('**/request-demo', async (route) => {
+    lichaam = route.request().postData();
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' });
+  });
+
+  await pg.fill('#name', 'Anne Peeters');
+  await pg.fill('#email', 'anne@bedrijf.be');
+  await pg.fill('#phone', '+32 486 08 27 65');
+  await pg.fill('#message', 'Hoeveel kost dit voor 200 medewerkers?');
+  await pg.check('#newsletter');
+  await pg.evaluate(() => document.querySelector('form').requestSubmit());
+  await pg.waitForTimeout(900);
+
+  ok('er vertrekt een verzoek naar het eindpunt', !!lichaam, String(lichaam).slice(0, 80));
+  let L = {};
+  try { L = JSON.parse(lichaam || '{}'); } catch (e) { /* blijft leeg */ }
+
+  ok('naam en e-mailadres gaan mee zoals ingevuld',
+     L.name === 'Anne Peeters' && L.email === 'anne@bedrijf.be', JSON.stringify([L.name, L.email]));
+  ok('het telefoonnummer staat in zijn EIGEN veld',
+     L.phone === '+32 486 08 27 65', String(L.phone));
+  ok('de nieuwsbrief staat in zijn EIGEN veld',
+     L.newsletter === 'ja', String(L.newsletter));
+  ok('en ze staan NIET ook nog eens in de tekst — anders krijgt Nick alles dubbel',
+     typeof L.message === 'string'
+       && L.message.indexOf('Telefoon:') === -1
+       && L.message.indexOf('Nieuwsbrief:') === -1,
+     String(L.message));
+  ok('de tekst is wat de bezoeker schreef, met de herkomst eronder',
+     typeof L.message === 'string'
+       && L.message.indexOf('Hoeveel kost dit voor 200 medewerkers?') === 0
+       && L.message.indexOf('Via: de landingspagina op demo.youbo.io') !== -1,
+     String(L.message));
+  ok('de val gaat mee onder de naam die hun kant verwacht, en is leeg',
+     Object.prototype.hasOwnProperty.call(L, 'website') && L.website === '',
+     JSON.stringify(L.website));
+  await ctx.close();
+}
+
+{
+  /* En wie niets schrijft? message is bij hen optioneel geworden, maar de
+     herkomst blijft het enige veld dat zegt van wélke pagina de aanvraag komt. */
+  const { ctx, pg } = await open('/' + LANDING, { keuze: 'toegestaan', wacht: 3500, laatNavigeren: true });
+  let lichaam = null;
+  await pg.route('**/request-demo', async (route) => {
+    lichaam = route.request().postData();
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' });
+  });
+  await pg.fill('#name', 'Anne Peeters');
+  await pg.fill('#email', 'anne@bedrijf.be');
+  await pg.evaluate(() => document.querySelector('form').requestSubmit());
+  await pg.waitForTimeout(900);
+  const L = JSON.parse(lichaam || '{}');
+  ok('zonder bericht blijft alleen de herkomst over',
+     L.message === 'Via: de landingspagina op demo.youbo.io', String(L.message));
+  ok('en een niet aangevinkte nieuwsbrief vertrekt als "nee"',
+     L.newsletter === 'nee', String(L.newsletter));
+  await ctx.close();
+}
+
 /* ─────────────── 6 · wat wegnavigeert ────────────────────────────────────── */
 console.log('\n7. Wat wegnavigeert — gemeten en niet aangenomen');
 

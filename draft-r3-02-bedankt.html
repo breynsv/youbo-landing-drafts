@@ -1380,26 +1380,30 @@ tailwind.config = {
       var knoptekst = knop ? knop.textContent : '';
       if (knop) { knop.disabled = true; knop.textContent = 'Bezig met versturen…'; }
 
-      var tel = veld(f, 'phone');
       var vink = f.querySelector('[name="newsletter"]');
       var nieuwsbrief = (vink && vink.checked) ? 'ja' : 'nee';
 
-      /* Het eindpunt mailt alleen name, email en message, en message is
-         verplicht. Wie niets schrijft, stuurt dus deze regels; wie wel iets
-         schrijft, krijgt ze eronder. */
-      var regels = [];
+      /* Sinds 2026-10-20 mailt het eindpunt phone en newsletter zelf, dus
+         gaan ze niet langer óók in de tekst. Wat hier overblijft is wat de
+         bezoeker schreef, met één regel eronder die zegt waar het vandaan
+         komt — die staat in geen enkel ander veld, en in de mailbox van Nick
+         is "van welke pagina" iets wat niemand anders meer kan beantwoorden. */
       var bericht = veld(f, 'message');
-      if (bericht) { regels.push(bericht, ''); }
-      if (tel) { regels.push('Telefoon: ' + tel); }
-      regels.push('Nieuwsbrief: ' + nieuwsbrief);
-      regels.push('Via: de landingspagina op demo.youbo.io');
+      var herkomst = 'Via: de landingspagina op demo.youbo.io';
 
       var lading = {
         name: veld(f, 'name'),
         email: veld(f, 'email'),
-        phone: tel,
+        phone: veld(f, 'phone'),
         newsletter: nieuwsbrief,
-        message: regels.join('\n')
+        message: bericht ? (bericht + '\n\n' + herkomst) : herkomst,
+        /* De val van deze pagina heet extra_notes en niet website, omdat
+           autofill een veld met die naam voor een echte bezoeker invult. Het
+           eindpunt verwacht hem wél onder de naam website, dus wordt hij hier
+           vertaald. We sturen de echte waarde en geen vaste lege string: komt
+           er ooit een pad waarlangs de val niet geleegd is, dan ziet hun kant
+           het ook. */
+        website: veld(f, 'extra_notes')
       };
 
       fetch(EINDPUNT, {

@@ -3113,19 +3113,35 @@ tailwind.config = {
            een formulier dat niet werkt. Het adres staat daarom in data-eindpunt,
            waar het zichtbaar is en door niets als navigatie gelezen wordt.
 
-           WAT HET EINDPUNT AANVAARDT, nagemeten op 2026-10-19:
-             200 {"success":true}                        bij name + email + message
-             400 "Name, email and message are required"   als er een ontbreekt
-             400 "Invalid email address"                  bij een onmogelijk adres
-             405                                          op GET
-           Extra velden (phone, newsletter) worden aanvaard en genegeerd.
+           WAT HET EINDPUNT AANVAARDT, opnieuw nagemeten op 2026-10-20 nadat
+           Thomas het uitbreidde:
+             200 {"success":true}                       bij email alleen
+             400 "Email is required"                    zonder email
+             400 "Invalid email address"                bij een onmogelijk adres
+             405                                        op GET
+           Alleen email is nog verplicht; name, phone, newsletter en message
+           zijn optioneel, en newsletter mag een korte tekst of een boolean zijn.
 
-           DAAROM STAAN TELEFOON EN NIEUWSBRIEF OOK IN message. Ze gaan als veld
-           mee, zodat het meteen werkt als Thomas ze ooit gebruikt, maar wat Nick
-           in zijn mailbox krijgt is alleen name, email en message. Zonder die
-           twee regels in de tekst zou een telefoonnummer dat een bezoeker
-           invulde nergens aankomen, en dat is precies het soort stil verlies dat
-           niemand ooit opmerkt.
+           TELEFOON EN NIEUWSBRIEF STAAN NIET MEER IN message, en dat is de hele
+           verandering van 2026-10-20. Tot die dag mailde het eindpunt alleen
+           name, email en message, dus schreven wij telefoon en nieuwsbrief ook
+           in de tekst — anders kwam een ingevuld telefoonnummer nergens aan.
+           Thomas mailt ze nu zelf als veld. Die twee regels staan er daarom uit;
+           zet ze niet terug, want dan staat alles er dubbel in.
+
+           DE VAL HEET BIJ HEN website EN BIJ ONS extra_notes. Hun contract
+           vraagt een verborgen veld "website" dat leeg moet blijven. Zo mag het
+           bij ons niet heten: autofill vult een veld met die naam voor een echte
+           bezoeker in, en dan wordt die geweigerd — de uitleg daarover staat bij
+           het veld zelf en bij DE WACHT verderop. Het wordt dus vertaald op het
+           moment van versturen.
+
+           EN ÉÉN VRAAG STAAT NOG OPEN BIJ THOMAS. Een gevulde website geeft
+           gewoon 200 {"success":true} — nagemeten op 2026-10-20. Dat is óf een
+           goede honeypot die stil weggooit, óf een veld dat niets doet. Van
+           buitenaf is dat niet te zien, en het verschil is of hun kant een bot
+           tegenhoudt of alleen lijkt tegen te houden. Onze eigen val weigert
+           hoe dan ook vóór er één verzoek vertrekt.
 
            DE VIJF VELDNAMEN ZIJN ENGELS, EN DAT IS DE ENIGE PLEK IN DIT PROJECT
            WAAR DAT ZO IS. Alles hier is bewust Nederlands: variabelen, functies,
@@ -3140,6 +3156,7 @@ tailwind.config = {
                phone       (was telefoon)
                message     (was bericht)
                newsletter  (was nieuwsbrief, waarde blijft "ja")
+               website     (onze val extra_notes, onder hun naam — 2026-10-20)
 
            De id's lopen mee met de naam, zodat label/for en veld niet uit elkaar
            kunnen lopen; de zichtbare labels blijven Nederlands en komen uit
@@ -4327,26 +4344,30 @@ tailwind.config = {
       var knoptekst = knop ? knop.textContent : '';
       if (knop) { knop.disabled = true; knop.textContent = 'Bezig met versturen…'; }
 
-      var tel = veld(f, 'phone');
       var vink = f.querySelector('[name="newsletter"]');
       var nieuwsbrief = (vink && vink.checked) ? 'ja' : 'nee';
 
-      /* Het eindpunt mailt alleen name, email en message, en message is
-         verplicht. Wie niets schrijft, stuurt dus deze regels; wie wel iets
-         schrijft, krijgt ze eronder. */
-      var regels = [];
+      /* Sinds 2026-10-20 mailt het eindpunt phone en newsletter zelf, dus
+         gaan ze niet langer óók in de tekst. Wat hier overblijft is wat de
+         bezoeker schreef, met één regel eronder die zegt waar het vandaan
+         komt — die staat in geen enkel ander veld, en in de mailbox van Nick
+         is "van welke pagina" iets wat niemand anders meer kan beantwoorden. */
       var bericht = veld(f, 'message');
-      if (bericht) { regels.push(bericht, ''); }
-      if (tel) { regels.push('Telefoon: ' + tel); }
-      regels.push('Nieuwsbrief: ' + nieuwsbrief);
-      regels.push('Via: de landingspagina op demo.youbo.io');
+      var herkomst = 'Via: de landingspagina op demo.youbo.io';
 
       var lading = {
         name: veld(f, 'name'),
         email: veld(f, 'email'),
-        phone: tel,
+        phone: veld(f, 'phone'),
         newsletter: nieuwsbrief,
-        message: regels.join('\n')
+        message: bericht ? (bericht + '\n\n' + herkomst) : herkomst,
+        /* De val van deze pagina heet extra_notes en niet website, omdat
+           autofill een veld met die naam voor een echte bezoeker invult. Het
+           eindpunt verwacht hem wél onder de naam website, dus wordt hij hier
+           vertaald. We sturen de echte waarde en geen vaste lege string: komt
+           er ooit een pad waarlangs de val niet geleegd is, dan ziet hun kant
+           het ook. */
+        website: veld(f, 'extra_notes')
       };
 
       fetch(EINDPUNT, {
