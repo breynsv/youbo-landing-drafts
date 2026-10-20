@@ -1101,12 +1101,29 @@ async function verzend(pg, voorbereiding) {
 
 {
   /* DE VAL. Een gevulde val houdt de inzending tegen, ook bij een bezoeker die
-     alles goed doet — want dat is precies wat een bot is. */
+     alles goed doet — want dat is precies wat een bot is.
+
+     SINDS 2026-10-20 WEGEN WE HIER ZWAARDER. Thomas bevestigde die dag dat hun
+     eindpunt een gevulde website stil weggooit en tóch 200 {"success":true}
+     teruggeeft — met opzet, zodat een bot niet leert wat hem verraadde. Dat is
+     juist, maar het maakt onze volgorde kritiek: zou een gevulde val hier wél
+     de deur uit gaan, dan kreeg de bezoeker de bedankpagina te zien, telden wij
+     een conversie, en kwam er bij Nick niets aan. Precies het stille verlies
+     waar dit hele formulier tegen gebouwd is. Daarom wordt hieronder niet
+     alleen gemeten dat de inzending stopt, maar dat er geen enkel verzoek
+     vertrekt. */
   const { ctx, pg } = await open('/' + LANDING, { keuze: 'toegestaan', wacht: 4000, laatNavigeren: true });
+  let verzoeken = 0;
+  await pg.route('**/request-demo', async (route) => {
+    verzoeken += 1;
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' });
+  });
   const r = await verzend(pg, async (p) => {
     await p.evaluate(() => { document.querySelector('[data-val-voor-bots]').value = 'http://spam.example'; });
   });
   ok('een gevulde val houdt de inzending tegen', r.doorgegaan === false, r.nu);
+  ok('   en er vertrekt GEEN verzoek — hun kant zou stil 200 zeggen en niets doen',
+     verzoeken === 0, `${verzoeken} verzoek(en)`);
   const reden = await pg.evaluate(() => (window.dataLayer || [])
     .filter((r) => r && r.event === 'formulier_geweigerd').map((r) => r.reden));
   ok('   met reden "honeypot", en géén demo_formulier_verstuurd',
