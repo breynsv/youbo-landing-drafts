@@ -624,13 +624,21 @@ tailwind.config = {
                 border-bottom: 3px solid #0af29f; padding-bottom: 2px; }
 
   /* ── DE NAAF: de integratievisual ─────────────────────────────────────────
-     De ring staat op inset 8% 14%, dus hij raakt de vier knooppunten die op
-     26% en 74% van beide assen liggen. Die getallen zijn gerekend en niet
-     gezocht: de spaken in de SVG lopen naar exact dezelfde punten op een
-     viewBox van 100 bij 100, en preserveAspectRatio="none" rekt die mee met
-     het vlak. Verander je één van de vier, verander dan allebei. */
+     De ring en de spaken staan in ÉÉN tekening, op een viewBox van 100 bij
+     100: de knooppunten op 26% en 74% van beide assen, de ring met straal
+     24·√2 = 33,941. Die gaat dan per definitie door alle vier, want 24² + 24²
+     = 33,941². preserveAspectRatio="none" rekt die tekening precies zo uit
+     als dit vlak, dus blijft dat waar bij élke verhouding hieronder — je mag
+     aspect-ratio veranderen zonder iets na te rekenen. Dat is de hele reden
+     dat ze in één tekening staan: toen de ring nog een los CSS-kader was,
+     moesten twee getallen met de hand kloppen en deden ze dat niet.
+
+     1,6 op 1 en niet 2 op 1 sinds 2026-10-21, op vraag van Sven: de ovaal
+     was te plat. Vierkant kan niet — deze kolom staat naast het EU-blok van
+     479px en zou dan 765px hoog worden. Bij 1,6 is de kolom 531px, dus de
+     rij groeit 52px. Dat is de prijs, en die is bewust betaald. */
   .naaf { position: relative; width: 100%; max-width: 520px; margin: 0 auto;
-          aspect-ratio: 2 / 1; }
+          aspect-ratio: 1.6 / 1; }
   .naaf-tekening { position: absolute; inset: 0; height: 100%; width: 100%; overflow: visible; }
   .naaf-ring { fill: none; stroke: rgba(255,255,255,.3); stroke-width: 1;
                stroke-dasharray: 4 5; }
