@@ -2,7 +2,9 @@
 # De cases en de quotes. Allebei een lijst: je mag er een bij zetten, een weghalen en de
 # volgorde veranderen — cases minstens 2 en hoogstens 7, quotes minstens 3 en hoogstens 7.
 # "bedrijf" is de naam achter het logo — die wordt voorgelezen in plaats van het beeld.
-# "logo_hoogte" is de hoogte in beeldpunten; kijk ernaast en kies wat even zwaar weegt.
+# "logo_hoogte" is de hoogte in beeldpunten. Even hoog is NIET even groot: het ene
+# logobestand heeft meer lucht rond het woord dan het andere, en bij dpg hoort er een
+# klein "media" bij dat de hoogte optrekt. Kijk ernaast en kies wat even zwaar weegt.
 # "cijfers" is een opsomming: één regel per cijfer, twee of drie regels.
 # "gebruik" staat klein boven die cijfers, op elke kaart dezelfde — het zegt waar ze over gaan.
 # "downloadlink" is het pad naar de pdf van die case, bv. cases/youbo-case-kaneka.pdf.
@@ -63,7 +65,7 @@ quotes:
   items:
     - bedrijf: SD Worx
       logo: assets/img/sdworx-logo.svg
-      logo_hoogte: 18
+      logo_hoogte: 39
       tekst: “Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”
       foto: assets/img/pieter-jan.webp
       naam: Pieter-Jan Boden
@@ -77,21 +79,21 @@ quotes:
       functie: Hr manager
     - bedrijf: DPG Media
       logo: assets/img/dpg-logo.svg
-      logo_hoogte: 18
+      logo_hoogte: 31
       tekst: “Youbo helpt om de loonkloof weg te werken.”
       foto: assets/img/mieke-catthoor.webp
       naam: Mieke Catthoor
       functie: Compensation & benefits
     - bedrijf: SD Worx
       logo: assets/img/sdworx-logo.svg
-      logo_hoogte: 14
+      logo_hoogte: 39
       tekst: “Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu betere inhoudelijke gesprekken met mijn team.”
       foto: assets/img/joris-valkenborgh.webp
       naam: Joris Valkenborgh
       functie: Team manager
     - bedrijf: Anchr
       logo: assets/img/anchr-logo.webp
-      logo_hoogte: 16
+      logo_hoogte: 22
       tekst: “Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien we de jaarkost en het totale loonpakket van de werknemer.”
       foto: assets/img/evi-van-der-vliet.webp
       naam: Evi Van der Vliet

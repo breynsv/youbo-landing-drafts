@@ -710,11 +710,12 @@ tailwind.config = {
   .caselink .pijl { transition: transform var(--m-base) var(--e-standard); }
   .caselink:hover .pijl { transform: translateX(3px); }
 
-  /* Het stipje voor een cijferregel in een casekaart. Decoratief, dus het
-     staat in de donkere merktint en niet in mint: 6px mint op wit is op een
-     gewoon scherm niet te zien. */
-  .cijferstip { flex: none; margin-top: 9px; height: 6px; width: 6px;
-                border-radius: 9999px; background: #154e3a; }
+  /* De stip voor een cijferregel is op 2026-10-21 uit de casekaart
+     verdwenen: de cijfers staan nu in vakjes met een icoon. De regel
+     zelf is weg omdat hij nergens anders gebruikt werd — dode opmaak
+     die er "voor later" blijft staan, is opmaak die niemand durft te
+     verwijderen. Komt er ooit weer een opsomming met stippen, dan is
+     dit vier regels werk. */
 
   /* ---- alles wat beweegt gaat uit als het besturingssysteem dat vraagt --- */
   @media (prefers-reduced-motion: reduce) {
@@ -942,9 +943,51 @@ tailwind.config = {
      bestand erin; Anchr heeft geen bestand en staat hier typografisch. */
   .case-logo  { display: flex; align-items: center; height: 32px; }
 
-  /* Twee regels gereserveerd, zodat de cijferlijst in elke kaart op dezelfde
-     hoogte begint. 24px × 1,2 × 2 = 2,4em. */
-  .case-voordeel { min-height: 2.4em; }
+  /* Hier stond "min-height: 2,4em" om twee regels te reserveren, zodat de
+     cijfers in elke kaart op dezelfde hoogte begonnen. Dat kan weg sinds de
+     kaart .kaartromp/.kaartfeiten gebruikt: het feitenblok wordt nu naar
+     onderen geduwd en lijnt dus uit zonder dat er ruimte gereserveerd hoeft
+     te worden voor een tweede regel die er vaak niet is. */
+  .kaartromp   { display: flex; flex-direction: column; flex: 1 1 auto; }
+  .kaartfeiten { margin-top: auto; padding-top: 20px; }
+
+  /* De casekaart in de vorm die Sven koos op 2026-10-21: variant 3 met de
+     ingreep van 3A. De cijfers staan niet meer als opsomming met een stip
+     maar als twee vakjes met een icoon — dat was Jana's vraag (#19), en de
+     cijfers waren het enige op de kaart dat niets had om naar te kijken.
+     36px en niet 32: het volledige logo van Aertssen staat op hoogte 36 en
+     liep met een rij van 32 over de sectorregel. min-height en geen vaste
+     hoogte, zodat drie logo's in een rij op dezelfde lijn blijven staan. */
+  .v3-logo    { min-height: 36px; height: auto; }
+  .v3-sector  { margin: 4px 0 0; font-size: 12px; line-height: 1.3; }
+  .v3-gebruik { margin: 0; }
+  .v3-rooster { list-style: none; margin: 12px 0 0; padding: 0; display: grid;
+                grid-template-columns: 1fr 1fr; gap: 12px; }
+  .v3-feit    { display: flex; flex-direction: column; gap: 4px;
+                border: 1px solid #e1ebf0; border-radius: 8px; padding: 12px; }
+  .v3-icoon   { display: grid; place-items: center; height: 32px; width: 32px;
+                border-radius: 9999px; background: #f6f8fa; color: #154e3a; }
+  .v3-icoon svg { height: 18px; width: 18px; }
+  .v3-getal   { font-size: 20px; line-height: 1.2; font-weight: 700; color: #0a3327; }
+  .v3-eenheid { font-size: 12px; line-height: 1.3; color: #547068; }
+
+  /* De stopwatch vóór de resultaatzin. align-items: flex-start en niet
+     center, want bij een zin van twee regels hoort het merkje bij de EERSTE
+     regel en niet halverwege te zweven. De 3px padding-top zet de cirkel
+     optisch gelijk met de bovenkant van de hoofdletter: 24px tekst heeft een
+     regelhoogte van 28,8px en het merkje is 36, dus zonder die correctie
+     staat de cirkel 4px te hoog. */
+  .v3a-voordeel { margin: 20px 0 0; display: flex; align-items: flex-start; gap: 12px; }
+  .v3a-merk   { flex: none; display: grid; place-items: center; height: 36px; width: 36px;
+                border-radius: 9999px; background: #0af29f; color: #154e3a;
+                transition: transform var(--m-base) var(--e-standard); }
+  .v3a-merk svg { height: 20px; width: 20px; }
+  .v3a-zin    { min-width: 0; padding-top: 3px; font-size: 24px; line-height: 1.2;
+                font-weight: 700; color: #0a3327; text-wrap: balance; }
+  .case-kaart:hover .v3a-merk { transform: scale(1.08); }
+  @media (prefers-reduced-motion: reduce) {
+    .case-kaart:hover .v3a-merk { transform: none; }
+  }
 
   /* De zinsnede boven de cijfers, op elke kaart dezelfde. Ze staat er op vraag
      van Jana (2026-10-10): zonder haar leest "370 medewerkers" als de GROOTTE
@@ -1770,7 +1813,7 @@ tailwind.config = {
                alt="Portret van Nick Van Langendonck"
                class="h-14 w-14 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-paper"
                data-inhoud-alt="hero.foto_alt">
-          <p class="m-0 text-caption text-ink-soft max-w-text" data-inhoud="hero.fototekst">Boek een demo met onze expert Nick. Hij luistert naar jouw uitdagingen en toont je hoe Youbo werkt voor jouw organisatie. Geen verkooppitch, wel een concrete blik op jouw cyclus.</p>
+          <p class="m-0 text-caption text-ink-soft max-w-text" data-inhoud="hero.fototekst">Onze expert Nick luistert naar jouw uitdagingen en toont je hoe Youbo werkt voor jouw organisatie. Geen verkooppitch, wel een concrete blik op jouw cyclus.</p>
         </div>
       </div>
 
@@ -2498,15 +2541,20 @@ tailwind.config = {
          brede onder, precies de indeling waarin de minste leegte overblijft. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
-          <div class="case-body">
-            <span class="case-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="cases.items.1.logo" data-inhoud-alt="cases.items.1.bedrijf" data-inhoud-style="height:{cases.items.1.logo_hoogte}px"></span>
-            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.1.sector">Chemie- en technologiebedrijf</p>
-            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.1.voordeel">2 werkweken tijdswinst</p>
-            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
-            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.1.cijfers">
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">370 medewerkers</span></li>
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">27 afdelingen</span></li>
-            </ul>
+          <div class="case-body kaartromp">
+            <span class="case-logo v3-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="cases.items.1.logo" data-inhoud-alt="cases.items.1.bedrijf" data-inhoud-style="height:{cases.items.1.logo_hoogte}px"></span>
+            <p class="case-sector v3-sector text-ink-soft" data-inhoud="cases.items.1.sector">Chemie- en technologiebedrijf</p>
+            <p class="v3a-voordeel">
+              <span class="v3a-merk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.8" r="7.3"/><path d="M12 13.8V9.8"/><path d="M9.6 2.6h4.8"/><path d="M12 2.6v3.9"/><path d="M18.6 7.8 20.1 6.3"/></svg></span>
+              <span class="case-voordeel v3a-zin" data-inhoud="cases.items.1.voordeel">2 werkweken tijdswinst</span>
+            </p>
+            <div class="kaartfeiten">
+              <p class="case-gebruik v3-gebruik text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+              <ul class="v3-rooster" data-inhoud="cases.items.1.cijfers">
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19v-1a3.5 3.5 0 0 0-3.5-3.5h-4A3.5 3.5 0 0 0 4 18v1"/><circle cx="9.5" cy="8" r="3.2"/><path d="M16.5 5.2a3 3 0 0 1 0 5.6"/><path d="M20 19v-1a3.5 3.5 0 0 0-2.4-3.3"/></svg></span><span class="v3-getal tabular">370</span><span class="v3-eenheid">medewerkers</span></li>
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8.8" y="3" width="6.4" height="5" rx="1.3"/><rect x="2.8" y="16" width="6.4" height="5" rx="1.3"/><rect x="14.8" y="16" width="6.4" height="5" rx="1.3"/><path d="M12 8v5.5"/><path d="M6 16v-2.5h12V16"/></svg></span><span class="v3-getal tabular">27</span><span class="v3-eenheid">afdelingen</span></li>
+              </ul>
+            </div>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.1.nota" data-inhoud="cases.items.1.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2521,15 +2569,20 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
-          <div class="case-body">
-            <span class="case-logo"><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="cases.items.2.logo" data-inhoud-alt="cases.items.2.bedrijf" data-inhoud-style="height:{cases.items.2.logo_hoogte}px"></span>
-            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.2.sector">Softwaregroep</p>
-            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.2.voordeel">Meerdere werkdagen bespaard</p>
-            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
-            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.2.cijfers">
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">300 medewerkers</span></li>
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">8 bedrijven</span></li>
-            </ul>
+          <div class="case-body kaartromp">
+            <span class="case-logo v3-logo"><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="cases.items.2.logo" data-inhoud-alt="cases.items.2.bedrijf" data-inhoud-style="height:{cases.items.2.logo_hoogte}px"></span>
+            <p class="case-sector v3-sector text-ink-soft" data-inhoud="cases.items.2.sector">Softwaregroep</p>
+            <p class="v3a-voordeel">
+              <span class="v3a-merk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.8" r="7.3"/><path d="M12 13.8V9.8"/><path d="M9.6 2.6h4.8"/><path d="M12 2.6v3.9"/><path d="M18.6 7.8 20.1 6.3"/></svg></span>
+              <span class="case-voordeel v3a-zin" data-inhoud="cases.items.2.voordeel">Meerdere werkdagen bespaard</span>
+            </p>
+            <div class="kaartfeiten">
+              <p class="case-gebruik v3-gebruik text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+              <ul class="v3-rooster" data-inhoud="cases.items.2.cijfers">
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19v-1a3.5 3.5 0 0 0-3.5-3.5h-4A3.5 3.5 0 0 0 4 18v1"/><circle cx="9.5" cy="8" r="3.2"/><path d="M16.5 5.2a3 3 0 0 1 0 5.6"/><path d="M20 19v-1a3.5 3.5 0 0 0-2.4-3.3"/></svg></span><span class="v3-getal tabular">300</span><span class="v3-eenheid">medewerkers</span></li>
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h6A1.5 1.5 0 0 1 13.5 5v15.5"/><path d="M13.5 9.5h4A1.5 1.5 0 0 1 19 11v9.5"/><path d="M7.5 7.5h3M7.5 11h3M7.5 14.5h3"/><path d="M3 20.5h18"/></svg></span><span class="v3-getal tabular">8</span><span class="v3-eenheid">bedrijven</span></li>
+              </ul>
+            </div>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.2.nota" data-inhoud="cases.items.2.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2544,15 +2597,20 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
-          <div class="case-body">
-            <span class="case-logo"><img src="assets/img/aertssen-logo-volledig.svg" alt="Aertssen Group" class="w-auto" style="height:36px" data-inhoud-src="cases.items.3.logo" data-inhoud-alt="cases.items.3.bedrijf" data-inhoud-style="height:{cases.items.3.logo_hoogte}px"></span>
-            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.3.sector">Infrastructuur- en logistiekgroep</p>
-            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.3.voordeel">Live op 3 maanden</p>
-            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
-            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.3.cijfers">
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">450 bedienden</span></li>
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
-            </ul>
+          <div class="case-body kaartromp">
+            <span class="case-logo v3-logo"><img src="assets/img/aertssen-logo-volledig.svg" alt="Aertssen Group" class="w-auto" style="height:36px" data-inhoud-src="cases.items.3.logo" data-inhoud-alt="cases.items.3.bedrijf" data-inhoud-style="height:{cases.items.3.logo_hoogte}px"></span>
+            <p class="case-sector v3-sector text-ink-soft" data-inhoud="cases.items.3.sector">Infrastructuur- en logistiekgroep</p>
+            <p class="v3a-voordeel">
+              <span class="v3a-merk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.8" r="7.3"/><path d="M12 13.8V9.8"/><path d="M9.6 2.6h4.8"/><path d="M12 2.6v3.9"/><path d="M18.6 7.8 20.1 6.3"/></svg></span>
+              <span class="case-voordeel v3a-zin" data-inhoud="cases.items.3.voordeel">Live op 3 maanden</span>
+            </p>
+            <div class="kaartfeiten">
+              <p class="case-gebruik v3-gebruik text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+              <ul class="v3-rooster" data-inhoud="cases.items.3.cijfers">
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19v-1a3.5 3.5 0 0 0-3.5-3.5h-4A3.5 3.5 0 0 0 4 18v1"/><circle cx="9.5" cy="8" r="3.2"/><path d="M16.5 5.2a3 3 0 0 1 0 5.6"/><path d="M20 19v-1a3.5 3.5 0 0 0-2.4-3.3"/></svg></span><span class="v3-getal tabular">450</span><span class="v3-eenheid">bedienden</span></li>
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.3 2.3 3.4 5.3 3.4 8.5s-1.1 6.2-3.4 8.5c-2.3-2.3-3.4-5.3-3.4-8.5S9.7 5.8 12 3.5Z"/></svg></span><span class="v3-getal tabular">2</span><span class="v3-eenheid">landen</span></li>
+              </ul>
+            </div>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.3.nota" data-inhoud="cases.items.3.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2567,15 +2625,20 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
-          <div class="case-body">
-            <span class="case-logo"><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="cases.items.4.logo" data-inhoud-alt="cases.items.4.bedrijf" data-inhoud-style="height:{cases.items.4.logo_hoogte}px"></span>
-            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.4.sector">Hr-dienstverlener</p>
-            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.4.voordeel">Van 2 maanden naar 3 weken</p>
-            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
-            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.4.cijfers">
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">7.000 medewerkers</span></li>
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">18 landen</span></li>
-            </ul>
+          <div class="case-body kaartromp">
+            <span class="case-logo v3-logo"><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="cases.items.4.logo" data-inhoud-alt="cases.items.4.bedrijf" data-inhoud-style="height:{cases.items.4.logo_hoogte}px"></span>
+            <p class="case-sector v3-sector text-ink-soft" data-inhoud="cases.items.4.sector">Hr-dienstverlener</p>
+            <p class="v3a-voordeel">
+              <span class="v3a-merk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.8" r="7.3"/><path d="M12 13.8V9.8"/><path d="M9.6 2.6h4.8"/><path d="M12 2.6v3.9"/><path d="M18.6 7.8 20.1 6.3"/></svg></span>
+              <span class="case-voordeel v3a-zin" data-inhoud="cases.items.4.voordeel">Van 2 maanden naar 3 weken</span>
+            </p>
+            <div class="kaartfeiten">
+              <p class="case-gebruik v3-gebruik text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+              <ul class="v3-rooster" data-inhoud="cases.items.4.cijfers">
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19v-1a3.5 3.5 0 0 0-3.5-3.5h-4A3.5 3.5 0 0 0 4 18v1"/><circle cx="9.5" cy="8" r="3.2"/><path d="M16.5 5.2a3 3 0 0 1 0 5.6"/><path d="M20 19v-1a3.5 3.5 0 0 0-2.4-3.3"/></svg></span><span class="v3-getal tabular">7.000</span><span class="v3-eenheid">medewerkers</span></li>
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.3 2.3 3.4 5.3 3.4 8.5s-1.1 6.2-3.4 8.5c-2.3-2.3-3.4-5.3-3.4-8.5S9.7 5.8 12 3.5Z"/></svg></span><span class="v3-getal tabular">18</span><span class="v3-eenheid">landen</span></li>
+              </ul>
+            </div>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.4.nota" data-inhoud="cases.items.4.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2590,15 +2653,20 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-3" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
-          <div class="case-body">
-            <span class="case-logo"><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="cases.items.5.logo" data-inhoud-alt="cases.items.5.bedrijf" data-inhoud-style="height:{cases.items.5.logo_hoogte}px"></span>
-            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.5.sector">Mediagroep</p>
-            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.5.voordeel">7x sneller bestanden klaar</p>
-            <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
-            <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.5.cijfers">
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">+6000 medewerkers</span></li>
-              <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
-            </ul>
+          <div class="case-body kaartromp">
+            <span class="case-logo v3-logo"><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="cases.items.5.logo" data-inhoud-alt="cases.items.5.bedrijf" data-inhoud-style="height:{cases.items.5.logo_hoogte}px"></span>
+            <p class="case-sector v3-sector text-ink-soft" data-inhoud="cases.items.5.sector">Mediagroep</p>
+            <p class="v3a-voordeel">
+              <span class="v3a-merk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.8" r="7.3"/><path d="M12 13.8V9.8"/><path d="M9.6 2.6h4.8"/><path d="M12 2.6v3.9"/><path d="M18.6 7.8 20.1 6.3"/></svg></span>
+              <span class="case-voordeel v3a-zin" data-inhoud="cases.items.5.voordeel">7x sneller bestanden klaar</span>
+            </p>
+            <div class="kaartfeiten">
+              <p class="case-gebruik v3-gebruik text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
+              <ul class="v3-rooster" data-inhoud="cases.items.5.cijfers">
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19v-1a3.5 3.5 0 0 0-3.5-3.5h-4A3.5 3.5 0 0 0 4 18v1"/><circle cx="9.5" cy="8" r="3.2"/><path d="M16.5 5.2a3 3 0 0 1 0 5.6"/><path d="M20 19v-1a3.5 3.5 0 0 0-2.4-3.3"/></svg></span><span class="v3-getal tabular">+6000</span><span class="v3-eenheid">medewerkers</span></li>
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.3 2.3 3.4 5.3 3.4 8.5s-1.1 6.2-3.4 8.5c-2.3-2.3-3.4-5.3-3.4-8.5S9.7 5.8 12 3.5Z"/></svg></span><span class="v3-getal tabular">2</span><span class="v3-eenheid">landen</span></li>
+              </ul>
+            </div>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.5.nota" data-inhoud="cases.items.5.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2900,6 +2968,16 @@ tailwind.config = {
 
                 <rect width="1200" height="680" fill="#ffffff"/>
 
+                <!-- EEN GEZICHT PER RIJ, sinds 2026-10-21. Jana vroeg erom in haar
+                     eerste visual: "ik vond die icoontjes hier wel werken", en haar
+                     briefing zegt het breder — "icoontjes (van taken, mensen,…)".
+                     Sven koos gezichten boven pictogrammen, en daarna echte foto's
+                     boven initialen. Het zijn vrije stockportretten; welke, en welke
+                     twee regels eraan vastzitten, staat in ASSET-MANIFEST.md. De
+                     belangrijkste: zet hier nooit een naam onder. Een stockfoto komt
+                     zonder toestemming van het model, en een gezicht met een naam
+                     eronder is iets anders dan een gezicht als decor. -->
+
                 <text x="40" y="60" font-size="30" font-weight="700" fill="#0a3327">Merit cycle 2027</text>
                 <text x="1160" y="60" font-size="23" font-weight="500" fill="#547068" text-anchor="end">Loopt tot 31 maart 2027</text>
                 <line x1="40" y1="94" x2="1160" y2="94" stroke="#e1ebf0" stroke-width="2"/>
@@ -2913,25 +2991,29 @@ tailwind.config = {
                       style="font-variant-numeric: tabular-nums">76% van de cyclus afgerond</text>
                 <line x1="40" y1="290" x2="1160" y2="290" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40"  y="316" font-size="24" font-weight="500" fill="#0a3327">Finance Belgium</text>
+                <image href="assets/img/avatar-demo-1.webp" x="40" y="292" width="44" height="44" preserveAspectRatio="xMidYMid slice" style="clip-path: circle(50%)"/>
+                <text x="102" y="316" font-size="24" font-weight="500" fill="#0a3327">Finance Belgium</text>
                 <text x="640" y="316" font-size="24" font-weight="700" fill="#154e3a" style="font-variant-numeric: tabular-nums">8 van 8</text>
                 <rect x="1020" y="290" width="140" height="36" rx="8" fill="#0af29f"/>
                 <text x="1090" y="315" font-size="20" font-weight="700" fill="#154e3a" text-anchor="middle">Klaar</text>
                 <line x1="40" y1="346" x2="1160" y2="346" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40"  y="390" font-size="24" font-weight="500" fill="#0a3327">Operations</text>
+                <image href="assets/img/avatar-demo-2.webp" x="40" y="366" width="44" height="44" preserveAspectRatio="xMidYMid slice" style="clip-path: circle(50%)"/>
+                <text x="102" y="390" font-size="24" font-weight="500" fill="#0a3327">Operations</text>
                 <text x="640" y="390" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">12 van 16</text>
                 <rect x="1020" y="364" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
                 <text x="1090" y="389" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
                 <line x1="40" y1="420" x2="1160" y2="420" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40"  y="464" font-size="24" font-weight="500" fill="#0a3327">Commercial</text>
+                <image href="assets/img/avatar-demo-3.webp" x="40" y="440" width="44" height="44" preserveAspectRatio="xMidYMid slice" style="clip-path: circle(50%)"/>
+                <text x="102" y="464" font-size="24" font-weight="500" fill="#0a3327">Commercial</text>
                 <text x="640" y="464" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">9 van 14</text>
                 <rect x="1020" y="438" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
                 <text x="1090" y="463" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
                 <line x1="40" y1="494" x2="1160" y2="494" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40"  y="538" font-size="24" font-weight="500" fill="#0a3327">Technology</text>
+                <image href="assets/img/avatar-demo-4.webp" x="40" y="514" width="44" height="44" preserveAspectRatio="xMidYMid slice" style="clip-path: circle(50%)"/>
+                <text x="102" y="538" font-size="24" font-weight="500" fill="#0a3327">Technology</text>
                 <text x="640" y="538" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">9 van 12</text>
                 <rect x="1020" y="512" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
                 <text x="1090" y="537" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
@@ -3300,7 +3382,7 @@ tailwind.config = {
          welk logobestand en welk portret er bestaat, en dat is nu een veld. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:18px" data-inhoud-src="quotes.items.1.logo" data-inhoud-alt="quotes.items.1.bedrijf" data-inhoud-style="height:{quotes.items.1.logo_hoogte}px">
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:39px" data-inhoud-src="quotes.items.1.logo" data-inhoud-alt="quotes.items.1.bedrijf" data-inhoud-style="height:{quotes.items.1.logo_hoogte}px">
           <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.1.tekst">“Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <!-- 80px en niet 56. Jana, opmerking 49: "Zouden we de foto van de mensen
@@ -3346,7 +3428,7 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/dpg-logo.svg" alt="DPG Media" class="w-auto self-start" style="height:18px" data-inhoud-src="quotes.items.3.logo" data-inhoud-alt="quotes.items.3.bedrijf" data-inhoud-style="height:{quotes.items.3.logo_hoogte}px">
+          <img src="assets/img/dpg-logo.svg" alt="DPG Media" class="w-auto self-start" style="height:31px" data-inhoud-src="quotes.items.3.logo" data-inhoud-alt="quotes.items.3.bedrijf" data-inhoud-style="height:{quotes.items.3.logo_hoogte}px">
           <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.3.tekst">“Youbo helpt om de loonkloof weg te werken.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <!-- 80px en niet 56. Jana, opmerking 49: "Zouden we de foto van de mensen
@@ -3369,7 +3451,7 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:14px" data-inhoud-src="quotes.items.4.logo" data-inhoud-alt="quotes.items.4.bedrijf" data-inhoud-style="height:{quotes.items.4.logo_hoogte}px">
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:39px" data-inhoud-src="quotes.items.4.logo" data-inhoud-alt="quotes.items.4.bedrijf" data-inhoud-style="height:{quotes.items.4.logo_hoogte}px">
           <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.4.tekst">“Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu betere inhoudelijke gesprekken met mijn team.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <!-- 80px en niet 56. Jana, opmerking 49: "Zouden we de foto van de mensen
@@ -3392,7 +3474,7 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto self-start" style="height:16px" data-inhoud-src="quotes.items.5.logo" data-inhoud-alt="quotes.items.5.bedrijf" data-inhoud-style="height:{quotes.items.5.logo_hoogte}px">
+          <img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto self-start" style="height:22px" data-inhoud-src="quotes.items.5.logo" data-inhoud-alt="quotes.items.5.bedrijf" data-inhoud-style="height:{quotes.items.5.logo_hoogte}px">
           <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.5.tekst">“Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien we de jaarkost en het totale loonpakket van de werknemer.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
             <!-- 80px en niet 56. Jana, opmerking 49: "Zouden we de foto van de mensen

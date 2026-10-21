@@ -650,7 +650,9 @@ collections:
               De cases en de quotes. Allebei een lijst: je mag er een bij zetten, een weghalen en de
               volgorde veranderen — cases minstens 2 en hoogstens 7, quotes minstens 3 en hoogstens 7.
               "bedrijf" is de naam achter het logo — die wordt voorgelezen in plaats van het beeld.
-              "logo_hoogte" is de hoogte in beeldpunten; kijk ernaast en kies wat even zwaar weegt.
+              "logo_hoogte" is de hoogte in beeldpunten. Even hoog is NIET even groot: het ene
+              logobestand heeft meer lucht rond het woord dan het andere, en bij dpg hoort er een
+              klein "media" bij dat de hoogte optrekt. Kijk ernaast en kies wat even zwaar weegt.
               "cijfers" is een opsomming: één regel per cijfer, twee of drie regels.
               "gebruik" staat klein boven die cijfers, op elke kaart dezelfde — het zegt waar ze over gaan.
               "downloadlink" is het pad naar de pdf van die case, bv. cases/youbo-case-kaneka.pdf.

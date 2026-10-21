@@ -60,10 +60,68 @@ export function kenmerkHtml(tekst) {
  * met opzet: het aantal cijfers per case verschilt (twee bij Kaneka, drie bij
  * SD Worx) en dat is inhoud, geen vorm. Overal elders is één veld één regel.
  */
+/*
+ * De cijfers van een case staan in /beheer/ als één regel vrije tekst:
+ * "450 bedienden", "7.000 medewerkers", "2 landen". Dat blijft zo — Jana
+ * typt een zin, geen formulier met drie vakjes. De kaart toont ze sinds
+ * 2026-10-21 als twee vakjes met een icoon, een getal en een eenheid, en
+ * die driedeling wordt hier afgeleid in plaats van gevraagd.
+ *
+ * Waarom afleiden en niet het beheer uitbreiden: elk extra veld is een veld
+ * dat verkeerd ingevuld kan worden, en een icoonkeuze in een keuzelijst is
+ * werk dat niemand wil doen voor iets dat uit het woord zelf volgt. Wie
+ * "27 afdelingen" typt, heeft het icoon al gekozen.
+ *
+ * Staat er een woord dat we niet kennen, dan krijgt het vakje het neutrale
+ * icoon — drie staafjes, "hier staat een cijfer". Geen lege plek, geen
+ * gebroken kaart, en ook geen fout: een onbekende eenheid is niet verkeerd,
+ * alleen nieuw. Hoort er een eigen icoon bij, zet het dan in de lijst.
+ */
+const CIJFER_ICONEN = [
+  { woorden: ['medewerker', 'bediende', 'werknemer', 'collega', 'arbeider'],
+    tekening: '<path d="M15 19v-1a3.5 3.5 0 0 0-3.5-3.5h-4A3.5 3.5 0 0 0 4 18v1"/>' +
+              '<circle cx="9.5" cy="8" r="3.2"/><path d="M16.5 5.2a3 3 0 0 1 0 5.6"/>' +
+              '<path d="M20 19v-1a3.5 3.5 0 0 0-2.4-3.3"/>' },
+  { woorden: ['land', 'regio', 'markt'],
+    tekening: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/>' +
+              '<path d="M12 3.5c2.3 2.3 3.4 5.3 3.4 8.5s-1.1 6.2-3.4 8.5c-2.3-2.3-3.4-5.3' +
+              '-3.4-8.5S9.7 5.8 12 3.5Z"/>' },
+  { woorden: ['afdeling', 'departement', 'team', 'dienst'],
+    tekening: '<rect x="8.8" y="3" width="6.4" height="5" rx="1.3"/>' +
+              '<rect x="2.8" y="16" width="6.4" height="5" rx="1.3"/>' +
+              '<rect x="14.8" y="16" width="6.4" height="5" rx="1.3"/>' +
+              '<path d="M12 8v5.5"/><path d="M6 16v-2.5h12V16"/>' },
+  { woorden: ['bedrijf', 'bedrijven', 'vestiging', 'entiteit', 'site'],
+    tekening: '<path d="M4.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h6A1.5 1.5 0 0 1 13.5 5v15.5"/>' +
+              '<path d="M13.5 9.5h4A1.5 1.5 0 0 1 19 11v9.5"/>' +
+              '<path d="M7.5 7.5h3M7.5 11h3M7.5 14.5h3"/><path d="M3 20.5h18"/>' },
+];
+const CIJFER_ICOON_ANDERS = '<path d="M5 19v-6"/><path d="M12 19V5"/><path d="M19 19v-9"/>';
+
+function cijferIcoonVoor(eenheid) {
+  const woord = eenheid.toLowerCase();
+  const raak = CIJFER_ICONEN.find((i) => i.woorden.some((w) => woord.includes(w)));
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+         'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+         (raak ? raak.tekening : CIJFER_ICOON_ANDERS) + '</svg>';
+}
+
+/*
+ * "7.000 medewerkers" wordt 7.000 + medewerkers; "+6000 medewerkers" houdt
+ * zijn plusteken, want dat hoort bij het getal en niet bij het woord. Staat
+ * er vooraan geen getal, dan gaat de hele regel vet in het vak en blijft de
+ * eenheid leeg — beter een vakje met alleen tekst dan een vakje dat liegt
+ * over wat het getal is.
+ */
 export function cijferregelHtml(tekst) {
-  return '<li class="flex items-start gap-3">' +
-         '<span class="cijferstip" aria-hidden="true"></span>' +
-         `<span class="tabular">${ontsnap(tekst)}</span>` +
+  const schoon = String(tekst).trim();
+  const deel = /^([+-]?\d[\d.,\s]*?)\s+(\S.*)$/.exec(schoon);
+  const getal = deel ? deel[1] : schoon;
+  const eenheid = deel ? deel[2] : '';
+  return '<li class="v3-feit">' +
+         `<span class="v3-icoon" aria-hidden="true">${cijferIcoonVoor(eenheid || schoon)}</span>` +
+         `<span class="v3-getal tabular">${ontsnap(getal)}</span>` +
+         (eenheid ? `<span class="v3-eenheid">${ontsnap(eenheid)}</span>` : '') +
          '</li>';
 }
 
