@@ -13,37 +13,37 @@ hero:
   intro: Maak komaf met Excel. Beheer loonsverhogingen, bonussen en promoties in één platform. Ontdek Youbo.
   knop: Boek een demo
   foto_alt: Portret van Nick Van Langendonck
-  fototekst: Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch, wel een concrete blik op jouw looncyclus.
+  fototekst: Boek een demo met onze expert Nick. Hij luistert naar jouw uitdagingen en toont je hoe Youbo werkt voor jouw organisatie. Geen verkooppitch, wel een concrete blik op jouw cyclus.
 logobalk:
   kop: Deze bedrijven vertrouwen op Youbo
   logos:
     - naam: SD Worx
       beeld: assets/img/sdworx-logo-dark.svg
-      hoogte: 24
+      hoogte: 34
     - naam: DPG Media
       beeld: assets/img/dpg-logo-dark.svg
-      hoogte: 24
+      hoogte: 34
     - naam: Kaneka
       beeld: assets/img/kaneka-logo-dark.svg
-      hoogte: 20
+      hoogte: 28
     - naam: Aertssen Group
-      beeld: assets/img/aertssen-logo-dark.svg
-      hoogte: 32
+      beeld: assets/img/aertssen-logo-volledig.svg
+      hoogte: 44
     - naam: Anchr
       beeld: assets/img/anchr-logo.webp
-      hoogte: 21
+      hoogte: 29
     - naam: Crelan
       beeld: assets/img/crelan-logo.webp
-      hoogte: 26
+      hoogte: 36
     - naam: Axi
       beeld: assets/img/axi-logo.webp
-      hoogte: 20
+      hoogte: 28
     - naam: Mourik
       beeld: assets/img/mourik-logo.webp
-      hoogte: 26
+      hoogte: 36
     - naam: Protime
       beeld: assets/img/protime-logo.webp
-      hoogte: 24
+      hoogte: 34
 kern:
   kop: Van versnipperde data naar één helder proces
   blok1_titel: Hr en managers werken samen in één platform
@@ -52,9 +52,10 @@ kern:
   blok2_tekst: Zie meteen wat al is toegekend en hoeveel ruimte er nog is, per budget en in totaal. Stuur tijdig bij en voorkom overschrijdingen. Geen budget slippage meer.
   blok3_titel: Maak je loonbeleid consequent waar
   blok3_tekst: Help managers om consistente en eerlijkere loonbeslissingen te nemen. Met automatische suggesties volgens loonbanden, prestatiescores, budgetten en andere parameters. Wat jij verkiest.
+  blok4_titel: Jouw loonbeleid, jouw manier van werken
+  blok4_tekst: Youbo volgt jullie loonregels, formules en goedkeuringsflows. Jij bepaalt wie wat ziet. Verandert je loonbeleid? Dan verandert Youbo mee.
 rondleiding:
   kop: Ontdek hoe Youbo werkt
-  scrollhint: Scroll verder
   stappen:
     - titel: Managers beslissen onderbouwd
       tekst: Elke manager ziet zijn team, vergelijkt medewerkers en onderzoekt uitschieters. Hij neemt loonvoorstellen over of past ze aan binnen de afgesproken marges.

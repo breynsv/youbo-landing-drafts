@@ -305,9 +305,21 @@ try {
 
   const todoEcht = echtPer.flatMap((v) => (v.alineas || []).filter((p) => /todo/.test(p.klasse)));
   const todoVoorbeeld = voorbeeldPer.flatMap((v) => (v.alineas || []).filter((p) => /todo/.test(p.klasse)));
-  ok('het TODO-kader staat er in allebei, en ziet er hetzelfde uit',
-     todoEcht.length > 0 && JSON.stringify(todoEcht) === JSON.stringify(todoVoorbeeld),
-     `pagina: ${todoEcht.length} kader(s) · voorbeeld: ${todoVoorbeeld.length}`);
+  /* De eis "er MOET er een zijn" stond hier omdat een vergelijking van twee lege
+     lijsten niets bewijst. Sinds 2026-10-21 staat er geen TODO meer in de FAQ:
+     Jana's campagneplan beantwoordt ook de prijsvraag, en dat was de laatste.
+     Daarom nu twee gevallen in plaats van één onhaalbare eis. Dat de bouw een
+     TODO goed zet, blijft bewezen in toets-inhoud ("een TODO-veld wordt vet tot
+     de eerste dubbele punt"); dit hier gaat alleen over of het voorbeeld hem
+     net zo toont als de pagina. Komt er ooit weer een TODO bij, dan vergelijkt
+     deze regel vanzelf weer echt. */
+  if (todoEcht.length === 0 && todoVoorbeeld.length === 0) {
+    console.log('  --    geen TODO-kader meer in de FAQ, dus niets te vergelijken');
+  } else {
+    ok('het TODO-kader staat er in allebei, en ziet er hetzelfde uit',
+       todoEcht.length > 0 && JSON.stringify(todoEcht) === JSON.stringify(todoVoorbeeld),
+       `pagina: ${todoEcht.length} kader(s) · voorbeeld: ${todoVoorbeeld.length}`);
+  }
 
   await venster.evaluate(() => {
     const s = document.querySelector('section[aria-labelledby="faq-titel"]');

@@ -7,17 +7,18 @@
 # De volgorde hier is de volgorde op de pagina.
 # Meer uitleg: content/LEESMIJ.txt. Het CMS herschrijft dit bestand bij elke opslag en bewaart geen ander commentaar dan deze regels.
 items:
-  - vraag: Hoe lang duurt het om Youbo op te zetten?
-    antwoord: Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder.
-  - vraag: Vanaf hoeveel medewerkers is Youbo relevant?
-    antwoord: Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat doorgaans vanaf 300 medewerkers, of zodra het Excelproces complex en persoonsafhankelijk wordt.
-  - vraag: Hoeveel kost het?
-    antwoord: |-
-      Dit is de vraag die iedereen stelt, en ze hoort op de pagina. Wat hier komt te staan, beslist Youbo zelf.
-      TODO — te bevestigen: het antwoord op de prijsvraag. Jana loopt dit na met de partners en met Nicole. Een bereik of de logica achter de prijs is verdedigbaar, geen antwoord is dat niet
+  - vraag: Hoe verloopt de opstart van Youbo?
+    antwoord: Samen met een vaste contactpersoon stemmen we Youbo af op je loonbeleid, laden we je data in en leiden we je managers op. Tussen het eerste contact tot de eerste beloningsronde verloopt er gemiddeld 10 tot 12 weken, afhankelijk van de omvang van je organisatie en de complexiteit van je loonbeleid. Daarna kun je zelfstandig aan de slag. Je kan de configuratie aanpassen wanneer je loonbeleid verandert. Je vaste contactpersoon blijft beschikbaar voor ondersteuning. Tijdens de demo krijg je een concreet zicht op de timing voor jouw organisatie.
+  - vraag: Is Youbo geschikt voor meerdere hiërarchische niveaus of meerdere landen?
+    antwoord: Ja. Het budget kan fijnmazig worden opgesplitst over zoveel niveaus als gewenst. De tool is inzetbaar in meerdere landen, werkt met verschillende munteenheden en is beschikbaar in de meest courante talen.
   - vraag: Past Youbo zich aan onze manier van werken aan?
-    antwoord: Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het uitgangspunt. Youbo neemt ook complexe regels en formules over.
-  - vraag: Is Youbo geschikt voor meerdere landen en niveaus?
-    antwoord: Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo inzetten in verschillende landen.
-  - vraag: Hoe helpt Youbo met compliance?
-    antwoord: Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing onderbouwd en traceerbaar.
+    antwoord: |-
+      Youbo past zich aan jouw organisatie aan, niet andersom. Youbo neemt complexe regels en formules van jullie loonbeleid over. We vertrekken vanuit de vraag: hoe wil jullie organisatie haar loonbeleid uitvoeren? Vervolgens modelleren we de software volgens die behoefte.
+
+      Jullie organisatiestructuur, loonregels, goedkeuringsflows en gewenste verantwoordelijkheden zijn het uitgangspunt. Mogen budgetten worden overschreden? Is het budget fixed of een percentage van de loonmassa? In welke mate kan een manager afwijken? Welke data kunnen de managers zien? Jij kiest, Youbo voert uit.
+  - vraag: Hoe helpt Youbo met compliance en de regels rond loontransparantie?
+    antwoord: Youbo past de regels consequent toe, bewaakt afwijkingen en maakt verschillen inzichtelijk en verantwoordbaar. Elke loonbeslissing met Youbo is overwogen, onderbouwd én traceerbaar. Daardoor helpt Youbo je om te beantwoorden aan de Europese loontransparantierichtlijn en bij rapportering en audits.
+  - vraag: Ik gebruik SAP SuccessFactors of Workday al. Wat voegt Youbo toe?
+    antwoord: Youbo sluit aan op je bestaande hr-tools, zoals SAP SuccessFactors of Workday. Die ondersteunen ook compensatiemanagement, maar Youbo is er specifiek voor ontwikkeld. Daardoor kun je je beloningsproces flexibeler inrichten en vlotter beheren. Youbo gebruikt de data uit je bestaande systemen en connecteert vlot met elke tool in je hr-landschap.
+  - vraag: Wat kost Youbo?
+    antwoord: De prijs hangt af van de omvang van je organisatie en de gewenste ondersteuning. Je betaalt een eenmalige opstartkost en een jaarlijkse licentie. Tijdens de demo bespreken we je behoeften en maken we een voorstel op maat.

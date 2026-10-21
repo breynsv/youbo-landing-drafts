@@ -382,6 +382,22 @@ collections:
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'blok4_titel'
+                label: 'Blok 4 — titel'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
+              - name: 'blok4_tekst'
+                label: 'Blok 4 — tekst'
+                widget: 'string'
+                required: true
+                hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
+                pattern:
+                  - '^[^<\n]*$'
+                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
           - name: 'rondleiding'
             label: 'De rondleiding door het product'
             widget: 'object'
@@ -392,14 +408,6 @@ collections:
                 widget: 'string'
                 required: true
                 hint: 'Eén doorlopend stuk tekst. Geen HTML, geen nieuwe regel.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'scrollhint'
-                label: 'Het zinnetje “Scroll verder”'
-                widget: 'string'
-                required: true
-                hint: 'Staat alleen op desktop, onderaan de eerste stap.'
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'

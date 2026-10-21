@@ -600,7 +600,7 @@ for (const [paginaNaam, pad] of [['landingspagina', LANDING], ['bevestigingspagi
   });
   await pg.waitForTimeout(200);
   const drie = (await onzeEvents(pg)).slice(voor3);
-  ok('drie tikken binnen 500ms op "Vraag je demo aan" zijn één aanvraag',
+  ok('drie tikken binnen 500ms op de verzendknop zijn één aanvraag',
      drie.length === 1 && drie[0].event === 'demo_formulier_verstuurd', JSON.stringify(drie));
   await ctx.close();
 }

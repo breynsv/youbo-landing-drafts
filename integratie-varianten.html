@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<!--
+CONCEPT: Vijf manieren om het integratieblok te tekenen, en één vraag. Jana, opmerking 48:
+"die visual mag meer 'integratie' uitdrukken ipv labels onder elkaar, zoals in de voorbeeldjes
+(die gaan al meer in de richting van wat ik bedoel, de eerste screenshot met die cirkel en die
+logo's, de tweede screenshot met die logo's in een uniforme stijl)". Haar voorbeeld is de
+integratievisual van figures.hr: iconen en dynamiek in plaats van op elkaar gestapelde labels.
+WAT ER NU STAAT: vier functies met een icoon, onder elkaar, in de rechterkolom van de donkere
+band. Dat is precies de vorm die ze afkeurt.
+WAT HIER VERANDERT: alleen de VORM van die vier. De kop, de inleidende zin en de vier namen zijn
+in alle vijf de varianten letterlijk die uit content/pagina.yml, want anders vergelijk je twee
+dingen tegelijk en zegt het antwoord niets.
+VIER MET GETEKENDE ICOONTJES, EEN MET MERKNAMEN. Jana vraagt nu logo's; in een eerdere ronde koos
+zij zelf het omgekeerde ("Ik denk dat die icoontjes beter zijn, laten we het daar op houden").
+Daar bovenop hebben wij die logo's niet, en een merklogo op onze pagina zetten suggereert een
+partnerschap dat niemand bevestigd heeft. Variant 5 laat zien hoe het eruit zou zien, met
+neutrale plaatshouders en de merknaam erin; de toelichting eronder zegt wat ervoor nodig is.
+ECHTE MATEN, GEEN SCHETSEN: elke variant staat twee keer, in een kader van 390 px (telefoon) en
+in een kader waarin de inhoud 487 px breed is (de kolom op een breed scherm). Die twee maten zijn
+gemeten op draft-r3-01-definitief.html en niet gekozen. De varianten wisselen van vorm op hun
+EIGEN breedte, met @container en niet met een schermbreedte, want anders zou het telefoonkader op
+een breed scherm de verkeerde opmaak tonen.
+TOKENS: de Tailwind-configuratie en het hele stijlblok zijn letterlijk overgenomen uit
+draft-r3-01-definitief.html, regel 162 tot 1644. Er is geen eigen palet.
+-->
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Deze pagina meldt zich als vergelijkingspagina aan bij check-drafts.mjs, net
+     zoals hero-varianten-nick.html. Drie regels slaan daardoor anders uit: geen
+     og-metadata nodig, noindex verplicht, en geen meetpixel toegestaan. -->
+<meta name="pagina-soort" content="vergelijking">
+<meta name="robots" content="noindex">
+
+<title>Vijf integratievisuals voor het hr-toolblok | Youbo</title>
+<meta name="description" content="Vijf manieren om het integratieblok van de Youbo-landingspagina te tonen: een naaf met vier icoontjes, een instroom, uniforme tegels, koppelstukken en een band met merkplaathouders. Elke variant staat er op telefoonbreedte en op een breed scherm.">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* ---------------------------------------------------------------------------
+   De tokens uit DESIGN-youbo-io.md, letterlijk. Het groen is niet bijgestuurd.
+   Eén toevoeging, geen wijziging: link.licht voor links op een lichte achtergrond
+   (zie de toelichting daar). De huisstijlkleur zelf blijft ongemoeid.
+   --------------------------------------------------------------------------- */
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },   /* primary + primary-text   */
+        ink:     { DEFAULT: '#0a3327', soft: '#547068',    /* text-primary + secondary */
+                   inv: '#ffffff' },
+        paper:   '#ffffff',                                 /* background               */
+        surface: '#f6f8fa',                                 /* surface                  */
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
+        /* Het cyaanblauw van de huisstijl haalt op licht de leesnorm niet:
+           2,67:1 op wit en 2,51:1 op #f6f8fa, waar 4,5:1 nodig is. Op de
+           donkere banden werkt het wél, dus blijft het daar staan. Voor links
+           op een lichte achtergrond gebruikt deze pagina de goedgekeurde
+           donkerder variant #00718c: 5,61:1 op wit en 5,27:1 op #f6f8fa. */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
+        forest:  '#154e3a',                                 /* gradient-dark-end        */
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      /* de spatiëringsschaal 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 80 · 128 */
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionDuration: { fast: '150ms', base: '200ms', medium: '300ms', slow: '350ms' },
+      transitionTimingFunction: {
+        standard:   'ease-in-out',
+        decelerate: 'ease-out',
+        accelerate: 'cubic-bezier(0, 1, 0.3, 1)',
+      },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    :root {
+      /* motion-tokens, één keer gedeclareerd en overal hergebruikt */
+      --m-fast: 150ms;
+      --m-base: 200ms;
+      --m-medium: 300ms;
+      --m-slow: 350ms;
+      /* De opteller bij het grote cijfer: vier keer het traagste token. Korter
+         dan dat leest een getal van vijf cijfers niet — overgenomen uit
+         draft-r2-04-huisstijl-licht, waar Jana die opteller zag staan. */
+      --m-telop: 1400ms;
+      --e-standard: ease-in-out;
+      --e-decelerate: ease-out;
+      --e-accelerate: cubic-bezier(0, 1, 0.3, 1);
+      /* De focusomlijning. Precies dezelfde splitsing als bij de links, en om
+         precies dezelfde reden: #00acd6 haalt 2,67:1 op wit en 2,51:1 op
+         #f6f8fa, terwijl een bedieningselement 3:1 moet halen — wie met de
+         Tab-toets werkt zag dus nauwelijks waar hij stond. Deze pagina begint
+         licht, dus staat hier de donkerder trap #00718c (5,61 en 5,27). Elke
+         donkere band zet de variabele verderop weer op het cyaan van de
+         huisstijl, waar die het ruim haalt. Eén variabele die per band
+         meekantelt, geen losse kleur per component. */
+      --c-focus: #00718c;
+      /* afgeleiden van #ffffff voor de donkere banden — geen nieuwe hue */
+      --inv-soft: rgba(255,255,255,.72);
+      --inv-line: rgba(255,255,255,.16);
+      --inv-fill: rgba(255,255,255,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { @apply font-sans text-body font-medium text-ink bg-paper antialiased; }
+    h1, h2, h3 { @apply font-sans font-bold text-ink; text-wrap: balance;
+                 hyphens: auto; overflow-wrap: break-word; }
+    p { text-wrap: pretty; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    [x-cloak] { display: none !important; }
+  }
+
+  @layer components {
+    /* ---- knoppen, exact de componentspecificatie uit de designbron ---------- */
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-sm text-body
+                  font-bold min-h-[48px] px-6 py-[14px] cursor-pointer;
+           transition: background-color var(--m-base) var(--e-standard),
+                       color var(--m-base) var(--e-standard),
+                       border-color var(--m-base) var(--e-standard); }
+    .btn-primary { @apply btn bg-brand text-brand-ink; }
+    .btn-primary:hover { background-color: #000000; color: #0af29f; }
+    .btn-primary:active { background-color: #031317; color: #0af29f; }
+    .btn-secondary { @apply btn bg-paper text-ink border border-line-btn px-3 py-2; }
+    .btn-secondary:hover { background-color: #f6f8fa; border-color: #e1ebf0; }
+
+    /* ---- tekst op donker ---------------------------------------------------- */
+    .on-dark        { color: #ffffff; }
+    .on-dark-soft   { color: var(--inv-soft); }
+    .rule-inv       { border-color: var(--inv-line); }
+
+    /* ---- kaarten ------------------------------------------------------------ */
+    .card { @apply rounded-sm bg-paper shadow-card;
+            transition: box-shadow var(--m-base) var(--e-standard); }
+    .card:hover { @apply shadow-lift; }
+    .card-inv { @apply rounded-sm; background: var(--inv-fill);
+                border: 1px solid var(--inv-line); }
+
+    /* ---- het zichtbare TODO-blokje, volledig binnen het palet --------------- */
+    .todo { @apply block rounded-sm border border-dashed border-line-btn bg-surface
+                   px-4 py-3 text-caption text-ink-soft; }
+    .todo b { @apply font-bold text-brand-ink; }
+    .todo-inv { @apply block rounded-sm border border-dashed px-4 py-3 text-caption;
+                border-color: var(--inv-line); background: var(--inv-fill);
+                color: var(--inv-soft); }
+    .todo-inv b { @apply font-bold text-brand; }
+
+    /* ---- productpanelen: wit, zodat ze oplichten op de donkere band -------- */
+    /* Een paneel is wit papier, ook midden op een zwarte band. Alles erin
+       staat dus op licht en zet de focusomlijning terug op #00718c: de tabel
+       met loonvoorstellen is op telefoon een scrollvak, en Chromium maakt zo'n
+       vak met de Tab-toets bereikbaar. Daar kwam de ring anders in cyaan op wit
+       terecht — 2,67:1, precies de fout die deze ronde wegwerkt. */
+    .panel { @apply rounded-md bg-paper shadow-panel overflow-hidden; --c-focus: #00718c; }
+    .panel-bar { @apply flex items-center gap-2 border-b border-line px-5 py-3; }
+    .miniheader { @apply text-caption font-bold text-ink; }
+    .scrollhide { scrollbar-width: none; }
+    .scrollhide::-webkit-scrollbar { display: none; }
+
+    /* =====================================================================
+       DE SCHAKELING — de belangrijkste beweging van dit draft
+       ---------------------------------------------------------------------
+       De pagina kantelt negen keer tussen licht en donker. Alle negen keer op
+       precies dezelfde manier, en die manier is: NIETS ERTUSSEN.
+
+       · De sectiegrens is SCHERP. Geen lijn erop, geen vervaging eromheen.
+         Het kleurverschil doet het werk al — #000000 tegen #ffffff is de
+         hardste overgang die een scherm kan maken, en daar hoort geen hulp
+         bij. Alles wat je ertussen zet, leest als iets wat stukging: een
+         gekleurde streep over de volle breedte leest als een vergeten rand,
+         en een vervaging tussen zwart en wit gaat altijd door grijs en ziet
+         er altijd vuil uit. Beide stonden hier tot 2026-09-25; beide zijn weg.
+
+       · HET VERLOOP #000000 → #154e3a BLIJFT — het is het kenmerkende element
+         van youbo.io — maar het leeft nu BINNEN de donkere band en raakt de
+         rand niet meer. De band is zwart aan bovenkant én onderkant; het
+         groen zwelt op in een vaste zone van 400 px vlak boven de onderrand
+         en zakt in de laatste 160 px terug naar zwart. Dat is dezelfde vorm
+         als in draft 06, waar de heroband precies dezelfde zwelling en
+         dezelfde voet draagt: de twee drafts behandelen dit identiek.
+
+         Twee dingen maken dat die zwelling geen vlek is. Ze staat in PIXELS
+         en niet in procenten, dus ze is even lang in een band van 435 px als
+         in een van 1545 px — een tweestopsverloop over de volle bandhoogte
+         is precies wat hier eerst stond en wat als vlek las. En ze
+         interpoleert `in oklab` over vijf stops, zodat het middengebied groen
+         blijft in plaats van door een grijsgroene modderzone te lopen.
+
+       Daarbovenop laat .band-* het groen van #154e3a er in 350ms in zakken
+       zodra de band in beeld komt. De band start zwart, dus er is geen moment
+       waarop witte tekst onleesbaar staat, ook niet als JavaScript uitvalt.
+       ===================================================================== */
+
+    /* Elke donkere band kantelt de focusomlijning mee terug naar het cyaan van
+       de huisstijl: op #000000 haalt dat 7,87:1 en op het groen #154e3a waarop
+       het verloop eindigt nog 3,54:1. De variabele erft, dus alles in de band
+       krijgt hem, ook de kleefkaart van de rondleiding. */
+    .band { @apply relative isolate overflow-hidden; background-color: #000000; --c-focus: #00acd6; }
+    .band > * { position: relative; z-index: 1; }
+    .band::before { content: ""; position: absolute; inset: 0; z-index: 0;
+                    opacity: 1;
+                    transition: opacity var(--m-slow) var(--e-decelerate); }
+
+    /* De zwelling, gemeten vanaf de ONDERRAND van de band omhoog:
+       0 … 160 px    terug naar zwart, zodat de rand zelf zwart is
+       160 px        vol #154e3a
+       160 … 560 px  de rise, vijf stops, dezelfde curve als in draft 06
+       daarboven     vlak zwart
+       De eerste regel is de terugval voor een browser zonder oklab-verlopen;
+       de tweede overschrijft hem waar dat wel kan. */
+    .band-gradient::before {
+      --band: 400px; --foot: 160px;
+      background-image: linear-gradient(to top,
+        #000000 0,
+        #06241a calc(var(--foot) * 0.37),
+        #0e3a29 calc(var(--foot) * 0.69),
+        #154e3a var(--foot),
+        #12452f calc(var(--foot) + var(--band) * 0.20),
+        #0c3323 calc(var(--foot) + var(--band) * 0.425),
+        #051c13 calc(var(--foot) + var(--band) * 0.70),
+        #000000 calc(var(--foot) + var(--band)));
+      background-image: linear-gradient(to top in oklab,
+        #000000 0,
+        #06241a calc(var(--foot) * 0.37),
+        #0e3a29 calc(var(--foot) * 0.69),
+        #154e3a var(--foot),
+        #12452f calc(var(--foot) + var(--band) * 0.20),
+        #0c3323 calc(var(--foot) + var(--band) * 0.425),
+        #051c13 calc(var(--foot) + var(--band) * 0.70),
+        #000000 calc(var(--foot) + var(--band)));
+    }
+    @media (max-width: 640px) { .band-gradient::before { --band: 300px; --foot: 120px; } }
+
+    /* De nachtband draagt haar eigen grondkleur #031317 en eindigt daar ook
+       op: het verloop is klaar op 62% en de onderste 38% is vlak. De rand is
+       dus de bandkleur zelf, niet een punt halverwege een verloop. */
+    .band-night { background-color: #031317; }
+    .band-night::before { background: linear-gradient(180deg, #000000 0%, #031317 62%); }
+    .band-black::before { background: #000000; }
+    html.js .band::before { opacity: 0; }
+    html.js .band.is-in::before { opacity: 1; }
+
+    /* ---- rustig inkomen van blokinhoud ------------------------------------- */
+    html.js [data-reveal] { opacity: 0; transform: translateY(16px);
+      transition: opacity var(--m-medium) var(--e-decelerate),
+                  transform var(--m-slow) var(--e-accelerate); }
+    html.js [data-reveal].is-in { opacity: 1; transform: none; }
+
+    /* =====================================================================
+       DE MEESCROLLENDE RONDLEIDING — blok 5 "Ontdek hoe het werkt"
+       ---------------------------------------------------------------------
+       Eén set schermen, niet twee. In de HTML staat elk scherm gewoon onder
+       zijn eigen stap: zonder JavaScript lees je vier stappen met vier
+       schermen onder elkaar, in volgorde. Zodra JavaScript draait verhuizen
+       diezelfde vier <figure>'s naar de kleefkaart — verhuizen, niet
+       kopiëren, dus geen tweede download en geen tweede alt-tekst.
+       Bij prefers-reduced-motion: reduce gebeurt die verhuizing niet en
+       blijft de leesbare stapel staan: alles meteen in eindtoestand.
+       ===================================================================== */
+    /* .band draagt overflow-hidden, en dat maakt de band zelf de scrollcontainer
+       van alles wat erin kleeft: position: sticky blijft dan gewoon meeschuiven.
+       Deze band heeft niets te snoeien — het verloop zit in ::before met inset: 0 —
+       dus zet hij de snoei uit in plaats van de kleefkaart te laten stukgaan. */
+    .band-kleef { overflow: visible; }
+
+    /* RONDE 3 — DE KLEEFKAART BESTAAT ALLEEN NOG NAAST ELKAAR (vanaf 1024px).
+       Jana's eerste vraag voor dit blok is: op telefoon eerst de tekst, dan de
+       afbeelding. Een kaart die bovenaan vastkleeft staat per definitie bóven
+       de tekst die eronder doorschuift, dus bestaat er op telefoon geen versie
+       van dit mechanisme die aan die vraag voldoet. Op telefoon valt het blok
+       daarom terug op precies de stapel die er zonder JavaScript ook staat:
+       per stap eerst het streepje, het nummer, de kop en de tekst, en dan het
+       scherm. Dat beantwoordt haar tweede vraag mee — op telefoon is er niets
+       meer dat uit de pas kan lopen — en de kaart neemt ook geen derde van het
+       scherm meer in op het formaat waar 70 à 80% van het verkeer zit. */
+    .scrolly-visual { display: none; }
+
+    .sc-cue  { @apply flex items-center mb-1; }   /* sinds 2026-10-21 alleen nog de bars: de zin «Scroll verder» is weg op vraag van Jana (opmerking 88), de tekentjes blijven */
+    /* De vier stapknoppen waren 36x44px: hoog genoeg, te smal. px-3 maakt er
+       44x44 van (20px streepje plus 2x12px), de maat die als richtlijn geldt, en
+       de gap gaat van 4 naar 6px zodat vier knoppen naast elkaar niet meer als
+       één balk aanvoelen. Op 360px blijft de rij met "Scroll verder" ernaast
+       binnen de kaart. */
+    .sc-bars { @apply ml-auto flex items-center; gap: 6px; }
+    .sc-bar  { @apply flex items-center px-3 cursor-pointer;
+               min-height: 44px; background: none; border: 0; }
+    .sc-bar > span { display: block; height: 3px; width: 20px; border-radius: 9999px;
+                     background: rgba(255,255,255,.35);
+                     transition: background-color var(--m-base) var(--e-standard),
+                                 width var(--m-base) var(--e-standard); }
+    .sc-bar[aria-current="true"] > span { background: #0af29f; width: 30px; }
+
+    /* --sc-h is een PLAFOND, geen vaste hoogte. Dat verschil is de hele bug:
+       een vak met een vaste hoogte en een tekening die haar verhouding houdt,
+       laat het verschil over als wit — op 1440 was de kaart 564 px hoog met een
+       tekening van 323 px erin, en wie op de verkeerde scrollhoogte keek, zag
+       alleen dat witte bovenstuk en dus een "lege kaart".
+       Nu bepaalt de tekening de hoogte (aspect-ratio) en knijpt het plafond de
+       kaart in de BREEDTE af als die hoogte niet past. De verhouding blijft dan
+       kloppen en er komt nooit wit bij. */
+    .sc-stage { position: relative; --sc-h: clamp(120px, 20vh, 190px);
+                max-width: calc(var(--sc-h) * 1200 / 680); margin-inline: auto; }
+    .sc-stage .sc-slide { display: none; margin: 0; }
+    .sc-stage .sc-slide.is-on { display: block; }
+    /* Eén verhouding voor alle vier de schermen, en het is die van het hoogste
+       (1200 × 680). Anders zou de kaart per stap 37 px op en neer gaan, en een
+       kleefkaart die tijdens het scrollen van maat verandert, leest als een fout.
+       De drie kortere tekeningen (600 en 640 hoog) houden daardoor 18 tot 37 px
+       over, gelijk verdeeld boven en onder — dat is kaartmarge, geen leeg vlak. */
+    .sc-stage .sc-shot { aspect-ratio: 1200 / 680; overflow: hidden;
+                         display: flex; align-items: center; justify-content: center; }
+    /* Een krappere balk in de kleefkaart: op telefoon is hoogte het schaarse goed,
+       en een schermtitel die bij stap 4 naar twee regels vouwt maakt de kaart
+       23 px hoger dan bij stap 1 — een kleefkaart die van maat verandert leest
+       als een fout, dus blijft de balk hier één regel. */
+    .sc-stage .panel-bar { @apply py-2; }
+    .sc-stage .panel-bar .miniheader { min-width: 0; white-space: nowrap;
+                                       overflow: hidden; text-overflow: ellipsis; }
+    /* De vier schermen zijn nu <svg>'s, geen bitmaps. Ze schalen dus mee en
+       passen altijd in de breedte — de "sleep opzij"-hint en de horizontale
+       schuifbalk die de schermafdrukken nodig hadden, zijn daarmee weg. */
+    .sc-stage .sc-shot svg { min-width: 0; width: 100%; height: auto;
+                             max-width: 100%; max-height: 100%; }
+    .sc-stage .sc-shot img { min-width: 0; width: 100%; height: 100%;
+                             object-fit: contain; }
+
+    .sc-step { padding: 28px 0; }
+    .sc-step:first-child { padding-top: 16px; }
+    /* Geen opacity op de tekst: wit op #031317 zakt dan onder de contrastdrempel.
+       De stand zit in de kleur van de kop en in het mintstreepje ernaast.
+       Op telefoon is er geen actieve stap meer — alle vier staan er gewoon, met
+       hun scherm — dus staat alles daar in de volle leeskleur. Het gedimde
+       inactieve beeld hoort bij de kleefkaart en begint dus pas op 1024px. */
+    .sc-mark { @apply block h-1 w-10 rounded-sm; background: #0af29f;
+               transition: background-color var(--m-base) var(--e-standard); }
+    .sc-titel { color: #ffffff;
+                transition: color var(--m-base) var(--e-standard); }
+
+    @media (min-width: 1024px) {
+      .scrolly { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; }
+      .scrolly-steps { order: -1; }                 /* tekst links, beeld rechts */
+      /* Hier, en alleen hier, bestaat de kleefkaart. Naast elkaar schuift er
+         niets onder haar door, dus heeft ze geen eigen vlak en geen uitvloeier
+         nodig — ze staat in de kolom rechts. */
+      html.js .scrolly-visual { display: block; position: sticky; top: 48px; z-index: 2; }
+      /* Ook naast elkaar één maat, zodat de kaart niet per stap van hoogte wisselt.
+         Het plafond bijt hier alleen op een laag venster; normaal bepaalt de
+         breedte van de kolom de kaart. */
+      .sc-stage { --sc-h: clamp(20rem, 52vh, 34rem); }
+      .sc-stage .panel-bar { @apply py-3; }
+      .sc-step { padding: 18vh 0; }
+      .sc-step:first-child { padding-top: 12vh; }
+      .sc-step:last-of-type { padding-bottom: 42vh; }
+      .sc-mark { background: var(--inv-line); }
+      .sc-step.is-actief .sc-mark { background: #0af29f; }
+      .sc-titel { color: var(--inv-soft); }
+      .sc-step.is-actief .sc-titel { color: #ffffff; }
+    }
+  }
+
+  @layer utilities {
+    /* de bloklengte: 80px verticaal op desktop, 48px op telefoon */
+    .band-pad { @apply py-12 md:py-20; }
+    .shell    { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+  }
+
+  /* ---- alle beweging uit wanneer het besturingssysteem daarom vraagt ------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+    html.js .band::before { opacity: 1 !important; }
+    html.js [data-reveal] { opacity: 1 !important; transform: none !important; }
+    /* De meescrollende rondleiding valt terug op de leesbare stapel: geen
+       kleefkaart, geen wisselend beeld, elke stap meteen in eindtoestand.
+
+       EN DAN MOET DE STAPEL OOK DE VOLLE BREEDTE KRIJGEN. Tot ronde 3 bleef
+       .scrolly hier op twee kolommen staan terwijl de rechterkolom verborgen
+       werd: gemeten op 1440px gaf dat een tekstkolom van 407px met 569px
+       permanente leegte ernaast — 58% van de inhoudsbreedte — en de vier
+       productschermen (viewBox 1200×680) renderden op 407px, waardoor hun
+       20-24px SVG-tekst naar ±7px zakte. Daar bovenop hield .sc-step de
+       verticale maat van de kolomopzet (18vh boven en onder, 42vh onderaan),
+       zodat er grote zwarte gaten tussen de stappen vielen. Dit zet het blok
+       terug op één kolom met de maatvoering van de telefoonstapel: één gewone
+       leesbare lijst van vier stappen, over de volle breedte.
+       Niets hier staat buiten een laag, dus deze regels verslaan de
+       @media (min-width: 1024px)-regels uit @layer components ook zonder
+       !important; die staat er alleen waar hij het verhaal duidelijker maakt. */
+    html.js .scrolly-visual { display: none !important; }
+    .scrolly { display: block; }
+    .sc-step { padding: 28px 0; }
+    .sc-step:first-child { padding-top: 16px; }
+    .sc-step:last-of-type { padding-bottom: 28px; }
+    .sc-stage { --sc-h: clamp(120px, 20vh, 190px); }
+    .sc-mark  { background: #0af29f !important; }
+    .sc-titel { color: #ffffff !important; }
+  }
+
+  /* === r3: sectie 1-4 === */
+
+  /* ---------------------------------------------------------------------
+     2 · DE LOGOBALK ALS DOORLOPENDE MARQUEE
+     ---------------------------------------------------------------------
+     Jana, punt 2: de logo's mogen "aan hetzelfde tempo voorbijrollen als op
+     figures.hr en dus niet allemaal tegelijk in beeld".
+
+     Eén spoor dat dezelfde reeks DRIE keer bevat en in een lineaire animatie
+     naar translateX(-33.3333%) loopt. Die verschuiving is precies één reeks,
+     dus staat kopie 2 op het eind op de plek waar kopie 1 begon: het beeld op
+     t=eind is pixel voor pixel dat op t=0 en de lus is naadloos. Drie kopieën
+     is genoeg zolang de balk niet breder is dan twee reeksen, en dat is bij de
+     ruimte hieronder zelfs op 2560px niet in de buurt.
+
+     De tussenruimte zit in de ITEMS (padding-inline), niet in een `gap` op het
+     spoor. Met een gap is de totale breedte 3·reeks + 2·gap en valt -33,3333%
+     een gap naast de sprongvrije plek — precies de zichtbare schok die een
+     naïeve marquee maakt.
+
+     LET OP — DE TWEE TABELLEN HIERONDER ZIJN DIE VAN VIJF ITEMS EN ZIJN
+     ACHTERHAALD. Sinds 2026-10-08 staan er negen logo's in de reeks en worden
+     --logo-tussen en --logo-duur overschreven in het blok «r3: echte
+     klantlogo's» onderaan deze stylesheet, met de opnieuw gemeten getallen.
+     De redenering hieronder klopt nog wel, en daarom staat ze er.
+
+     NIET ALLEMAAL TEGELIJK IN BEELD — WAT DAARVOOR NODIG WAS.
+     In ronde 3 stond hier padding-inline: 36px, en dan is één reeks 635px
+     breed tegen een balk van 1440px: er stonden 2,2 complete reeksen in beeld,
+     alle vijf de namen twee à drie keer naast zichzelf. Dat is het omgekeerde
+     van wat ze vroeg. De tussenruimte is daarom ruim: de vijf items zijn samen
+     276px aan logo, dus één reeks meet 276 + 10 × de tussenruimte.
+
+       tussenruimte   één reeks   balk      items die de balk raken
+       56px (<768)      835px     390px     3 van de 5  (gemeten)
+       120px (≥768)    1476px     768px     3 van de 5  (gerekend)
+       190px (≥1280)   2175px    1440px     4 van de 5  (gemeten)
+       260px (≥1920)   2875px    1920px     4 van de 5  (gerekend)
+
+     Gemeten in Chromium, niet gerekend, waar het "gemeten" zegt: op 390px
+     raken er 3 items de balk, op 1440px 4 — tegen de 11 van ronde 3, waar
+     alle vijf de namen twee à drie keer naast zichzelf stonden. Omdat één
+     reeks nu altijd breder is dan de balk, kan er nooit een complete reeks in
+     beeld staan en nooit een naam twee keer. Met vijf namen is "echt niet
+     allemaal tegelijk" op een breed scherm niet verder te brengen dan dit;
+     daarvoor zijn de logo's uit Jana's Dropbox-map nodig.
+
+     HET TEMPO. De briefing schreef ±40s voor op twee kopieën: één reeks van
+     635px in 40s, dus 15,9 px/s. Ronde 3 bouwde tien kopieën in 100s — dat is
+     3176px in 100s, 31,8 px/s, het dubbele — en het commentaar rekende die
+     fout goed. Het tempo hangt af van de reeksbreedte, dus moet de duur per
+     breekpunt mee: duur = reeksbreedte ÷ 15,9. Gemeten in Chromium door de
+     transform over 6 seconden te bemonsteren, twee keer per breedte: 15,8 px/s
+     op 390px (835px reeks in 53s) en 15,9 px/s op 1440px (2175px in 137s).
+
+     De maskers links en rechts laten de logo's vervagen in plaats van hard
+     af te breken aan de rand.
+     --------------------------------------------------------------------- */
+  .logo-balk { --fade: 48px; --logo-tussen: 56px; --logo-duur: 53s; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade),
+                        #000 calc(100% - var(--fade)), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 var(--fade),
+                        #000 calc(100% - var(--fade)), transparent 100%); }
+  @media (min-width: 768px)  { .logo-balk { --fade: 96px; --logo-tussen: 120px; --logo-duur: 93s; } }
+  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 190px; --logo-duur: 137s; } }
+  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 260px; --logo-duur: 181s; } }
+
+  .logo-spoor { display: flex; width: max-content;
+                animation: logo-rol var(--logo-duur) linear infinite; }
+  .logo-reeks { display: flex; align-items: center; height: 40px;
+                list-style: none; margin: 0; padding: 0; }
+  .logo-reeks > li { flex: none; display: flex; align-items: center;
+                     padding-inline: var(--logo-tussen); }
+
+  @keyframes logo-rol { from { transform: translateX(0); }
+                        to   { transform: translateX(-33.3333%); } }
+
+  /* Stilzetten om een logo te kunnen lezen. focus-within staat er voor het
+     geval de namen later links worden — vandaag staat er geen knop in. */
+  .logo-balk:hover .logo-spoor,
+  .logo-balk:focus-within .logo-spoor { animation-play-state: paused; }
+
+  /* ---------------------------------------------------------------------
+     4 · DE CASELINK — kleiner dan een knop, maar niet onopvallend
+     ---------------------------------------------------------------------
+     Geen volle primaire knop meer. Een tekstlink in de merkkleur, met het
+     mint als onderstreping in plaats van als tekstkleur: #0af29f haalt op wit
+     1,3:1 en is als tekst onleesbaar, als 2px-lijn eronder is het precies het
+     merkaccent dat Jana vraagt. De tekst zelf staat in #154e3a (9,5:1 op wit).
+     De focusomlijning is de algemene (#00718c, 5,61:1) en wordt nergens
+     afgesneden: de kaart snoeit niet.
+     --------------------------------------------------------------------- */
+  .caselink { display: inline-flex; align-items: center; gap: 8px;
+              font-size: 15px; line-height: 1.5; font-weight: 700;
+              color: #154e3a; border-radius: 8px;
+              box-shadow: inset 0 -2px 0 #0af29f;
+              transition: color var(--m-base) var(--e-standard),
+                          box-shadow var(--m-base) var(--e-standard); }
+  .caselink:hover { color: #0a3327; box-shadow: inset 0 -2px 0 #154e3a; }
+  .caselink .pijl { transition: transform var(--m-base) var(--e-standard); }
+  .caselink:hover .pijl { transform: translateX(3px); }
+
+  /* Het stipje voor een cijferregel in een casekaart. Decoratief, dus het
+     staat in de donkere merktint en niet in mint: 6px mint op wit is op een
+     gewoon scherm niet te zien. */
+  .cijferstip { flex: none; margin-top: 9px; height: 6px; width: 6px;
+                border-radius: 9999px; background: #154e3a; }
+
+  /* ---- alles wat beweegt gaat uit als het besturingssysteem dat vraagt --- */
+  @media (prefers-reduced-motion: reduce) {
+    /* De marquee valt terug op de statische, omwikkelde rij van ronde 2: één
+       reeks, gecentreerd, zonder masker. Expliciet uitzetten is nodig — de
+       algemene regel hierboven zet de duur op .01ms, en dát zou de animatie
+       juist meteen op haar EINDstand (-33,3333%) zetten.
+
+       EN DAT IS EEN KEUZE, GEEN GEVOLG: wie "beperk beweging" aan heeft staan,
+       ziet hier wél alle vijf de namen tegelijk — precies wat Jana voor de
+       rollende versie niet wilde. Er bestaat geen stilstaande rij die "niet
+       allemaal tegelijk in beeld" haalt, dus gaat leesbaarheid hier voor, en
+       daarom krimpt de ruime tussenruimte van de marquee hier terug naar de
+       24px van ronde 2: met 190px past de rij niet op één regel en breekt ze
+       in twee halve rijen, wat als een fout leest. */
+    .logo-balk { --logo-tussen: 24px !important; }
+    .logo-spoor { animation: none !important; transform: none !important;
+                  width: auto !important; flex-wrap: wrap; justify-content: center; }
+    .logo-reeks { flex-wrap: wrap; justify-content: center; height: auto; }
+    .logo-spoor > .logo-reeks[aria-hidden="true"] { display: none !important; }
+    .logo-balk { -webkit-mask-image: none !important; mask-image: none !important; }
+    .caselink .pijl { transform: none !important; }
+  }
+
+  /* === r3: sectie 5-7 === */
+
+  /* ---------------------------------------------------------------------
+     7 · DE HR-TOOLS ALS FUNCTIE MET EEN ICOON
+     ---------------------------------------------------------------------
+     Jana: de merknaamlabeltjes van ronde 2 waren te labeltjes-achtig, en het
+     moet om de functie gaan. Een tegel is dus een icoon plus een functienaam,
+     en verder niets: geen rand in de merkkleur, geen schaduw, geen hover —
+     dit is geen bedieningselement en mag er ook niet als een knop uitzien.
+
+     De kleuren komen alle drie uit de donkere-bandtokens die deze pagina al
+     gebruikt (6% wit vlak, 16% witte rand, witte tekst). Het mint zit alleen
+     in het icoon en in het vlak eronder, op 12% — als tekst haalt mint op
+     licht 1,3:1, als lijnwerk op bijna zwart ruim boven de 3:1 die voor
+     grafische elementen geldt.
+
+     min-width: 0 op de naam, want "Performancemanagement" is één woord van
+     21 tekens: zonder dat duwt het de tegel breder dan zijn kolom en loopt de
+     rij op 390px buiten het scherm. Met overflow-wrap breekt het woord in
+     plaats van de pagina. */
+  .hrtool { display: flex; align-items: center; gap: 12px;
+            border-radius: 8px; padding: 12px 16px;
+            background: var(--inv-fill); border: 1px solid var(--inv-line); }
+  .hrtool-icoon { flex: none; display: grid; place-items: center;
+                  height: 36px; width: 36px; border-radius: 8px;
+                  background: rgba(10,242,159,.12); color: #0af29f; }
+  .hrtool-naam { min-width: 0; overflow-wrap: anywhere;
+                 font-size: 17px; line-height: 1.5; font-weight: 700; color: #ffffff; }
+
+  /* === r3: sectie 8-12 === */
+
+  /* ---------------------------------------------------------------------
+     8 · DE QUOTERIJ — pijlen, puntjes en de lege fotoplek, op donker
+     ---------------------------------------------------------------------
+     Drie kleine componenten, en bij elk van de drie is de kleur het punt.
+
+     DE PIJLKNOP. De rand staat op 60% wit en niet op --inv-line (16% wit).
+     16% wit op bijna zwart haalt ongeveer 1,5:1, en voor een bedieningselement
+     is 3:1 de norm — de knop was dan een vlek waarvan je de grens niet ziet.
+     60% wit haalt op #000 ruim 6:1. Het uitgeschakelde geval mag van WCAG
+     lager, maar niet onzichtbaar: 45% dekking in plaats van de gebruikelijke
+     50%, zodat "er is geen volgende" leesbaar blijft als rand en niet als
+     verdwenen knop. De focusomlijning is die van de donkere band (#00acd6) en
+     wordt niet afgesneden: de knoppen staan binnen de shell, ruim van de rand,
+     en de rij zelf (overflow-x) bevat geen bedieningselementen.
+
+     HET PUNTJE-UIT. Hetzelfde verhaal, maar een puntje is een grafisch
+     element: 40% wit komt uit op #666666 tegen zwart (3,6:1) en op ±3,1:1
+     waar de puntjes over het groen van de band staan — in beide gevallen
+     boven de 3:1 die voor grafische elementen geldt. Het actieve puntje is
+     mint, dat hier ruim boven alles uitkomt.
+
+     DE LEGE FOTOPLEK. Een stippellijncirkel met het woord "foto" erin, zoals
+     in draft-r2-04. Geen grijs silhouet — dat kondigt het gat aan in plaats
+     van het te ontwerpen — en geen initiaal in een bolletje, want dat is
+     precies wat Jana in haar eigen concept afkeurde. Waarom hij leeg is staat
+     als leesbare regel onder de naam en niet in de cirkel geperst: in ronde 2
+     stond "foto nodig" in 10px binnen 48px en dat was niet te lezen.
+
+     SINDS 2026-10-06 STAAT .fotoplek-inv ONGEBRUIKT. De klant leverde de drie
+     ontbrekende portretten aan, dus hebben alle vijf de quotes een echte foto.
+     De regel blijft staan voor als er een zesde quote bijkomt zonder foto; hij
+     raakt op dit moment niets op de pagina.
+     --------------------------------------------------------------------- */
+  .pijl-inv { display: grid; place-items: center; height: 48px; width: 48px;
+              border-radius: 9999px; color: #ffffff;
+              background: var(--inv-fill);
+              border: 1px solid rgba(255,255,255,.6);
+              transition: background-color var(--m-fast) var(--e-standard),
+                          border-color var(--m-fast) var(--e-standard); }
+  .pijl-inv:hover { background: rgba(255,255,255,.16); }
+  .pijl-inv:disabled { opacity: .45; cursor: default; }
+  .pijl-inv:disabled:hover { background: var(--inv-fill); }
+
+  .puntje-uit { background: rgba(255,255,255,.4); }
+
+  .fotoplek-inv { flex: none; display: grid; place-items: center;
+                  height: 56px; width: 56px; border-radius: 9999px;
+                  border: 1px dashed rgba(255,255,255,.55);
+                  color: var(--inv-soft); font-size: 13px; line-height: 1; }
+
+  /* ---------------------------------------------------------------------
+     11 · DE TWEE VASTE BALKEN — zonder animatie als het systeem dat vraagt
+     ---------------------------------------------------------------------
+     x-transition zet de duur als inline stijl, en de algemene
+     reduced-motion-regel bovenaan zet elke duur al op .01ms met !important —
+     wat inline stijl verslaat. Deze regel staat er omdat "praktisch nul" en
+     "geen" niet hetzelfde zijn: met transition: none is er geen overgang om
+     af te breken, en de balk staat er meteen. Zo is het ook te meten, want
+     getComputedStyle geeft dan 0s en niet 0,00001s. Hij geldt voor de
+     demobalk én voor de cookiebalk, want die staan nu samen onderaan.
+     --------------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    [data-vasteband], [data-cookiebalk] { transition: none !important; }
+  }
+
+  /* === r3: cases strakker === */
+
+  /* ---------------------------------------------------------------------
+     DE CASEKAART — één ritme, één voet, en de rij die de minste leegte maakt
+     ---------------------------------------------------------------------
+     Jana over dit blok: "ik vind dit het meest overtuigende van de hele site,
+     dus qua design mogen we hier zeker extra aandacht aan geven." De vorige
+     ronde haalde twee volle rijen, maar niet één vol ogende kaart. Gemeten op
+     1440px bleef er boven de downloadlink van Kaneka 99px over op een kaart
+     van 500 × 380, boven die van Aertssen 88px en boven die van SD Worx
+     146px: samen 334px aan leegte, verdeeld over drie van de vijf kaarten.
+     Een brede kaart met een lege band erin leest als een kaart die niet
+     afgewerkt is.
+
+     DRIE DINGEN DOEN HET, EN GEEN ERVAN VOEGT EEN CIJFER TOE.
+
+     1 · DE RIJVERDELING IS OMGEKEERD: DRIE SMALLE BOVEN, TWEE BREDE ONDER.
+     De leegte in een kaart is niets anders dan het hoogteverschil met de
+     hoogste kaart van dezelfde rij, en dat verschil is hier bijna helemaal
+     één ding: het zichtbare TODO-blokje. Na het campagneplan van 2026-10-06
+     dragen alleen Anchr en Aertssen Group er nog één, en dat zijn kaart twee
+     en drie. Zet je de knip na kaart twee, dan belandt de TODO van Aertssen
+     in de ONDERSTE rij, naast de twee kaarten die er geen hebben, en betaal
+     je hem twee keer. Zet je de knip na kaart drie, dan staan beide TODO's
+     in de bovenste rij en is de onderste rij vlak.
+
+     BIJGESTELD OP 2026-10-08. Anchr heeft nu een logobestand, dus is dat
+     TODO-blokje weg en draagt alleen Aertssen Group er nog één. Daarmee klopt
+     het getal hieronder niet meer: opnieuw gemeten op 1440px is de som van de
+     leegte 340px in plaats van 185px, en zit ze nu in Kaneka (155) en Anchr
+     (155) in plaats van in Kaneka (155) en DPG Media (31). De knip blijft
+     na kaart drie staan — de volgorde van de vijf kaarten ligt vast in Jana's
+     campagneplan en is dus geen vrije variabele meer, en met één TODO in
+     plaats van twee valt er in de bovenste rij niets meer te verplaatsen.
+     Het blok eronder is de redenering van toen, met de getallen van toen:
+
+       drie smal + twee breed   185px  (Kaneka 155, DPG 31, de rest 0)
+       twee breed + drie smal   366px  (Kaneka 87, SD Worx 124, DPG 155)
+       vijf gelijke kaarten     185px  maar de onderste rij staat gecentreerd
+                                       en lijnt links niet meer uit met de
+                                       bovenste
+       vijf naast elkaar        887px  kaarten van 186px, koppen van drie tot
+                                       vier regels — al in ronde 2 verworpen
+
+     Dezelfde volgorde, dezelfde twee volle rijen, geen enkele lege cel —
+     alleen is de leegte gehalveerd en zit wat overblijft in één kaart in
+     plaats van in drie.
+
+     Het raster blijft zes kolommen fijn, dus absorbeert het ook zes cases
+     (3 + 3) of acht (vier × 2 op twee rijen) zonder herontwerp, met één
+     klassewijziging per kaart.
+
+     2 · ÉÉN RITME, EN DAT IS NU ECHT ÉÉN RITME. De logo's hebben vijf
+     verschillende hoogtes (20 tot 32px) en de voordeelregel breekt in de ene
+     kaart over twee regels en in de andere over één. Daardoor begon de
+     cijferlijst in elke kaart op een andere hoogte. De logoplek is nu altijd
+     32px hoog, en de voordeelregel reserveert altijd twee regels (2,4em bij
+     24px/1,2). Logo, voordeel, cijfers, sector: in alle vijf de kaarten op
+     exact dezelfde hoogte, binnen hun rij.
+
+     3 · DE VOET IS EEN VOET. De downloadlink stond met mt-auto onderaan, maar
+     zonder iets wat die onderkant markeerde: de leegte lag tússen de tekst en
+     een losse link. Nu staat de link in een voet over de volle kaartbreedte
+     met een haarlijn erboven, en zit de TODO-regel daar vlak boven in plaats
+     van midden in de cijfers. Daarmee is wat overblijft "ruimte boven de
+     voet" in plaats van "een gat na de laatste regel" — in élke kaart op
+     dezelfde plek. De link blijft een tekstlink met zijn icoon; Jana vroeg
+     uitdrukkelijk om géén brede knop, en er komt er ook geen bij.
+
+     De voet heeft geen eigen vlak. Het TODO-blokje is al een vlak (bg-surface
+     met stippellijn) en twee getinte banden boven elkaar lezen als één vlek.
+     Een haarlijn in de randkleur van de huisstijl volstaat om de onderkant te
+     begrenzen. Geen nieuwe kleurwaarde, geen overflow: hidden — de
+     focusomlijning van de link mag nergens afgesneden worden, en de voet
+     heeft 16px boven en onder de link, meer dan de 4px die de ring nodig
+     heeft.
+
+     Op telefoon verandert de constructie niets: het blijft een veegbare rij
+     met scroll-snap, één kaart per keer, en de kaarten houden daar dezelfde
+     hoogte zodat de rand van het kaartje dat half in beeld komt niet rafelt.
+     --------------------------------------------------------------------- */
+  /* DE HELE KAART IS DE KNOP, sinds 2026-10-21. Jana's opmerking 26 ging over
+     doorklikken op een case; de link onderaan was het enige dat werkte en een
+     kaart die er klikbaar uitziet maar het niet is, leest als een fout.
+
+     Dit is de "uitgerekte link": de link onderaan blijft de echte link — met
+     zijn eigen tekst, zijn meethaak en zijn plek in de tabvolgorde — en krijgt
+     er een onzichtbaar vlak bij dat de hele kaart afdekt. Geen tweede <a> rond
+     het geheel, want dan zou een schermlezer de kaart twee keer aankondigen en
+     zou de kop binnen een link vallen.
+
+     De prijs ervan is dat tekst op de kaart niet meer te selecteren is: het
+     vlak ligt erboven. Dat is de gangbare afweging en voor een kaart waarvan
+     doorklikken de enige handeling is, de juiste. */
+  .case-kaart { display: flex; flex-direction: column; position: relative; }
+  .case-kaart .caselink::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+  .case-kaart:focus-within { outline: 3px solid var(--c-focus); outline-offset: 3px; }
+  .case-kaart:focus-within .caselink { outline: none; }
+  .case-kaart:hover .caselink { color: #0a3327; box-shadow: inset 0 -2px 0 #154e3a; }
+  .case-kaart:hover .caselink .pijl { transform: translateX(3px); }
+  .case-body  { padding: 24px 24px 0; }
+
+  /* De logoplek is even hoog voor alle vijf, ongeacht de hoogte van het
+     bestand erin; Anchr heeft geen bestand en staat hier typografisch. */
+  .case-logo  { display: flex; align-items: center; height: 32px; }
+
+  /* Twee regels gereserveerd, zodat de cijferlijst in elke kaart op dezelfde
+     hoogte begint. 24px × 1,2 × 2 = 2,4em. */
+  .case-voordeel { min-height: 2.4em; }
+
+  /* De zinsnede boven de cijfers, op elke kaart dezelfde. Ze staat er op vraag
+     van Jana (2026-10-10): zonder haar leest "370 medewerkers" als de GROOTTE
+     van Kaneka, en dat is niet wat er staat — het is waarvoor Youbo er
+     gebruikt wordt. Ze moet dus te lezen zijn en tegelijk niet concurreren met
+     het voordeel of met de cijfers zelf. Vandaar 13px in plaats van de 15 van
+     de cijfers, gespatiëerd en in kapitalen: dezelfde vorm als de kolomkop
+     boven de loontabel in de rondleiding, waar ook een label boven cijfers
+     staat.
+
+     Één regel op elke breedte, en dat is gemeten en geen aanname.
+     "GEBRUIKT YOUBO VOOR" meet zo 175,6px. De smalste plek waar ze moet
+     passen is de kaart op een telefoon van 320 beeldpunten: 181px. Daarna
+     komt de smalle kolom van het raster op 1024 (222px), de kaart op 360
+     (215px) en op 390 (241px). Overal één regel, met op 320 dus 5px over.
+
+     Wordt de zinsnede in het CMS lánger, dan wrapt ze — en dat is lelijk maar
+     niet scheef: onder lg is elke kaart even breed, en vanaf lg staan de
+     kaarten met dezelfde kolombreedte altijd op dezelfde rij (kaartspans()
+     geeft eerst de smalle, dan de brede). Een rij wrapt dus in haar geheel of
+     niet, en de cijferlijsten binnen een rij blijven op gelijke hoogte staan.
+     Ruimte tot die tweede regel, gemeten: 20 tekens op 320, 22 op 360, 23 op
+     1024, 29 op 1440. Nu staan er 19. */
+  .case-gebruik { font-size: 13px; line-height: 1.25; letter-spacing: 0.08em;
+                  text-transform: uppercase; }
+
+  /* De voet wordt naar de onderkant geduwd, met minstens 24px tussen de
+     sectorregel en wat eronder komt — ook in de volste kaart. */
+  .case-slot  { margin-top: auto; padding-top: 24px; }
+  .case-todo  { margin: 0 24px 16px; }
+  .case-foot  { padding: 16px 24px; border-top: 1px solid #e1ebf0; }
+
+  /* ---------------------------------------------------------------------
+     HET TODO-KADER STAAT OP TELEFOON ONDER DE RIJ, NIET IN DE KAART
+     ---------------------------------------------------------------------
+     Onder lg is dit een veegbare rij met scroll-snap, en in zo'n rij krijgt
+     ELKE kaart de hoogte van de hoogste. De hoogste is Aertssen Group, want
+     die draagt als enige nog een zichtbaar TODO-kader, en dat kader meet op
+     360 beeldpunten 161px plus 16px marge. Die 177px betaalden alle vijf de
+     kaarten mee: gemeten op 360 bleef er bij SD Worx en DPG Media 246px leeg
+     tussen de sectorregel en de voet, bij Kaneka 223,5px. Bijna een half
+     scherm, en het leest als een kaart die stuk is.
+
+     DE VOOR DE HAND LIGGENDE INGREEP IS GEMETEN EN LOST NIETS OP. Geef je de
+     kaarten hun eigen hoogte (align-items: flex-start), dan houdt de flexrij
+     nog altijd de hoogte van haar hoogste kind: de rij blijft 599,3px en de
+     kaart van Kaneka eindigt 200px boven de onderrand. Hetzelfde gat, nu
+     onder de kaart in plaats van erin — gemeten, de sectie bleef op de px na
+     even hoog (941,8). Laat je de rij wél meekrimpen, en dat kan alleen met
+     JavaScript, dan springt de sectie tijdens het vegen 222px op 360 en
+     199,5px op 390: van kaart 2 naar kaart 3 en meteen weer terug. Dat is
+     erger dan het gat, want het gebeurt onder je duim.
+
+     Het kader compacter zetten (13px, smallere marges) haalde het gat van
+     246 naar 186,7px op 360. Dat is minder lelijk en nog altijd een gat.
+
+     DUS VERHUIST HET KADER, EN VERDWIJNT HET NIET. Op telefoon staat het
+     onder de puntjes, naast het TODO-kader dat daar al over de case-pdf's
+     staat — twee open punten van dezelfde sectie, in dezelfde vorm en op
+     dezelfde breedte. Grootste gat in een kaart: van 246 naar 69px op 360 en
+     van 223,5 naar 52,8px op 390, en de sectie wordt er 14,5px korter van.
+
+     Vanaf lg verandert er niets. Daar is het een raster van drie plus twee,
+     daar is geen gedeelde rijhoogte over een veegrij heen, en daar hoort het
+     kader in de kaart waar het over gaat. Gemeten op 1024 en 1440: dezelfde
+     kaarthoogtes als voorheen, tot op de px.
+     --------------------------------------------------------------------- */
+  /* De plek die de bouw herhaalt. Leeg is hij nul beeldpunten hoog, en met
+     display: contents maakt hij ook geen doos om de nota die er wél is. */
+  .case-notaplek      { display: contents; }
+  .case-nota-telefoon { display: none; }
+  @media (max-width: 1023.98px) {
+    .case-todo          { display: none; }
+    .case-nota-telefoon { display: block; margin-top: 24px; }
+  }
+
+  /* De voetlink breekt niet over twee regels. In de smalste kolom van het
+     raster — een kaart van 272px op een venster van 1024px — paste "Download
+     de case (pdf)" met zijn twee icoontjes nét niet, en dan sprong de pijl
+     naar de overkant van de kaart en liep de mint onderstreping als één lange
+     streep onder twee regels door.
+
+     De ondergrens staat er met opzet. De link meet gemeten 222px en heeft met
+     de kaartmarges 270px kaartbreedte nodig; op telefoon is een kaart 85% van
+     (venster − 48), dus vanaf een venster van 366px past hij. Onder 375px
+     laten we hem daarom gewoon afbreken: nowrap zou daar 16px buiten de kaart
+     steken, over de rand heen en over het kaartje ernaast — gemeten op 320px.
+     Twee regels is lelijker dan één, maar tekst die buiten zijn kaart hangt is
+     stuk. */
+  @media (min-width: 375px) { .case-foot .caselink { white-space: nowrap; } }
+
+  /* === r3: gegevens Nick === */
+
+  /* ---------------------------------------------------------------------
+     DE ALTERNATIEVEN ONDER HET FORMULIER — agenda, e-mail, telefoon
+     ---------------------------------------------------------------------
+     Drie regels die hetzelfde zeggen: je hoeft dit formulier niet in te
+     vullen. Ze staan dus als één blok en niet als drie losse alinea's met de
+     gewone alinea-afstand ertussen; `.alt-weg` is enkel die groepering, geen
+     eigen vlak. Een tweede getint vlak naast het TODO-blokje (dat al
+     bg-surface met een stippellijn is) zou als één vlek lezen — dezelfde
+     afweging als bij de voet van de casekaarten.
+
+     DE KLEUR. #00718c, dezelfde als `text-link-licht` elders op de pagina en
+     als de focusomlijning op licht: 5,61:1 op wit, dus ruim boven de 4,5:1
+     voor lopende tekst en boven de 3:1 voor een bedieningselement. Het cyaan
+     van de huisstijl (#00acd6) haalt op wit maar 2,67:1 en mag hier dus niet
+     staan — dat is precies de fout die deze ronde elders wegwerkte. De
+     onderstreping staat er van begin af aan: een link die alleen aan zijn
+     kleur te herkennen is, is voor wie kleuren slecht onderscheidt geen link.
+
+     DE FOCUSOMLIJNING. Niets aan deze constructie snijdt hem af. Er is geen
+     overflow: hidden tussen hier en de sectie, en de ring heeft 2px dikte plus
+     2px offset nodig: boven de e-mailregel zit 8px (mt-2) en onder het blok
+     12px (mt-3) voor het TODO-blokje, in beide gevallen meer dan de 4px die de
+     ring vraagt. De ring staat niet op de hele regel maar op de link zelf,
+     want dat is wat de focus heeft.
+
+     HET RAAKVLAK. Op telefoon is dit geen knop maar een tekstlink in lopende
+     tekst van 15px, en dat is bewust: hij is het alternatief, niet de
+     hoofdweg. De regelhoogte van 1,5 geeft hem 22px hoogte en de twee regels
+     staan 8px uit elkaar, dus een duim raakt er nooit twee tegelijk. Een
+     verticale padding erbij zou de regels juist naar elkaar toe duwen binnen
+     hetzelfde blok.
+
+     WAAROM HET ADRES NIET AFBREEKT MAAR WEL MAG WIKKELEN. Het e-mailadres is
+     28 tekens en 230px breed; op 390px (kolom 342px) past het niet naast "Of
+     mail hem op" en wikkelt het dus naar de volgende regel. Dat mag, middenin
+     het adres afbreken niet: een half e-mailadres aan het einde van een regel
+     is niet over te typen. Vandaar nowrap op de link zelf en niets anders.
+     --------------------------------------------------------------------- */
+  .alt-weg .alt-link {
+    color: #00718c;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color var(--m-base) var(--e-standard);
+    /* het adres en het nummer blijven in één stuk; de regel wikkelt ervoor */
+    white-space: nowrap;
+  }
+  .alt-weg .alt-link:hover { color: #006c87; }
+
+  /* Onder 390px is het adres breder dan de kolom. Daar wint afbreken van
+     buiten de kaart hangen, dus mag het nowrap daar los — dezelfde afweging,
+     en dezelfde ondergrens, als bij de voetlink van de casekaarten. */
+  @media (max-width: 374px) {
+    .alt-weg .alt-link { white-space: normal; overflow-wrap: anywhere; }
+  }
+  /* === r3: echte klantlogo's === */
+
+  /* ---------------------------------------------------------------------
+     VIJF ECHTE KLANTLOGO'S ERBIJ — ANCHR, CRELAN, AXI, MOURIK, PROTIME
+     ---------------------------------------------------------------------
+     Bart De Nil stuurde op 2026-10-08 negen PNG's door. Vijf ervan zijn nieuw
+     en staan nu op de pagina; SD Worx, DPG Media, Kaneka en Aertssen Group
+     houden hun SVG's, want die bestaan al in twee polariteiten en een PNG is
+     daar een stap terug.
+
+     PROTIME KWAM ALS LAATSTE BINNEN. Het stond bij ons als integratiepartner
+     genoteerd en was eerder op vraag van de klant van de pagina gehaald, dus
+     stond er een zichtbare vraag aan Bart onder de balk in plaats van een
+     logo. Hij antwoordde diezelfde dag dat Protime effectief ook klant is en
+     dus mee mag in de klantenbalk. Partner én klant is geen tegenspraak; onze
+     oudere notitie was onvolledig, niet fout. Het blokje eronder is daarmee
+     beantwoord en verwijderd.
+
+     PROTIME STAAT ALLEEN OP LICHT. Het woord «time» is grijs en valt op de
+     donkere banden vrijwel weg; de balk is de enige plek waar het logo staat,
+     en die is #f6f8fa. Zet het nergens op donker zonder een ander bestand.
+
+     WAT ER MET DE BESTANDEN GEBEURD IS. Axi en Mourik kwamen aan als een
+     ONDOORZICHTIG WIT VLAK met het logo erin — op #f6f8fa zie je dan een
+     witte rechthoek om het logo heen staan. Die is weggehaald, inclusief de
+     binnenvlakken die bij het ontwerp horen (het oog van de a in «axi», de
+     trapeziumuitsparing in het merk van Mourik): die zijn nu doorzichtig, dus
+     is dat de bandkleur en niet wit. Gecontroleerd door ze op exact #f6f8fa
+     te renderen, niet door de conversie te geloven. Mourik ging van 492 KB
+     naar 9 KB, de vier samen wegen 24,8 KB.
+
+     PROTIME IS ANDERS SCHOONGEMAAKT, en dat moet je weten vóór je het bestand
+     aanraakt: het wit is er met een vulling vanaf de RANDEN uitgehaald, niet
+     overal. Het woord «pro» is witte letter bínnen de donkerblauwe cirkel en
+     draagt het merk; een vlakke witontdoening had dat weggegumd. Er staan dus
+     met opzet 516 witte beeldpunten in het bronbestand, en de regel «nul
+     zuiver #ffffff in de balk» gaat over een witte RECHTHOEK op een bijna
+     witte band, niet over witte letter in een donker merk. Nagemeten op de
+     gerenderde balk: op 390 én op 1440px staat er geen enkel beeldpunt zuiver
+     #ffffff — op 24px lost de witte letter in de randverzachting op. Niet
+     opnieuw verwerken.
+
+     OPTISCHE MAATVOERING, GEEN PIXELHOOGTE. Negen logo's op dezelfde
+     CSS-hoogte lezen niet als negen even grote logo's: een woordmerk zonder
+     stok of staart (anchr, axi) oogt groter dan een merk met een vorm erboven
+     (Mourik) of een teken naast het woord (Crelan, Aertssen). Daarom heeft elk
+     logo zijn eigen hoogte, in de browser tegen elkaar afgewogen in plaats van
+     gerekend:
+
+       Aertssen Group  32px   vorm + woord naast elkaar
+       Mourik          26px   vorm half boven het woord
+       Crelan          26px   teken links, woord rechts, teken loopt hoger
+       SD Worx         24px   woordmerk met stokken
+       DPG Media       24px   vier vormen + woord
+       Protime         24px   volle ronde penning links, woord rechts
+       Anchr           21px   woordmerk, vrijwel alleen x-hoogte plus de h
+       Axi             20px   woordmerk, zeer vet en gesloten
+       Kaneka          20px   woordmerk, breed en licht
+
+     De vuistregel erachter: hoe compacter en voller het silhouet, hoe lager
+     het mag staan om even groot te lijken.
+
+     Protime op 24px is gekozen door het in de browser naast de buren te
+     zetten, niet door een getal over te nemen. Op 26px gaat de volle
+     donkerblauwe penning de rij domineren — een dichte schijf weegt zwaarder
+     dan een woordmerk van dezelfde hoogte — en op 22px leest «time» kleiner
+     dan «sdworx» ernaast. Op 24px staat de x-hoogte van «time» gelijk met die
+     van SD Worx en DPG Media, en dat zijn ook de twee buren met dezelfde
+     bouw: een teken naast een woord.
+     --------------------------------------------------------------------- */
+  .logo-anchr  { height: 21px; }
+  .logo-crelan { height: 26px; }
+  .logo-axi    { height: 20px; }
+  .logo-mourik { height: 26px; }
+  .logo-protime{ height: 24px; }
+
+  /* De casekaart heeft een logoplek van 32px en logo's van 20 tot 32px; Anchr
+     zit daar net als in de balk aan de onderkant van die reeks. */
+  .logo-anchr-case  { height: 21px; }
+
+  /* Op de donkere quoteband staan de logo's een maat kleiner (16 tot 20px).
+     Hetzelfde bestand: mint op bijna zwart haalt daar ruim contrast, dus er
+     is geen witte uitsparing nodig. */
+  .logo-anchr-quote { height: 17px; }
+
+  /* ---------------------------------------------------------------------
+     DE MARQUEE OPNIEUW AFGESTELD VOOR NEGEN LOGO'S
+     ---------------------------------------------------------------------
+     Twee dingen veranderen zodra de reeks van vijf naar negen gaat, en ze
+     gaan de tegenovergestelde kant op.
+
+     1 · DE TUSSENRUIMTE MAG KLEINER, EN BLIJFT DAT. Met vijf items moest de
+     tussenruimte extreem ruim zijn om te verhinderen dat een complete reeks
+     tegelijk in beeld stond; met negen is de reeks al breed genoeg uit
+     zichzelf. De ruime maat uit ronde 3 liet er op 1440px nog maar 3 van de 8
+     voorbijkomen, en een balk met drie logo's en veel lucht leest niet als een
+     klantenrij. De negen logo's meten samen 571,8px, dus is één reeks 571,8 +
+     18 × de tussenruimte — ruim boven de balkbreedte op elk breekpunt, en dus
+     staat er nooit een complete reeks in beeld en nooit een naam twee keer.
+     Protime is 51,5px breed op 24px hoog, dus de tussenruimte zelf hoefde met
+     het negende logo niet opnieuw bijgesteld: alleen de reeks werd breder.
+
+     Gemeten door de animatie stil te zetten en het spoor in 60 standen over
+     één volle reeks te schuiven, en op elke stand te tellen welke items de
+     balk raken en of er een naam twee keer in beeld staat:
+
+       tussenruimte   één reeks   balk      items in beeld   naam dubbel
+       44px  (<768)     1364px    390px     2 tot 4 van 9    0 van 60 standen
+       96px  (≥768)     2300px    768px     3 tot 4 van 9    0 van 60 standen
+       130px (≥1280)    2912px   1440px     4 tot 5 van 9    0 van 60 standen
+       170px (≥1920)    3632px   1920px     4 tot 5 van 9    0 van 60 standen
+
+     2 · DE DUUR MOET LANGER. Het tempo is de reeksbreedte gedeeld door de
+     duur, dus geeft dezelfde duur bij een bredere reeks een hóger tempo: met
+     de duur van acht logo's liep deze balk gemeten op 17,7 à 17,8 px/s, tegen
+     de 15,9 px/s die de briefing voorschrijft. Duur = reeksbreedte ÷ 15,9, per
+     breekpunt opnieuw — 86s, 145s, 183s en 228s, nagemeten op respectievelijk
+     15,83 · 15,83 · 15,88 · 15,90 px/s door de transform zes seconden lang te
+     bemonsteren.
+     --------------------------------------------------------------------- */
+  /* DE DUUR IS SINDS 2026-10-10 EEN REKENSOM EN GEEN VAST GETAL.
+     Het tempo is de reeksbreedte gedeeld door de duur, en de reeksbreedte
+     hangt af van HOEVEEL logo's er staan. Stond hier een vast getal, dan is er
+     precies één aantal waarbij de balk op de voorgeschreven 15,9 px/s loopt —
+     negen — en zou een logo bijzetten of weghalen het tempo stil verzetten.
+     Gemeten met acht logo's liep deze balk op 17,7 px/s; met zes zou hij op
+     10,5 px/s lopen. Dat is niet te zien aan de pagina en het is precies het
+     soort stille verschuiving waar deze opzet tegen bedoeld is.
+
+     Dus: duur = aantal × seconden-per-logo. Eén logo neemt zijn eigen breedte
+     plus twee keer de tussenruimte in; de negen logo's meten samen 573px, dus
+     gemiddeld 63,7px. Seconden per logo = (63,7 + 2 × tussenruimte) ÷ 15,9:
+
+       tussenruimte 44px  → (88,8 + 88)  ÷ 15,9 = 11,119s   × 9 = 100,1s
+       tussenruimte 96px  → (88,8 + 192) ÷ 15,9 = 17,660s   × 9 = 158,9s
+       tussenruimte 130px → (88,8 + 260) ÷ 15,9 = 21,937s   × 9 = 197,4s
+       tussenruimte 170px → (88,8 + 340) ÷ 15,9 = 26,969s   × 9 = 242,7s
+
+     DE GEMIDDELDE BREEDTE IS OP 2026-10-21 VAN 63,7 NAAR 88,8 PIXELS GEGAAN.
+     Jana vroeg die dag om prominentere logo's, dus zijn alle negen hoogtes met
+     40% vermeerderd. Een breder logo maakt het spoor langer, en een langer
+     spoor in dezelfde tijd is een snellere band. Daarom staan hier vier nieuwe
+     getallen: niet omdat het tempo mocht veranderen, maar juist omdat het níet
+     mocht. Wie de hoogtes opnieuw aanpast, meet de gemiddelde breedte opnieuw
+     en rekent deze vier rijen over — anders schuift de band stiller sneller.
+
+     Dat zijn de vier getallen die hier tot vandaag met de hand stonden (86,
+     145, 183 en 228), dus verandert de balk van vandaag geen merkbare haar:
+     het verschil is hoogstens 0,5 van 86 seconden. Het aantal komt uit
+     content/pagina.yml en wordt door build-inhoud.mjs hieronder gezet. */
+  .logo-balk { --logo-tussen: 44px; --logo-duur: calc(var(--logo-n) * 11.119s); }
+  @media (min-width: 768px)  { .logo-balk { --logo-tussen: 96px;  --logo-duur: calc(var(--logo-n) * 17.660s); } }
+  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 130px; --logo-duur: calc(var(--logo-n) * 21.937s); } }
+  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 170px; --logo-duur: calc(var(--logo-n) * 26.969s); } }
+  /* LOGO-AANTAL:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs */
+  .logo-balk { --logo-n: 9; }
+  /* LOGO-AANTAL:EINDE */
+
+  /* De statische terugval bij prefers-reduced-motion houdt haar eigen, veel
+     kleinere tussenruimte; die regel staat hierboven met !important en blijft
+     dus gelden. Met negen namen wikkelt die rij over meer regels, en dat is
+     daar de bedoeling: leesbaarheid gaat er voor op «niet allemaal tegelijk». */
+
+  /* === r3: echte footer === */
+  /* ---------------------------------------------------------------------
+     DE FOOTER VAN YOUBO.IO, OVERGENOMEN ZONDER HUN STIJLBLAD TE LADEN
+     ---------------------------------------------------------------------
+     /css/global.css van youbo.io is 14 KB en 121 regels, en 41 daarvan zijn
+     globale elementselectors: *, html, body, h1 t/m h6, p, a, ul, button,
+     input, select, textarea, hr. Dat bestand hier gewoon inladen zou de
+     volledige typografie en élk formulierveld van deze pagina herschrijven —
+     hun h1 is 3,5rem en gecentreerd, hun a is cyaan #00acd6 (2,67:1 op wit),
+     hun body is 1,0625rem. Niets daarvan hoort hier.
+
+     Dus is alleen overgenomen wat de footer nodig heeft: de 21 regels uit dat
+     bestand die over de footer gaan, één op één, met één wijziging — elke
+     selector staat achter .yb-footer. Daarmee kan geen van deze regels iets
+     buiten de footer raken, en dat is gemeten: de berekende stijl van alle 557
+     elementen buiten de footer is op 390px en op 1440px identiek aan vóór deze
+     wijziging.
+
+     HUN VARIABELEN STAAN LOKAAL, NIET OP :root. Anders zou een naam uit
+     global.css (--color-border, --color-grey-900) alsnog over de hele pagina
+     beschikbaar zijn en in een volgende ronde per ongeluk hergebruikt worden.
+     Geen van de waarden is nieuw: alle zes staan één op één gelijk aan een
+     token dat deze pagina al gebruikt.
+
+     DRIE DINGEN ZIJN BEWUST NIET OVERGENOMEN
+     1 · `opacity: .6` op de taalnamen. #547068 op wit haalt 5,39:1, maar op
+         60% dekking zakt dat naar #98a9a4 en 2,46:1 — leestekst moet 4,5:1
+         halen, dus is dat een echte fout in hun stijlblad en staan de namen
+         hier op volle dekking. (Daarmee vervalt ook de `opacity: 1` die hun
+         .active-language nodig had om eronderuit te komen.)
+     2 · `--color-link: #00acd6` als hoverkleur. Datzelfde cyaan haalt 2,67:1
+         op wit. Deze pagina gebruikt daarvoor al de goedgekeurde donkerder
+         trap #00718c (5,61:1), zoals in de tailwind-config hierboven staat
+         uitgelegd, en de footer volgt diezelfde regel.
+     3 · `align-self: end`. Dat hoort bij hun grid-opzet met <page-container>
+         en betekent hier niets.
+
+     ÉÉN REGEL IS TOEGEVOEGD DIE ZIJ NIET HEBBEN, en wel om hun eigen
+     weergave te herstellen: `display: inline-block` op het woordmerk. Tailwind
+     zet in zijn preflight élke afbeelding op `display: block`; op hun site is
+     een afbeelding inline, en daar is de gecentreerde footer op telefoon van
+     afhankelijk (`text-align: center` doet niets met een blokelement). Zonder
+     deze regel staat het logo op 390px links in plaats van gecentreerd.
+
+     WAT WEL VERSCHILT MET HUN SITE, en waarom het zo blijft
+     · De footer is 1128px breed, de rest van deze pagina 1280px. Dat is hun
+       eigen maat (max-width: calc(1080px + 48px)); hem oprekken zou de preview
+       iets laten zien wat straks niet zo staat.
+     · De copyrightregel staat ±17px krapper dan op hun site: Tailwind zet de
+       standaardmarge van <p> op 0 en hun stijlblad zet er niets voor terug.
+     --------------------------------------------------------------------- */
+  .yb-footer {
+    --color-grey-700: #547068;        /* = token ink.soft    */
+    --color-grey-800: #154e3a;        /* = token brand.ink   */
+    --color-grey-900: #0a3327;        /* = token ink         */
+    --color-border:   #e1ebf0;        /* = token line        */
+    --color-brand-primary: #0af29f;   /* = token brand       */
+    --color-link:     #00718c;        /* = token link.licht  */
+    border-top: 1px solid var(--color-border);
+    padding: 32px 0;
+    background-color: #ffffff;
+  }
+  .yb-footer a,
+  .yb-footer p { color: var(--color-grey-700); font-size: 15px; }
+  .yb-footer a:hover { color: var(--color-link); }
+  .yb-footer .footer-links {
+    display: flex;
+    max-width: calc(1080px + 48px);
+    margin: auto;
+    gap: 40px;
+    padding: 0 24px 40px 24px;
+  }
+  .yb-footer .footer-links p { font-weight: bold; color: var(--color-grey-900); margin: 0; }
+  .yb-footer .footer-links a { display: block; }
+  .yb-footer .footer-links-logo { width: 100%; }
+  .yb-footer .footer-links-logo img {
+    display: inline-block;            /* preflight-compensatie, zie hierboven */
+    height: 32px;
+    width: auto;
+    transition: .3s all;
+  }
+  .yb-footer .footer-links-logo img:hover { transform: scale(.95); }
+  .yb-footer .footer-linkedin { display: flex; margin-top: 16px; align-items: center; }
+  .yb-footer .footer-linkedin img { height: 16px; width: auto; margin-right: 8px; margin-top: 0; }
+  .yb-footer .footer-links-about,
+  .yb-footer .footer-links-legal { width: 35%; display: flex; flex-direction: column; gap: 16px; }
+  .yb-footer .footer-languages {
+    max-width: calc(1080px + 48px);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin: auto;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+  }
+  .yb-footer .footer-languages a,
+  .yb-footer .footer-languages span { font-size: 14px; }
+  .yb-footer .active-language { color: var(--color-grey-800); pointer-events: none; font-weight: 500; }
+  .yb-footer .footer-copyright { text-align: center; font-size: .875rem; }
+  .yb-footer .footer-copyright a {
+    border-bottom: .0625rem solid var(--color-brand-primary);
+    padding-bottom: .125rem;
+    color: var(--color-grey-800);
+  }
+  @media (max-width: 656px) {
+    .yb-footer .footer-links-logo { justify-content: center; margin: auto; }
+    .yb-footer .footer-links { flex-direction: column; text-align: center; }
+    .yb-footer .footer-links-about,
+    .yb-footer .footer-links-legal { gap: 24px; width: 100%; }
+    .yb-footer .footer-languages { gap: 24px; }
+  }
+
+  /* De twee stukjes van dit blok die niet uit hun stijlblad komen: het
+     TODO-kader over de talen (46rem breed, want 1080px is geen leesregel) en
+     de ondernemingsregel onder het copyright. De inerte taalnamen erven de
+     tekstkleur van .yb-footer a/p en staan dus op 5,39:1. */
+  .yb-footer .footer-talen-todo { max-width: calc(46rem + 48px); margin: 0 auto 40px; padding: 0 24px; }
+  .yb-footer .footer-entiteit { margin-top: 8px; }
+  .yb-footer .inert-language { color: var(--color-grey-700); }
+
+  /* === r3: telefoon === */
+
+  /* ---------------------------------------------------------------------
+     TWEE GEMETEN TELEFOONGEBREKEN — 2026-10-08
+     Bron: AUDIT-TELEFOON-2026-10-08.md, nagemeten met qa-telefoon.mjs op
+     360, 390, 768, 1024 en 1440px. Alles hieronder is gemeten, niet geschat.
+     ---------------------------------------------------------------------
+
+     1 · HET VEEGTEKEN
+     De caserij had op geen enkele breedte een bedieningselement (nul knoppen
+     in de DOM) en de quoterij had er vijf — de puntjes — maar met een raakvlak
+     van 24x44px, en 24px is te smal voor een duim. De pijlen staan op
+     `hidden md:flex` en bestonden dus alleen daar waar je ook kunt klikken.
+     Gekozen: PUNTJES op élke breedte, op beide rijen. Een puntjesrij zegt
+     HOEVEEL er zijn (vijf), en dat is precies het feit dat ontbrak — een pijl
+     zegt alleen dat er meer is. Ze staan onder de rij en bedekken dus geen
+     kaart en geen van de twee vaste balken onderaan. De pijlen blijven vanaf
+     md staan als gemak voor een muis; ze zijn niet langer het enige teken.
+
+     · .stip is het raakvlak: 44x44 via min-w/min-h in de markup. Vijf vlakken
+       van 44px zijn 224px, en een telefoon van 360px houdt daar 312px voor
+       over. De klasse heet .stip omdat qa-telefoon.mjs daarop zoekt; zonder
+       die naam meldt het harnas "bolletjes=false" terwijl ze er staan.
+     · .stip-vlak houdt de overgang die eerst als INLINE stijl op het puntje
+       stond. Inline stijl verslaat elke stijlbladregel zonder !important, dus
+       bewoog dat puntje ook voor wie prefers-reduced-motion aan heeft staan.
+       Nu staat de overgang hier en kan de mediaquery onderaan hem uitzetten.
+     · Op de LICHTE caseband kan het mint van de quotes niet: #0af29f haalt
+       1,4:1 op wit en is daar als vlak dus zo goed als onzichtbaar. Het actieve
+       puntje is er #154e3a (9,6:1 op wit) en het inactieve #6f8a82 (3,73:1) —
+       boven de 3:1 die een bedieningselement moet halen, want de vijf puntjes
+       zijn wat de telling draagt. Het verschil aan/uit zit bovendien in de
+       breedte, 32px tegen 8px, net als bij de quotes.
+     --------------------------------------------------------------------- */
+  .stip-vlak { transition: width var(--m-fast) var(--e-standard),
+                           background-color var(--m-fast) var(--e-standard); }
+  .puntje-aan-licht { background: #154e3a; }
+  .puntje-uit-licht { background: #6f8a82; }
+
+  /* ---------------------------------------------------------------------
+     2 · DE NAGETEKENDE PRODUCTSCHERMEN LOPEN OVER OP TELEFOON
+
+     Gemeten op 390px: de loontabel is 379px breed in een vak van 342px, dus
+     37px valt eraf en je leest "VOORST" en "+ 3,". Het woord "Goedkeuring" is
+     95px in een cel met 69px binnenruimte, 26px te veel, en het paneel knipt
+     het af. Op 360px is dat 67px en 36px.
+
+     DEZE PANELEN ZIJN TEKENINGEN VAN HET ECHTE PRODUCT. Een schermafdruk
+     krimpt; hij herschrijft zijn kolomkoppen niet. Er gaat hier dus geen label
+     korter, geen kolom weg en geen rij op zijn kant — dat zou veranderen wat
+     we beweren dat het product toont, en de feiten op deze pagina zijn al twee
+     keer om precies zulke drift gecorrigeerd. Wat er wél gebeurt: de
+     TYPEGROOTTE en de BINNENRUIMTE krimpen tot het past, en vanaf ±470px staat
+     alles weer op zijn volle 15px.
+
+     De clamp doet dat krimpen vloeiend in plaats van in één stap. Eén stap op
+     639px zou het scherm van 12px op 639 naar 15px op 640 laten springen; met
+     de clamp is de bovengrens bereikt rond de breedte waarop het ook ECHT
+     past, en daaronder schaalt het mee met het venster. De twee selectoren
+     zijn structureel en uniek op deze pagina: er is precies één
+     `ol.grid-cols-3` (de drie stappen van de meritcyclus) en precies één
+     `table` (de loonvoorstellen).
+
+     De andere zes panelen zijn nagemeten en raken dit niet: Budgetbeheer,
+     Loonverschil per afdeling en de vier schermen van het meescrollende blok
+     zijn op 360 en 390px schoon. Die vier zijn <svg>'s met een viewBox, dus ze
+     kunnen niet overlopen — ze schalen.
+     --------------------------------------------------------------------- */
+  @media (max-width: 639px) {
+    /* a — de meritcyclus: "Goedkeuring" (en op 360px ook "afgerond" en
+       "Manager") moeten in hun cel passen. */
+    .panel > div:has(> ol.grid-cols-3) { padding: 12px; }
+    .panel ol.grid-cols-3 { gap: 4px; }
+    .panel ol.grid-cols-3 > li { padding: 8px; }
+    .panel ol.grid-cols-3 > li .text-caption { font-size: clamp(11.5px, 3.18vw, 15px); }
+
+    /* b — de loontabel: het vak mag niets meer verbergen. De kolompadding
+       halveert en de tekst krimpt mee; "Rachid El Amrani" blijft op één regel
+       en alle drie de kolommen blijven staan. */
+    /* .text-caption staat op de <tr> van de kop en op de <tbody>, en één
+       klasse op een naderbij element verslaat een font-size op de <table>.
+       Daarom staat die klasse hier expliciet in de selector in plaats van op
+       overerving te rekenen — zonder deze helft bleef de tekst 15px en bleef
+       er op 360px 15px verborgen. */
+    .panel table,
+    .panel table .text-caption { font-size: clamp(12px, 3.3vw, 15px); }
+    .panel table th, .panel table td { padding-top: 10px; padding-bottom: 10px; }
+    .panel table th.px-5, .panel table td.px-5 { padding-left: 10px; padding-right: 10px; }
+    .panel table th.px-2, .panel table td.px-2 { padding-left: 6px; padding-right: 6px; }
+    .panel table .px-3 { padding-left: 8px; padding-right: 8px; }
+  }
+
+  /* Wie beweging uitzet, krijgt het puntje meteen op zijn eindstand. Het
+     schuiven zelf staat al in go() in de carrousel-component. */
+  @media (prefers-reduced-motion: reduce) {
+    .stip-vlak { transition: none !important; }
+  }
+
+  /* =========================================================================
+     HET CASEPANEEL — sinds 2026-10-16
+     -------------------------------------------------------------------------
+     Een klantcase opende tot vandaag in een nieuw tabblad. Dat werkt overal en
+     de pagina bleef achter, maar de bezoeker keek dan naar een document zonder
+     knop. Nu opent hij in een paneel over de pagina, met «Boek een demo»
+     vastgeplakt onderaan.
+
+     Uitgeprobeerd in case-modal-voorstel.html, waar twee vormen naast elkaar
+     stonden: de bladen als beeld, of de echte pdf in een iframe. Op een iPhone
+     opende die tweede volledig ingezoomd — het ingebouwde pdf-venster komt
+     terug op de zoom die het zich herinnert — en #view=Fit hielp daar niet
+     tegen. Vandaar de bladen als beeld, met de gebaren er zelf in.
+
+     Wie geen javascript heeft, klikt gewoon de link en krijgt de pdf in een
+     nieuw tabblad; het paneel is een verbetering bovenop iets dat al werkte.
+     ========================================================================= */
+
+  /* ---------------------------------------------------------------------------
+     HET PANEEL
+     ---------------------------------------------------------------------------
+     TELEFOON EERST. Het paneel is daar geen venstertje in het midden maar een
+     blad dat van onderen opkomt en bijna het hele scherm vult — 100dvh en niet
+     100vh, want vh rekent op een telefoon de adresbalk mee en dan valt de voet
+     met de demoknop er net onderuit. De bovenste 32px blijven vrij, zodat je
+     ziet dat de pagina eronder nog bestaat en je er met één tik op terug bent.
+
+     VANAF md WORDT HET EEN VENSTER: gecentreerd, hoogstens 920px breed en 92%
+     van de hoogte, met ruimte eromheen.
+
+     De drie delen zijn altijd hetzelfde: een kop die blijft staan, een
+     middenstuk dat schuift, en een voet die blijft staan. grid-rows-[auto_1fr_auto]
+     doet dat zonder één regel javascript, en omdat alleen het middenstuk schuift
+     kan de demoknop niet wegglijden.
+     --------------------------------------------------------------------------- */
+  /* HOOGTE EN BREEDTE STAAN HIER EXPLICIET, EN DAT IS GEEN OVERDAAD.
+     De browser geeft <dialog> uit zichzelf `width: fit-content` én
+     `height: fit-content`, en dat wint van `inset: 0`. Het paneel hieronder
+     hangt met position:absolute in deze doos, dus had de doos niets om hoog van
+     te worden: gemeten op 2026-10-16 was ze 390 bij 0 beeldpunten, een
+     onzichtbaar paneel dat wel degelijk «open» stond. Vandaar height en width
+     met de hand, en max-height/max-width eruit — die staan in de stijl van de
+     browser op calc(100% - 6px - 2em) en knijpen er anders weer een rand af. */
+  dialog.paneel {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    margin: 0;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+  }
+  dialog.paneel::backdrop {
+    background: rgba(3, 19, 23, .55);
+    backdrop-filter: blur(2px);
+  }
+  .paneel-doos {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    top: 32px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: #ffffff;
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .paneel-doos {
+      top: 4dvh; bottom: 4dvh;
+      left: 50%; right: auto;
+      transform: translateX(-50%);
+      width: min(920px, 92vw);
+      border-radius: 24px;
+    }
+  }
+
+  /* Het middenstuk schuift, en alleen dat. -webkit-overflow-scrolling houdt het
+     op oudere iOS soepel; overscroll-behavior houdt de pagina eronder stil
+     wanneer je aan het eind van de case blijft doorschuiven. */
+  /* HET MIDDENSTUK SCHUIFT NIET ZELF. In de eerste opzet stonden de twee
+     bladen hier gewoon onder elkaar en was overflow-y: auto precies goed. Sinds
+     de lezer er is, doen de rail en de transform al het werk — en dan is een
+     natuurlijke scrollbalk geen rest maar een tegenstander.
+
+     Gezien in Safari op 2026-10-16: er stond een horizontale scrollbalk onder
+     het paneel en je kon naar bóven scrollen tot er een lege grijze band
+     verscheen, terwijl naar onderen scrollen halverwege stopte. Twee oorzaken,
+     allebei van deze regel. De rail is 200% breed (twee bladen naast elkaar),
+     en CSS maakt van overflow-x automatisch `auto` zodra één van de twee assen
+     niet `visible` is — vandaar die balk. En een blad dat hoger is dan zijn
+     doos wordt door place-items: center half boven de doos gelegd, dus kon je
+     er met de muis naartoe scrollen. Allebei weg met overflow: hidden; wat er
+     te zien valt, bepaalt de transform. */
+  .paneel-blad {
+    overflow: hidden;
+    overscroll-behavior: contain;
+    background: #f6f8fa;
+  }
+
+  /* ---------------------------------------------------------------------------
+     DE LEZER — vegen tussen de bladen, knijpen om te zoomen, slepen om te pannen
+     ---------------------------------------------------------------------------
+     Eerste versie zette de twee bladen gewoon onder elkaar in een schuivende
+     doos. Dat leest op een telefoon niet: een blad van A4 op 390 beeldpunten
+     breed heeft letters van een millimeter of twee. Je wílt dus inzoomen, en
+     dan wil je ook kunnen rondschuiven — en tussen blad 1 en 2 vegen.
+
+     ALLES LOOPT VIA ÉÉN TRANSFORM EN GEEN ENKELE NATUURLIJKE SCROLLBALK, en dat
+     is een keuze. Zodra je natuurlijk scrollen mengt met een eigen knijpgebaar
+     vecht de browser mee: hij begint te slingeren, pakt de veeg af halverwege
+     een zoom, of zoomt de hele pagina mee in plaats van het blad. touch-action:
+     none zegt "ik doe het zelf", en dan is er precies één plek waar beslist
+     wordt wat een gebaar betekent.
+
+     De rail draagt de twee vakken naast elkaar en schuift per blad. Elk vak
+     draagt één beeld met zijn eigen schaal en verschuiving; ze weten niets van
+     elkaar, dus blijft blad 2 op zijn plek staan terwijl jij in blad 1 zoomt. */
+  .rail { display: flex; height: 100%; width: 100%; will-change: transform; }
+  .rail.glijdt { transition: transform var(--m-medium) var(--e-decelerate); }
+  /* HET BLAD HANGT ABSOLUUT IN ZIJN VAK, MET DE OORSPRONG LINKSBOVEN.
+     Eerst stond hier `display: grid; place-items: center` en rekende het script
+     met een beeld dat netjes in het midden hangt. Dat is níet wat een browser
+     doet: een grid-item dat gróter is dan zijn vak wordt bovenaan gelegd, niet
+     gecentreerd over de rand heen. Gemeten op 2026-10-17: de bovenkant van het
+     blad lag al op 0, en de correctie die het dáárheen moest brengen duwde het
+     er 320 beeldpunten onder — de lege band die je zag.
+
+     Met top:0, left:0 en transform-origin linksboven is er niets meer te raden:
+     y = 0 is de bovenkant, het blad mag van 0 tot -(hoogte - vakhoogte)
+     schuiven, en bij het zoomen groeit het naar rechtsonder. Alle grenzen staan
+     daarmee in één formule in klem(). */
+  .vak {
+    flex: 0 0 100%; height: 100%; overflow: hidden;
+    position: relative;
+    touch-action: none;             /* wij doen de gebaren zelf — zie hierboven */
+    user-select: none; -webkit-user-select: none;
+    cursor: grab;
+  }
+  .vak.sleept { cursor: grabbing; }
+  /* DE DOOS DRAAGT DE TRANSFORM, HET BLAD ZIT ERIN. Sinds de bladen hun eigen
+     links hebben, is het blad niet meer het enige dat moet meeschuiven en
+     meezoomen: de linkvlakken liggen erbovenop en moeten exact meebewegen.
+     Daarom staan ze samen in één doos en verplaatst die doos. */
+  .bladdoos { position: absolute; top: 0; left: 0; width: 100%; transform-origin: 0 0; }
+  .blad {
+    display: block; width: 100%; height: auto;
+    background: #ffffff;
+    -webkit-user-drag: none; user-drag: none; pointer-events: none;
+  }
+  /* De klikvlakken uit de pdf zelf. Ze staan in procenten van het blad, dus
+     blijven ze kloppen op elke schaal en bij elke vensterbreedte. Onzichtbaar
+     tot je erbij komt — het blad is een document, geen webpagina, en
+     onderstreepte vlakken eroverheen zouden dat tegenspreken. */
+  .bladlink { position: absolute; display: block; }
+  /* Het vlak dat je ziet oplichten is NIET het vlak dat je raakt. De <a> wordt
+     door rekOp() opgerekt tot iets wat een duim kan raken; dit kind houdt de
+     echte maat van de link in de pdf, zodat de markering om de tekst valt en
+     niet om een onzichtbare marge. */
+  .bladlink span {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+    border-radius: 4px;
+  }
+  .bladlink:hover span, .bladlink:focus-visible span {
+    background: rgba(10,242,159,.22); box-shadow: 0 0 0 2px #0af29f;
+  }
+  .bladdoos.glijdt { transition: transform var(--m-base) var(--e-decelerate); }
+
+  /* De balk met de bediening. Hij hangt ín het schuivende deel en niet in de
+     voet, want de voet hoort van één ding te zijn: de demoknop. */
+  /* width:max-content is hier niet optioneel. Een absoluut geplaatst element
+     met alleen `left: 50%` krijgt als beschikbare breedte de hélft van zijn
+     doos, dus 195 beeldpunten op een telefoon — en dan viel «1 / 2» over drie
+     regels uiteen. Gezien op 2026-10-16 in de schermafdruk van de eerste test. */
+  .bediening {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: max-content; white-space: nowrap;
+    bottom: 12px; z-index: 2;
+    display: flex; align-items: center; gap: 4px;
+    background: rgba(255,255,255,.94); backdrop-filter: blur(4px);
+    border: 1px solid #e1ebf0; border-radius: 999px;
+    padding: 4px; box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  }
+  .bediening button {
+    height: 40px; min-width: 40px; padding: 0 10px;
+    display: grid; place-items: center; border-radius: 999px;
+    color: #0a3327; font-weight: 700; font-size: 15px; cursor: pointer;
+  }
+  .bediening button:disabled { opacity: .35; cursor: default; }
+  .bediening button:not(:disabled):hover { background: #f6f8fa; }
+  .bediening .teller { font-variant-numeric: tabular-nums; padding: 0 8px; color: #547068; }
+
+  /* Variant B. Een iframe heeft geen natuurlijke hoogte, dus moet die gezegd
+     worden; hij vult hier gewoon het hele middenstuk. */
+  .paneel-pdf { width: 100%; height: 100%; border: 0; display: block; background: #f6f8fa; }
+
+  /* DE TWEEDE KNOP IN DE VOET IS OP TELEFOON EEN LINK.
+     Twee volle knoppen onder elkaar kostten daar samen 139 beeldpunten van een
+     scherm van 812 — ruim een zesde, weggenomen van de case die je net wilde
+     laten lezen. De demoknop blijft een knop, want dat is waarvoor de voet
+     bestaat; de download wordt ernaast een link van 44 hoog, nog altijd ruim
+     genoeg voor een duim. Vanaf 640px krijgt ze haar rand terug en staan er
+     weer twee knoppen. */
+  .voetlink {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; font-weight: 700; color: #0a3327;
+    text-decoration: underline; text-underline-offset: 2px;
+  }
+  @media (min-width: 640px) {
+    .voetlink {
+      min-height: 48px; padding: 14px 24px; border: 1px solid #9dbcc2;
+      border-radius: 8px; background: #ffffff; text-decoration: none;
+    }
+    .voetlink:hover { background: #f6f8fa; border-color: #e1ebf0; }
+  }
+
+  /* Bij wie beweging uitzet verschijnt het paneel zonder te schuiven. */
+  @media (prefers-reduced-motion: no-preference) {
+    dialog.paneel[open] .paneel-doos { animation: opkomen var(--m-medium) var(--e-decelerate); }
+    @keyframes opkomen { from { transform: translateY(24px); opacity: .6; } }
+    @media (min-width: 768px) {
+      @keyframes opkomen { from { transform: translateX(-50%) translateY(16px); opacity: .6; } }
+    }
+  }
+</style>
+
+<style>
+/* ===========================================================================
+   ALLEEN VOOR DEZE VERGELIJKINGSPAGINA
+   ---------------------------------------------------------------------------
+   Hierboven staat het stijlblok van draft-r3-01-definitief.html, letterlijk.
+   Wat hieronder staat, is wat die pagina niet heeft: de twee meetkaders en de
+   vijf vormen die vergeleken worden. Geen nieuwe kleuren — elke waarde hier is
+   een token uit de configuratie hierboven (#0af29f, #031317, #ffffff) of een
+   van de drie afgeleiden op de donkere band (--inv-soft, --inv-line,
+   --inv-fill), die daar al gedeclareerd staan.
+
+   DE VORMEN REAGEREN OP HUN EIGEN BREEDTE, NIET OP HET SCHERM. Vandaar
+   @container en geen @media. Een vorm in het telefoonkader moet er op een
+   breed scherm uitzien zoals op een telefoon; met sm:/md:/lg: zou hij de
+   opmaak van het grote scherm krijgen en zou het kader een leugen zijn.
+   =========================================================================== */
+
+/* ---- de sprongknoppen in de paginakop ----------------------------------- */
+.sprong { display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+          border-radius: 8px; border: 1px solid #9dbcc2; background: #ffffff;
+          padding: 8px 16px; font-size: 15px; line-height: 1.5; font-weight: 500;
+          color: #0a3327; text-decoration: none;
+          transition: background-color var(--m-fast) var(--e-standard),
+                      border-color var(--m-fast) var(--e-standard); }
+.sprong:hover { background: #f6f8fa; border-color: #0a3327; }
+.sprong b { font-weight: 700; color: #154e3a; }
+
+/* ---- de twee meetkaders -------------------------------------------------
+   390 px is de telefoon waarop deze pagina getoetst wordt; met 24 px rand aan
+   elke kant houdt de inhoud 342 px over, precies wat de echte pagina daar aan
+   de kolom geeft (390 - 2 x px-6).
+   535 px is 487 + 2 x 24: de kolom is op een breed scherm gemeten 487 px, en
+   het kader eromheen mag die maat niet opeten.
+   max-width: 100% is wat de zijwaartse schuifbalk op 390 px tegenhoudt: het
+   brede kader krult dan mee in plaats van buiten het scherm te steken.
+   ------------------------------------------------------------------------- */
+.kaderrij { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+/* OP EEN TELEFOON GAAN DE KADERS VAN RAND TOT RAND, en dat is geen opsmuk.
+   De shell geeft onder 768 px 24 px marge links en rechts; een kader van 390 px
+   kon daar dus maar 342 px breed worden en hield na zijn eigen rand 294 px
+   inhoud over. Gemeten in Chromium: 294 in plaats van 342. Het telefoonkader
+   loog dan precies over het enige wat het moet bewijzen. Met -24 px marge is
+   het kader zo breed als het toestel en houdt de inhoud weer 342 px. */
+@media (max-width: 767px) {
+  .kaderrij { margin-left: -24px; margin-right: -24px; }
+  .kader { border-radius: 0; border-left: 0; border-right: 0; }
+}
+/* De caveat bij het brede kader: op een telefoon is dat kader niet 487 px, en
+   dat moet er staan in plaats van stilzwijgend verzwegen worden. */
+.alleen-smal { display: block; font-weight: 500; }
+@media (min-width: 768px) { .alleen-smal { display: none; } }
+.kader { container-type: inline-size; border-radius: 12px; padding: 24px;
+         background: rgba(255,255,255,.04); border: 1px solid var(--inv-line); }
+.kader-telefoon { width: 390px; max-width: 100%; }
+.kader-kolom    { width: 535px; max-width: 100%; }
+.kadernaam { margin: 0 0 20px; font-size: 13px; line-height: 1.3; font-weight: 700;
+             color: var(--inv-soft); }
+
+/* De kop en de zin van de echte pagina, zodat elke vorm in zijn eigen context
+   te beoordelen is. Het zijn <p> en geen <h2>: de pagina heeft één h1 en vijf
+   variantkoppen, en tien kopieën van dezelfde sectiekop zouden die boom stuk
+   maken. De maat kantelt op 420 px containerbreedte, want de echte pagina zet
+   deze kop op text-h2 (24 px) en vanaf md op text-h1 (36 px). */
+.framekop { margin: 0; font-size: 24px; line-height: 1.2; font-weight: 700;
+            color: #ffffff; max-width: 20ch; text-wrap: balance; }
+.frameintro { margin: 20px 0 0; font-size: 20px; line-height: 1.5;
+              color: var(--inv-soft); max-width: 34rem; }
+.framevisual { margin-top: 32px; }
+@container (min-width: 420px) {
+  .framekop { font-size: 36px; }
+}
+
+/* ---- onderdelen die meer dan één variant gebruikt ----------------------- */
+.ic { height: 20px; width: 20px; display: block; }
+.ic-groot { height: 26px; width: 26px; }
+.vlak { background: var(--inv-fill); border: 1px solid var(--inv-line);
+        border-radius: 10px; }
+.naamtekst { min-width: 0; font-size: 14px; line-height: 1.3; font-weight: 700;
+             color: #ffffff; hyphens: auto; overflow-wrap: break-word; }
+
+/* =========================================================================
+   VARIANT 1 — DE NAAF
+   -------------------------------------------------------------------------
+   De ring staat op inset 16%, dus zijn straal is 34% van het vlak. De vier
+   knooppunten staan op 45 graden: 50% ± 34% x cos(45°) = 26% en 74%. Die vier
+   getallen zijn gerekend en niet gezocht, en de spaken in de SVG lopen naar
+   exact dezelfde punten (26 en 74 op een viewBox van 100).
+   De knoopnaam krijgt een donkere achtergrond omdat hij over de ring valt.
+   ========================================================================= */
+.naaf { position: relative; width: 100%; max-width: 420px; margin: 0 auto;
+        aspect-ratio: 1 / 1; }
+.naaf-ring { position: absolute; inset: 16%; border-radius: 9999px;
+             border: 1px dashed rgba(255,255,255,.3);
+             animation: naaf-draai 72s linear infinite; }
+.naaf-ring::after { content: ""; position: absolute; top: -5px; left: 50%;
+             margin-left: -5px; height: 10px; width: 10px; border-radius: 9999px;
+             background: #0af29f; }
+@keyframes naaf-draai { to { transform: rotate(360deg); } }
+.naaf-spaken { position: absolute; inset: 0; height: 100%; width: 100%; }
+.naaf-spaken line { stroke: rgba(10,242,159,.6); stroke-width: 1.5;
+             stroke-dasharray: 3 4; animation: naaf-puls 2.6s linear infinite; }
+@keyframes naaf-puls { to { stroke-dashoffset: -14; } }
+.naaf-hub { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            display: grid; place-items: center; height: 76px; width: 76px;
+            border-radius: 18px; background: rgba(10,242,159,.12);
+            box-shadow: 0 0 0 1px rgba(10,242,159,.4); }
+.naaf-hub img { height: 48px; width: 48px; display: block; }
+.naaf-knopen { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+.naaf-knoop { position: absolute; width: 118px; transform: translate(-50%,-50%);
+              display: flex; flex-direction: column; align-items: center; gap: 6px;
+              text-align: center; }
+.naaf-schijf { display: grid; place-items: center; height: 46px; width: 46px;
+               border-radius: 9999px; background: #031317; color: #0af29f;
+               box-shadow: 0 0 0 1px rgba(255,255,255,.3); }
+/* white-space: nowrap, en daarom mag de naam breder zijn dan het knooppunt.
+   Met afbreken gaf Chromium hier "Performan-cemanagement" — een geldige
+   Nederlandse afbreking die niemand zo leest. Het breedste label is ongeveer
+   150 px; het linkerknooppunt staat op 26% van 342 px (89 px), dus het chipje
+   begint op 14 px en het rechter eindigt op 328 px. Allebei binnen het kader. */
+.naaf-naam { flex: none; white-space: nowrap;
+             font-size: 13px; line-height: 1.25; font-weight: 700; color: #ffffff;
+             background: rgba(3,19,23,.78); border-radius: 6px; padding: 3px 6px; }
+.naaf-nw { top: 26%; left: 26%; }
+.naaf-ne { top: 26%; left: 74%; }
+.naaf-sw { top: 74%; left: 26%; }
+.naaf-se { top: 74%; left: 74%; }
+
+/* =========================================================================
+   VARIANT 2 — DE INSTROOM
+   -------------------------------------------------------------------------
+   De trechter is één SVG met preserveAspectRatio="none", zodat hij exact zo
+   breed wordt als het kader. vector-effect="non-scaling-stroke" houdt de lijn
+   daarbij 1 px dik; zonder dat wordt hij in het brede kader anderhalf keer zo
+   dik als in het smalle en lijkt het een andere variant.
+   De drie stippen vallen van de rand van de trechter naar het punt eronder.
+   Hun eindpunten (±100 gebruikerseenheden) zijn de x-afstand tussen hun start
+   en het midden van de viewBox (160).
+   ========================================================================= */
+.stroom-bronnen { display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+                  margin: 0; padding: 0; list-style: none; }
+.stroom-bron { display: flex; align-items: center; gap: 10px; padding: 11px 13px;
+               color: #0af29f; }
+/* Het lange woord krijgt op een smal kader de volle breedte, en Core hr erbij
+   zodat de rij niet half leeg eindigt. Op het brede kader past
+   Performancemanagement wel naast Tijdsregistratie en blijft het een vierkant
+   van vier. Een containervraag en geen schermvraag: het telefoonkader moet er
+   op een breed scherm uitzien zoals op een telefoon. */
+@container (max-width: 419px) {
+  .stroom-bron:nth-child(3),
+  .stroom-bron:nth-child(4) { grid-column: 1 / -1; }
+}
+.stroom-trechter { position: relative; display: block; height: 88px; width: 100%; }
+.stroom-trechter svg { position: absolute; inset: 0; height: 100%; width: 100%; }
+.stroom-wand { fill: none; stroke: rgba(255,255,255,.28); stroke-width: 1.2; }
+/* De stippen staan BUITEN de SVG. preserveAspectRatio="none" rekt de trechter
+   netjes mee, maar het rekt ook elke cirkel erin: in het brede kader werden
+   het ovalen. Als los element blijven ze rond op elke breedte. */
+.stroom-stip { position: absolute; left: 50%; top: 0; height: 8px; width: 8px;
+               margin: -4px 0 0 -4px; border-radius: 9999px;
+               background: #0af29f; opacity: 0; }
+.stroom-stip-1 { animation: stroom-val-1 2.4s ease-in infinite; }
+.stroom-stip-2 { animation: stroom-val-2 2.4s ease-in infinite .4s; }
+.stroom-stip-3 { animation: stroom-val-3 2.4s ease-in infinite .8s; }
+@keyframes stroom-val-1 {
+  0%   { left: 19%; top: 0;    opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { left: 50%; top: 100%; opacity: 0; } }
+@keyframes stroom-val-2 {
+  0%   { left: 50%; top: 0;    opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { left: 50%; top: 100%; opacity: 0; } }
+@keyframes stroom-val-3 {
+  0%   { left: 81%; top: 0;    opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { left: 50%; top: 100%; opacity: 0; } }
+.stroom-doel { display: flex; align-items: center; gap: 12px; margin: 0;
+               padding: 14px 16px; border-radius: 10px;
+               background: rgba(10,242,159,.1);
+               border: 1px solid rgba(10,242,159,.42); }
+.stroom-doel img { height: 24px; width: auto; display: block; }
+.stroom-doel span { font-size: 14px; line-height: 1.3; font-weight: 700; color: #ffffff; }
+
+/* =========================================================================
+   VARIANT 3 — DE UNIFORME TEGELS
+   -------------------------------------------------------------------------
+   Vier identieke tegels, en het merkteken op het kruispunt van de twee naden.
+   Het kruis is geen rand van de tegels maar twee losse lijnen eronder: een
+   rand op de tegel zelf zou aan vier kanten zichtbaar zijn en van de tegels
+   vakjes maken in plaats van een geheel.
+   Bewust geen beweging — dat is het punt van deze variant en niet een
+   vergetelheid.
+   ========================================================================= */
+.tegels { position: relative; }
+.tegels-raster { display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+                 margin: 0; padding: 0; list-style: none; }
+.tegel { display: flex; flex-direction: column; gap: 12px; min-height: 116px;
+         padding: 16px; border-radius: 12px; background: rgba(255,255,255,.06);
+         border: 1px solid var(--inv-line); }
+.tegel-icoon { display: grid; place-items: center; height: 38px; width: 38px;
+               border-radius: 8px; background: rgba(10,242,159,.14); color: #0af29f; }
+.tegels-kruis-h { position: absolute; top: 50%; left: 6%; right: 6%; height: 1px;
+                  background: rgba(10,242,159,.45); }
+.tegels-kruis-v { position: absolute; left: 50%; top: 6%; bottom: 6%; width: 1px;
+                  background: rgba(10,242,159,.45); }
+.tegels-hub { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+              display: grid; place-items: center; height: 56px; width: 56px;
+              border-radius: 16px; background: #031317;
+              box-shadow: 0 0 0 1px rgba(10,242,159,.5); }
+.tegels-hub img { height: 34px; width: 34px; display: block; }
+
+/* =========================================================================
+   VARIANT 4 — DE KOPPELSTUKKEN
+   -------------------------------------------------------------------------
+   Een raster van drie bij drie met benoemde vlakken. De bovenste en onderste
+   balk lopen over de volle breedte, dus daar past het lange woord
+   Performancemanagement op één regel; de twee zijblokken zijn de smalste plek
+   en staan daarom in kolomrichting.
+   De volgorde in de HTML blijft die van pagina.yml (Payroll, Tijdsregistratie,
+   Performancemanagement, Core hr) en de plaatsing gebeurt met grid-area. Een
+   schermlezer hoort dus de bedoelde volgorde, ook al staat Payroll links en
+   niet boven.
+   De nokjes overbruggen de naad van 12 px: 12 px breed op -7 px, dus ze raken
+   het middenblok. Hun puls loopt door, zodat er beweging in blijft nadat de
+   vier één keer zijn ingeschoven.
+   ========================================================================= */
+.koppel { display: grid; gap: 12px;
+          grid-template-columns: 1fr minmax(100px, 1.15fr) 1fr;
+          grid-template-areas: "n n n" "w c e" "s s s"; }
+.koppel-blok { position: relative; display: flex; align-items: center; gap: 10px;
+               margin: 0; padding: 12px 14px; border-radius: 10px;
+               background: var(--inv-fill); border: 1px solid var(--inv-line);
+               color: #0af29f; }
+.koppel-blok::after { content: ""; position: absolute; height: 12px; width: 12px;
+                      border-radius: 3px; background: #0af29f;
+                      animation: nok-puls 2.6s var(--e-standard) infinite; }
+@keyframes nok-puls {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(10,242,159,.55); }
+  55%      { box-shadow: 0 0 0 7px rgba(10,242,159,0); } }
+.koppel-n { grid-area: n; justify-content: center;
+            animation: kom-boven .45s var(--e-decelerate) both; }
+.koppel-s { grid-area: s; justify-content: center;
+            animation: kom-onder .45s var(--e-decelerate) .16s both; }
+.koppel-w { grid-area: w; flex-direction: column; text-align: center;
+            animation: kom-links .45s var(--e-decelerate) .08s both; }
+.koppel-e { grid-area: e; flex-direction: column; text-align: center;
+            animation: kom-rechts .45s var(--e-decelerate) .24s both; }
+.koppel-n::after { bottom: -7px; left: 50%; margin-left: -6px; }
+.koppel-s::after { top: -7px; left: 50%; margin-left: -6px; }
+.koppel-w::after { right: -7px; top: 50%; margin-top: -6px; }
+.koppel-e::after { left: -7px; top: 50%; margin-top: -6px; }
+@keyframes kom-boven  { from { opacity: 0; transform: translateY(-16px); } }
+@keyframes kom-onder  { from { opacity: 0; transform: translateY(16px); } }
+@keyframes kom-links  { from { opacity: 0; transform: translateX(-16px); } }
+@keyframes kom-rechts { from { opacity: 0; transform: translateX(16px); } }
+.koppel-hart { grid-area: c; display: grid; place-items: center; padding: 16px 10px;
+               border-radius: 12px; background: #0af29f; }
+.koppel-hart img { height: 22px; width: auto; display: block; }
+
+/* =========================================================================
+   VARIANT 5 — DE MERKENBAND
+   -------------------------------------------------------------------------
+   Dezelfde schuifband als de logobalk bovenaan de echte pagina, met dezelfde
+   masker-uitvloeiing aan de randen. Het spoor draagt de vier plaquettes twee
+   keer; de tweede reeks is aria-hidden, zodat een schermlezer de vier functies
+   één keer hoort en niet acht keer.
+   De verschuiving is -50% min één naad van 12 px, want een reeks van vier
+   plaquettes is 580 px en de helft van het spoor is 586 px. Zonder die 6 px
+   springt de band één keer per ronde.
+   De plaquettes staan in een stippellijn op opzet: het zijn plaatshouders en
+   geen logo's, en een gesloten rand zou doen alsof er al iets vrijgegeven is.
+   ========================================================================= */
+.merkband { display: flex; flex-direction: column; gap: 16px; }
+.merk-doel { display: flex; align-items: center; gap: 12px; margin: 0;
+             padding: 14px 16px; border-radius: 10px;
+             background: rgba(10,242,159,.1);
+             border: 1px solid rgba(10,242,159,.42); }
+.merk-doel img { height: 24px; width: auto; display: block; }
+.merk-doel span { font-size: 14px; line-height: 1.3; font-weight: 700; color: #ffffff; }
+.merk-spoor-doos { --fade: 32px; overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade),
+              #000 calc(100% - var(--fade)), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade),
+              #000 calc(100% - var(--fade)), transparent 100%); }
+.merk-spoor { display: flex; width: max-content; gap: 12px; margin: 0; padding: 0;
+              list-style: none; animation: merk-schuif 34s linear infinite; }
+@keyframes merk-schuif { to { transform: translateX(calc(-50% - 6px)); } }
+.merk-spoor-doos:hover .merk-spoor,
+.merk-spoor-doos:focus-within .merk-spoor { animation-play-state: paused; }
+.merk-plaat { flex: none; width: 136px; height: 68px; display: flex;
+              flex-direction: column; align-items: center; justify-content: center;
+              gap: 1px; border-radius: 8px;
+              border: 1px dashed rgba(255,255,255,.5);
+              background: rgba(255,255,255,.05); }
+.merk-functie { font-size: 11px; line-height: 1.2; color: var(--inv-soft);
+                max-width: 124px; text-align: center; }
+.merk-naam { font-size: 16px; line-height: 1.2; font-weight: 700; color: #ffffff; }
+.merk-hint { font-size: 10px; line-height: 1.2; color: rgba(255,255,255,.5); }
+.merk-nota { margin: 0; font-size: 13px; line-height: 1.4; color: var(--inv-soft); }
+
+/* =========================================================================
+   ALLE BEWEGING UIT WANNEER HET BESTURINGSSYSTEEM DAAROM VRAAGT
+   -------------------------------------------------------------------------
+   Het stijlblok hierboven zet elke duur al op .01ms, en dat eindigt een
+   animatie onmiddellijk in haar LAATSTE beeld. Voor de meeste dingen is dat
+   precies goed, maar niet voor een schuifband (die staat dan op -50%) en niet
+   voor de vallende stippen (die staan dan onder de trechter, onzichtbaar).
+   Daarom staat hier animation: none, en krijgen de stippen een vaste stand
+   halverwege, zodat de stroom ook stil nog te lezen is.
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .naaf-ring,
+  .naaf-spaken line,
+  .stroom-stip,
+  .koppel-n, .koppel-s, .koppel-w, .koppel-e,
+  .koppel-blok::after,
+  .merk-spoor { animation: none !important; }
+  .stroom-stip { opacity: 1; }
+  .stroom-stip-1 { left: 29%; top: 38%; }
+  .stroom-stip-2 { left: 50%; top: 62%; }
+  .stroom-stip-3 { left: 69%; top: 80%; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- De vier pictogrammen staan één keer als <symbol> en worden veertig keer
+     hergebruikt. Ze zijn letterlijk de vier iconen van de echte pagina: zelfde
+     raster van 24 px, zelfde lijndikte van 1,75. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <symbol id="ic-payroll" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="6" width="19" height="12" rx="2"></rect>
+      <circle cx="12" cy="12" r="2.5"></circle>
+      <path d="M6 10v4M18 10v4"></path>
+    </symbol>
+    <symbol id="ic-tijd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="8.5"></circle>
+      <path d="M12 7.5V12l3 2"></path>
+    </symbol>
+    <symbol id="ic-perf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 17l5.5-5.5 3.5 3.5L21 7"></path>
+      <path d="M15 7h6v6"></path>
+    </symbol>
+    <symbol id="ic-core" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9.5" cy="8.5" r="3.5"></circle>
+      <path d="M3.5 19a6 6 0 0 1 12 0"></path>
+      <path d="M16.5 5.6a3.5 3.5 0 0 1 0 5.8"></path>
+      <path d="M17.5 19a6 6 0 0 0-1.6-4.1"></path>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- =========================================================================
+     PAGINAKOP. Geen minititel boven de kop: die regel geldt ook hier.
+     ========================================================================= -->
+<header class="bg-surface border-b border-line">
+  <div class="shell py-12 md:py-20">
+    <h1 class="text-h1 lg:text-display max-w-[22ch]">
+      Vijf keer &eacute;&eacute;n integratievisual
+    </h1>
+    <p class="mt-5 text-h3 text-ink-soft max-w-prose">
+      Jana wil bij &ldquo;Plug vlot in met al je hr-tools&rdquo; geen vier labels meer onder
+      elkaar, maar iets dat integratie uitdrukt &mdash; met icoontjes en een dynamiek erin, zoals
+      de integratievisual van figures.hr. Hieronder staat vijf keer datzelfde blok, met telkens
+      een andere vorm.
+    </p>
+    <p class="mt-5 text-body text-ink-soft max-w-prose">
+      De kop, de zin eronder en de vier functies zijn in alle vijf identiek en komen letterlijk
+      uit <b>content/pagina.yml</b>. Alleen de vorm verandert. Elke variant staat twee keer: links
+      op telefoonbreedte, rechts op de breedte die de kolom op een groot scherm heeft.
+    </p>
+
+    <nav class="mt-8" aria-label="Naar een variant">
+      <ul class="flex flex-wrap gap-3 m-0 p-0 list-none">
+        <li><a href="#variant-1" class="sprong" data-cta="vergelijking-naar-variant-1"><b>1</b> De naaf</a></li>
+        <li><a href="#variant-2" class="sprong" data-cta="vergelijking-naar-variant-2"><b>2</b> De instroom</a></li>
+        <li><a href="#variant-3" class="sprong" data-cta="vergelijking-naar-variant-3"><b>3</b> De uniforme tegels</a></li>
+        <li><a href="#variant-4" class="sprong" data-cta="vergelijking-naar-variant-4"><b>4</b> De koppelstukken</a></li>
+        <li><a href="#variant-5" class="sprong" data-cta="vergelijking-naar-variant-5"><b>5</b> De merkenband</a></li>
+        <li><a href="#advies" class="sprong" data-cta="vergelijking-naar-advies"><b>&rarr;</b> Onze keuze</a></li>
+      </ul>
+    </nav>
+
+    <p class="mt-6 text-caption text-ink-soft max-w-prose">
+      Ter vergelijking: vandaag staan de vier als rechthoekige labels onder elkaar, elk met een
+      icoontje links en de naam ernaast.
+    </p>
+  </div>
+</header>
+
+<!-- =========================================================================
+     VARIANT 1 — DE NAAF
+     ========================================================================= -->
+<section id="variant-1" aria-labelledby="variant-1-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-1-titel" class="text-h2">Variant 1 &mdash; De naaf</h2>
+      <dl class="mt-5 grid gap-5 md:grid-cols-3 m-0">
+        <div>
+          <dt class="text-caption font-bold text-ink">Het idee</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Youbo staat in het midden van een cirkel, de vier functies hangen als knooppunten aan de ring. Stippellijnen lopen van het midden naar elk knooppunt en de ring draait heel traag rond.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het wint</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Dit is letterlijk het eerste voorbeeld dat Jana aanwees: cirkel, midden, knooppunten. Je ziet in één oogopslag dat Youbo de spil is en dat de vier er allemaal even hard bij horen — geen rangorde, geen lijst.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het kost</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Een vierkant vlak, dus het is het hoogste blok van de vijf. De namen staan in smalle kolommetjes van 118 pixels, waarin Performancemanagement over twee regels moet afbreken. En de kolom ernaast (EU Pay Transparency) wordt daardoor duidelijk korter dan deze.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="band band-gradient band-pad">
+    <div class="shell">
+      <div class="kaderrij">
+      <div class="kader kader-telefoon">
+        <p class="kadernaam">Telefoon &mdash; 390 px breed, de inhoud 342 px</p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="naaf">
+          <span class="naaf-ring" aria-hidden="true"></span>
+          <svg class="naaf-spaken" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <line x1="50" y1="50" x2="26" y2="26" vector-effect="non-scaling-stroke"></line>
+            <line x1="50" y1="50" x2="74" y2="26" vector-effect="non-scaling-stroke"></line>
+            <line x1="50" y1="50" x2="26" y2="74" vector-effect="non-scaling-stroke"></line>
+            <line x1="50" y1="50" x2="74" y2="74" vector-effect="non-scaling-stroke"></line>
+          </svg>
+          <span class="naaf-hub"><img src="assets/img/favicon.svg" alt="" aria-hidden="true"></span>
+          <ul class="naaf-knopen">
+            <li class="naaf-knoop naaf-nw">
+              <span class="naaf-schijf"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-payroll"></use></svg></span>
+              <span class="naaf-naam" data-inhoud="integraties.functie_1">Payroll</span>
+            </li>
+            <li class="naaf-knoop naaf-ne">
+              <span class="naaf-schijf"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-tijd"></use></svg></span>
+              <span class="naaf-naam" data-inhoud="integraties.functie_2">Tijdsregistratie</span>
+            </li>
+            <li class="naaf-knoop naaf-sw">
+              <span class="naaf-schijf"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-perf"></use></svg></span>
+              <span class="naaf-naam" data-inhoud="integraties.functie_3">Performancemanagement</span>
+            </li>
+            <li class="naaf-knoop naaf-se">
+              <span class="naaf-schijf"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-core"></use></svg></span>
+              <span class="naaf-naam" data-inhoud="integraties.functie_4">Core hr</span>
+            </li>
+          </ul>
+        </div>
+        </div>
+      </div>
+      <div class="kader kader-kolom">
+        <p class="kadernaam">Breed scherm &mdash; de kolom is daar 487 px<span class="alleen-smal">Op dit scherm is dit kader smaller dan 487 px &mdash; bekijk deze kolom op een groot scherm.</span></p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="naaf">
+          <span class="naaf-ring" aria-hidden="true"></span>
+          <svg class="naaf-spaken" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <line x1="50" y1="50" x2="26" y2="26" vector-effect="non-scaling-stroke"></line>
+            <line x1="50" y1="50" x2="74" y2="26" vector-effect="non-scaling-stroke"></line>
+            <line x1="50" y1="50" x2="26" y2="74" vector-effect="non-scaling-stroke"></line>
+            <line x1="50" y1="50" x2="74" y2="74" vector-effect="non-scaling-stroke"></line>
+          </svg>
+          <span class="naaf-hub"><img src="assets/img/favicon.svg" alt="" aria-hidden="true"></span>
+          <ul class="naaf-knopen">
+            <li class="naaf-knoop naaf-nw">
+              <span class="naaf-schijf"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-payroll"></use></svg></span>
+              <span class="naaf-naam" data-inhoud="integraties.functie_1">Payroll</span>
+            </li>
+            <li class="naaf-knoop naaf-ne">
+              <span class="naaf-schijf"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-tijd"></use></svg></span>
+              <span class="naaf-naam" data-inhoud="integraties.functie_2">Tijdsregistratie</span>
+            </li>
+            <li class="naaf-knoop naaf-sw">
+              <span class="naaf-schijf"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-perf"></use></svg></span>
+              <span class="naaf-naam" data-inhoud="integraties.functie_3">Performancemanagement</span>
+            </li>
+            <li class="naaf-knoop naaf-se">
+              <span class="naaf-schijf"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-core"></use></svg></span>
+              <span class="naaf-naam" data-inhoud="integraties.functie_4">Core hr</span>
+            </li>
+          </ul>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     VARIANT 2 — DE INSTROOM
+     ========================================================================= -->
+<section id="variant-2" aria-labelledby="variant-2-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-2-titel" class="text-h2">Variant 2 &mdash; De instroom</h2>
+      <dl class="mt-5 grid gap-5 md:grid-cols-3 m-0">
+        <div>
+          <dt class="text-caption font-bold text-ink">Het idee</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">De vier functies staan boven als gelijke bronnen, daaronder vernauwt een trechter naar één punt, en onderaan staat Youbo. Drie mintstippen zakken de trechter door.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het wint</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Het enige van de vijf dat een richting toont: gegevens komen ergens vandaan en landen op één plek. Dat is precies wat de zin eronder belooft, en het is te lezen zonder die zin.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het kost</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">De trechter zelf is leegte — ongeveer 90 pixels waarin niets staat. En de stippen vallen maar één kant op: wie zoekt waar Youbo gegevens terugschrijft, krijgt hier het antwoord niet. Op telefoonbreedte krijgen Performancemanagement en Core hr de volle breedte, anders breekt dat lange woord af.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="band band-gradient band-pad">
+    <div class="shell">
+      <div class="kaderrij">
+      <div class="kader kader-telefoon">
+        <p class="kadernaam">Telefoon &mdash; 390 px breed, de inhoud 342 px</p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="stroom">
+          <ul class="stroom-bronnen">
+            <li class="stroom-bron vlak"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-payroll"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_1">Payroll</span></li>
+            <li class="stroom-bron vlak"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-tijd"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_2">Tijdsregistratie</span></li>
+            <li class="stroom-bron vlak"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-perf"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_3">Performancemanagement</span></li>
+            <li class="stroom-bron vlak"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-core"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_4">Core hr</span></li>
+          </ul>
+          <span class="stroom-trechter" aria-hidden="true">
+            <svg viewBox="0 0 320 88" preserveAspectRatio="none" focusable="false">
+              <path class="stroom-wand" d="M6 0 C6 46 148 42 152 88" vector-effect="non-scaling-stroke"></path>
+              <path class="stroom-wand" d="M314 0 C314 46 172 42 168 88" vector-effect="non-scaling-stroke"></path>
+            </svg>
+            <span class="stroom-stip stroom-stip-1"></span>
+            <span class="stroom-stip stroom-stip-2"></span>
+            <span class="stroom-stip stroom-stip-3"></span>
+          </span>
+          <p class="stroom-doel">
+            <img src="assets/img/youbo_logo_white.svg" alt="Youbo" width="102" height="28">
+            <span>een dossier per medewerker</span>
+          </p>
+        </div>
+        </div>
+      </div>
+      <div class="kader kader-kolom">
+        <p class="kadernaam">Breed scherm &mdash; de kolom is daar 487 px<span class="alleen-smal">Op dit scherm is dit kader smaller dan 487 px &mdash; bekijk deze kolom op een groot scherm.</span></p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="stroom">
+          <ul class="stroom-bronnen">
+            <li class="stroom-bron vlak"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-payroll"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_1">Payroll</span></li>
+            <li class="stroom-bron vlak"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-tijd"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_2">Tijdsregistratie</span></li>
+            <li class="stroom-bron vlak"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-perf"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_3">Performancemanagement</span></li>
+            <li class="stroom-bron vlak"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-core"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_4">Core hr</span></li>
+          </ul>
+          <span class="stroom-trechter" aria-hidden="true">
+            <svg viewBox="0 0 320 88" preserveAspectRatio="none" focusable="false">
+              <path class="stroom-wand" d="M6 0 C6 46 148 42 152 88" vector-effect="non-scaling-stroke"></path>
+              <path class="stroom-wand" d="M314 0 C314 46 172 42 168 88" vector-effect="non-scaling-stroke"></path>
+            </svg>
+            <span class="stroom-stip stroom-stip-1"></span>
+            <span class="stroom-stip stroom-stip-2"></span>
+            <span class="stroom-stip stroom-stip-3"></span>
+          </span>
+          <p class="stroom-doel">
+            <img src="assets/img/youbo_logo_white.svg" alt="Youbo" width="102" height="28">
+            <span>een dossier per medewerker</span>
+          </p>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     VARIANT 3 — DE UNIFORME TEGELS
+     ========================================================================= -->
+<section id="variant-3" aria-labelledby="variant-3-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-3-titel" class="text-h2">Variant 3 &mdash; De uniforme tegels</h2>
+      <dl class="mt-5 grid gap-5 md:grid-cols-3 m-0">
+        <div>
+          <dt class="text-caption font-bold text-ink">Het idee</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Vier tegels van precies hetzelfde formaat in een vierkant, met het Youbo-merkteken op het kruispunt ertussen. Geen beweging.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het wint</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Dit is Jana haar tweede voorbeeld: alles in één uniforme stijl. Het is het goedkoopste om te bouwen, het valt nooit stil of uit de pas, en het past op elke breedte zonder te breken.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het kost</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Het is ook het stilste. Vier gelijke vakjes naast elkaar zijn nog altijd vier vakjes; de integratie zit hier alleen in het merkteken in het midden en in twee dunne lijnen. Als Jana dynamiek bedoelt, is dit het minst dynamische van de vijf.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="band band-gradient band-pad">
+    <div class="shell">
+      <div class="kaderrij">
+      <div class="kader kader-telefoon">
+        <p class="kadernaam">Telefoon &mdash; 390 px breed, de inhoud 342 px</p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="tegels">
+          <span class="tegels-kruis-h" aria-hidden="true"></span>
+          <span class="tegels-kruis-v" aria-hidden="true"></span>
+          <ul class="tegels-raster">
+            <li class="tegel">
+              <span class="tegel-icoon"><svg class="ic ic-groot" aria-hidden="true" focusable="false"><use href="#ic-payroll"></use></svg></span>
+              <span class="naamtekst" data-inhoud="integraties.functie_1">Payroll</span>
+            </li>
+            <li class="tegel">
+              <span class="tegel-icoon"><svg class="ic ic-groot" aria-hidden="true" focusable="false"><use href="#ic-tijd"></use></svg></span>
+              <span class="naamtekst" data-inhoud="integraties.functie_2">Tijdsregistratie</span>
+            </li>
+            <li class="tegel">
+              <span class="tegel-icoon"><svg class="ic ic-groot" aria-hidden="true" focusable="false"><use href="#ic-perf"></use></svg></span>
+              <span class="naamtekst" data-inhoud="integraties.functie_3">Performancemanagement</span>
+            </li>
+            <li class="tegel">
+              <span class="tegel-icoon"><svg class="ic ic-groot" aria-hidden="true" focusable="false"><use href="#ic-core"></use></svg></span>
+              <span class="naamtekst" data-inhoud="integraties.functie_4">Core hr</span>
+            </li>
+          </ul>
+          <span class="tegels-hub"><img src="assets/img/favicon.svg" alt="" aria-hidden="true"></span>
+        </div>
+        </div>
+      </div>
+      <div class="kader kader-kolom">
+        <p class="kadernaam">Breed scherm &mdash; de kolom is daar 487 px<span class="alleen-smal">Op dit scherm is dit kader smaller dan 487 px &mdash; bekijk deze kolom op een groot scherm.</span></p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="tegels">
+          <span class="tegels-kruis-h" aria-hidden="true"></span>
+          <span class="tegels-kruis-v" aria-hidden="true"></span>
+          <ul class="tegels-raster">
+            <li class="tegel">
+              <span class="tegel-icoon"><svg class="ic ic-groot" aria-hidden="true" focusable="false"><use href="#ic-payroll"></use></svg></span>
+              <span class="naamtekst" data-inhoud="integraties.functie_1">Payroll</span>
+            </li>
+            <li class="tegel">
+              <span class="tegel-icoon"><svg class="ic ic-groot" aria-hidden="true" focusable="false"><use href="#ic-tijd"></use></svg></span>
+              <span class="naamtekst" data-inhoud="integraties.functie_2">Tijdsregistratie</span>
+            </li>
+            <li class="tegel">
+              <span class="tegel-icoon"><svg class="ic ic-groot" aria-hidden="true" focusable="false"><use href="#ic-perf"></use></svg></span>
+              <span class="naamtekst" data-inhoud="integraties.functie_3">Performancemanagement</span>
+            </li>
+            <li class="tegel">
+              <span class="tegel-icoon"><svg class="ic ic-groot" aria-hidden="true" focusable="false"><use href="#ic-core"></use></svg></span>
+              <span class="naamtekst" data-inhoud="integraties.functie_4">Core hr</span>
+            </li>
+          </ul>
+          <span class="tegels-hub"><img src="assets/img/favicon.svg" alt="" aria-hidden="true"></span>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     VARIANT 4 — DE KOPPELSTUKKEN
+     ========================================================================= -->
+<section id="variant-4" aria-labelledby="variant-4-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-4-titel" class="text-h2">Variant 4 &mdash; De koppelstukken</h2>
+      <dl class="mt-5 grid gap-5 md:grid-cols-3 m-0">
+        <div>
+          <dt class="text-caption font-bold text-ink">Het idee</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Youbo is een mintblok in het midden met vier nokjes. De vier functies klikken er van boven, onder, links en rechts op vast. Ze schuiven één keer in, daarna pulseren de nokjes zacht.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het wint</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Het beeld zegt het woord uit de kop: plugt vlot in. Het is het meest letterlijke van de vijf en tegelijk het compactste — het is lager dan de naaf en dan de tegels, dus de twee kolommen van de band blijven even hoog.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het kost</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Het leesritme is niet meer van boven naar onder: de bovenste balk is Tijdsregistratie, niet Payroll. De volgorde in de HTML blijft wel de volgorde van pagina.yml, dus een schermlezer hoort ze nog in de juiste volgorde. De twee zijblokken zijn ook de smalste plek van alle vijf.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="band band-gradient band-pad">
+    <div class="shell">
+      <div class="kaderrij">
+      <div class="kader kader-telefoon">
+        <p class="kadernaam">Telefoon &mdash; 390 px breed, de inhoud 342 px</p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="koppel">
+          <p class="koppel-blok koppel-w"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-payroll"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_1">Payroll</span></p>
+          <p class="koppel-blok koppel-n"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-tijd"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_2">Tijdsregistratie</span></p>
+          <p class="koppel-blok koppel-s"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-perf"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_3">Performancemanagement</span></p>
+          <p class="koppel-blok koppel-e"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-core"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_4">Core hr</span></p>
+          <span class="koppel-hart"><img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28"></span>
+        </div>
+        </div>
+      </div>
+      <div class="kader kader-kolom">
+        <p class="kadernaam">Breed scherm &mdash; de kolom is daar 487 px<span class="alleen-smal">Op dit scherm is dit kader smaller dan 487 px &mdash; bekijk deze kolom op een groot scherm.</span></p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="koppel">
+          <p class="koppel-blok koppel-w"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-payroll"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_1">Payroll</span></p>
+          <p class="koppel-blok koppel-n"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-tijd"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_2">Tijdsregistratie</span></p>
+          <p class="koppel-blok koppel-s"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-perf"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_3">Performancemanagement</span></p>
+          <p class="koppel-blok koppel-e"><svg class="ic" aria-hidden="true" focusable="false"><use href="#ic-core"></use></svg><span class="naamtekst" data-inhoud="integraties.functie_4">Core hr</span></p>
+          <span class="koppel-hart"><img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28"></span>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     VARIANT 5 — DE MERKENBAND
+     ========================================================================= -->
+<section id="variant-5" aria-labelledby="variant-5-titel">
+  <div class="bg-surface border-y border-line">
+    <div class="shell py-8 md:py-10">
+      <h2 id="variant-5-titel" class="text-h2">Variant 5 &mdash; De merkenband</h2>
+      <dl class="mt-5 grid gap-5 md:grid-cols-3 m-0">
+        <div>
+          <dt class="text-caption font-bold text-ink">Het idee</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Youbo bovenaan, en daaronder een band met plaquettes van gelijk formaat die traag voorbijschuift. Elke plaquette draagt een functie en de naam van een tool.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het wint</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Dit is wat Jana nu vraagt: echte merken, in één uniforme stijl, met beweging. Een bezoeker die SAP of Workday gebruikt ziet zijn eigen tool staan, en dat is sterker dan welk pictogram ook.</dd>
+        </div>
+        <div>
+          <dt class="text-caption font-bold text-ink">Wat het kost</dt>
+          <dd class="m-0 mt-1 text-caption text-ink-soft">Dit is geen tekenwerk maar een beslissing, en die is al een keer de andere kant op gevallen. Zie de toelichting onder deze variant.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="band band-gradient band-pad">
+    <div class="shell">
+      <div class="kaderrij">
+      <div class="kader kader-telefoon">
+        <p class="kadernaam">Telefoon &mdash; 390 px breed, de inhoud 342 px</p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="merkband">
+          <p class="merk-doel">
+            <img src="assets/img/youbo_logo_white.svg" alt="Youbo" width="102" height="28">
+            <span>leest uit</span>
+          </p>
+          <div class="merk-spoor-doos">
+            <ul class="merk-spoor">
+              <li class="merk-plaat">
+                <span class="merk-functie" data-inhoud="integraties.functie_1">Payroll</span>
+                <span class="merk-naam">SAP</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat">
+                <span class="merk-functie" data-inhoud="integraties.functie_2">Tijdsregistratie</span>
+                <span class="merk-naam">Officient</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat">
+                <span class="merk-functie" data-inhoud="integraties.functie_3">Performancemanagement</span>
+                <span class="merk-naam">Personio</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat">
+                <span class="merk-functie" data-inhoud="integraties.functie_4">Core hr</span>
+                <span class="merk-naam">Workday</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat" aria-hidden="true">
+                <span class="merk-functie">Payroll</span>
+                <span class="merk-naam">SAP</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat" aria-hidden="true">
+                <span class="merk-functie">Tijdsregistratie</span>
+                <span class="merk-naam">Officient</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat" aria-hidden="true">
+                <span class="merk-functie">Performancemanagement</span>
+                <span class="merk-naam">Personio</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat" aria-hidden="true">
+                <span class="merk-functie">Core hr</span>
+                <span class="merk-naam">Workday</span>
+                <span class="merk-hint">logo</span>
+              </li>
+            </ul>
+          </div>
+          <p class="merk-nota">Plaatshouders. Geen van deze merken is bevestigd als partner.</p>
+        </div>
+        </div>
+      </div>
+      <div class="kader kader-kolom">
+        <p class="kadernaam">Breed scherm &mdash; de kolom is daar 487 px<span class="alleen-smal">Op dit scherm is dit kader smaller dan 487 px &mdash; bekijk deze kolom op een groot scherm.</span></p>
+        <p class="framekop" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</p>
+        <p class="frameintro" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
+        <div class="framevisual">
+        <div class="merkband">
+          <p class="merk-doel">
+            <img src="assets/img/youbo_logo_white.svg" alt="Youbo" width="102" height="28">
+            <span>leest uit</span>
+          </p>
+          <div class="merk-spoor-doos">
+            <ul class="merk-spoor">
+              <li class="merk-plaat">
+                <span class="merk-functie" data-inhoud="integraties.functie_1">Payroll</span>
+                <span class="merk-naam">SAP</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat">
+                <span class="merk-functie" data-inhoud="integraties.functie_2">Tijdsregistratie</span>
+                <span class="merk-naam">Officient</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat">
+                <span class="merk-functie" data-inhoud="integraties.functie_3">Performancemanagement</span>
+                <span class="merk-naam">Personio</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat">
+                <span class="merk-functie" data-inhoud="integraties.functie_4">Core hr</span>
+                <span class="merk-naam">Workday</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat" aria-hidden="true">
+                <span class="merk-functie">Payroll</span>
+                <span class="merk-naam">SAP</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat" aria-hidden="true">
+                <span class="merk-functie">Tijdsregistratie</span>
+                <span class="merk-naam">Officient</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat" aria-hidden="true">
+                <span class="merk-functie">Performancemanagement</span>
+                <span class="merk-naam">Personio</span>
+                <span class="merk-hint">logo</span>
+              </li>
+              <li class="merk-plaat" aria-hidden="true">
+                <span class="merk-functie">Core hr</span>
+                <span class="merk-naam">Workday</span>
+                <span class="merk-hint">logo</span>
+              </li>
+            </ul>
+          </div>
+          <p class="merk-nota">Plaatshouders. Geen van deze merken is bevestigd als partner.</p>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     DE MERKLOGO-BESLISSING. Staat apart, want het is geen ontwerpvraag.
+     ========================================================================= -->
+<section id="merklogos" aria-labelledby="merklogos-titel" class="bg-paper">
+  <div class="shell py-12 md:py-20">
+    <h2 id="merklogos-titel" class="text-h2 md:text-h1 max-w-[24ch]">
+      Variant 5 is geen tekenwerk, maar een beslissing
+    </h2>
+    <div class="mt-6 grid gap-6 md:grid-cols-2 max-w-prose md:max-w-none">
+      <div>
+        <p class="text-body text-ink-soft">
+          De plaquettes in variant 5 zijn leeg met opzet. Er staat een merknaam in een kader met
+          een stippellijn, en geen logo. Drie dingen moeten gebeuren voor er een echt logo in kan:
+        </p>
+        <ol class="mt-4 pl-5 text-body text-ink-soft space-y-2">
+          <li>Youbo moet beslissen <b>welke</b> tools er mogen staan. Een logo op de pagina leest
+            als een partnerschap; dat is een uitspraak over de markt, niet over het ontwerp.</li>
+          <li>Van elk merk is een <b>gebruiksvergunning</b> nodig, of minstens het eigen
+            merkbestand. Wij downloaden geen logo van een site waarvan we de voorwaarden niet
+            gelezen hebben.</li>
+          <li>Elk logo moet in <b>&eacute;&eacute;n stijl</b> staan &mdash; dat is Jana haar eigen
+            tweede voorbeeld. Zeven merken in zeven kleuren en zeven vormen maken de band
+            rommeliger dan de vier labels van vandaag.</li>
+        </ol>
+      </div>
+      <div>
+        <p class="text-body text-ink-soft">
+          En er is een voorgeschiedenis. In een eerdere ronde lag deze vraag al open, en Jana koos
+          toen zelf de andere kant:
+        </p>
+        <blockquote class="mt-4 border-l-2 border-line-btn pl-4 text-h3 text-ink">
+          Ik denk dat die icoontjes beter zijn, laten we het daar op houden.
+        </blockquote>
+        <p class="mt-4 text-body text-ink-soft">
+          Daarom staat die vraag hier opnieuw en niet stilzwijgend beantwoord. Verandert ze van
+          mening, dan is variant 5 de vorm; blijft het bij iconen, dan zijn de vier andere
+          varianten allemaal een antwoord op dezelfde opmerking.
+        </p>
+        <p class="mt-4 text-caption text-ink-soft">
+          SAP, Officient, Personio en Workday staan er als voorbeeld. Ze zijn niet gekozen, niet
+          gevraagd en niet bevestigd. Ze staan ook niet in de logobalk bovenaan de pagina &mdash;
+          dat zijn klanten, en een klant is geen integratie.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     ONZE KEUZE.
+     ========================================================================= -->
+<section id="advies" aria-labelledby="advies-titel" class="bg-surface border-t border-line">
+  <div class="shell py-12 md:py-20">
+    <h2 id="advies-titel" class="text-h2 md:text-h1 max-w-[20ch]">
+      Onze keuze: de koppelstukken, met de naaf als tweede
+    </h2>
+    <p class="mt-5 text-h3 text-ink-soft max-w-prose">
+      Variant 4 zegt het woord uit de kop zonder het te schrijven, en hij is laag genoeg om de
+      twee kolommen van de band even hoog te houden. Variant 1 is het dichtst bij de cirkel uit
+      Jana haar eerste voorbeeld, maar hij maakt de rechterkolom een stuk langer dan de linker.
+    </p>
+    <p class="mt-5 text-body text-ink-soft max-w-prose">
+      Variant 3 is de veilige terugval: goedkoop, onbreekbaar, maar stil. Variant 2 is de enige
+      die een richting toont en is het mooist op een breed scherm, al kost de trechter hoogte.
+      Variant 5 hangt niet van ons af &mdash; zie de beslissing hierboven.
+    </p>
+    <p class="mt-6 text-body text-ink-soft max-w-prose">
+      Wat er daarna nog moet gebeuren: de gekozen variant inbouwen in
+      <b>draft-r3-01-definitief.html</b>, de kolomhoogtes van de band naast elkaar nameten, en de
+      vier namen in de vijf talenbestanden nakijken &mdash; die functienamen staan in de
+      interfacetaal en niet in de studentinhoud.
+    </p>
+  </div>
+</section>
+
+</body>
+</html>

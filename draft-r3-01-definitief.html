@@ -227,6 +227,10 @@ tailwind.config = {
       --m-base: 200ms;
       --m-medium: 300ms;
       --m-slow: 350ms;
+      /* De opteller bij het grote cijfer: vier keer het traagste token. Korter
+         dan dat leest een getal van vijf cijfers niet — overgenomen uit
+         draft-r2-04-huisstijl-licht, waar Jana die opteller zag staan. */
+      --m-telop: 1400ms;
       --e-standard: ease-in-out;
       --e-decelerate: ease-out;
       --e-accelerate: cubic-bezier(0, 1, 0.3, 1);
@@ -418,7 +422,7 @@ tailwind.config = {
        scherm meer in op het formaat waar 70 à 80% van het verkeer zit. */
     .scrolly-visual { display: none; }
 
-    .sc-cue  { @apply flex items-center gap-3 mb-1; }
+    .sc-cue  { @apply flex items-center mb-1; }   /* sinds 2026-10-21 alleen nog de bars: de zin «Scroll verder» is weg op vraag van Jana (opmerking 88), de tekentjes blijven */
     /* De vier stapknoppen waren 36x44px: hoog genoeg, te smal. px-3 maakt er
        44x44 van (20px streepje plus 2x12px), de maat die als richtlijn geldt, en
        de gap gaat van 4 naar 6px zodat vier knoppen naast elkaar niet meer als
@@ -602,6 +606,66 @@ tailwind.config = {
      De maskers links en rechts laten de logo's vervagen in plaats van hard
      af te breken aan de rand.
      --------------------------------------------------------------------- */
+  /* De twee getallen in het cijferblok. Ze stonden eerst op een mintvlak; dat
+     was te zwaar, en op telefoon bleef er door de vaste breedte een leeg stuk
+     groen naast staan. Nu: lichter dan de rest van de zin, met een minten
+     streep eronder.
+
+     WAAROM #0a7a54 EN NIET HET MERKMINT. Mint als tekstkleur haalt op dit
+     lichte vlak 1,39:1 — dat is geen lichte tekst maar onleesbare tekst. Dit
+     groen haalt 5,03:1, tegen 13,01:1 voor de rest van de zin. Het is dus
+     merkbaar lichter én het blijft leesbaar. De STREEP mag wel het felle mint
+     zijn: een lijn is geen tekst en hoeft die norm niet te halen.
+
+     De breedte wordt door de opteller bevroren op de eindstand, en daarom
+     staat het getal gecentreerd: anders hangt "7" links in de ruimte die
+     "19.000" straks inneemt. */
+  .cijfer-uit { display: inline-block; text-align: center; color: #0a7a54;
+                border-bottom: 3px solid #0af29f; padding-bottom: 2px; }
+
+  /* ── DE NAAF: de integratievisual ─────────────────────────────────────────
+     De ring staat op inset 8% 14%, dus hij raakt de vier knooppunten die op
+     26% en 74% van beide assen liggen. Die getallen zijn gerekend en niet
+     gezocht: de spaken in de SVG lopen naar exact dezelfde punten op een
+     viewBox van 100 bij 100, en preserveAspectRatio="none" rekt die mee met
+     het vlak. Verander je één van de vier, verander dan allebei. */
+  .naaf { position: relative; width: 100%; max-width: 520px; margin: 0 auto;
+          aspect-ratio: 2 / 1; }
+  .naaf-tekening { position: absolute; inset: 0; height: 100%; width: 100%; overflow: visible; }
+  .naaf-ring { fill: none; stroke: rgba(255,255,255,.3); stroke-width: 1;
+               stroke-dasharray: 4 5; }
+  .naaf-spaak { stroke: rgba(10,242,159,.6); stroke-width: 1.5;
+                stroke-dasharray: 3 4; animation: naaf-puls 2.6s linear infinite; }
+  @keyframes naaf-puls { to { stroke-dashoffset: -14; } }
+  .naaf-hub { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+              display: grid; place-items: center; height: 72px; width: 72px;
+              border-radius: 18px; background: rgba(10,242,159,.12);
+              box-shadow: 0 0 0 1px rgba(10,242,159,.4); }
+  .naaf-hub img { height: 44px; width: 44px; display: block; }
+  .naaf-knopen { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+  /* -22px en niet -50%. Een knooppunt is een kolom van schijf + naam, en met
+     -50% kwam het midden van die hele kolom op het punt te liggen — dus hing de
+     schijf er een halve naamhoogte boven, en liep de ring naast de schijven in
+     plaats van erdoor. -22px is de halve schijfhoogte (44px), waardoor het
+     middelpunt van de SCHIJF op het punt valt en de naam eronder hangt.
+     Verander je de schijfmaat, verander dan ook dit getal. */
+  .naaf-knoop { position: absolute; transform: translate(-50%,-22px);
+                display: flex; flex-direction: column; align-items: center; gap: 6px;
+                text-align: center; }
+  .naaf-schijf { display: grid; place-items: center; height: 44px; width: 44px;
+                 border-radius: 9999px; background: #031317; color: #0af29f;
+                 box-shadow: 0 0 0 1px rgba(255,255,255,.3); }
+  /* white-space: nowrap, en daarom mag de naam breder zijn dan het knooppunt.
+     Met afbreken gaf Chromium hier "Performan-cemanagement" — een geldige
+     Nederlandse afbreking die niemand zo leest. */
+  .naaf-naam { flex: none; white-space: nowrap;
+               font-size: 13px; line-height: 1.25; font-weight: 700; color: #ffffff;
+               background: rgba(3,19,23,.78); border-radius: 6px; padding: 3px 6px; }
+  .naaf-nw { top: 26%; left: 26%; }
+  .naaf-ne { top: 26%; left: 74%; }
+  .naaf-sw { top: 74%; left: 26%; }
+  .naaf-se { top: 74%; left: 74%; }
+
   .logo-balk { --fade: 48px; --logo-tussen: 56px; --logo-duur: 53s; overflow: hidden;
     -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade),
                         #000 calc(100% - var(--fade)), transparent 100%);
@@ -769,6 +833,7 @@ tailwind.config = {
      --------------------------------------------------------------------- */
   @media (prefers-reduced-motion: reduce) {
     [data-vasteband], [data-cookiebalk] { transition: none !important; }
+    .naaf-spaak { animation: none !important; }
   }
 
   /* === r3: cases strakker === */
@@ -852,7 +917,25 @@ tailwind.config = {
      met scroll-snap, één kaart per keer, en de kaarten houden daar dezelfde
      hoogte zodat de rand van het kaartje dat half in beeld komt niet rafelt.
      --------------------------------------------------------------------- */
-  .case-kaart { display: flex; flex-direction: column; }
+  /* DE HELE KAART IS DE KNOP, sinds 2026-10-21. Jana's opmerking 26 ging over
+     doorklikken op een case; de link onderaan was het enige dat werkte en een
+     kaart die er klikbaar uitziet maar het niet is, leest als een fout.
+
+     Dit is de "uitgerekte link": de link onderaan blijft de echte link — met
+     zijn eigen tekst, zijn meethaak en zijn plek in de tabvolgorde — en krijgt
+     er een onzichtbaar vlak bij dat de hele kaart afdekt. Geen tweede <a> rond
+     het geheel, want dan zou een schermlezer de kaart twee keer aankondigen en
+     zou de kop binnen een link vallen.
+
+     De prijs ervan is dat tekst op de kaart niet meer te selecteren is: het
+     vlak ligt erboven. Dat is de gangbare afweging en voor een kaart waarvan
+     doorklikken de enige handeling is, de juiste. */
+  .case-kaart { display: flex; flex-direction: column; position: relative; }
+  .case-kaart .caselink::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+  .case-kaart:focus-within { outline: 3px solid var(--c-focus); outline-offset: 3px; }
+  .case-kaart:focus-within .caselink { outline: none; }
+  .case-kaart:hover .caselink { color: #0a3327; box-shadow: inset 0 -2px 0 #154e3a; }
+  .case-kaart:hover .caselink .pijl { transform: translateX(3px); }
   .case-body  { padding: 24px 24px 0; }
 
   /* De logoplek is even hoog voor alle vijf, ongeacht de hoogte van het
@@ -1142,19 +1225,29 @@ tailwind.config = {
      plus twee keer de tussenruimte in; de negen logo's meten samen 573px, dus
      gemiddeld 63,7px. Seconden per logo = (63,7 + 2 × tussenruimte) ÷ 15,9:
 
-       tussenruimte 44px  → (63,7 + 88)  ÷ 15,9 =  9,541s   × 9 =  85,9s
-       tussenruimte 96px  → (63,7 + 192) ÷ 15,9 = 16,082s   × 9 = 144,7s
-       tussenruimte 130px → (63,7 + 260) ÷ 15,9 = 20,358s   × 9 = 183,2s
-       tussenruimte 170px → (63,7 + 340) ÷ 15,9 = 25,390s   × 9 = 228,5s
+       tussenruimte 44px  → (103,6 + 88)  ÷ 15,9 = 12,050s   × 9 = 108,5s
+       tussenruimte 96px  → (103,6 + 192) ÷ 15,9 = 18,591s   × 9 = 167,3s
+       tussenruimte 130px → (103,6 + 260) ÷ 15,9 = 22,868s   × 9 = 205,8s
+       tussenruimte 170px → (103,6 + 340) ÷ 15,9 = 27,899s   × 9 = 251,1s
+
+     DE GEMIDDELDE BREEDTE IS OP 2026-10-21 VAN 63,7 NAAR 103,6 PIXELS GEGAAN.
+     Jana vroeg die dag om prominentere logo's, dus zijn alle negen hoogtes met
+     40% vermeerderd; later diezelfde dag kreeg Aertssen hier hetzelfde volledige
+     logo als op de casekaart — woordmerk én beeldmerk — en dat is een stuk
+     breder dan het losse beeldmerk dat er stond. Een breder logo maakt het spoor langer, en een langer
+     spoor in dezelfde tijd is een snellere band. Daarom staan hier vier nieuwe
+     getallen: niet omdat het tempo mocht veranderen, maar juist omdat het níet
+     mocht. Wie de hoogtes opnieuw aanpast, meet de gemiddelde breedte opnieuw
+     en rekent deze vier rijen over — anders schuift de band stiller sneller.
 
      Dat zijn de vier getallen die hier tot vandaag met de hand stonden (86,
      145, 183 en 228), dus verandert de balk van vandaag geen merkbare haar:
      het verschil is hoogstens 0,5 van 86 seconden. Het aantal komt uit
      content/pagina.yml en wordt door build-inhoud.mjs hieronder gezet. */
-  .logo-balk { --logo-tussen: 44px; --logo-duur: calc(var(--logo-n) * 9.541s); }
-  @media (min-width: 768px)  { .logo-balk { --logo-tussen: 96px;  --logo-duur: calc(var(--logo-n) * 16.082s); } }
-  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 130px; --logo-duur: calc(var(--logo-n) * 20.358s); } }
-  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 170px; --logo-duur: calc(var(--logo-n) * 25.390s); } }
+  .logo-balk { --logo-tussen: 44px; --logo-duur: calc(var(--logo-n) * 12.050s); }
+  @media (min-width: 768px)  { .logo-balk { --logo-tussen: 96px;  --logo-duur: calc(var(--logo-n) * 18.591s); } }
+  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 130px; --logo-duur: calc(var(--logo-n) * 22.868s); } }
+  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 170px; --logo-duur: calc(var(--logo-n) * 27.899s); } }
   /* LOGO-AANTAL:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs */
   .logo-balk { --logo-n: 9; }
   /* LOGO-AANTAL:EINDE */
@@ -1623,55 +1716,335 @@ tailwind.config = {
 <!-- =========================================================================
      1 · HERO — LICHT (#ffffff). Tekst eerst, dan pas de foto van Nick.
      ========================================================================= -->
-<header class="bg-paper">
+<header class="bg-surface">
   <div class="shell pt-6 md:pt-10">
-
     <!-- Lichte band, dus het donkere woordmerk. De productnaam "Bonus & Merit" en het
          scheidingsstreepje stonden hier tot ronde 2; Jana haalde ze weg. -->
     <a href="#demo" class="inline-flex items-center" data-cta="hero-wordmerk">
       <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
     </a>
 
-    <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
+    <!-- HET SCHERM IN BEWEGING, sinds 2026-10-21. Tot vandaag stond hier alleen een
+         ronde foto van Nick naast de kop; de hero beweerde wat het product doet en
+         liet het niet zien. Dit paneel komt uit hero-scherm-animatie.html en is daar
+         met Jana's briefing in het achterhoofd gemaakt: "show, don't tell".
 
+         WAT HET TOONT. Een manager loopt zijn team door. Per medewerker verschijnt
+         de positie in de loonband, hij geeft een percentage, en de teller rechtsboven
+         loopt van 0 naar 4 van 6. Zodra hij klaar is, rekent Youbo het gemiddelde en
+         het budget voor hem uit. Acht seconden, dan opnieuw.
+
+         GEEN JAVASCRIPT, GEEN BIBLIOTHEEK, GEEN TWEEDE VERZOEK. De hele beweging zit
+         als CSS in het vectorbestand zelf. Dat is niet uit zuinigheid: dit is het
+         eerste wat een bezoeker ziet, en alles wat eerst geladen en uitgevoerd moet
+         worden, is tijd waarin de hero leeg staat.
+
+         EN WIE BEWEGING UITZET, KRIJGT HET EINDBEELD. In de stijl van dat vectorbestand
+         staat een regel voor prefers-reduced-motion die alles meteen op de laatste
+         stand zet — niet een uitgeklede versie, maar precies wat er na acht seconden
+         staat. Haal die regel niet weg.
+
+         DE ACHTERGROND IS GEBROKEN WIT EN NIET WIT, want het paneel heeft een schaduw
+         en die ziet niemand op wit. -->
+    <div class="mt-8 md:mt-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center pb-12 md:pb-20">
       <!-- Tekst eerst in de DOM. Op telefoon lees je dus kop, intro en knop vóór je
-           de foto ziet; op desktop zet lg:col-span-7 deze kolom links en komt het
-           portret er vanzelf rechts naast. Daarom is lg:order-last op de figure weg. -->
-      <div class="lg:col-span-7" data-reveal>
+           het scherm ziet; op desktop zet lg:col-span-6 deze kolom links. -->
+      <div class="lg:col-span-6" data-reveal>
         <h1 class="text-h1 lg:text-display" data-inhoud="hero.kop">Compensatie zonder kopzorgen</h1>
         <p class="mt-5 text-h3 text-ink-soft max-w-text" data-inhoud="hero.intro">Maak komaf met Excel. Beheer loonsverhogingen, bonussen en promoties in één platform. Ontdek Youbo.</p>
-
         <div class="mt-8">
           <a href="#demo" id="hero-demoknop" class="btn-primary w-full sm:w-auto" data-cta="hero-boek-demo" data-inhoud="hero.knop">Boek een demo</a>
         </div>
+
+        <!-- Nick blijft, klein en rond: variant 1 uit hero-varianten-nick.html. Hij
+             was een rechthoek van 400 bij 505 met een dunne rand, en dat kader was
+             precies waar Jana over viel. Een cirkel kán niet als kader lezen, en
+             dezelfde vorm staat al bij het formulier verderop.
+             object-[52%_0%] is niet decoratief: object-cover snijdt een liggende
+             uitsnede uit een staand bestand, en zonder deze verschuiving valt de
+             bovenkant van zijn hoofd eraf.
+             HETZELFDE BESTAND, met opzet. 900×1140 voor een cirkel van 56 beeldpunten
+             is ruim, maar het staat al in de cache van wie de pagina eerder opende. -->
+        <div class="mt-8 flex items-center gap-4">
+          <img src="assets/img/nick-portret.webp" width="900" height="1140"
+               alt="Portret van Nick Van Langendonck"
+               class="h-14 w-14 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-paper"
+               data-inhoud-alt="hero.foto_alt">
+          <p class="m-0 text-caption text-ink-soft max-w-text" data-inhoud="hero.fototekst">Boek een demo met onze expert Nick. Hij luistert naar jouw uitdagingen en toont je hoe Youbo werkt voor jouw organisatie. Geen verkooppitch, wel een concrete blik op jouw cyclus.</p>
+        </div>
       </div>
 
-      <!-- Nick, sinds 2026-10-16 klein en rond: variant 1 uit
-           hero-varianten-nick.html, de pagina waarop de vier voorstellen naast
-           elkaar stonden. Hij was een rechthoek van 400 bij 505 met een dunne
-           rand, en dat kader was precies waar Jana over viel.
+      <figure class="lg:col-span-6 m-0" data-reveal>
+        <div class="panel">
+                    <div class="panel-bar">
+                      <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+                      <span class="miniheader">Voorstel voor jouw team</span>
+                      <span class="ml-auto shrink-0 text-caption text-ink-soft">Cyclus 2027</span>
+                    </div>
+                    <svg viewBox="0 0 1200 820" class="block h-auto w-full" role="img"
+                         aria-label="Voorstel voor jouw team: vier van de zes voorstellen worden een voor een ingevuld, met verhogingen van 2,0 tot 3,5 procent, en het gemiddelde komt op 2,75 procent tegenover een richtlijn van 3,0 procent — binnen budget."
+                         style="font-family: Inter, system-ui, sans-serif">
+                      <style>
+          @keyframes rij0 {
+              0.0% { opacity:0; transform:translateY(10px) }
+              6.25% { opacity:0; transform:translateY(10px) }
+              11.875% { opacity:1; transform:translateY(0) }
+              81.25% { opacity:1; transform:translateY(0) }
+              87.5% { opacity:0; transform:translateY(0) }
+              100.0% { opacity:0; transform:translateY(10px) }
+          }
+          @keyframes balk0 {
+              0.0% { transform:scaleX(0) }
+              7.5% { transform:scaleX(0) }
+              15.625% { transform:scaleX(1) }
+              81.25% { transform:scaleX(1) }
+              87.5% { transform:scaleX(1) }
+              100.0% { transform:scaleX(0) }
+          }
+          @keyframes waarde0 {
+              0.0% { opacity:0 }
+              10.625% { opacity:0 }
+              15.0% { opacity:1 }
+              81.25% { opacity:1 }
+              87.5% { opacity:0 }
+              100.0% { opacity:0 }
+          }
+          @keyframes rij1 {
+              0.0% { opacity:0; transform:translateY(10px) }
+              12.5% { opacity:0; transform:translateY(10px) }
+              18.125% { opacity:1; transform:translateY(0) }
+              81.25% { opacity:1; transform:translateY(0) }
+              87.5% { opacity:0; transform:translateY(0) }
+              100.0% { opacity:0; transform:translateY(10px) }
+          }
+          @keyframes balk1 {
+              0.0% { transform:scaleX(0) }
+              13.75% { transform:scaleX(0) }
+              21.875% { transform:scaleX(1) }
+              81.25% { transform:scaleX(1) }
+              87.5% { transform:scaleX(1) }
+              100.0% { transform:scaleX(0) }
+          }
+          @keyframes waarde1 {
+              0.0% { opacity:0 }
+              16.875% { opacity:0 }
+              21.25% { opacity:1 }
+              81.25% { opacity:1 }
+              87.5% { opacity:0 }
+              100.0% { opacity:0 }
+          }
+          @keyframes rij2 {
+              0.0% { opacity:0; transform:translateY(10px) }
+              18.75% { opacity:0; transform:translateY(10px) }
+              24.375% { opacity:1; transform:translateY(0) }
+              81.25% { opacity:1; transform:translateY(0) }
+              87.5% { opacity:0; transform:translateY(0) }
+              100.0% { opacity:0; transform:translateY(10px) }
+          }
+          @keyframes balk2 {
+              0.0% { transform:scaleX(0) }
+              20.0% { transform:scaleX(0) }
+              28.125% { transform:scaleX(1) }
+              81.25% { transform:scaleX(1) }
+              87.5% { transform:scaleX(1) }
+              100.0% { transform:scaleX(0) }
+          }
+          @keyframes waarde2 {
+              0.0% { opacity:0 }
+              23.125% { opacity:0 }
+              27.5% { opacity:1 }
+              81.25% { opacity:1 }
+              87.5% { opacity:0 }
+              100.0% { opacity:0 }
+          }
+          @keyframes rij3 {
+              0.0% { opacity:0; transform:translateY(10px) }
+              25.0% { opacity:0; transform:translateY(10px) }
+              30.625% { opacity:1; transform:translateY(0) }
+              81.25% { opacity:1; transform:translateY(0) }
+              87.5% { opacity:0; transform:translateY(0) }
+              100.0% { opacity:0; transform:translateY(10px) }
+          }
+          @keyframes balk3 {
+              0.0% { transform:scaleX(0) }
+              26.25% { transform:scaleX(0) }
+              34.375% { transform:scaleX(1) }
+              81.25% { transform:scaleX(1) }
+              87.5% { transform:scaleX(1) }
+              100.0% { transform:scaleX(0) }
+          }
+          @keyframes waarde3 {
+              0.0% { opacity:0 }
+              29.375% { opacity:0 }
+              33.75% { opacity:1 }
+              81.25% { opacity:1 }
+              87.5% { opacity:0 }
+              100.0% { opacity:0 }
+          }
+          @keyframes teller0 {
+              0.0% { opacity:1 }
+              0.0013% { opacity:1 }
+              11.875% { opacity:1 }
+              11.8762% { opacity:0 }
+              100.0% { opacity:1 }
+          }
+          @keyframes teller1 {
+              0.0% { opacity:0 }
+              11.875% { opacity:1 }
+              18.125% { opacity:1 }
+              18.1262% { opacity:0 }
+              100.0% { opacity:0 }
+          }
+          @keyframes teller2 {
+              0.0% { opacity:0 }
+              18.125% { opacity:1 }
+              24.375% { opacity:1 }
+              24.3762% { opacity:0 }
+              100.0% { opacity:0 }
+          }
+          @keyframes teller3 {
+              0.0% { opacity:0 }
+              24.375% { opacity:1 }
+              30.625% { opacity:1 }
+              30.6263% { opacity:0 }
+              100.0% { opacity:0 }
+          }
+          @keyframes teller4 {
+              0.0% { opacity:0 }
+              30.625% { opacity:1 }
+              87.5% { opacity:1 }
+              87.5012% { opacity:0 }
+              100.0% { opacity:0 }
+          }
+          @keyframes slot {
+              0.0% { opacity:0 }
+              32.5% { opacity:0 }
+              38.75% { opacity:1 }
+              81.25% { opacity:1 }
+              87.5% { opacity:0 }
+              100.0% { opacity:0 }
+          }
+          @keyframes budgetbalk {
+              0.0% { transform:scaleX(0) }
+              35.0% { transform:scaleX(0) }
+              47.5% { transform:scaleX(0.9167) }
+              81.25% { transform:scaleX(0.9167) }
+              87.5% { transform:scaleX(0.9167) }
+              100.0% { transform:scaleX(0) }
+          }
+          @keyframes pil {
+              0.0% { opacity:0; transform:translateY(6px) }
+              42.5% { opacity:0; transform:translateY(6px) }
+              48.75% { opacity:1; transform:translateY(0) }
+              81.25% { opacity:1; transform:translateY(0) }
+              87.5% { opacity:0; transform:translateY(0) }
+              100.0% { opacity:0; transform:translateY(6px) }
+          }
 
-           WAAROM ROND EN NIET ALLEEN KLEINER. Een cirkel kán niet als kader
-           lezen, en dezelfde vorm staat al bij het formulier verderop — de
-           pagina rijmt dus met zichzelf in plaats van er een vorm bij te
-           krijgen. Nick weegt nu ongeveer een achtste van wat hij woog en
-           blijft goed herkenbaar.
+          .rij0 { animation: rij0 8.0s linear infinite; }
+          .balk0 { animation: balk0 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+          .waarde0 { animation: waarde0 8.0s linear infinite; }
+          .rij1 { animation: rij1 8.0s linear infinite; }
+          .balk1 { animation: balk1 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+          .waarde1 { animation: waarde1 8.0s linear infinite; }
+          .rij2 { animation: rij2 8.0s linear infinite; }
+          .balk2 { animation: balk2 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+          .waarde2 { animation: waarde2 8.0s linear infinite; }
+          .rij3 { animation: rij3 8.0s linear infinite; }
+          .balk3 { animation: balk3 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+          .waarde3 { animation: waarde3 8.0s linear infinite; }
+          .teller0 { animation: teller0 8.0s step-end infinite; }
+          .teller1 { animation: teller1 8.0s step-end infinite; }
+          .teller2 { animation: teller2 8.0s step-end infinite; }
+          .teller3 { animation: teller3 8.0s step-end infinite; }
+          .teller4 { animation: teller4 8.0s step-end infinite; }
+          .slot { animation: slot 8.0s linear infinite; }
+          .budgetbalk { animation: budgetbalk 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+          .pil { animation: pil 8.0s cubic-bezier(.2,.7,.3,1) infinite; }
+          .rij, .balk, .waarde, .teller, .slot, .budgetbalk, .pil { transform-box: fill-box; }
+          .balk, .budgetbalk { transform-origin: left center; }
+          .pil, .rij { transform-origin: center; }
 
-           object-[52%_0%] is niet decoratief: object-cover snijdt een
-           liggende uitsnede uit een staand bestand, en zonder deze verschuiving
-           valt de bovenkant van zijn hoofd eraf. 52% houdt hem in het midden
-           van de cirkel.
+          /* Wie beweging uitzet, krijgt het eindbeeld zonder één overgang. Dat is geen
+             uitgeklede versie: het is precies wat de animatie na acht seconden toont. */
+          @media (prefers-reduced-motion: reduce) {
+            .rij, .balk, .waarde, .slot, .budgetbalk, .pil { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .teller0, .teller1, .teller2, .teller3 { animation: none !important; opacity: 0 !important; }
+            .teller4 { animation: none !important; opacity: 1 !important; }
+          }
+                      </style>
 
-           HETZELFDE BESTAND, met opzet. 900×1140 voor een cirkel van 176
-           beeldpunten is ruim, maar het weegt 61 KB en staat al in de cache van
-           wie de pagina eerder opende; een tweede uitsnede erbij maken levert
-           minder op dan het kost. -->
-      <figure class="lg:col-span-5 m-0 mx-auto w-full max-w-[22rem]" data-reveal>
-        <img src="assets/img/nick-portret.webp" width="900" height="1140"
-             alt="Portret van Nick Van Langendonck"
-             class="h-36 w-36 md:h-44 md:w-44 rounded-[50%] object-cover object-[52%_0%] bg-surface"
-             data-inhoud-alt="hero.foto_alt">
-        <figcaption class="mt-5 text-body text-ink-soft border-l-4 border-brand pl-5" data-inhoud="hero.fototekst">Nick laat je zien hoe Youbo voor jouw organisatie werkt. Geen algemene verkooppitch, wel een concrete blik op jouw looncyclus.</figcaption>
+                      <rect width="1200" height="820" fill="#ffffff"/>
+
+                      <text x="40" y="66" font-size="34" font-weight="700" fill="#0a3327">Jouw team · 6 medewerkers</text>
+              <text class="teller teller0" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">0 van 6 klaar</text>
+              <text class="teller teller1" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">1 van 6 klaar</text>
+              <text class="teller teller2" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">2 van 6 klaar</text>
+              <text class="teller teller3" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">3 van 6 klaar</text>
+              <text class="teller teller4" x="1160" y="66" font-size="23" font-weight="500" fill="#547068" text-anchor="end">4 van 6 klaar</text>
+                      <line x1="40" y1="100" x2="1160" y2="100" stroke="#e1ebf0" stroke-width="2"/>
+
+                      <text x="40"  y="146" font-size="21" font-weight="700" fill="#547068">MEDEWERKER</text>
+                      <text x="560" y="146" font-size="21" font-weight="700" fill="#547068">POSITIE IN DE BAND</text>
+                      <text x="940" y="146" font-size="21" font-weight="700" fill="#547068">VOORSTEL</text>
+
+              <g class="rij rij0">
+                <rect x="30" y="170" width="1140" height="92" rx="9" fill="#f6f8fa"/>
+                <text x="40" y="206" font-size="25" font-weight="700" fill="#0a3327">A. Peeters</text>
+                <text x="40" y="243" font-size="21" fill="#547068">Teamlead support</text>
+                <rect x="560" y="196" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect class="balk balk0" x="560" y="196" width="222" height="14" rx="7" fill="#154e3a"/>
+                <text class="waarde waarde0" x="880" y="212" font-size="21" fill="#547068">74%</text>
+                <text class="waarde waarde0" x="1160" y="212" font-size="25" font-weight="700" fill="#0a3327"
+                      text-anchor="end" style="font-variant-numeric: tabular-nums">3,5%</text>
+              </g>
+              <g class="rij rij1">
+        
+                <text x="40" y="332" font-size="25" font-weight="700" fill="#0a3327">M. Declerck</text>
+                <text x="40" y="369" font-size="21" fill="#547068">Analist</text>
+                <rect x="560" y="322" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect class="balk balk1" x="560" y="322" width="138" height="14" rx="7" fill="#154e3a"/>
+                <text class="waarde waarde1" x="880" y="338" font-size="21" fill="#547068">46%</text>
+                <text class="waarde waarde1" x="1160" y="338" font-size="25" font-weight="700" fill="#0a3327"
+                      text-anchor="end" style="font-variant-numeric: tabular-nums">3,0%</text>
+              </g>
+              <g class="rij rij2">
+        
+                <text x="40" y="458" font-size="25" font-weight="700" fill="#0a3327">S. Janssens</text>
+                <text x="40" y="495" font-size="21" fill="#547068">Projectleider</text>
+                <rect x="560" y="448" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect class="balk balk2" x="560" y="448" width="264" height="14" rx="7" fill="#154e3a"/>
+                <text class="waarde waarde2" x="880" y="464" font-size="21" fill="#547068">88%</text>
+                <text class="waarde waarde2" x="1160" y="464" font-size="25" font-weight="700" fill="#0a3327"
+                      text-anchor="end" style="font-variant-numeric: tabular-nums">2,0%</text>
+              </g>
+              <g class="rij rij3">
+        
+                <text x="40" y="584" font-size="25" font-weight="700" fill="#0a3327">K. Verhaeghe</text>
+                <text x="40" y="621" font-size="21" fill="#547068">Consultant</text>
+                <rect x="560" y="574" width="300" height="14" rx="7" fill="#e1ebf0"/>
+                <rect class="balk balk3" x="560" y="574" width="186" height="14" rx="7" fill="#154e3a"/>
+                <text class="waarde waarde3" x="880" y="590" font-size="21" fill="#547068">62%</text>
+                <text class="waarde waarde3" x="1160" y="590" font-size="25" font-weight="700" fill="#0a3327"
+                      text-anchor="end" style="font-variant-numeric: tabular-nums">2,5%</text>
+              </g>
+
+                      <line x1="40" y1="650" x2="1160" y2="650" stroke="#e1ebf0" stroke-width="2"/>
+
+                      <g class="slot">
+                        <text x="40" y="706" font-size="25" font-weight="700" fill="#0a3327">Gemiddeld 2,75%</text>
+                        <text x="40" y="748" font-size="21" fill="#547068">Richtlijn voor deze cyclus: 3,0%</text>
+                      </g>
+                      <rect x="40" y="772" width="640" height="16" rx="8" fill="#e1ebf0"/>
+                      <rect class="budgetbalk" x="40" y="772" width="640" height="16" rx="8" fill="#0af29f"/>
+
+                      <g class="pil">
+                        <rect x="910" y="684" width="250" height="72" rx="9" fill="#f6f8fa"/>
+                        <text x="1035" y="718" font-size="21" font-weight="700" fill="#154e3a" text-anchor="middle">Binnen budget</text>
+                        <text x="1035" y="746" font-size="21" fill="#547068" text-anchor="middle">nog 0,25% over</text>
+                      </g>
+                    </svg>
+                  </div>
       </figure>
     </div>
   </div>
@@ -1702,74 +2075,77 @@ tailwind.config = {
      keer. Het tempo blijft ±15,9 px/s. Zie de toelichting in de
      stylesheet.
      ========================================================================= -->
-<section class="bg-surface border-y border-line band-pad" aria-labelledby="klanten-titel">
+<!-- De logobalk draagt NIET de gewone band-pad. Jana op 2026-10-21: de logo's
+     mogen prominenter, maar de band zelf is te hoog. Dat is één beweging: grotere
+     logo's in minder ruimte. py-8/py-12 in plaats van py-12/py-20. -->
+<section class="bg-surface border-y border-line py-8 md:py-12" aria-labelledby="klanten-titel">
   <div class="shell text-center" data-reveal>
     <h2 id="klanten-titel" class="text-caption font-bold uppercase tracking-[0.08em] text-ink-soft" data-inhoud="logobalk.kop">Deze bedrijven vertrouwen op Youbo</h2>
   </div>
 
-  <div class="logo-balk mt-8">
+  <div class="logo-balk mt-6">
     <div class="logo-spoor">
     <ul class="logo-reeks">
     <!-- HERHAAL:logobalk.logos:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs. De EERSTE <li> is de vorm; de rest is een kopie, dus met de hand aanpassen heeft alleen zin in de eerste. -->
-      <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.1.beeld" data-inhoud-alt="logobalk.logos.1.naam" data-inhoud-style="height:{logobalk.logos.1.hoogte}px"></li>
+      <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:34px" data-inhoud-src="logobalk.logos.1.beeld" data-inhoud-alt="logobalk.logos.1.naam" data-inhoud-style="height:{logobalk.logos.1.hoogte}px"></li>
 
-      <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.2.beeld" data-inhoud-alt="logobalk.logos.2.naam" data-inhoud-style="height:{logobalk.logos.2.hoogte}px"></li>
+      <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:34px" data-inhoud-src="logobalk.logos.2.beeld" data-inhoud-alt="logobalk.logos.2.naam" data-inhoud-style="height:{logobalk.logos.2.hoogte}px"></li>
 
-      <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.3.beeld" data-inhoud-alt="logobalk.logos.3.naam" data-inhoud-style="height:{logobalk.logos.3.hoogte}px"></li>
+      <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:28px" data-inhoud-src="logobalk.logos.3.beeld" data-inhoud-alt="logobalk.logos.3.naam" data-inhoud-style="height:{logobalk.logos.3.hoogte}px"></li>
 
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px" data-inhoud-src="logobalk.logos.4.beeld" data-inhoud-alt="logobalk.logos.4.naam" data-inhoud-style="height:{logobalk.logos.4.hoogte}px"></li>
+      <li><img src="assets/img/aertssen-logo-volledig.svg" alt="Aertssen Group" class="w-auto" style="height:44px" data-inhoud-src="logobalk.logos.4.beeld" data-inhoud-alt="logobalk.logos.4.naam" data-inhoud-style="height:{logobalk.logos.4.hoogte}px"></li>
 
-      <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="logobalk.logos.5.beeld" data-inhoud-alt="logobalk.logos.5.naam" data-inhoud-style="height:{logobalk.logos.5.hoogte}px"></li>
+      <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:29px" data-inhoud-src="logobalk.logos.5.beeld" data-inhoud-alt="logobalk.logos.5.naam" data-inhoud-style="height:{logobalk.logos.5.hoogte}px"></li>
 
-      <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.6.beeld" data-inhoud-alt="logobalk.logos.6.naam" data-inhoud-style="height:{logobalk.logos.6.hoogte}px"></li>
+      <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:36px" data-inhoud-src="logobalk.logos.6.beeld" data-inhoud-alt="logobalk.logos.6.naam" data-inhoud-style="height:{logobalk.logos.6.hoogte}px"></li>
 
-      <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.7.beeld" data-inhoud-alt="logobalk.logos.7.naam" data-inhoud-style="height:{logobalk.logos.7.hoogte}px"></li>
+      <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:28px" data-inhoud-src="logobalk.logos.7.beeld" data-inhoud-alt="logobalk.logos.7.naam" data-inhoud-style="height:{logobalk.logos.7.hoogte}px"></li>
 
-      <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.8.beeld" data-inhoud-alt="logobalk.logos.8.naam" data-inhoud-style="height:{logobalk.logos.8.hoogte}px"></li>
+      <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:36px" data-inhoud-src="logobalk.logos.8.beeld" data-inhoud-alt="logobalk.logos.8.naam" data-inhoud-style="height:{logobalk.logos.8.hoogte}px"></li>
 
-      <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.9.beeld" data-inhoud-alt="logobalk.logos.9.naam" data-inhoud-style="height:{logobalk.logos.9.hoogte}px"></li>
+      <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:34px" data-inhoud-src="logobalk.logos.9.beeld" data-inhoud-alt="logobalk.logos.9.naam" data-inhoud-style="height:{logobalk.logos.9.hoogte}px"></li>
     <!-- HERHAAL:logobalk.logos:EINDE -->
     </ul>
     <ul class="logo-reeks" aria-hidden="true">
     <!-- HERHAAL:logobalk.logos:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs. De EERSTE <li> is de vorm; de rest is een kopie, dus met de hand aanpassen heeft alleen zin in de eerste. Deze reeks staat op aria-hidden: ze is er voor de naadloze lus en niet voor een lezer. -->
-      <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.1.beeld" data-inhoud-alt="logobalk.logos.1.naam" data-inhoud-style="height:{logobalk.logos.1.hoogte}px"></li>
+      <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:34px" data-inhoud-src="logobalk.logos.1.beeld" data-inhoud-alt="logobalk.logos.1.naam" data-inhoud-style="height:{logobalk.logos.1.hoogte}px"></li>
 
-      <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.2.beeld" data-inhoud-alt="logobalk.logos.2.naam" data-inhoud-style="height:{logobalk.logos.2.hoogte}px"></li>
+      <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:34px" data-inhoud-src="logobalk.logos.2.beeld" data-inhoud-alt="logobalk.logos.2.naam" data-inhoud-style="height:{logobalk.logos.2.hoogte}px"></li>
 
-      <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.3.beeld" data-inhoud-alt="logobalk.logos.3.naam" data-inhoud-style="height:{logobalk.logos.3.hoogte}px"></li>
+      <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:28px" data-inhoud-src="logobalk.logos.3.beeld" data-inhoud-alt="logobalk.logos.3.naam" data-inhoud-style="height:{logobalk.logos.3.hoogte}px"></li>
 
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px" data-inhoud-src="logobalk.logos.4.beeld" data-inhoud-alt="logobalk.logos.4.naam" data-inhoud-style="height:{logobalk.logos.4.hoogte}px"></li>
+      <li><img src="assets/img/aertssen-logo-volledig.svg" alt="Aertssen Group" class="w-auto" style="height:44px" data-inhoud-src="logobalk.logos.4.beeld" data-inhoud-alt="logobalk.logos.4.naam" data-inhoud-style="height:{logobalk.logos.4.hoogte}px"></li>
 
-      <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="logobalk.logos.5.beeld" data-inhoud-alt="logobalk.logos.5.naam" data-inhoud-style="height:{logobalk.logos.5.hoogte}px"></li>
+      <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:29px" data-inhoud-src="logobalk.logos.5.beeld" data-inhoud-alt="logobalk.logos.5.naam" data-inhoud-style="height:{logobalk.logos.5.hoogte}px"></li>
 
-      <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.6.beeld" data-inhoud-alt="logobalk.logos.6.naam" data-inhoud-style="height:{logobalk.logos.6.hoogte}px"></li>
+      <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:36px" data-inhoud-src="logobalk.logos.6.beeld" data-inhoud-alt="logobalk.logos.6.naam" data-inhoud-style="height:{logobalk.logos.6.hoogte}px"></li>
 
-      <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.7.beeld" data-inhoud-alt="logobalk.logos.7.naam" data-inhoud-style="height:{logobalk.logos.7.hoogte}px"></li>
+      <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:28px" data-inhoud-src="logobalk.logos.7.beeld" data-inhoud-alt="logobalk.logos.7.naam" data-inhoud-style="height:{logobalk.logos.7.hoogte}px"></li>
 
-      <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.8.beeld" data-inhoud-alt="logobalk.logos.8.naam" data-inhoud-style="height:{logobalk.logos.8.hoogte}px"></li>
+      <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:36px" data-inhoud-src="logobalk.logos.8.beeld" data-inhoud-alt="logobalk.logos.8.naam" data-inhoud-style="height:{logobalk.logos.8.hoogte}px"></li>
 
-      <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.9.beeld" data-inhoud-alt="logobalk.logos.9.naam" data-inhoud-style="height:{logobalk.logos.9.hoogte}px"></li>
+      <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:34px" data-inhoud-src="logobalk.logos.9.beeld" data-inhoud-alt="logobalk.logos.9.naam" data-inhoud-style="height:{logobalk.logos.9.hoogte}px"></li>
     <!-- HERHAAL:logobalk.logos:EINDE -->
     </ul>
     <ul class="logo-reeks" aria-hidden="true">
     <!-- HERHAAL:logobalk.logos:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs. De EERSTE <li> is de vorm; de rest is een kopie, dus met de hand aanpassen heeft alleen zin in de eerste. Deze reeks staat op aria-hidden: ze is er voor de naadloze lus en niet voor een lezer. -->
-      <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.1.beeld" data-inhoud-alt="logobalk.logos.1.naam" data-inhoud-style="height:{logobalk.logos.1.hoogte}px"></li>
+      <li><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:34px" data-inhoud-src="logobalk.logos.1.beeld" data-inhoud-alt="logobalk.logos.1.naam" data-inhoud-style="height:{logobalk.logos.1.hoogte}px"></li>
 
-      <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.2.beeld" data-inhoud-alt="logobalk.logos.2.naam" data-inhoud-style="height:{logobalk.logos.2.hoogte}px"></li>
+      <li><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:34px" data-inhoud-src="logobalk.logos.2.beeld" data-inhoud-alt="logobalk.logos.2.naam" data-inhoud-style="height:{logobalk.logos.2.hoogte}px"></li>
 
-      <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.3.beeld" data-inhoud-alt="logobalk.logos.3.naam" data-inhoud-style="height:{logobalk.logos.3.hoogte}px"></li>
+      <li><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:28px" data-inhoud-src="logobalk.logos.3.beeld" data-inhoud-alt="logobalk.logos.3.naam" data-inhoud-style="height:{logobalk.logos.3.hoogte}px"></li>
 
-      <li><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px" data-inhoud-src="logobalk.logos.4.beeld" data-inhoud-alt="logobalk.logos.4.naam" data-inhoud-style="height:{logobalk.logos.4.hoogte}px"></li>
+      <li><img src="assets/img/aertssen-logo-volledig.svg" alt="Aertssen Group" class="w-auto" style="height:44px" data-inhoud-src="logobalk.logos.4.beeld" data-inhoud-alt="logobalk.logos.4.naam" data-inhoud-style="height:{logobalk.logos.4.hoogte}px"></li>
 
-      <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="logobalk.logos.5.beeld" data-inhoud-alt="logobalk.logos.5.naam" data-inhoud-style="height:{logobalk.logos.5.hoogte}px"></li>
+      <li><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:29px" data-inhoud-src="logobalk.logos.5.beeld" data-inhoud-alt="logobalk.logos.5.naam" data-inhoud-style="height:{logobalk.logos.5.hoogte}px"></li>
 
-      <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.6.beeld" data-inhoud-alt="logobalk.logos.6.naam" data-inhoud-style="height:{logobalk.logos.6.hoogte}px"></li>
+      <li><img src="assets/img/crelan-logo.webp" alt="Crelan" class="w-auto" style="height:36px" data-inhoud-src="logobalk.logos.6.beeld" data-inhoud-alt="logobalk.logos.6.naam" data-inhoud-style="height:{logobalk.logos.6.hoogte}px"></li>
 
-      <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:20px" data-inhoud-src="logobalk.logos.7.beeld" data-inhoud-alt="logobalk.logos.7.naam" data-inhoud-style="height:{logobalk.logos.7.hoogte}px"></li>
+      <li><img src="assets/img/axi-logo.webp" alt="Axi" class="w-auto" style="height:28px" data-inhoud-src="logobalk.logos.7.beeld" data-inhoud-alt="logobalk.logos.7.naam" data-inhoud-style="height:{logobalk.logos.7.hoogte}px"></li>
 
-      <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:26px" data-inhoud-src="logobalk.logos.8.beeld" data-inhoud-alt="logobalk.logos.8.naam" data-inhoud-style="height:{logobalk.logos.8.hoogte}px"></li>
+      <li><img src="assets/img/mourik-logo.webp" alt="Mourik" class="w-auto" style="height:36px" data-inhoud-src="logobalk.logos.8.beeld" data-inhoud-alt="logobalk.logos.8.naam" data-inhoud-style="height:{logobalk.logos.8.hoogte}px"></li>
 
-      <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:24px" data-inhoud-src="logobalk.logos.9.beeld" data-inhoud-alt="logobalk.logos.9.naam" data-inhoud-style="height:{logobalk.logos.9.hoogte}px"></li>
+      <li><img src="assets/img/protime-logo.webp" alt="Protime" class="w-auto" style="height:34px" data-inhoud-src="logobalk.logos.9.beeld" data-inhoud-alt="logobalk.logos.9.naam" data-inhoud-style="height:{logobalk.logos.9.hoogte}px"></li>
     <!-- HERHAAL:logobalk.logos:EINDE -->
     </ul>
     </div>
@@ -1845,38 +2221,50 @@ tailwind.config = {
             <span class="miniheader">Budgetbeheer · cyclus 2027</span>
           </div>
           <div class="p-5 md:p-6">
-            <p class="text-caption text-ink-soft">Beschikbaar budget</p>
-            <p class="text-h1 font-bold text-ink tabular mt-1">€ 184.250</p>
-
-            <dl class="mt-6 space-y-5 m-0">
-              <div>
-                <div class="flex items-baseline justify-between gap-4">
-                  <dt class="text-caption font-bold text-ink">Loonsverhoging</dt>
-                  <dd class="text-caption tabular text-ink-soft m-0">82%</dd>
-                </div>
-                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
-                  <span class="block h-full rounded-sm bg-brand" style="width:82%"></span>
-                </div>
-              </div>
-              <div>
-                <div class="flex items-baseline justify-between gap-4">
-                  <dt class="text-caption font-bold text-ink">Bonus</dt>
-                  <dd class="text-caption tabular text-ink-soft m-0">74%</dd>
-                </div>
-                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
-                  <span class="block h-full rounded-sm bg-brand" style="width:74%"></span>
-                </div>
-              </div>
-              <div>
-                <div class="flex items-baseline justify-between gap-4">
-                  <dt class="text-caption font-bold text-ink">Promotie</dt>
-                  <dd class="text-caption tabular text-ink-soft m-0">61%</dd>
-                </div>
-                <div class="mt-2 h-2 w-full rounded-sm bg-surface overflow-hidden">
-                  <span class="block h-full rounded-sm bg-brand" style="width:61%"></span>
-                </div>
-              </div>
-            </dl>
+          <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-md bg-surface p-3 sm:p-4 text-center">
+          <p class="m-0 text-caption font-bold text-ink">Bonus</p>
+          <svg viewBox="0 0 140 140" class="mx-auto mt-3 block h-auto w-full max-w-[116px]" role="img"
+          aria-label="Bonus: 92.817 van 115.000 euro, 81 procent">
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#d9efe4" stroke-width="14"/>
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#0af29f" stroke-width="14"
+          stroke-linecap="round" stroke-dasharray="273.8 339.3"
+          transform="rotate(-90 70 70)"/>
+          <text x="70" y="78" text-anchor="middle" font-size="26" font-weight="700"
+          fill="#0a3327"
+          style="font-family: Inter, system-ui, sans-serif">81%</text>
+          </svg>
+          <p class="m-0 mt-3 whitespace-nowrap text-[13px] leading-5 tabular text-ink-soft">€ 92.817<br>van € 115.000</p>
+          </div>
+          <div class="rounded-md bg-surface p-3 sm:p-4 text-center">
+          <p class="m-0 text-caption font-bold text-ink">Promotie</p>
+          <svg viewBox="0 0 140 140" class="mx-auto mt-3 block h-auto w-full max-w-[116px]" role="img"
+          aria-label="Promotie: 48.391 van 90.000 euro, 54 procent">
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#d9efe4" stroke-width="14"/>
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#0af29f" stroke-width="14"
+          stroke-linecap="round" stroke-dasharray="182.4 339.3"
+          transform="rotate(-90 70 70)"/>
+          <text x="70" y="78" text-anchor="middle" font-size="26" font-weight="700"
+          fill="#0a3327"
+          style="font-family: Inter, system-ui, sans-serif">54%</text>
+          </svg>
+          <p class="m-0 mt-3 whitespace-nowrap text-[13px] leading-5 tabular text-ink-soft">€ 48.391<br>van € 90.000</p>
+          </div>
+          <div class="rounded-md bg-surface p-3 sm:p-4 text-center">
+          <p class="m-0 text-caption font-bold text-ink">Merit</p>
+          <svg viewBox="0 0 140 140" class="mx-auto mt-3 block h-auto w-full max-w-[116px]" role="img"
+          aria-label="Merit: 121.032 van 100.000 euro, 121 procent">
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#d9efe4" stroke-width="14"/>
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#0af29f" stroke-width="14"
+          stroke-linecap="round" stroke-dasharray="339.3 339.3"
+          transform="rotate(-90 70 70)"/><circle cx="70" cy="70" r="54" fill="none" stroke="#e5484d" stroke-width="14" stroke-linecap="round" stroke-dasharray="71.4 339.3" transform="rotate(-90 70 70)"/>
+          <text x="70" y="78" text-anchor="middle" font-size="26" font-weight="700"
+          fill="#e5484d"
+          style="font-family: Inter, system-ui, sans-serif">121%</text>
+          </svg>
+          <p class="m-0 mt-3 whitespace-nowrap text-[13px] leading-5 tabular text-ink-soft">€ 121.032<br>van € 100.000</p>
+          </div>
+          </div>
           </div>
         </div>
       </div>
@@ -1895,42 +2283,122 @@ tailwind.config = {
         <div class="panel">
           <div class="panel-bar">
             <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
-            <span class="miniheader">Loonvoorstellen · Team Operations</span>
+            <span class="miniheader">Loonvoorstel</span>
             <span class="ml-auto text-caption text-ink-soft">voorstel</span>
           </div>
-          <div class="overflow-x-auto scrollhide">
-            <table class="w-full text-left">
-              <caption class="sr-only">Voorgestelde loonsverhoging per medewerker in Team Operations</caption>
-              <thead>
-                <tr class="text-caption uppercase tracking-[0.08em] text-ink-soft">
-                  <th scope="col" class="font-bold px-5 py-3">Medewerker</th>
-                  <th scope="col" class="font-bold px-2 py-3">Score</th>
-                  <th scope="col" class="font-bold px-5 py-3 text-right">Voorstel</th>
-                </tr>
-              </thead>
-              <tbody class="text-caption">
-                <tr class="border-t border-line">
-                  <td class="px-5 py-3 font-medium text-ink">Laura Jacobs</td>
-                  <td class="px-2 py-3"><span class="inline-block rounded-sm bg-brand px-3 py-1 font-bold text-brand-ink">Strong</span></td>
-                  <td class="px-5 py-3 text-right tabular font-bold text-ink">+ 3,4%</td>
-                </tr>
-                <tr class="border-t border-line bg-surface">
-                  <td class="px-5 py-3 font-medium text-ink">Rachid El Amrani</td>
-                  <td class="px-2 py-3"><span class="inline-block rounded-sm bg-paper border border-line-btn px-3 py-1 font-bold text-ink-soft">On track</span></td>
-                  <td class="px-5 py-3 text-right tabular font-bold text-ink">+ 2,1%</td>
-                </tr>
-                <tr class="border-t border-line">
-                  <td class="px-5 py-3 font-medium text-ink">Anne Peeters</td>
-                  <td class="px-2 py-3"><span class="inline-block rounded-sm bg-brand px-3 py-1 font-bold text-brand-ink">Strong</span></td>
-                  <td class="px-5 py-3 text-right tabular font-bold text-ink">+ 3,7%</td>
-                </tr>
-                <tr class="border-t border-line bg-surface">
-                  <td class="px-5 py-3 font-medium text-ink">Jonas De Smet</td>
-                  <td class="px-2 py-3"><span class="inline-block rounded-sm bg-paper border border-line-btn px-3 py-1 font-bold text-ink-soft">On track</span></td>
-                  <td class="px-5 py-3 text-right tabular font-bold text-ink">+ 2,0%</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="p-5 md:p-6">
+          <div class="flex items-center gap-3">
+          <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[50%] bg-brand/20 text-caption font-bold text-ink">LC</span>
+          <span>
+          <b class="block text-body font-bold text-ink">Lena Carlier</b>
+          <span class="block text-caption text-ink-soft">Sales · Loonband 14</span>
+          </span>
+          </div>
+
+          <div class="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2 rounded-md bg-surface p-4">
+          <span class="text-body tabular text-ink-soft line-through decoration-1">€ 3.813,36</span>
+          <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0 text-ink-soft" aria-hidden="true" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15m0 0-5-5m5 5-5 5"/></svg>
+          <span class="text-h2 font-bold tabular text-ink">€ 4.053,55</span>
+          </div>
+
+          <dl class="mt-5 grid grid-cols-2 gap-3 m-0">
+          <div class="rounded-md border border-line p-4">
+          <dt class="text-caption font-bold text-ink">Index <span class="font-medium text-ink-soft">2,21%</span></dt>
+          <dd class="m-0 mt-2 text-body font-bold tabular text-ink">+ € 84,28</dd>
+          </div>
+          <div class="rounded-md border border-line p-4">
+          <dt class="text-caption font-bold text-ink">Merit</dt>
+          <dd class="m-0 mt-2 text-body font-bold tabular text-ink">+ € 155,91</dd>
+          </div>
+          </dl>
+
+          <div class="mt-5 flex items-center justify-end gap-3">
+          <span class="grid h-11 w-11 place-items-center rounded-[50%] border border-line text-ink"
+          role="img" aria-label="Aanpassen">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16v4Z"/></svg>
+          </span>
+          <span class="grid h-11 w-11 place-items-center rounded-[50%] bg-brand text-brand-ink"
+          role="img" aria-label="Goedkeuren">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" aria-hidden="true" fill="none" stroke="currentColor"
+          stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+          </span>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <!-- Erbij op 2026-10-21, op vraag van Jana (opmerking 74 in de reviewtool):
+         "Hier zou nog een 4de punt bij moeten komen." De drie blokken gingen
+         over wat Youbo DOET; dit gaat over wie de regels schrijft. Daarom staat
+         er geen cijfer of bedrag in het paneel maar een instelling: het is het
+         enige blok waar het antwoord "zoals jullie het willen" is, en een
+         bedrag zou dat juist tegenspreken.
+
+         WAT HET PANEEL TOONT, en waarom precies dit. Haar tekst doet drie
+         beloftes — jullie loonregels en formules, jij bepaalt wie wat ziet, en
+         het verandert mee. Alle drie staan ze erin: de regels als een lijst met
+         ingestelde waarden, de zichtbaarheid als een eigen regel, en de
+         goedkeuringsflow als drie stappen achter elkaar. Niet meer dan dat;
+         Jana's briefing van 2026-10-20 vraagt per visual één boodschap en zo
+         min mogelijk tekst.
+
+         DE CIJFERS SPREKEN DE REST VAN DE PAGINA NIET TEGEN. Het maximum van
+         6,0% staat boven de hoogste voorstellen in blok 3 (+3,7%), en de
+         loonband sluit aan bij "Loonband 14" op de kaart van Lena. Verander er
+         één, en kijk de andere na. -->
+    <div class="mt-12 md:mt-20 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center" data-reveal>
+      <div class="lg:col-span-5 lg:order-last">
+        <span class="inline-grid place-items-center h-10 w-10 rounded-[50%] bg-brand text-brand-ink font-bold tabular" aria-hidden="true">4</span>
+        <h3 class="mt-5 text-h2 on-dark" data-inhoud="kern.blok4_titel">Jouw loonbeleid, jouw manier van werken</h3>
+        <p class="mt-4 text-body on-dark-soft max-w-text" data-inhoud="kern.blok4_tekst">Youbo volgt jullie loonregels, formules en goedkeuringsflows. Jij bepaalt wie wat ziet. Verandert je loonbeleid? Dan verandert Youbo mee.</p>
+      </div>
+
+      <div class="lg:col-span-7 min-w-0">
+        <!-- mockup: de regels van het huis -->
+        <div class="panel">
+          <div class="panel-bar">
+            <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+            <span class="miniheader">Loonbeleid · cyclus 2027</span>
+            <span class="ml-auto text-caption text-ink-soft">ingesteld</span>
+          </div>
+          <div class="p-5 md:p-6">
+            <dl class="m-0">
+              <div class="flex items-baseline justify-between gap-4 border-b border-line pb-3">
+                <dt class="text-caption text-ink-soft">Loonband respecteren</dt>
+                <dd class="m-0 text-caption font-bold text-ink">verplicht</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 border-b border-line py-3">
+                <dt class="text-caption text-ink-soft">Maximum per medewerker</dt>
+                <dd class="m-0 text-caption font-bold tabular text-ink">6,0 %</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 border-b border-line py-3">
+                <dt class="text-caption text-ink-soft">Prestatiescore weegt</dt>
+                <dd class="m-0 text-caption font-bold tabular text-ink">× 1,5</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 py-3">
+                <dt class="text-caption text-ink-soft">Een manager ziet</dt>
+                <dd class="m-0 text-caption font-bold text-ink">enkel het eigen team</dd>
+              </div>
+            </dl>
+
+            <p class="mt-5 mb-3 text-caption uppercase tracking-[0.08em] font-bold text-ink-soft">Goedkeuring</p>
+            <ol class="m-0 flex flex-wrap items-center gap-2 list-none p-0 text-caption">
+              <li class="rounded-sm bg-brand px-3 py-1 font-bold text-brand-ink">Manager</li>
+              <li aria-hidden="true" class="text-ink-soft">
+                <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor"
+                     stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h12m0 0-4-4m4 4-4 4"/></svg>
+              </li>
+              <li class="rounded-sm border border-line-btn px-3 py-1 font-bold text-ink">Hr</li>
+              <li aria-hidden="true" class="text-ink-soft">
+                <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor"
+                     stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h12m0 0-4-4m4 4-4 4"/></svg>
+              </li>
+              <li class="rounded-sm border border-line-btn px-3 py-1 font-bold text-ink">Finance</li>
+            </ol>
           </div>
         </div>
       </div>
@@ -2032,13 +2500,13 @@ tailwind.config = {
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/kaneka-logo-dark.svg" alt="Kaneka" class="w-auto" style="height:20px" data-inhoud-src="cases.items.1.logo" data-inhoud-alt="cases.items.1.bedrijf" data-inhoud-style="height:{cases.items.1.logo_hoogte}px"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.1.voordeel">2 werkweken tijdswinst</p>
+            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.1.sector">Chemie- en technologiebedrijf</p>
+            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.1.voordeel">2 werkweken tijdswinst</p>
             <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
             <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.1.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">370 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">27 afdelingen</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.1.sector">Chemie- en technologiebedrijf</p>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.1.nota" data-inhoud="cases.items.1.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2055,13 +2523,13 @@ tailwind.config = {
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto" style="height:21px" data-inhoud-src="cases.items.2.logo" data-inhoud-alt="cases.items.2.bedrijf" data-inhoud-style="height:{cases.items.2.logo_hoogte}px"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.2.voordeel">Meerdere werkdagen bespaard</p>
+            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.2.sector">Softwaregroep</p>
+            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.2.voordeel">Meerdere werkdagen bespaard</p>
             <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
             <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.2.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">300 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">8 bedrijven</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.2.sector">Softwaregroep</p>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.2.nota" data-inhoud="cases.items.2.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2077,14 +2545,14 @@ tailwind.config = {
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-auto lg:col-span-2" data-herhaal-span>
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
-            <span class="case-logo"><img src="assets/img/aertssen-logo-dark.svg" alt="Aertssen Group" class="w-auto" style="height:32px" data-inhoud-src="cases.items.3.logo" data-inhoud-alt="cases.items.3.bedrijf" data-inhoud-style="height:{cases.items.3.logo_hoogte}px"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.3.voordeel">Live op 3 maanden</p>
+            <span class="case-logo"><img src="assets/img/aertssen-logo-volledig.svg" alt="Aertssen Group" class="w-auto" style="height:36px" data-inhoud-src="cases.items.3.logo" data-inhoud-alt="cases.items.3.bedrijf" data-inhoud-style="height:{cases.items.3.logo_hoogte}px"></span>
+            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.3.sector">Infrastructuur- en logistiekgroep</p>
+            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.3.voordeel">Live op 3 maanden</p>
             <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
             <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.3.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">450 bedienden</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.3.sector">Infrastructuur- en logistiekgroep</p>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.3.nota" data-inhoud="cases.items.3.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2101,13 +2569,13 @@ tailwind.config = {
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/sdworx-logo-dark.svg" alt="SD Worx" class="w-auto" style="height:24px" data-inhoud-src="cases.items.4.logo" data-inhoud-alt="cases.items.4.bedrijf" data-inhoud-style="height:{cases.items.4.logo_hoogte}px"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.4.voordeel">Van 2 maanden naar 3 weken</p>
+            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.4.sector">Hr-dienstverlener</p>
+            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.4.voordeel">Van 2 maanden naar 3 weken</p>
             <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
             <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.4.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">7.000 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">18 landen</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.4.sector">Hr-dienstverlener</p>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.4.nota" data-inhoud="cases.items.4.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2124,13 +2592,13 @@ tailwind.config = {
         <article class="card case-kaart h-full border border-line">
           <div class="case-body">
             <span class="case-logo"><img src="assets/img/dpg-logo-dark.svg" alt="DPG Media" class="w-auto" style="height:24px" data-inhoud-src="cases.items.5.logo" data-inhoud-alt="cases.items.5.bedrijf" data-inhoud-style="height:{cases.items.5.logo_hoogte}px"></span>
-            <p class="case-voordeel mt-6 text-h2 font-bold text-ink" data-inhoud="cases.items.5.voordeel">7× sneller</p>
+            <p class="case-sector mt-3 text-caption text-ink-soft" data-inhoud="cases.items.5.sector">Mediagroep</p>
+            <p class="case-voordeel mt-5 text-h2 font-bold text-ink" data-inhoud="cases.items.5.voordeel">7x sneller bestanden klaar</p>
             <p class="case-gebruik mt-4 text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
             <ul class="mt-1 list-none p-0 m-0 space-y-2 text-caption text-ink-soft" data-inhoud="cases.items.5.cijfers">
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">+6000 medewerkers</span></li>
               <li class="flex items-start gap-3"><span class="cijferstip" aria-hidden="true"></span><span class="tabular">2 landen</span></li>
             </ul>
-            <p class="mt-4 text-caption text-ink-soft" data-inhoud="cases.items.5.sector">Mediagroep</p>
           </div>
           <div class="case-slot">
             <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.5.nota" data-inhoud="cases.items.5.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
@@ -2239,7 +2707,6 @@ tailwind.config = {
            hieronder in. Zonder JavaScript bestaat dit blok niet. -->
       <div class="scrolly-visual" data-scrolly-visual>
         <div class="sc-cue">
-          <span class="text-caption on-dark-soft" data-inhoud="rondleiding.scrollhint">Scroll verder</span>
           <div class="sc-bars" role="group" aria-label="Spring naar een stap">
             <!-- HERHAAL:rondleiding.stappen:BEGIN — één springknop per stap, gegenereerd. -->
             <button type="button" class="sc-bar" data-scrolly-jump="0" aria-current="true"
@@ -2301,7 +2768,6 @@ tailwind.config = {
         <div class="panel-bar">
           <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
           <span class="miniheader">Medewerkers vergelijken</span>
-          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>1 / 4</span>
         </div>
         <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
              in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
@@ -2366,34 +2832,34 @@ tailwind.config = {
         <div class="panel-bar">
           <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
           <span class="miniheader">Budget per soort</span>
-          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>2 / 4</span>
         </div>
         <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
              in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
         <div class="sc-shot">
           <svg viewBox="0 0 1200 640" class="block h-auto w-full" role="img"
-               aria-label="Budget per soort: loonsverhoging 82 procent, 75.440 euro van 92.000 euro. Bonus 74 procent, 43.105 euro van 58.250 euro. Promotie 61 procent, 20.740 euro van 34.000 euro. Samen 139.285 euro van 184.250 euro, oftewel 75,6 procent."
+               aria-label="Budget per soort: loonsverhoging 121 procent, 121.032 euro van 100.000 euro en dus over het budget. Bonus 81 procent, 92.817 euro van 115.000 euro. Promotie 54 procent, 48.391 euro van 90.000 euro. Samen 262.240 euro van 305.000 euro, oftewel 86,0 procent."
                style="font-family: Inter, system-ui, sans-serif">
             <rect width="1200" height="640" fill="#ffffff"/>
             <text x="40" y="52" font-size="21" font-weight="700" fill="#547068" letter-spacing="1.6">BUDGET PER SOORT · MERIT CYCLE 2027</text>
             <text x="40" y="96" font-size="25" font-weight="700" fill="#0a3327">Loonsverhoging</text>
-            <text x="1160" y="96" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">82%</text>
+            <text x="1160" y="96" font-size="23" font-weight="700" fill="#e5484d" text-anchor="end" style="font-variant-numeric: tabular-nums">121%</text>
             <rect x="40" y="118" width="1120" height="18" rx="9" fill="#f6f8fa"/>
-            <rect x="40" y="118" width="918" height="18" rx="9" fill="#0af29f"/>
-            <text x="40" y="174" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 75.440 toegekend van € 92.000</text>
+            <rect x="40" y="118" width="1120" height="18" rx="9" fill="#0af29f"/>
+            <rect x="924" y="118" width="236" height="18" rx="9" fill="#e5484d"/>
+            <text x="40" y="174" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 121.032 toegekend van € 100.000</text>
             <text x="40" y="244" font-size="25" font-weight="700" fill="#0a3327">Bonus</text>
-            <text x="1160" y="244" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">74%</text>
+            <text x="1160" y="244" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">81%</text>
             <rect x="40" y="266" width="1120" height="18" rx="9" fill="#f6f8fa"/>
-            <rect x="40" y="266" width="829" height="18" rx="9" fill="#0af29f"/>
-            <text x="40" y="322" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 43.105 toegekend van € 58.250</text>
+            <rect x="40" y="266" width="904" height="18" rx="9" fill="#0af29f"/>
+            <text x="40" y="322" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 92.817 toegekend van € 115.000</text>
             <text x="40" y="392" font-size="25" font-weight="700" fill="#0a3327">Promotie</text>
-            <text x="1160" y="392" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">61%</text>
+            <text x="1160" y="392" font-size="23" font-weight="700" fill="#0a3327" text-anchor="end" style="font-variant-numeric: tabular-nums">54%</text>
             <rect x="40" y="414" width="1120" height="18" rx="9" fill="#f6f8fa"/>
-            <rect x="40" y="414" width="683" height="18" rx="9" fill="#0af29f"/>
-            <text x="40" y="470" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 20.740 toegekend van € 34.000</text>
+            <rect x="40" y="414" width="602" height="18" rx="9" fill="#0af29f"/>
+            <text x="40" y="470" font-size="21" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">€ 48.391 toegekend van € 90.000</text>
             <line x1="40" y1="498" x2="1160" y2="498" stroke="#e1ebf0" stroke-width="2"/>
             <text x="40" y="544" font-size="25" font-weight="700" fill="#0a3327">Samen</text>
-            <text x="1160" y="544" font-size="25" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 139.285 van € 184.250 · 75,6%</text>
+            <text x="1160" y="544" font-size="25" font-weight="700" fill="#154e3a" text-anchor="end" style="font-variant-numeric: tabular-nums">€ 262.240 van € 305.000 · 86,0%</text>
           </svg>
         </div>
           </figure>
@@ -2408,7 +2874,6 @@ tailwind.config = {
             <div class="panel-bar">
               <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
               <span class="miniheader">Cyclusoverzicht voor hr</span>
-              <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>3 / 4</span>
             </div>
             <!-- NAGETEKEND, GEEN SCHERMAFDRUK.
                  Het bestaande hero-scherm van youbo.io (main-visual-nl.webp) stond hier, en
@@ -2421,10 +2886,15 @@ tailwind.config = {
                  38/50 = 76% — hetzelfde getal als het afdelingendashboard onderaan dit blok.
                  Er staat met opzet geen enkel bedrag in: zodra twee schermen euro's tonen,
                  kan een bezoeker ze tegen elkaar natellen, en dan moeten ze ook kloppen.
+                 GEEN KOLOMKOPPEN MEER sinds 2026-10-21. Jana: "'voortgang loonreview',
+                 'departement', 'afgerond', 'voortgang', 'hr-overzicht' mogen allemaal
+                 wel weg: het is net de bedoeling dat je dat 'ziet'." Een rij die
+                 "Finance Belgium · 8 van 8 · Klaar" zegt, heeft geen kop boven zich
+                 nodig die AFDELING, BEOORDEELD en STATUS herhaalt. Zet ze niet terug.
                  Het is een <svg> en geen bitmap, dus hij schaalt mee in de kleefkaart en
                  hoeft op telefoon niet zijwaarts geschoven te worden. -->
             <div class="sc-shot">
-              <svg viewBox="0 0 1200 680" class="block h-auto w-full" role="img"
+              <svg viewBox="0 0 1200 644" class="block h-auto w-full" role="img"
                    aria-label="Cyclusoverzicht voor hr: 38 van de 50 managers zijn klaar, 76 procent van de cyclus is afgerond. Finance Belgium is klaar met 8 van 8 beoordelingen, Operations staat op 12 van 16, Commercial op 9 van 14 en Technology op 9 van 12."
                    style="font-family: Inter, system-ui, sans-serif">
 
@@ -2441,35 +2911,31 @@ tailwind.config = {
                 <rect x="40" y="180" width="851"  height="16" rx="8" fill="#0af29f"/>
                 <text x="40" y="228" font-size="22" font-weight="500" fill="#547068"
                       style="font-variant-numeric: tabular-nums">76% van de cyclus afgerond</text>
+                <line x1="40" y1="290" x2="1160" y2="290" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40"   y="290" font-size="19" font-weight="700" fill="#547068" letter-spacing="1.6">AFDELING</text>
-                <text x="640"  y="290" font-size="19" font-weight="700" fill="#547068" letter-spacing="1.6">BEOORDEELD</text>
-                <text x="1160" y="290" font-size="19" font-weight="700" fill="#547068" letter-spacing="1.6" text-anchor="end">STATUS</text>
-                <line x1="40" y1="308" x2="1160" y2="308" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="40"  y="316" font-size="24" font-weight="500" fill="#0a3327">Finance Belgium</text>
+                <text x="640" y="316" font-size="24" font-weight="700" fill="#154e3a" style="font-variant-numeric: tabular-nums">8 van 8</text>
+                <rect x="1020" y="290" width="140" height="36" rx="8" fill="#0af29f"/>
+                <text x="1090" y="315" font-size="20" font-weight="700" fill="#154e3a" text-anchor="middle">Klaar</text>
+                <line x1="40" y1="346" x2="1160" y2="346" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40"  y="352" font-size="24" font-weight="500" fill="#0a3327">Finance Belgium</text>
-                <text x="640" y="352" font-size="24" font-weight="700" fill="#154e3a" style="font-variant-numeric: tabular-nums">8 van 8</text>
-                <rect x="1020" y="326" width="140" height="36" rx="8" fill="#0af29f"/>
-                <text x="1090" y="351" font-size="20" font-weight="700" fill="#154e3a" text-anchor="middle">Klaar</text>
-                <line x1="40" y1="382" x2="1160" y2="382" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="40"  y="390" font-size="24" font-weight="500" fill="#0a3327">Operations</text>
+                <text x="640" y="390" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">12 van 16</text>
+                <rect x="1020" y="364" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="1090" y="389" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
+                <line x1="40" y1="420" x2="1160" y2="420" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40"  y="426" font-size="24" font-weight="500" fill="#0a3327">Operations</text>
-                <text x="640" y="426" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">12 van 16</text>
-                <rect x="1020" y="400" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="1090" y="425" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
-                <line x1="40" y1="456" x2="1160" y2="456" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="40"  y="464" font-size="24" font-weight="500" fill="#0a3327">Commercial</text>
+                <text x="640" y="464" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">9 van 14</text>
+                <rect x="1020" y="438" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="1090" y="463" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
+                <line x1="40" y1="494" x2="1160" y2="494" stroke="#e1ebf0" stroke-width="2"/>
 
-                <text x="40"  y="500" font-size="24" font-weight="500" fill="#0a3327">Commercial</text>
-                <text x="640" y="500" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">9 van 14</text>
-                <rect x="1020" y="474" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="1090" y="499" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
-                <line x1="40" y1="530" x2="1160" y2="530" stroke="#e1ebf0" stroke-width="2"/>
-
-                <text x="40"  y="574" font-size="24" font-weight="500" fill="#0a3327">Technology</text>
-                <text x="640" y="574" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">9 van 12</text>
-                <rect x="1020" y="548" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
-                <text x="1090" y="573" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
-                <line x1="40" y1="604" x2="1160" y2="604" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="40"  y="538" font-size="24" font-weight="500" fill="#0a3327">Technology</text>
+                <text x="640" y="538" font-size="24" font-weight="500" fill="#547068" style="font-variant-numeric: tabular-nums">9 van 12</text>
+                <rect x="1020" y="512" width="140" height="36" rx="8" fill="#f6f8fa" stroke="#e1ebf0" stroke-width="2"/>
+                <text x="1090" y="537" font-size="20" font-weight="500" fill="#547068" text-anchor="middle">Loopt</text>
+                <line x1="40" y1="568" x2="1160" y2="568" stroke="#e1ebf0" stroke-width="2"/>
 
               </svg>
             </div>
@@ -2485,7 +2951,6 @@ tailwind.config = {
         <div class="panel-bar">
           <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
           <span class="miniheader">Loonpakket oud, nieuw en verschil</span>
-          <span class="ml-auto shrink-0 whitespace-nowrap text-caption text-ink-soft tabular" data-herhaal-teller>4 / 4</span>
         </div>
         <!-- NAGETEKEND, GEEN SCHERMAFDRUK — zie de toelichting bij stap 1. De cijfers
              in de vier schermen komen uit één demodataset en sluiten op elkaar aan. -->
@@ -2593,9 +3058,9 @@ tailwind.config = {
   <div class="shell text-center" data-reveal>
     <h2 id="cijfer-titel" class="mx-auto max-w-[24ch] text-[28px] leading-[1.2] md:text-h1 lg:text-display">
       <span data-inhoud="cijfer.aanloop">De loonsverhogingen, bonussen en promoties van</span>
-      <span class="tabular text-brand-ink" data-inhoud="cijfer.medewerkers">19.000</span>
+      <span class="tabular cijfer-uit" data-telop data-inhoud="cijfer.medewerkers">19.000</span>
       <span data-inhoud="cijfer.midden">medewerkers in</span>
-      <span class="tabular text-brand-ink" data-inhoud="cijfer.landen">21</span>
+      <span class="tabular cijfer-uit" data-telop data-inhoud="cijfer.landen">21</span>
       <span data-inhoud="cijfer.slot">landen worden al met Youbo beheerd</span>
     </h2>
   </div>
@@ -2673,68 +3138,83 @@ tailwind.config = {
       <h2 id="integraties-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="integraties.kop">Plug vlot in met al je hr-tools</h2>
       <p class="mt-5 text-h3 on-dark-soft max-w-text" data-inhoud="integraties.tekst">Youbo past in elk hr-landschap en haalt zijn gegevens uit de systemen die je al gebruikt. Connecteer makkelijk met elke tool, van prestatiemanagement tot payroll.</p>
 
-      <!-- FUNCTIES, GEEN MERKNAMEN. Elk met een eigen icoon, zelf getekend op
-           hetzelfde raster van 24px en met dezelfde lijndikte — de iconen van
-           de bestaande site zijn een allegaartje zonder gemeenschappelijk
-           raster, en Font Awesome binnenhalen voor vier pictogrammen is
-           overdreven. Het mint is hier ornament, geen tekst: als tekst haalt
-           het op licht de leesnorm niet, als lijn op bijna zwart ruim 3:1. -->
-      <!-- sm:grid-cols-2 lg:grid-cols-1 — en die laatste is gemeten, niet gekozen:
-           naast elkaar is deze kolom 487px breed, dus twee tegels van 237px, en
-           daarin breekt "Performancemanagement" midden in het woord af tot
-           "Performancemana / gement". Eén kolom geeft de tegel de volle 487px. -->
-      <ul class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 list-none p-0 m-0">
-        <li class="hrtool">
-          <span class="hrtool-icoon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+      <!-- DE NAAF, sinds 2026-10-21. Hier stonden vier labels onder elkaar. Jana:
+           "die visual mag meer 'integratie' uitdrukken ipv labels onder elkaar",
+           en haar eigen voorbeeld was een cirkel met knooppunten. Youbo staat nu
+           in het midden, de vier functies hangen eromheen, en de spaken ertussen
+           pulseren. Je ziet dat Youbo de spil is, en dat de vier er even hard bij
+           horen — geen lijst, dus ook geen rangorde.
+
+           FUNCTIES, GEEN MERKNAMEN. Elk icoon is zelf getekend op hetzelfde raster
+           van 24px en met dezelfde lijndikte; het zijn exact de vier die hier al
+           stonden. Jana besliste eerder: "Ik denk dat die icoontjes beter zijn,
+           laten we het daar op houden." Vraagt zij later toch merklogo's, dan is
+           dat een beslissing over gebruiksrechten en niet over tekenwerk.
+
+           EEN LIGGENDE OVAAL EN GEEN CIRKEL, en dat is gemeten. Deze kolom staat
+           naast het EU-blok; dat is 479px hoog. Met een vierkante naaf werd deze
+           kolom 765px, dus bleef er bijna 300px leeg naast die tekst staan. Als
+           ovaal blijven de twee rijen in balans. Verander de verhouding dus niet
+           zonder de hoogte van het EU-blok ernaast opnieuw te meten.
+
+           DE RING DRAAIT NIET. In het voorstel draaide hij rond, met een stip die
+           meeliep. Dat kan bij een cirkel en niet bij een ovaal: een draaiende
+           ovaal wiebelt. De beweging zit nu in de spaken, en dat is ook waar ze
+           iets betekent — daar stroomt de data. -->
+      <div class="naaf mt-8">
+        <svg class="naaf-tekening" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <!-- r = 24·√2 = 33,941. De knooppunten staan op (26,26), (74,26),
+               (26,74) en (74,74), dus 24 uit het midden op beide assen. Een
+               cirkel met die straal gaat per definitie door alle vier: 24² + 24²
+               = 33,941². preserveAspectRatio="none" rekt deze tekening precies
+               zo uit als het vlak, dus blijft dat waar bij elke verhouding.
+               De ring en de spaken staan daarom in ÉÉN tekening: zolang ze
+               dezelfde coördinaten delen, kunnen ze niet uit elkaar lopen. -->
+          <circle class="naaf-ring" cx="50" cy="50" r="33.941" vector-effect="non-scaling-stroke"></circle>
+          <line class="naaf-spaak" x1="50" y1="50" x2="26" y2="26" vector-effect="non-scaling-stroke"></line>
+          <line class="naaf-spaak" x1="50" y1="50" x2="74" y2="26" vector-effect="non-scaling-stroke"></line>
+          <line class="naaf-spaak" x1="50" y1="50" x2="26" y2="74" vector-effect="non-scaling-stroke"></line>
+          <line class="naaf-spaak" x1="50" y1="50" x2="74" y2="74" vector-effect="non-scaling-stroke"></line>
+        </svg>
+        <span class="naaf-hub" aria-hidden="true"><img src="assets/img/favicon.svg" alt="" width="48" height="48"></span>
+        <ul class="naaf-knopen">
+          <li class="naaf-knoop naaf-nw">
+            <span class="naaf-schijf" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
                  stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
               <rect x="2.5" y="6" width="19" height="12" rx="2"/>
               <circle cx="12" cy="12" r="2.5"/>
               <path d="M6 10v4M18 10v4"/>
-            </svg>
-          </span>
-          <span class="hrtool-naam" data-inhoud="integraties.functie_1">Payroll</span>
-        </li>
-        <li class="hrtool">
-          <span class="hrtool-icoon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            </svg></span>
+            <span class="naaf-naam" data-inhoud="integraties.functie_1">Payroll</span>
+          </li>
+          <li class="naaf-knoop naaf-ne">
+            <span class="naaf-schijf" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
                  stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
               <circle cx="12" cy="12" r="8.5"/>
               <path d="M12 7.5V12l3 2"/>
-            </svg>
-          </span>
-          <span class="hrtool-naam" data-inhoud="integraties.functie_2">Tijdsregistratie</span>
-        </li>
-        <li class="hrtool">
-          <span class="hrtool-icoon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            </svg></span>
+            <span class="naaf-naam" data-inhoud="integraties.functie_2">Tijdsregistratie</span>
+          </li>
+          <li class="naaf-knoop naaf-sw">
+            <span class="naaf-schijf" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
                  stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
               <path d="M3 17l5.5-5.5 3.5 3.5L21 7"/>
               <path d="M15 7h6v6"/>
-            </svg>
-          </span>
-          <span class="hrtool-naam" data-inhoud="integraties.functie_3">Performancemanagement</span>
-        </li>
-        <li class="hrtool">
-          <span class="hrtool-icoon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            </svg></span>
+            <span class="naaf-naam" data-inhoud="integraties.functie_3">Performancemanagement</span>
+          </li>
+          <li class="naaf-knoop naaf-se">
+            <span class="naaf-schijf" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
                  stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
               <circle cx="9.5" cy="8.5" r="3.5"/>
               <path d="M3.5 19a6 6 0 0 1 12 0"/>
               <path d="M16.5 5.6a3.5 3.5 0 0 1 0 5.8"/>
               <path d="M17.5 19a6 6 0 0 0-1.6-4.1"/>
-            </svg>
-          </span>
-          <span class="hrtool-naam" data-inhoud="integraties.functie_4">Core hr</span>
-        </li>
-      </ul>
-
-      <!-- Hier stond tot 2026-10-06 een TODO over twee extra functienamen en de
-           vraag of de merklogo&rsquo;s getoond mogen worden. Jana heeft dat
-           beslecht: "Ik denk dat die icoontjes beter zijn, laten we het daar op
-           houden." Dus geen logo&rsquo;s, geen extra namen, en deze vier functies
-           blijven staan zoals ze staan. De TODO is weg omdat de vraag een
-           antwoord heeft. -->
+            </svg></span>
+            <span class="naaf-naam" data-inhoud="integraties.functie_4">Core hr</span>
+          </li>
+        </ul>
+      </div>
     </section>
 
   </div>
@@ -2820,11 +3300,18 @@ tailwind.config = {
          welk logobestand en welk portret er bestaat, en dat is nu een veld. -->
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:20px" data-inhoud-src="quotes.items.1.logo" data-inhoud-alt="quotes.items.1.bedrijf" data-inhoud-style="height:{quotes.items.1.logo_hoogte}px">
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:18px" data-inhoud-src="quotes.items.1.logo" data-inhoud-alt="quotes.items.1.bedrijf" data-inhoud-style="height:{quotes.items.1.logo_hoogte}px">
           <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.1.tekst">“Dankzij Youbo hebben we onze budget slippage volledig weggewerkt in amper 2 cycli.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
-            <img src="assets/img/pieter-jan.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Pieter-Jan Boden" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+            <!-- 80px en niet 56. Jana, opmerking 49: "Zouden we de foto van de mensen
+                 hier niet groter geven, want dan heb je toch wat meer gezicht, en het
+                 logo kleiner (dat gaven we nl al meermaals)." Het logo van de klant
+                 staat op deze pagina inderdaad al in de logobalk én op de casekaart;
+                 wat deze band toevoegt is de persoon. De vijf portretten zijn minstens
+                 320px, dus 96px blijft ook op een scherm met dubbele dichtheid scherp
+                 (96 × 2 = 192, ruim binnen 320). -->
+            <img src="assets/img/pieter-jan.webp" width="96" height="96" loading="lazy" decoding="async"
+                 alt="Pieter-Jan Boden" class="h-24 w-24 shrink-0 rounded-[50%] object-cover"
                  data-inhoud-src="quotes.items.1.foto" data-inhoud-alt="quotes.items.1.naam">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.1.naam">Pieter-Jan Boden</span>
@@ -2836,11 +3323,18 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="w-auto self-start" style="height:16px" data-inhoud-src="quotes.items.2.logo" data-inhoud-alt="quotes.items.2.bedrijf" data-inhoud-style="height:{quotes.items.2.logo_hoogte}px">
+          <img src="assets/img/kaneka-logo.svg" alt="Kaneka" class="w-auto self-start" style="height:18px" data-inhoud-src="quotes.items.2.logo" data-inhoud-alt="quotes.items.2.bedrijf" data-inhoud-style="height:{quotes.items.2.logo_hoogte}px">
           <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.2.tekst">“Toen ik een demo zag, wist ik: hier hebben we op gewacht.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
-            <img src="assets/img/bart-verhoeven.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Bart Verhoeven" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+            <!-- 80px en niet 56. Jana, opmerking 49: "Zouden we de foto van de mensen
+                 hier niet groter geven, want dan heb je toch wat meer gezicht, en het
+                 logo kleiner (dat gaven we nl al meermaals)." Het logo van de klant
+                 staat op deze pagina inderdaad al in de logobalk én op de casekaart;
+                 wat deze band toevoegt is de persoon. De vijf portretten zijn minstens
+                 320px, dus 96px blijft ook op een scherm met dubbele dichtheid scherp
+                 (96 × 2 = 192, ruim binnen 320). -->
+            <img src="assets/img/bart-verhoeven.webp" width="96" height="96" loading="lazy" decoding="async"
+                 alt="Bart Verhoeven" class="h-24 w-24 shrink-0 rounded-[50%] object-cover"
                  data-inhoud-src="quotes.items.2.foto" data-inhoud-alt="quotes.items.2.naam">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.2.naam">Bart Verhoeven</span>
@@ -2852,11 +3346,18 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/dpg-logo.svg" alt="DPG Media" class="w-auto self-start" style="height:20px" data-inhoud-src="quotes.items.3.logo" data-inhoud-alt="quotes.items.3.bedrijf" data-inhoud-style="height:{quotes.items.3.logo_hoogte}px">
+          <img src="assets/img/dpg-logo.svg" alt="DPG Media" class="w-auto self-start" style="height:18px" data-inhoud-src="quotes.items.3.logo" data-inhoud-alt="quotes.items.3.bedrijf" data-inhoud-style="height:{quotes.items.3.logo_hoogte}px">
           <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.3.tekst">“Youbo helpt om de loonkloof weg te werken.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
-            <img src="assets/img/mieke-catthoor.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Mieke Catthoor" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+            <!-- 80px en niet 56. Jana, opmerking 49: "Zouden we de foto van de mensen
+                 hier niet groter geven, want dan heb je toch wat meer gezicht, en het
+                 logo kleiner (dat gaven we nl al meermaals)." Het logo van de klant
+                 staat op deze pagina inderdaad al in de logobalk én op de casekaart;
+                 wat deze band toevoegt is de persoon. De vijf portretten zijn minstens
+                 320px, dus 96px blijft ook op een scherm met dubbele dichtheid scherp
+                 (96 × 2 = 192, ruim binnen 320). -->
+            <img src="assets/img/mieke-catthoor.webp" width="96" height="96" loading="lazy" decoding="async"
+                 alt="Mieke Catthoor" class="h-24 w-24 shrink-0 rounded-[50%] object-cover"
                  data-inhoud-src="quotes.items.3.foto" data-inhoud-alt="quotes.items.3.naam">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.3.naam">Mieke Catthoor</span>
@@ -2868,11 +3369,18 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:20px" data-inhoud-src="quotes.items.4.logo" data-inhoud-alt="quotes.items.4.bedrijf" data-inhoud-style="height:{quotes.items.4.logo_hoogte}px">
+          <img src="assets/img/sdworx-logo.svg" alt="SD Worx" class="w-auto self-start" style="height:14px" data-inhoud-src="quotes.items.4.logo" data-inhoud-alt="quotes.items.4.bedrijf" data-inhoud-style="height:{quotes.items.4.logo_hoogte}px">
           <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.4.tekst">“Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu betere inhoudelijke gesprekken met mijn team.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
-            <img src="assets/img/joris-valkenborgh.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Joris Valkenborgh" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+            <!-- 80px en niet 56. Jana, opmerking 49: "Zouden we de foto van de mensen
+                 hier niet groter geven, want dan heb je toch wat meer gezicht, en het
+                 logo kleiner (dat gaven we nl al meermaals)." Het logo van de klant
+                 staat op deze pagina inderdaad al in de logobalk én op de casekaart;
+                 wat deze band toevoegt is de persoon. De vijf portretten zijn minstens
+                 320px, dus 96px blijft ook op een scherm met dubbele dichtheid scherp
+                 (96 × 2 = 192, ruim binnen 320). -->
+            <img src="assets/img/joris-valkenborgh.webp" width="96" height="96" loading="lazy" decoding="async"
+                 alt="Joris Valkenborgh" class="h-24 w-24 shrink-0 rounded-[50%] object-cover"
                  data-inhoud-src="quotes.items.4.foto" data-inhoud-alt="quotes.items.4.naam">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.4.naam">Joris Valkenborgh</span>
@@ -2884,11 +3392,18 @@ tailwind.config = {
 
       <li class="snap-start shrink-0 w-[85%] sm:w-[62%] lg:w-[38%]">
         <figure class="card-inv m-0 h-full p-6 md:p-8 flex flex-col">
-          <img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto self-start" style="height:17px" data-inhoud-src="quotes.items.5.logo" data-inhoud-alt="quotes.items.5.bedrijf" data-inhoud-style="height:{quotes.items.5.logo_hoogte}px">
+          <img src="assets/img/anchr-logo.webp" alt="Anchr" class="w-auto self-start" style="height:16px" data-inhoud-src="quotes.items.5.logo" data-inhoud-alt="quotes.items.5.bedrijf" data-inhoud-style="height:{quotes.items.5.logo_hoogte}px">
           <blockquote class="m-0 mt-6 text-h3 on-dark" data-inhoud="quotes.items.5.tekst">“Als Youbo morgen zou verdwijnen, zouden we vooral het overzicht missen. In één klik zien we de jaarkost en het totale loonpakket van de werknemer.”</blockquote>
           <figcaption class="mt-auto pt-6 flex items-center gap-4">
-            <img src="assets/img/evi-van-der-vliet.webp" width="56" height="56" loading="lazy" decoding="async"
-                 alt="Evi Van der Vliet" class="h-14 w-14 shrink-0 rounded-[50%] object-cover"
+            <!-- 80px en niet 56. Jana, opmerking 49: "Zouden we de foto van de mensen
+                 hier niet groter geven, want dan heb je toch wat meer gezicht, en het
+                 logo kleiner (dat gaven we nl al meermaals)." Het logo van de klant
+                 staat op deze pagina inderdaad al in de logobalk én op de casekaart;
+                 wat deze band toevoegt is de persoon. De vijf portretten zijn minstens
+                 320px, dus 96px blijft ook op een scherm met dubbele dichtheid scherp
+                 (96 × 2 = 192, ruim binnen 320). -->
+            <img src="assets/img/evi-van-der-vliet.webp" width="96" height="96" loading="lazy" decoding="async"
+                 alt="Evi Van der Vliet" class="h-24 w-24 shrink-0 rounded-[50%] object-cover"
                  data-inhoud-src="quotes.items.5.foto" data-inhoud-alt="quotes.items.5.naam">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.5.naam">Evi Van der Vliet</span>
@@ -2947,16 +3462,16 @@ tailwind.config = {
       <div class="border-b border-line">
         <h3 class="m-0">
           <button type="button" @click="open = open === 0 ? null : 0" :aria-expanded="open === 0 ? 'true' : 'false'"
-                  aria-controls="faq-0" data-cta="faq-opzet"
+                  aria-controls="faq-0" data-cta="faq-hoe-verloopt-de-opstart-van"
                   class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
                   style="transition: color var(--m-base) var(--e-standard)">
-            <span>Hoe lang duurt het om Youbo op te zetten?</span>
+            <span>Hoe verloopt de opstart van Youbo?</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 0 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
           </button>
         </h3>
         <div id="faq-0" x-show="open === 0" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder.
+            Samen met een vaste contactpersoon stemmen we Youbo af op je loonbeleid, laden we je data in en leiden we je managers op. Tussen het eerste contact tot de eerste beloningsronde verloopt er gemiddeld 10 tot 12 weken, afhankelijk van de omvang van je organisatie en de complexiteit van je loonbeleid. Daarna kun je zelfstandig aan de slag. Je kan de configuratie aanpassen wanneer je loonbeleid verandert. Je vaste contactpersoon blijft beschikbaar voor ondersteuning. Tijdens de demo krijg je een concreet zicht op de timing voor jouw organisatie.
           </p>
         </div>
       </div>
@@ -2964,16 +3479,16 @@ tailwind.config = {
       <div class="border-b border-line">
         <h3 class="m-0">
           <button type="button" @click="open = open === 1 ? null : 1" :aria-expanded="open === 1 ? 'true' : 'false'"
-                  aria-controls="faq-1" data-cta="faq-omvang"
+                  aria-controls="faq-1" data-cta="faq-is-youbo-geschikt-voor-meerdere"
                   class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
                   style="transition: color var(--m-base) var(--e-standard)">
-            <span>Vanaf hoeveel medewerkers is Youbo relevant?</span>
+            <span>Is Youbo geschikt voor meerdere hiërarchische niveaus of meerdere landen?</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 1 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
           </button>
         </h3>
         <div id="faq-1" x-show="open === 1" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat doorgaans vanaf 300 medewerkers, of zodra het Excelproces complex en persoonsafhankelijk wordt.
+            Ja. Het budget kan fijnmazig worden opgesplitst over zoveel niveaus als gewenst. De tool is inzetbaar in meerdere landen, werkt met verschillende munteenheden en is beschikbaar in de meest courante talen.
           </p>
         </div>
       </div>
@@ -2981,20 +3496,20 @@ tailwind.config = {
       <div class="border-b border-line">
         <h3 class="m-0">
           <button type="button" @click="open = open === 2 ? null : 2" :aria-expanded="open === 2 ? 'true' : 'false'"
-                  aria-controls="faq-2" data-cta="faq-prijs"
+                  aria-controls="faq-2" data-cta="faq-maatwerk"
                   class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
                   style="transition: color var(--m-base) var(--e-standard)">
-            <span>Hoeveel kost het?</span>
+            <span>Past Youbo zich aan onze manier van werken aan?</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 2 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
           </button>
         </h3>
         <div id="faq-2" x-show="open === 2" x-collapse>
           <div class="pb-6 pr-6">
             <p class="text-body text-ink-soft">
-              Dit is de vraag die iedereen stelt, en ze hoort op de pagina. Wat hier komt te staan, beslist Youbo zelf.
+              Youbo past zich aan jouw organisatie aan, niet andersom. Youbo neemt complexe regels en formules van jullie loonbeleid over. We vertrekken vanuit de vraag: hoe wil jullie organisatie haar loonbeleid uitvoeren? Vervolgens modelleren we de software volgens die behoefte.
             </p>
-            <p class="todo mt-4">
-              <b>TODO — te bevestigen</b>: het antwoord op de prijsvraag. Jana loopt dit na met de partners en met Nicole. Een bereik of de logica achter de prijs is verdedigbaar, geen antwoord is dat niet
+            <p class="text-body text-ink-soft mt-4">
+              Jullie organisatiestructuur, loonregels, goedkeuringsflows en gewenste verantwoordelijkheden zijn het uitgangspunt. Mogen budgetten worden overschreden? Is het budget fixed of een percentage van de loonmassa? In welke mate kan een manager afwijken? Welke data kunnen de managers zien? Jij kiest, Youbo voert uit.
             </p>
           </div>
         </div>
@@ -3003,16 +3518,16 @@ tailwind.config = {
       <div class="border-b border-line">
         <h3 class="m-0">
           <button type="button" @click="open = open === 3 ? null : 3" :aria-expanded="open === 3 ? 'true' : 'false'"
-                  aria-controls="faq-3" data-cta="faq-maatwerk"
+                  aria-controls="faq-3" data-cta="faq-hoe-helpt-youbo-met-compliance"
                   class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
                   style="transition: color var(--m-base) var(--e-standard)">
-            <span>Past Youbo zich aan onze manier van werken aan?</span>
+            <span>Hoe helpt Youbo met compliance en de regels rond loontransparantie?</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 3 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
           </button>
         </h3>
         <div id="faq-3" x-show="open === 3" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het uitgangspunt. Youbo neemt ook complexe regels en formules over.
+            Youbo past de regels consequent toe, bewaakt afwijkingen en maakt verschillen inzichtelijk en verantwoordbaar. Elke loonbeslissing met Youbo is overwogen, onderbouwd én traceerbaar. Daardoor helpt Youbo je om te beantwoorden aan de Europese loontransparantierichtlijn en bij rapportering en audits.
           </p>
         </div>
       </div>
@@ -3020,16 +3535,16 @@ tailwind.config = {
       <div class="border-b border-line">
         <h3 class="m-0">
           <button type="button" @click="open = open === 4 ? null : 4" :aria-expanded="open === 4 ? 'true' : 'false'"
-                  aria-controls="faq-4" data-cta="faq-landen"
+                  aria-controls="faq-4" data-cta="faq-ik-gebruik-sap-successfactors-of"
                   class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
                   style="transition: color var(--m-base) var(--e-standard)">
-            <span>Is Youbo geschikt voor meerdere landen en niveaus?</span>
+            <span>Ik gebruik SAP SuccessFactors of Workday al. Wat voegt Youbo toe?</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 4 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
           </button>
         </h3>
         <div id="faq-4" x-show="open === 4" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo inzetten in verschillende landen.
+            Youbo sluit aan op je bestaande hr-tools, zoals SAP SuccessFactors of Workday. Die ondersteunen ook compensatiemanagement, maar Youbo is er specifiek voor ontwikkeld. Daardoor kun je je beloningsproces flexibeler inrichten en vlotter beheren. Youbo gebruikt de data uit je bestaande systemen en connecteert vlot met elke tool in je hr-landschap.
           </p>
         </div>
       </div>
@@ -3037,16 +3552,16 @@ tailwind.config = {
       <div>
         <h3 class="m-0">
           <button type="button" @click="open = open === 5 ? null : 5" :aria-expanded="open === 5 ? 'true' : 'false'"
-                  aria-controls="faq-5" data-cta="faq-compliance"
+                  aria-controls="faq-5" data-cta="faq-wat-kost-youbo"
                   class="w-full flex items-start justify-between gap-6 py-5 text-left text-h3 font-bold text-ink hover:text-brand-ink min-h-[48px]"
                   style="transition: color var(--m-base) var(--e-standard)">
-            <span>Hoe helpt Youbo met compliance?</span>
+            <span>Wat kost Youbo?</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 mt-1 h-5 w-5" style="transition: transform var(--m-base) var(--e-standard)" :class="open === 5 && 'rotate-45'" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
           </button>
         </h3>
         <div id="faq-5" x-show="open === 5" x-collapse>
           <p class="pb-6 pr-6 text-body text-ink-soft">
-            Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing onderbouwd en traceerbaar.
+            De prijs hangt af van de omvang van je organisatie en de gewenste ondersteuning. Je betaalt een eenmalige opstartkost en een jaarlijkse licentie. Tijdens de demo bespreken we je behoeften en maken we een voorstel op maat.
           </p>
         </div>
       </div>
@@ -3214,7 +3729,7 @@ tailwind.config = {
         <div class="mt-6 flex items-start gap-3">
           <input id="newsletter" name="newsletter" type="checkbox" value="ja"
                  class="mt-1 h-5 w-5 shrink-0 rounded-sm border border-line-btn accent-brand">
-          <label for="newsletter" class="text-caption text-ink-soft" data-inhoud="formulier.nieuwsbrief">Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.</label>
+          <label for="newsletter" class="text-[13px] leading-[1.4] text-ink-soft" data-inhoud="formulier.nieuwsbrief">Schrijf me in op de nieuwsbrief. Ongeveer 1x kwartaal sturen we je rewardnieuws.</label>
         </div>
 
         <!-- DE VAL VOOR BOTS. Geen display:none, geen label, aria-hidden en
@@ -3245,7 +3760,7 @@ tailwind.config = {
         <p data-formulier-melding hidden role="alert"
            class="mt-4 text-caption text-ink">Je aanvraag is niet verstuurd. Probeer het nog een keer — lukt het dan nog niet, mail Nick dan rechtstreeks; zijn adres staat onder dit formulier.</p>
 
-        <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo" data-inhoud="formulier.verzendknop">Vraag je demo aan</button>
+        <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo" data-inhoud="formulier.verzendknop">Boek je demo</button>
 
         <!-- GEEN VELD, MET OPZET. Deze regel en de cookiebalk onderaan zijn de
              enige juridische tekst op de pagina, en ze staan daarom NIET in
@@ -3254,7 +3769,14 @@ tailwind.config = {
              aansprakelijkheid en geen gemak; dit hoort langs Sven en de klant te
              gaan en niet langs een invulveld. Beslissing van 2026-10-09; tot dan
              waren het zeven velden. -->
-        <p class="mt-4 text-caption text-ink-soft">
+        <!-- 12px, en dat is bewust de ondergrens. Jana, opmerking 55: de
+             nieuwsbriefregel "mag aanzienlijk kleiner dan de rest van het
+             formulier", en opmerking 67: de privacyregel "mag ook in heel kleine
+             lettertjes". Die twee zijn hier 13px en 12px geworden, tegen 17px voor
+             de velden zelf. Kleiner dan 12px gaan we niet: dit is de regel die
+             zegt wat er met iemands gegevens gebeurt, en die onleesbaar maken is
+             precies wat de wet "duidelijke en eenvoudige taal" noemt en niet is. -->
+        <p class="mt-4 text-[12px] leading-[1.45] text-ink-soft">
           <span>We gebruiken je gegevens enkel om je demo-aanvraag op te volgen. Lees hoe we daarmee omgaan in de</span>
           <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener"
           class="text-link-licht underline underline-offset-4 hover:text-link-hover"
@@ -3533,10 +4055,10 @@ tailwind.config = {
        role="region" aria-label="Cookies">
     <div class="max-w-shell mx-auto px-4 md:px-6 py-1 flex items-center gap-3">
       <p class="flex-1 min-w-0 m-0 text-[13px] leading-[1.35] text-ink-soft">
-        <span>We plaatsen</span> <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
+        <span>We gebruiken</span> <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
            class="text-link-licht underline underline-offset-2 hover:text-link-hover"
            style="transition: color var(--m-base) var(--e-standard)"
-           data-cta="cookiebalk-beleid">meet- en advertentiecookies</a><span class="hidden sm:inline"> <span>om te zien hoe deze pagina gebruikt wordt en hoe onze LinkedIn-campagne presteert</span></span>.
+           data-cta="cookiebalk-beleid">cookies</a> <span>om het bezoek aan deze pagina te meten en de pagina te verbeteren</span>.
       </p>
       <div class="flex items-center gap-2 shrink-0">
         <button type="button" @click="$store.toestemming.zet('geweigerd')"
@@ -3557,11 +4079,20 @@ tailwind.config = {
            en de zin beginnen dus pas op sm, en daaronder is de knop zelf de hele
            balk — op telefoon is dit het waardevolste element van de pagina en
            een knop over de volle breedte is daar het makkelijkst te raken. -->
+      <!-- NICKS FOTO STAAT HIER SINDS 2026-10-21, op vraag van Jana (opmerking 46):
+           "Foto van Nick erbij in deze balk, zoals bij Deel?" Het woordmerk blijft
+           ernaast staan — zij vroeg erbij en niet in de plaats van.
+           36 beeldpunten, dus de balk wordt er niet hoger van: hij was al 56 à 64px
+           en de foto past binnen die hoogte. Hetzelfde bestand als in de hero, om
+           dezelfde reden: het staat dan al in de cache. -->
       <div class="hidden sm:flex items-center gap-3 min-w-0">
+        <img src="assets/img/nick-portret.webp" width="900" height="1140" loading="lazy" decoding="async"
+             alt="" aria-hidden="true"
+             class="h-9 w-9 shrink-0 rounded-[50%] object-cover object-[52%_0%] bg-surface">
         <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-6 w-auto">
-        <p class="text-caption text-ink-soft m-0" data-inhoud="band.regel">Nick toont je Youbo op jouw eigen looncyclus</p>
+        <p class="text-caption text-ink-soft m-0" data-inhoud="band.regel">Nick toont je Youbo voor jouw looncyclus</p>
       </div>
-      <a href="#demo" class="btn-primary w-full sm:w-auto shrink-0 px-5 py-2 min-h-[44px] text-caption" data-cta="vaste-band-demo" data-inhoud="band.knop">Boek een demo</a>
+      <a href="#demo" class="btn-primary w-full sm:w-auto shrink-0 px-5 py-2 min-h-[44px] text-caption" data-cta="vaste-band-demo" data-inhoud="band.knop">Spreek met een expert</a>
     </div>
   </div>
 </div>
@@ -3592,6 +4123,82 @@ tailwind.config = {
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
 
     doelen.forEach(function (el) { kijker.observe(el); });
+  })();
+
+  /* -------------------------------------------------------------------------
+     DE OPTELLER BIJ HET GROTE CIJFER — blok 6
+     ---------------------------------------------------------------------------
+     Jana, opmerking 42: "kan dit nog iets beter worden vormgegeven? bvb door die
+     19.000 en 21 er wat te laten uitspringen? in een van de eerdere voorstellen
+     zat een goed voorbeeld", en in haar mail erbij: "die teller bij die 19.000
+     en 21 landen in een van de eerdere versies vond ik sterk, met name in ronde
+     2 LICHT". Dat is draft-r2-04-huisstijl-licht: van de zes ontwerpen van ronde
+     2 zijn er maar twee met een opteller, en dat is de lichte van de twee.
+     Dezelfde duur (1400ms) en dezelfde demping als daar.
+
+     HET DOELGETAL STAAT NERGENS IN DE CODE, en dat is het enige wat hier anders
+     is dan in dat ontwerp. Daar stond data-count-to="19000" naast de tekst
+     19.000 — twee plaatsen die hetzelfde getal moeten zeggen. Het getal komt
+     bij ons uit content/pagina.yml en Jana mag het in /beheer/ wijzigen; met een
+     tweede exemplaar in een attribuut zou de teller na zo'n wijziging naar het
+     oude getal lopen en op het nieuwe eindigen. Daarom leest hij het doel uit
+     de tekst die er al staat. Eén bron, geen stille leugen.
+
+     De scheidingstekens worden teruggezet zoals de bezoeker ze kent: 19.000 met
+     een punt, want nl-BE. Een teller die 19000 toont en pas op het eind een punt
+     krijgt, springt in de laatste beeldjes van breedte.
+
+     Bij prefers-reduced-motion gebeurt er niets: het getal staat er al goed, en
+     dat is meteen de eindstand.
+     ------------------------------------------------------------------------- */
+  (function () {
+    var doelen = document.querySelectorAll('[data-telop]');
+    if (!doelen.length) { return; }
+
+    var stil = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (stil || !('IntersectionObserver' in window) || !window.requestAnimationFrame) { return; }
+
+    var nf;
+    try { nf = new Intl.NumberFormat('nl-BE'); } catch (e) { return; }
+
+    var duur = parseFloat(getComputedStyle(document.documentElement)
+      .getPropertyValue('--m-telop')) || 1400;
+
+    function telOp(el) {
+      var tekst = String(el.textContent || '');
+      /* Het getal staat op een gekleurd vlak, en dat vlak groeit mee met het
+         aantal cijfers: 0 → 7 → 1.284 → 19.000 zou vier keer van breedte
+         springen. Daarom wordt de breedte van de eindstand hier bevroren vóór
+         er geteld wordt. Niet met een getal in de code — dat zou hetzelfde
+         dubbel-opschrijven zijn dat de teller zelf juist vermijdt — maar met
+         wat de browser nu meet. */
+      el.style.minWidth = el.getBoundingClientRect().width + 'px';
+      var doel = parseInt(tekst.replace(/[^0-9]/g, ''), 10);
+      /* Geen getal, of een getal dat de bezoeker niet ziet oplopen omdat het te
+         klein is: laat staan wat er staat. Bij 21 is de sprong nog zichtbaar,
+         bij 3 niet meer. */
+      if (!isFinite(doel) || doel < 10) { return; }
+      var begin = null;
+      function beeldje(t) {
+        if (begin === null) { begin = t; }
+        var p = Math.min(1, (t - begin) / duur);
+        var gedempt = 1 - Math.pow(1 - p, 3);
+        el.textContent = nf.format(Math.round(doel * gedempt));
+        if (p < 1) { requestAnimationFrame(beeldje); }
+        else { el.textContent = tekst; }   /* exact terug naar wat de bouw schreef */
+      }
+      requestAnimationFrame(beeldje);
+    }
+
+    var kijker = new IntersectionObserver(function (waarnemingen) {
+      waarnemingen.forEach(function (w) {
+        if (!w.isIntersecting) { return; }
+        kijker.unobserve(w.target);
+        telOp(w.target);
+      });
+    }, { threshold: 0.6 });
+
+    [].forEach.call(doelen, function (el) { kijker.observe(el); });
   })();
 
   /* -------------------------------------------------------------------------
@@ -4883,18 +5490,18 @@ tailwind.config = {
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Hoe lang duurt het om Youbo op te zetten?",
+      "name": "Hoe verloopt de opstart van Youbo?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Van het eerste contact tot de eerste looncyclus duurt het gemiddeld drie maanden. De precieze doorlooptijd hangt af van je organisatie, je beschikbare loondata en je loonbeleid. Een developer begeleidt de inrichting, daarna werk je zelfstandig verder."
+        "text": "Samen met een vaste contactpersoon stemmen we Youbo af op je loonbeleid, laden we je data in en leiden we je managers op. Tussen het eerste contact tot de eerste beloningsronde verloopt er gemiddeld 10 tot 12 weken, afhankelijk van de omvang van je organisatie en de complexiteit van je loonbeleid. Daarna kun je zelfstandig aan de slag. Je kan de configuratie aanpassen wanneer je loonbeleid verandert. Je vaste contactpersoon blijft beschikbaar voor ondersteuning. Tijdens de demo krijg je een concreet zicht op de timing voor jouw organisatie."
       }
     },
     {
       "@type": "Question",
-      "name": "Vanaf hoeveel medewerkers is Youbo relevant?",
+      "name": "Is Youbo geschikt voor meerdere hiërarchische niveaus of meerdere landen?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Youbo wordt gebruikt door bedrijven vanaf 50 medewerkers. Het grootste rendement ontstaat doorgaans vanaf 300 medewerkers, of zodra het Excelproces complex en persoonsafhankelijk wordt."
+        "text": "Ja. Het budget kan fijnmazig worden opgesplitst over zoveel niveaus als gewenst. De tool is inzetbaar in meerdere landen, werkt met verschillende munteenheden en is beschikbaar in de meest courante talen."
       }
     },
     {
@@ -4902,23 +5509,31 @@ tailwind.config = {
       "name": "Past Youbo zich aan onze manier van werken aan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja. Je loonbeleid, organisatiestructuur, goedkeuringsflows en marges vormen het uitgangspunt. Youbo neemt ook complexe regels en formules over."
+        "text": "Youbo past zich aan jouw organisatie aan, niet andersom. Youbo neemt complexe regels en formules van jullie loonbeleid over. We vertrekken vanuit de vraag: hoe wil jullie organisatie haar loonbeleid uitvoeren? Vervolgens modelleren we de software volgens die behoefte. Jullie organisatiestructuur, loonregels, goedkeuringsflows en gewenste verantwoordelijkheden zijn het uitgangspunt. Mogen budgetten worden overschreden? Is het budget fixed of een percentage van de loonmassa? In welke mate kan een manager afwijken? Welke data kunnen de managers zien? Jij kiest, Youbo voert uit."
       }
     },
     {
       "@type": "Question",
-      "name": "Is Youbo geschikt voor meerdere landen en niveaus?",
+      "name": "Hoe helpt Youbo met compliance en de regels rond loontransparantie?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja. Je kunt budgetten fijnmazig verdelen over meerdere hiërarchische niveaus en Youbo inzetten in verschillende landen."
+        "text": "Youbo past de regels consequent toe, bewaakt afwijkingen en maakt verschillen inzichtelijk en verantwoordbaar. Elke loonbeslissing met Youbo is overwogen, onderbouwd én traceerbaar. Daardoor helpt Youbo je om te beantwoorden aan de Europese loontransparantierichtlijn en bij rapportering en audits."
       }
     },
     {
       "@type": "Question",
-      "name": "Hoe helpt Youbo met compliance?",
+      "name": "Ik gebruik SAP SuccessFactors of Workday al. Wat voegt Youbo toe?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Youbo past regels consequent toe, bewaakt afwijkingen en maakt elke loonbeslissing onderbouwd en traceerbaar."
+        "text": "Youbo sluit aan op je bestaande hr-tools, zoals SAP SuccessFactors of Workday. Die ondersteunen ook compensatiemanagement, maar Youbo is er specifiek voor ontwikkeld. Daardoor kun je je beloningsproces flexibeler inrichten en vlotter beheren. Youbo gebruikt de data uit je bestaande systemen en connecteert vlot met elke tool in je hr-landschap."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Wat kost Youbo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "De prijs hangt af van de omvang van je organisatie en de gewenste ondersteuning. Je betaalt een eenmalige opstartkost en een jaarlijkse licentie. Tijdens de demo bespreken we je behoeften en maken we een voorstel op maat."
       }
     }
   ]
