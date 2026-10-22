@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<!--
+CONCEPT: tien manieren om de pagina te laten zien in plaats van te vertellen. Dit is een
+voorstel naar aanleiding van Jana's briefing: "het zijn vrijwel uitsluitend schermen
+momenteel. Graag meer variatie met andere manieren van visualiseren, bijvoorbeeld:
+elementen uitgelicht, icoontjes (van taken, mensen,…)". En: "Show, don't tell is altijd
+key. Wat je laat zien, moet in een oogopslag begrijpelijk zijn. Zo min mogelijk tekst."
+
+DEZE PAGINA GAAT NIET LIVE. Ze raakt draft-r3-01-definitief.html niet aan en ze raakt
+content/ niet aan. Het is een keuzemenu: tien losse mechanismen, elk werkend getekend,
+elk met wat het vervangt en wat het kost.
+
+WAAROM HAAR KRITIEK KLOPT, GEMETEN. De pagina draagt achttien beelden. Tien daarvan zijn
+een nagetekend productscherm, en die tien dragen alle tien exact dezelfde titelbalk: het
+favicon, een kleine kop, soms een label rechts (tien keer .panel-bar, tien keer
+.miniheader — geteld in het bestand). Het is dus niet alleen "veel schermen", het is tien
+keer hetzelfde kader. Wie langs de pagina scrolt ziet tien keer dezelfde vorm met andere
+inhoud erin, en dat is precies de ervaring die zij beschrijft.
+
+WAT ER AL GOED IS EN HIER NIET IN ZIT. Twee beelden zijn net vernieuwd en staan er dus
+bewust niet tussen: de vijf casekaarten (de cijfers staan nu in vakjes met een icoon, een
+getal en een eenheid, met een stopwatch vóór de resultaatzin) en de quotecarrousel (alle
+vijf de portretten zijn echt en van de klant). Een voorstel dat die opnieuw omgooit kost
+geld en levert niets.
+
+DE REGEL VOOR DE CIJFERS. Elk getal hieronder telt op, en elke som is na te rekenen in de
+toelichting bij het voorstel zelf. FACTS.md: "Op marketing voor compensatiesoftware is
+een som die niet klopt het duurste detail dat bestaat." Op deze pagina is dat al een keer
+misgegaan — de opteller bij het grote cijfer zette 900ms lang 107 onjuiste zinnen op het
+grootste lettertype van de pagina en is daarom verwijderd. Voorstel 4 hieronder is het
+antwoord daarop: beweging die het getal nooit verandert.
+
+BEWEGING. Alles staat standaard in de EINDTOESTAND. Er is één klein script dat, en alleen
+als de bezoeker beweging niet heeft uitgezet, html de klasse "anim" geeft en de blokken
+pas laat spelen zodra ze in beeld komen. Zonder JavaScript: eindbeeld. Met
+prefers-reduced-motion: reduce: eindbeeld. Geen uitzonderingen, en dat is geen
+vriendelijkheid maar de enige manier waarop een bewegend beeld ook iets zegt als het
+stilstaat.
+
+BEELDEN. Alleen bestanden die al in assets/ staan: het woordmerk, het favicon en de vier
+anonieme stockportretten. Die vier dragen nergens een naam en nergens een functietitel —
+dat is de regel uit ASSET-MANIFEST.md en voorstel 10 houdt zich eraan.
+-->
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tien manieren om het te laten zien — voorstel | Youbo</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="pagina-soort" content="vergelijking">
+<meta name="description" content="Tien voorstellen om de beelden en de bewegingen van de Youbo-landingspagina te vervangen door iets dat in een oogopslag te begrijpen is: uitvergroten, voor en na, een tijdlijn, een getal dat zichzelf uitlegt, iconen die een proces vertellen.">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* De tokens uit DESIGN-youbo-io.md, letterlijk overgenomen uit visuals-voorstel.html.
+   Twee toevoegingen, elk met een contrastreden erbij — zie de toelichting in de stijl. */
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },
+        ink:     { DEFAULT: '#0a3327', soft: '#547068', inv: '#ffffff' },
+        paper:   '#ffffff',
+        surface: '#f6f8fa',
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },
+        forest:  '#154e3a',
+        /* Het rood van de pagina (#e5484d) haalt 3,91:1 op wit: genoeg voor een vlak en
+           voor grote tekst, te weinig voor een label op captionformaat. Daarvoor staat
+           hier één donkerder trap: #b42318 haalt 6,58:1 op wit en 6,18:1 op #f6f8fa. */
+        alarm:   { DEFAULT: '#e5484d', ink: '#b42318' },
+      },
+      fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    :root {
+      --m-fast: 150ms; --m-base: 200ms; --m-medium: 300ms; --m-slow: 350ms;
+      --e-standard: ease-in-out; --e-decelerate: ease-out;
+      --e-accelerate: cubic-bezier(0, 1, 0.3, 1);
+      /* #00acd6 haalt 2,67:1 op wit, en een bedieningselement moet 3:1 halen. Deze
+         pagina is licht, dus staat hier de donkerder trap #00718c (5,61:1). */
+      --c-focus: #00718c;
+      --inv-soft: rgba(255,255,255,.72);
+      --inv-line: rgba(255,255,255,.16);
+      --inv-fill: rgba(255,255,255,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body { @apply font-sans text-body font-medium text-ink bg-paper antialiased; }
+    h1, h2, h3 { @apply font-sans font-bold text-ink; text-wrap: balance;
+                 hyphens: auto; overflow-wrap: break-word; }
+    p { text-wrap: pretty; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
+    .tabular { font-variant-numeric: tabular-nums; }
+  }
+
+  @layer components {
+    .band-pad { @apply py-12 md:py-20; }
+    .shell    { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+
+    .card { @apply rounded-sm bg-paper shadow-card; }
+    .on-dark      { color: #ffffff; }
+    .on-dark-soft { color: var(--inv-soft); }
+
+    .band { @apply relative isolate overflow-hidden; background-color: #000000;
+            --c-focus: #00acd6; }
+    .band > * { position: relative; z-index: 1; }
+    .band::before { content: ""; position: absolute; inset: 0; z-index: 0; }
+    .band-gradient::before {
+      --band: 400px; --foot: 160px;
+      background-image: linear-gradient(to top,
+        #000000 0, #06241a calc(var(--foot) * 0.37), #0e3a29 calc(var(--foot) * 0.69),
+        #154e3a var(--foot), #12452f calc(var(--foot) + var(--band) * 0.20),
+        #0c3323 calc(var(--foot) + var(--band) * 0.425),
+        #051c13 calc(var(--foot) + var(--band) * 0.70),
+        #000000 calc(var(--foot) + var(--band)));
+      background-image: linear-gradient(to top in oklab,
+        #000000 0, #06241a calc(var(--foot) * 0.37), #0e3a29 calc(var(--foot) * 0.69),
+        #154e3a var(--foot), #12452f calc(var(--foot) + var(--band) * 0.20),
+        #0c3323 calc(var(--foot) + var(--band) * 0.425),
+        #051c13 calc(var(--foot) + var(--band) * 0.70),
+        #000000 calc(var(--foot) + var(--band)));
+    }
+    @media (max-width: 640px) { .band-gradient::before { --band: 300px; --foot: 120px; } }
+
+    /* Het paneel van de pagina zelf. Het staat hier één keer, in de inventaris, zodat
+       zichtbaar is wat tien keer herhaald wordt. */
+    .panel { @apply rounded-md bg-paper shadow-panel overflow-hidden; --c-focus: #00718c; }
+    .panel-bar { @apply flex items-center gap-2 border-b border-line px-5 py-3; }
+    .miniheader { @apply text-caption font-bold text-ink; }
+  }
+</style>
+<style>
+/* ===========================================================================
+   DE OPMAAK VAN DIT VOORSTEL — koppen, sprongen, de uitlegblokken en het podium
+   waarin elk ontwerp staat. Daarna, per voorstel, de stijl van dat ene ontwerp.
+   =========================================================================== */
+
+/* De sprongknoppen bovenaan, overgenomen uit integratie-varianten.html. */
+.sprong { display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+          padding: 0 16px; border: 1px solid #9dbcc2; border-radius: 8px;
+          font-size: 15px; font-weight: 500; color: #0a3327; text-decoration: none;
+          background: #ffffff;
+          transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out; }
+.sprong:hover { background: #f6f8fa; border-color: #0a3327; }
+.sprong b { font-weight: 700; color: #154e3a; }
+
+/* Het podium: het vlak waarin een ontwerp staat. Gebroken wit, want bijna elk
+   ontwerp draagt een schaduw en die ziet niemand op wit. */
+.podium { margin-top: 32px; border: 1px solid #e1ebf0; border-radius: 12px;
+          background: #f6f8fa; padding: 24px; container-type: inline-size; }
+@media (min-width: 768px) { .podium { padding: 40px; } }
+.podium-naam { margin: 0 0 24px; font-size: 13px; line-height: 1.3; font-weight: 700;
+               letter-spacing: 0.08em; text-transform: uppercase; color: #547068; }
+.podium-wit { background: #ffffff; }
+
+/* De drie uitlegvelden boven elk ontwerp en de twee eronder. */
+.uitleg { display: grid; gap: 20px; margin: 20px 0 0; }
+@media (min-width: 768px) { .uitleg { grid-template-columns: repeat(3, 1fr); } }
+.uitleg-2 { display: grid; gap: 20px; margin: 32px 0 0; }
+@media (min-width: 768px) { .uitleg-2 { grid-template-columns: repeat(2, 1fr); } }
+.uitleg dt { font-size: 15px; line-height: 1.5; font-weight: 700; color: #0a3327; }
+.uitleg dd { margin: 4px 0 0; font-size: 15px; line-height: 1.5; color: #547068; }
+.uitleg-2 dt { font-size: 15px; line-height: 1.5; font-weight: 700; color: #0a3327; }
+.uitleg-2 dd { margin: 4px 0 0; font-size: 15px; line-height: 1.5; color: #547068; }
+
+/* De zin die zegt wat het beeld in één oogopslag zegt. Hij staat vóór het ontwerp
+   en is het enige dat op deze pagina groot gezet is. */
+.oogopslag { margin: 24px 0 0; padding-left: 16px; border-left: 3px solid #0af29f;
+             font-size: 20px; line-height: 1.5; font-weight: 700; color: #0a3327;
+             max-width: 46rem; }
+
+/* De inventaristabel, als kaarten — een echte tabel schuift op 320px zijwaarts. */
+.inv { display: grid; gap: 12px; margin: 32px 0 0; padding: 0; list-style: none; }
+@media (min-width: 768px) { .inv { grid-template-columns: repeat(2, 1fr); } }
+.inv-rij { display: grid; gap: 4px 12px; grid-template-columns: 1fr auto;
+           border: 1px solid #e1ebf0; border-radius: 8px; background: #ffffff;
+           padding: 16px; }
+.inv-naam { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 700; color: #0a3327; }
+.inv-zegt { margin: 0; grid-column: 1 / -1; font-size: 15px; line-height: 1.5; color: #547068; }
+.inv-soort { align-self: start; justify-self: end; white-space: nowrap;
+             border-radius: 9999px; padding: 2px 10px; font-size: 13px; line-height: 1.5;
+             font-weight: 700; }
+.inv-scherm { background: #0a3327; color: #ffffff; }
+.inv-anders { background: #0af29f; color: #154e3a; }
+.inv-beweging { background: #ffffff; color: #154e3a; border: 1px solid #9dbcc2; }
+
+/* ===========================================================================
+   1 · UITVERGROTEN — één loonregel in plaats van een heel scherm.
+   De som: 3.813,36 + 84,28 + 155,91 = 4.053,55. Het verschil is 240,19, en dat
+   is 6,2987% van 3.813,36 — afgerond 6,30%. De index is 84,28 / 3.813,36 =
+   2,2102%, afgerond 2,21%, precies het percentage dat op de pagina staat.
+   De twee segmenten van de balk zijn hun aandeel in dat verschil:
+   84,28 / 240,19 = 35,09% en 155,91 / 240,19 = 64,91%. Samen 100,00%.
+   =========================================================================== */
+.lens { max-width: 640px; }
+.lens-oud { display: block; font-size: 17px; line-height: 1.5; color: #547068;
+            text-decoration: line-through; text-decoration-thickness: 1px; }
+.lens-nieuw { display: block; margin-top: 4px; font-weight: 700; color: #0a3327;
+              font-size: clamp(30px, 11cqw, 64px); line-height: 1.1;
+              font-variant-numeric: tabular-nums; }
+.lens-plus { display: block; margin-top: 8px; font-size: 20px; line-height: 1.5;
+             font-weight: 700; color: #154e3a; font-variant-numeric: tabular-nums; }
+.lens-balk { display: flex; margin-top: 24px; height: 16px; border-radius: 8px;
+             overflow: hidden; background: #e1ebf0; }
+.lens-deel { height: 100%; transform-origin: left center; }
+.lens-index { width: 35.09%; background: #9dbcc2; }
+.lens-merit { width: 64.91%; background: #0af29f; }
+.lens-sleutel { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; }
+@media (min-width: 480px) { .lens-sleutel { grid-template-columns: repeat(2, 1fr); } }
+.lens-sleutel > div { display: flex; align-items: baseline; gap: 8px; }
+.lens-stip { width: 12px; height: 12px; flex: none; border-radius: 3px;
+             transform: translateY(1px); }
+.lens-naam { font-size: 15px; line-height: 1.5; color: #547068; }
+/* margin: 0 staat hier en NIET als Tailwind-klasse m-0 in de HTML: die klasse
+   komt later in de cascade en zette margin-left: auto weer op 0, waardoor het
+   bedrag tegen het label bleef plakken in plaats van rechts uit te lijnen. */
+.lens-getal { margin: 0 0 0 auto; font-size: 15px; line-height: 1.5; font-weight: 700;
+              color: #0a3327; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* De beweging: de twee segmenten groeien na elkaar aan. Het BEDRAG beweegt
+   niet — het staat er vanaf het eerste frame compleet. Dat is de les van de
+   verwijderde opteller: een tussenstand bij een definitieve eenheid is een
+   bewering die niet klopt. */
+html.anim [data-speel]:not(.is-in) .lens-deel { transform: scaleX(0); }
+html.anim [data-speel].is-in .lens-index {
+  animation: lensgroei var(--m-slow) var(--e-decelerate) 120ms both; }
+html.anim [data-speel].is-in .lens-merit {
+  animation: lensgroei var(--m-slow) var(--e-decelerate) 400ms both; }
+@keyframes lensgroei { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ===========================================================================
+   2 · VOOR EN NA — de winst als twee lengtes naast elkaar.
+   De twee cijfers zijn niet verzonnen: het zijn de resultaatzinnen die de
+   casekaarten zelf dragen, en die staan in de case-pdf's van Jana.
+     · SD Worx: "Van 2 maanden naar 3 weken". 2 maanden = 2 × 365 / 12 / 7 =
+       8,69 weken. 3 / 8,69 = 34,5%, dus de onderste balk is 34,5% van de
+       bovenste. Op de balk staat wat de pdf zegt — maanden en weken — niet de
+       omrekening.
+     · DPG Media: "7× sneller bestanden klaar". 1 / 7 = 14,3%.
+   Elke rij heeft haar eigen eenheid, dus elke "voor"-balk is vol. Dat is de
+   gewone voor-en-na-vorm; de vergelijking loopt binnen een rij, niet ertussen.
+   =========================================================================== */
+.vn { display: grid; gap: 32px; margin: 0; }
+.vn-rij { margin: 0; }
+.vn-kop { margin: 0 0 16px; font-size: 15px; line-height: 1.5; font-weight: 700;
+          color: #0a3327; }
+.vn-bron { font-weight: 500; color: #547068; }
+.vn-spoor { display: grid; gap: 10px; margin: 0; }
+.vn-lijn { display: flex; align-items: center; gap: 12px; }
+.vn-label { flex: none; width: 46px; font-size: 13px; line-height: 1.5; font-weight: 700;
+            letter-spacing: 0.04em; text-transform: uppercase; color: #547068; }
+.vn-spoorvak { flex: 1 1 auto; min-width: 0; }
+.vn-balk { display: flex; align-items: center; justify-content: flex-end;
+           height: 40px; border-radius: 8px; padding: 0 12px;
+           font-size: 15px; line-height: 1.5; font-weight: 700;
+           font-variant-numeric: tabular-nums; white-space: nowrap; }
+.vn-voor { width: 100%; background: #e1ebf0; color: #0a3327; }
+.vn-na   { background: #0af29f; color: #154e3a; }
+.vn-na-sdworx { width: 34.5%; }
+.vn-na-dpg    { width: 14.3%; }
+/* Onder 480px is 14,3% van de kolom te smal voor "3 weken", dus staat het getal
+   dan naast de balk in plaats van erin. */
+.vn-buiten { display: none; margin-left: 12px; font-size: 15px; line-height: 1.5;
+             font-weight: 700; color: #154e3a; font-variant-numeric: tabular-nums;
+             white-space: nowrap; }
+@media (max-width: 560px) {
+  .vn-na { justify-content: flex-start; padding: 0; min-width: 8px; }
+  .vn-na > span { display: none; }
+  .vn-buiten { display: inline; }
+  .vn-spoorvak { display: flex; align-items: center; }
+}
+
+/* De beweging demonstreert de winst: de onderste balk begint op de volle lengte
+   van de bovenste en krimpt naar zijn eigen lengte. Wie beweging uitzet, ziet
+   meteen de korte balk — het eindbeeld, niet een uitgeklede versie. */
+html.anim [data-speel]:not(.is-in) .vn-na { width: 100%; }
+html.anim [data-speel].is-in .vn-na-sdworx {
+  animation: vnkrimp-sdworx 700ms var(--e-decelerate) 200ms both; }
+html.anim [data-speel].is-in .vn-na-dpg {
+  animation: vnkrimp-dpg 700ms var(--e-decelerate) 500ms both; }
+@keyframes vnkrimp-sdworx { from { width: 100%; } to { width: 34.5%; } }
+@keyframes vnkrimp-dpg    { from { width: 100%; } to { width: 14.3%; } }
+
+/* ===========================================================================
+   3 · DE KALENDER — de looncyclus als verloop over tijd.
+   De as loopt van 1 oktober 2026 tot 31 maart 2027. Die einddatum staat
+   letterlijk op het bestaande scherm van stap 3 ("Loopt tot 31 maart 2027").
+   Dagen vanaf 1 oktober: 1 okt = 0, 15 nov = 45, 15 jan = 106, 31 mrt = 181.
+   Dus 0%, 45/181 = 24,9%, 106/181 = 58,6% en 100%. De gevulde as stopt op 45%,
+   bij de managerstap, want dat is waar de cyclus staat: 38 van de 50 managers
+   klaar — hetzelfde cijfer als op het scherm dat dit vervangt.
+   Er staat met opzet GEEN "vandaag" op: dat is een bewering die binnen een week
+   niet meer klopt, en de pagina staat er langer dan een week.
+   =========================================================================== */
+.tl { margin: 0; }
+.tl-as { position: relative; }
+.tl-spoor { position: absolute; border-radius: 9999px; background: #e1ebf0; }
+.tl-vol   { position: absolute; border-radius: 9999px; background: #0af29f; }
+.tl-punten { display: grid; gap: 24px; margin: 0; padding: 0; list-style: none; }
+.tl-punt { position: relative; }
+.tl-schijf { display: grid; place-items: center; width: 44px; height: 44px; flex: none;
+             border-radius: 9999px; background: #ffffff; border: 2px solid #9dbcc2;
+             color: #154e3a; }
+.tl-klaar .tl-schijf { background: #0af29f; border-color: #0af29f; color: #154e3a; }
+.tl-schijf svg { width: 22px; height: 22px; }
+.tl-datum { display: block; font-size: 13px; line-height: 1.5; font-weight: 700;
+            letter-spacing: 0.04em; text-transform: uppercase; color: #547068; }
+.tl-naam { display: block; margin-top: 2px; font-size: 15px; line-height: 1.5;
+           font-weight: 700; color: #0a3327; }
+.tl-vink { display: inline-block; margin-top: 6px; border-radius: 9999px;
+           background: #0a3327; color: #ffffff; padding: 2px 10px;
+           font-size: 13px; line-height: 1.5; font-weight: 700;
+           font-variant-numeric: tabular-nums; }
+
+/* SMAL (tot 720px): een verticale lijn met de vier stappen eronder. Een
+   horizontale as met vier labels is op 320px onleesbaar, en een onleesbare as
+   is erger dan geen as. */
+.tl-punt { display: flex; gap: 16px; align-items: flex-start; }
+.tl-as { padding-left: 0; }
+.tl-spoor { left: 21px; top: 0; bottom: 0; width: 4px; }
+.tl-vol   { left: 21px; top: 0; height: 45%; width: 4px; }
+
+/* BREED (vanaf 720px): een horizontale as.
+   DE VIER LABELS STAAN NIET GECENTREERD ONDER HUN BOLLETJE, en dat is geen
+   slordigheid maar het enige dat past. Gecentreerd met een vaste breedte lopen
+   label 1 en 2 over elkaar — gemeten op 1280px: blok 1 besloeg 0 tot 236px en
+   blok 2 begon op 137px, zodat "Hr opent de cyclus" dwars door "Managers
+   beoordelen hun team" liep. Elk label begint daarom bij zijn eigen moment en
+   loopt tot het volgende; alleen het laatste lijnt rechts uit.
+
+   DE KOLOMBREEDTES ZIJN UITGEREKEND, niet geschat. De as springt aan beide
+   kanten 22px in (de helft van een bolletje van 44px), dus de échte asbreedte is
+   100% − 44px, en een moment op p procent staat op 22px + p × (100% − 44px):
+     moment 1    0%    → 22px              → kolom 1 is 24,9% − 11px breed
+     moment 2   24,9%  → 24,9% + 11,04px   → kolom 2 is 33,7% − 14,8px breed
+     moment 3   58,6%  → 58,6% −  3,78px   → kolom 3 is wat overblijft
+     moment 4  100%    → 100% − 22px       → kolom 4 is 23%, rechts uitgelijnd
+   Elk bolletje staat links in zijn kolom en valt daardoor precies op zijn
+   moment. Verandert er een datum, dan herreken je deze vier getallen; er is geen
+   manier om daaronderuit te komen, en daarom staat de som hier. */
+@media (min-width: 720px) {
+  .tl-as { height: 164px; }
+  .tl-spoor { left: 22px; right: 22px; top: 20px; bottom: auto; height: 4px; width: auto; }
+  .tl-vol   { left: 22px; top: 20px; height: 4px; width: calc(24.9% - 10.96px); }
+  .tl-punten { display: grid; gap: 0;
+               grid-template-columns: calc(24.9% - 11px) calc(33.7% - 14.8px) 1fr 23%; }
+  .tl-punt { display: block; padding-right: 16px; }
+  .tl-punt .tl-schijf { margin: 0 0 12px; }
+  .tl-p4 { padding-right: 0; text-align: right; }
+  .tl-p4 .tl-schijf { margin-left: auto; }
+}
+
+/* De beweging: de as groeit, daarna komen de vier stappen één voor één op. De
+   datums bewegen niet. */
+html.anim [data-speel]:not(.is-in) .tl-vol { transform: scale(0); }
+html.anim [data-speel]:not(.is-in) .tl-punt { opacity: 0; }
+html.anim [data-speel].is-in .tl-vol {
+  transform-origin: top left; animation: tlgroei 600ms var(--e-decelerate) both; }
+@media (min-width: 720px) {
+  html.anim [data-speel].is-in .tl-vol { transform-origin: left center; }
+}
+@keyframes tlgroei { from { transform: scale(0); } to { transform: scale(1); } }
+html.anim [data-speel].is-in .tl-punt {
+  animation: tlop var(--m-medium) var(--e-decelerate) both; }
+html.anim [data-speel].is-in .tl-p1 { animation-delay: 150ms; }
+html.anim [data-speel].is-in .tl-p2 { animation-delay: 300ms; }
+html.anim [data-speel].is-in .tl-p3 { animation-delay: 450ms; }
+html.anim [data-speel].is-in .tl-p4 { animation-delay: 600ms; }
+@keyframes tlop { from { opacity: 0; } to { opacity: 1; } }
+
+/* ===========================================================================
+   4 · HET GETAL DAT ZICHZELF UITLEGT.
+   19 blokjes van 10 bolletjes = 190 bolletjes. Eén bolletje is 100 medewerkers,
+   dus één blokje is 1.000 en het hele veld is 19.000. Na te tellen: zet 19 maal
+   10 maal 100 en je hebt het cijfer dat in de zin staat.
+   Daarnaast 21 landmarkeringen, één per land. Ook die zijn te tellen.
+   De bolletjes zijn met één radial-gradient per blokje geschilderd in plaats van
+   met 190 elementen: dezelfde tekening, 190 DOM-knopen minder.
+   Raster: bolletje 8px, steek 12px, dus een blokje is 5 × 12 = 60 breed en
+   2 × 12 = 24 hoog.
+
+   DIT IS HET ANTWOORD OP DE VERWIJDERDE OPTELLER. De beweging raakt het getal
+   niet aan: "19.000" en "21" staan er vanaf het eerste frame compleet en
+   onveranderd, en alleen de bolletjes komen op. Er is dus geen enkel moment
+   waarop er een onjuist cijfer op de pagina staat — en dat was de hele reden
+   waarom het optellen eruit moest.
+   =========================================================================== */
+.getal { display: grid; gap: 32px; margin: 0; }
+@media (min-width: 860px) { .getal { grid-template-columns: 1.4fr 1fr; gap: 40px; } }
+.getal-zin { margin: 0; font-size: clamp(22px, 4cqw, 36px); line-height: 1.2;
+             font-weight: 700; color: #0a3327; max-width: 26ch; }
+.getal-uit { color: #154e3a; font-variant-numeric: tabular-nums; }
+.getal-leg { margin: 12px 0 0; font-size: 13px; line-height: 1.5; font-weight: 700;
+             letter-spacing: 0.04em; text-transform: uppercase; color: #547068; }
+.getal-veld { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0 0; padding: 0;
+              list-style: none; }
+.getal-blok { width: 60px; height: 24px; flex: none;
+              background-image: radial-gradient(#154e3a 0 3.6px, transparent 4px);
+              background-size: 12px 12px; }
+.getal-landen { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; padding: 0;
+                list-style: none; }
+.getal-land { width: 14px; height: 14px; flex: none; border-radius: 4px;
+              background: #0af29f; border: 1px solid #154e3a; }
+
+html.anim [data-speel]:not(.is-in) .getal-blok,
+html.anim [data-speel]:not(.is-in) .getal-land { opacity: 0; }
+html.anim [data-speel].is-in .getal-blok {
+  animation: getalop 240ms var(--e-decelerate) both;
+  animation-delay: calc(var(--i) * 40ms); }
+html.anim [data-speel].is-in .getal-land {
+  animation: getalop 200ms var(--e-decelerate) both;
+  animation-delay: calc(820ms + var(--i) * 26ms); }
+@keyframes getalop { from { opacity: 0; } to { opacity: 1; } }
+
+/* ===========================================================================
+   5 · DE KETEN — drie iconen die een proces vertellen.
+   De drie stations zijn exact de goedkeuringsflow die nu als drie pilletjes
+   onder het paneel van kernblok 4 staat: Manager → Hr → Finance. Hier reist het
+   voorstel er zelf langs en zet elk station een vinkje.
+   Er staat geen enkel cijfer in, en dat is opzettelijk: het antwoord van dat
+   blok is "zoals jullie het willen", en een bedrag zou dat tegenspreken.
+   De lus duurt 9 seconden. Eindtoestand = het voorstel bij Finance, drie
+   vinkjes, en het label "goedgekeurd".
+   =========================================================================== */
+/* Op 1024px stonden de drie stations met space-between zo ver uit elkaar dat de
+   keten als een lege lijn las. 520px is de breedte waarop de drie schijven en
+   hun namen een groep blijven. */
+.kt { margin: 0; max-width: 520px; }
+.kt-rail { position: relative; display: flex; justify-content: space-between;
+           align-items: flex-start; padding-top: 56px; }
+.kt-spoor { position: absolute; left: 28px; right: 28px; top: 84px; height: 3px;
+            border-radius: 9999px; background: #d9efe4; }
+.kt-station { position: relative; z-index: 1; width: 76px; text-align: center; }
+.kt-schijf { position: relative; display: grid; place-items: center; width: 56px;
+             height: 56px; margin: 0 auto; border-radius: 9999px; background: #ffffff;
+             border: 2px solid #9dbcc2; color: #154e3a; }
+.kt-schijf svg { width: 26px; height: 26px; }
+.kt-naam { display: block; margin-top: 10px; font-size: 13px; line-height: 1.4;
+           font-weight: 700; color: #0a3327; }
+.kt-vink { position: absolute; right: -4px; bottom: -4px; display: grid;
+           place-items: center; width: 22px; height: 22px; border-radius: 9999px;
+           background: #0af29f; color: #154e3a; border: 2px solid #ffffff; }
+.kt-vink svg { width: 12px; height: 12px; }
+/* Het reizende voorstel. Het hangt op de hoogte van het spoor en schuift van het
+   midden van het eerste station naar het midden van het derde. */
+/* Het reizende voorstel ZWEEFT BOVEN de stations en staat er niet op. Het stond
+   eerst op dezelfde hoogte als de schijven en verdween dan achter de laatste --
+   je zag alleen nog een donker hoekje, gemeten op 1280px. Vandaar de 56px
+   kopruimte die .kt-rail bovenaan vrijhoudt. */
+.kt-doc { position: absolute; top: 0; left: calc(100% - 28px);
+          transform: translateX(-50%);
+          display: grid; place-items: center; width: 36px; height: 44px;
+          border-radius: 8px; background: #0a3327; color: #0af29f;
+          box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+.kt-doc svg { width: 20px; height: 20px; }
+.kt-klaar { margin: 24px 0 0; display: inline-flex; align-items: center; gap: 8px;
+            border-radius: 9999px; background: #0af29f; color: #154e3a;
+            padding: 6px 14px; font-size: 15px; line-height: 1.5; font-weight: 700; }
+@media (max-width: 400px) {
+  .kt-station { width: 68px; }
+  .kt-schijf { width: 48px; height: 48px; }
+  .kt-schijf svg { width: 22px; height: 22px; }
+  .kt-spoor { left: 24px; right: 24px; top: 80px; }
+  .kt-doc { left: calc(100% - 24px); width: 32px; }
+}
+
+html.anim [data-speel].is-in .kt-doc {
+  animation: ktreis 9s var(--e-standard) infinite both; }
+@keyframes ktreis {
+  0%,  8%  { left: 28px; opacity: 1; }
+  20%, 30% { left: 50%;  opacity: 1; }
+  42%, 92% { left: calc(100% - 28px); opacity: 1; }
+  96%,100% { left: 28px; opacity: 0; }
+}
+html.anim [data-speel]:not(.is-in) .kt-vink,
+html.anim [data-speel]:not(.is-in) .kt-klaar { opacity: 0; }
+/* Drie aparte keyframereeksen en GEEN negatieve animation-delay. Een negatieve
+   delay schuift een animatie naar VOREN in de tijd, dus daarmee zou het tweede
+   vinkje eerder komen dan het eerste; en een positieve delay verschuift bij een
+   oneindige lus ook het beginpunt, waardoor de vinkjes uit de pas gaan lopen met
+   het reizende voorstel. Alle vier de animaties starten dus gelijk en de timing
+   zit in de percentages, die één op één bij ktreis horen:
+   aankomst bij station 1 op 8%, bij 2 op 20%, bij 3 op 42%. */
+html.anim [data-speel].is-in .kt-v1 { animation: ktvink1 9s linear infinite both; }
+html.anim [data-speel].is-in .kt-v2 { animation: ktvink2 9s linear infinite both; }
+html.anim [data-speel].is-in .kt-v3 { animation: ktvink3 9s linear infinite both; }
+@keyframes ktvink1 {
+  0%, 8%    { opacity: 0; transform: scale(.4); }
+  13%, 92%  { opacity: 1; transform: scale(1); }
+  96%, 100% { opacity: 0; transform: scale(.4); }
+}
+@keyframes ktvink2 {
+  0%, 20%   { opacity: 0; transform: scale(.4); }
+  25%, 92%  { opacity: 1; transform: scale(1); }
+  96%, 100% { opacity: 0; transform: scale(.4); }
+}
+@keyframes ktvink3 {
+  0%, 42%   { opacity: 0; transform: scale(.4); }
+  47%, 92%  { opacity: 1; transform: scale(1); }
+  96%, 100% { opacity: 0; transform: scale(.4); }
+}
+html.anim [data-speel].is-in .kt-klaar { animation: ktklaar 9s linear infinite both; }
+@keyframes ktklaar {
+  0%, 52%   { opacity: 0; }
+  58%, 92%  { opacity: 1; }
+  96%, 100% { opacity: 0; }
+}
+
+/* ===========================================================================
+   6 · OVER DE LIJN — een beweging die demonstreert in plaats van versiert.
+   DE SOM, en die moet kloppen want dit is de kern van het product:
+     Sales       + € 38.400   loopt op naar  € 38.400
+     Operations  + € 29.700                  € 68.100
+     Finance     + € 22.900                  € 91.000
+     R&D         + € 30.032                  € 121.032
+   38.400 + 29.700 + 22.900 + 30.032 = 121.032. Het budget is € 100.000, dus
+   121.032 / 100.000 = 121,03% → 121%, en er gaat € 21.032 over. Dat zijn
+   exact de cijfers van de derde donut die dit vervangt (€ 121.032 van
+   € 100.000, 121%).
+   HET SPOOR IS € 125.000 BREED, niet € 100.000 — anders is er geen plaats om de
+   overschrijding te tékenen en gaat de balk uit zijn spoor. Daarom:
+     budgetlijn   100.000 / 125.000 = 80%
+     stand 1       38.400 / 125.000 = 30,72%   (inset rechts 69,28%)
+     stand 2       68.100 / 125.000 = 54,48%   (inset rechts 45,52%)
+     stand 3       91.000 / 125.000 = 72,80%   (inset rechts 27,20%)
+     stand 4      121.032 / 125.000 = 96,83%   (inset rechts  3,17%)
+   De vulling is mint tot 80% en rood daarna, dus de kleur kantelt precies op de
+   budgetlijn en niet een paar pixels ernaast.
+   =========================================================================== */
+.bg { margin: 0; }
+.bg-spoor { position: relative; height: 40px; border-radius: 8px; background: #e1ebf0;
+            margin-top: 8px; }
+.bg-vul { position: absolute; inset: 0; border-radius: 8px; overflow: hidden;
+          clip-path: inset(0 3.17% 0 0);
+          background-image: linear-gradient(to right,
+            #0af29f 0, #0af29f 80%, #e5484d 80%, #e5484d 96.83%, transparent 96.83%); }
+.bg-knip { position: absolute; top: 0; bottom: 0; width: 2px; background: #ffffff; }
+.bg-lijn { position: absolute; left: 80%; top: -10px; bottom: -10px; width: 2px;
+           background: #0a3327; }
+.bg-lijnnaam { position: absolute; left: 80%; top: calc(100% + 16px);
+               transform: translateX(-100%); padding-right: 8px; text-align: right;
+               font-size: 13px; line-height: 1.4; font-weight: 700; color: #0a3327;
+               font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bg-over { display: inline-flex; align-items: center; gap: 8px; margin: 56px 0 0;
+           border-radius: 9999px; background: #b42318; color: #ffffff;
+           padding: 6px 14px; font-size: 15px; line-height: 1.5; font-weight: 700;
+           font-variant-numeric: tabular-nums; }
+.bg-sleutel { display: grid; gap: 8px 20px; margin: 24px 0 0; padding: 0; list-style: none; }
+@media (min-width: 480px) { .bg-sleutel { grid-template-columns: repeat(2, 1fr); } }
+.bg-sleutel li { display: flex; align-items: baseline; gap: 8px;
+                 font-size: 13px; line-height: 1.5; color: #547068; }
+.bg-sleutel b { margin-left: auto; font-weight: 700; color: #0a3327;
+                font-variant-numeric: tabular-nums; }
+.bg-stip { width: 10px; height: 10px; flex: none; border-radius: 3px;
+           transform: translateY(1px); }
+
+/* De vier toekenningen landen één voor één, en de vierde duwt de balk over de
+   lijn. Dát is wat je moet zien: niet dat het budget 121% is, maar dat het
+   overlopen gebeurt waar je naar kijkt. De lus duurt 9 seconden.
+   Zonder beweging staat de eindstand er: 96,83% vol, rood voorbij de lijn, en
+   het label "€ 21.032 over budget". */
+html.anim [data-speel]:not(.is-in) .bg-vul { clip-path: inset(0 100% 0 0); }
+html.anim [data-speel]:not(.is-in) .bg-over { opacity: 0; }
+html.anim [data-speel].is-in .bg-vul { animation: bgvul 9s var(--e-standard) infinite both; }
+@keyframes bgvul {
+  0%,   6%  { clip-path: inset(0 100%   0 0); }
+  14%, 22%  { clip-path: inset(0 69.28% 0 0); }
+  30%, 38%  { clip-path: inset(0 45.52% 0 0); }
+  46%, 54%  { clip-path: inset(0 27.20% 0 0); }
+  62%, 92%  { clip-path: inset(0  3.17% 0 0); }
+  97%,100%  { clip-path: inset(0 100%   0 0); }
+}
+html.anim [data-speel].is-in .bg-over { animation: bgover 9s linear infinite both; }
+@keyframes bgover {
+  0%,  60%  { opacity: 0; }
+  66%, 92%  { opacity: 1; }
+  97%,100%  { opacity: 0; }
+}
+
+/* ===========================================================================
+   7 · DE AFSTAND — een loonkloof is een afstand, geen percentage.
+   DE CIJFERS, en ze zijn uitgerekend en niet geschat. Loonband 14 loopt hier van
+   € 3.300 tot € 4.700, dus 1.400 breed; de positie van een bedrag is
+   (bedrag − 3.300) / 14 procent.
+     mannen (9):   3.870 3.960 4.060 4.150 4.230 4.310 4.400 4.490 4.600
+                   som 38.070, gedeeld door 9 = € 4.230
+     vrouwen (7):  3.760 3.900 4.030 4.140 4.250 4.380 4.520
+                   som 28.980, gedeeld door 7 = € 4.140
+   Verschil 4.230 − 4.140 = € 90, en 90 / 4.230 = 2,128% → 2,1%. Dat is exact het
+   getal dat vandaag in het EU-paneel bij Sales staat (− 2,1%), dus het beeld
+   spreekt de pagina niet tegen; het tekent hetzelfde cijfer uit.
+   Elke punt is dus een echt bedrag dat meetelt in het gemiddelde eronder. Wie
+   natelt, komt uit op wat er staat — en dat is op deze pagina de regel.
+   =========================================================================== */
+.ab { margin: 0; }
+.ab-kop { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px;
+          margin: 0 0 8px; }
+.ab-waar { font-size: 15px; line-height: 1.5; font-weight: 700; color: #0a3327; }
+.ab-kloof { font-size: clamp(28px, 7cqw, 48px); line-height: 1.1; font-weight: 700;
+            color: #0a3327; font-variant-numeric: tabular-nums; }
+.ab-kloof span { color: #547068; font-size: 20px; font-weight: 700; }
+.ab-vlak { position: relative; height: 196px; margin-top: 24px; }
+.ab-strip { position: absolute; left: 0; right: 0; top: 94px; height: 8px;
+            border-radius: 9999px; background: #e1ebf0; }
+.ab-rand { position: absolute; top: 112px; font-size: 13px; line-height: 1.4;
+           color: #547068; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ab-rand-links { left: 0; }
+.ab-rand-rechts { right: 0; }
+.ab-rij { position: absolute; left: 0; right: 0; height: 14px; }
+.ab-rij-m { top: 34px; }
+.ab-rij-v { top: 148px; }
+.ab-punt { position: absolute; top: 0; width: 14px; height: 14px; border-radius: 9999px;
+           transform: translateX(-50%); }
+.ab-punt-m { background: #0a3327; }
+.ab-punt-v { background: #0af29f; border: 1px solid #154e3a; }
+/* De twee gemiddelden als verticale lijnen, en de afstand ertussen als een vlak.
+   Dat vlak IS de boodschap: het is zo breed als de kloof. */
+.ab-gem { position: absolute; width: 2px; }
+.ab-gem-m { top: 26px; height: 76px; background: #0a3327; left: 66.4%; }
+.ab-gem-v { top: 98px; height: 76px; background: #154e3a; left: 60%; }
+.ab-haak { position: absolute; top: 90px; left: 60%; width: 6.4%; height: 16px;
+           background: #0af29f; border-left: 2px solid #154e3a;
+           border-right: 2px solid #0a3327; }
+.ab-sleutel { display: grid; gap: 10px 20px; margin: 24px 0 0; padding: 0; list-style: none; }
+@media (min-width: 560px) { .ab-sleutel { grid-template-columns: repeat(2, 1fr); } }
+.ab-sleutel li { display: flex; align-items: baseline; gap: 10px;
+                 font-size: 15px; line-height: 1.5; color: #547068; }
+.ab-sleutel b { margin-left: auto; font-weight: 700; color: #0a3327;
+                font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ab-ruit { width: 12px; height: 12px; flex: none; border-radius: 9999px;
+           transform: translateY(2px); }
+
+html.anim [data-speel]:not(.is-in) .ab-punt { opacity: 0; }
+html.anim [data-speel]:not(.is-in) .ab-haak { transform: scaleX(0); }
+html.anim [data-speel].is-in .ab-punt {
+  animation: abop 260ms var(--e-decelerate) both;
+  animation-delay: calc(var(--i) * 55ms); }
+@keyframes abop { from { opacity: 0; transform: translateX(-50%) scale(.3); }
+                  to   { opacity: 1; transform: translateX(-50%) scale(1); } }
+html.anim [data-speel].is-in .ab-haak {
+  transform-origin: left center;
+  animation: abhaak var(--m-slow) var(--e-decelerate) 1000ms both; }
+@keyframes abhaak { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ===========================================================================
+   8 · DE INSTROOM — vier systemen in, één looncyclus uit.
+   De naaf zegt "Youbo staat in het midden". Dat is waar, maar het zegt niets
+   over de richting: in een ring is alles even hard begin en eind. Dit zegt wat
+   er gebeurt — vier bronnen leveren gegevens, Youbo maakt er één cyclus van.
+   De vier functies zijn exact die van de pagina: payroll, tijdsregistratie,
+   performancemanagement, core hr. Functies, geen merknamen; die beslissing is
+   al genomen ("Ik denk dat die icoontjes beter zijn").
+   GEEN GEKOPPELDE COÖRDINATEN. De naaf moet zijn verhouding houden omdat ring
+   en spaken dezelfde viewBox delen — daarom staat hij op 1,6 op 1 en mag die
+   verhouding niet zomaar wijzigen. Dit beeld is een CSS-raster zonder één
+   coördinaat: het klopt op 320 px en op 1440 px zonder dat er iets te meten
+   valt, en de naam "Performancemanagement" mag gewoon over twee regels.
+   =========================================================================== */
+.is { margin: 0; }
+.is-net { display: grid; grid-template-columns: 1fr 60px; gap: 12px; }
+.is-lanen { display: grid; gap: 12px; min-width: 0; }
+.is-laan { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.is-icoon { display: grid; place-items: center; width: 36px; height: 36px; flex: none;
+            border-radius: 9999px; background: #ffffff; border: 1px solid #9dbcc2;
+            color: #154e3a; }
+.is-icoon svg { width: 20px; height: 20px; }
+.is-naam { flex: 0 1 auto; min-width: 0; font-size: 13px; line-height: 1.3;
+           font-weight: 700; color: #0a3327; }
+.is-stroom { flex: 1 1 24px; min-width: 24px; height: 3px; border-radius: 9999px;
+             background-image: repeating-linear-gradient(90deg,
+               #154e3a 0 8px, #d9efe4 8px 18px);
+             background-size: 18px 3px; background-repeat: repeat-x; }
+.is-hub { grid-column: 2; grid-row: 1; align-self: stretch; display: grid;
+          place-items: center; border-radius: 12px; background: #0a3327; }
+.is-uit { display: flex; align-items: center; gap: 10px; margin: 16px 0 0;
+          border-radius: 8px; background: #0af29f; color: #154e3a;
+          padding: 12px 16px; font-size: 15px; line-height: 1.5; font-weight: 700; }
+
+/* De vier stromen bewegen naar rechts, naar Youbo toe. Dat is de enige beweging
+   en ze betekent iets: daar gaan de gegevens heen. Wie beweging uitzet, ziet
+   vier gestippelde lijnen die dezelfde richting aangeven door hun pijlpunt
+   hieronder — het eindbeeld blijft dus leesbaar. */
+html.anim [data-speel].is-in .is-stroom {
+  animation: isstroom 900ms linear infinite both; }
+html.anim [data-speel].is-in .is-l2 { animation-delay: 220ms; }
+html.anim [data-speel].is-in .is-l3 { animation-delay: 440ms; }
+html.anim [data-speel].is-in .is-l4 { animation-delay: 660ms; }
+@keyframes isstroom { from { background-position-x: 0; } to { background-position-x: 18px; } }
+
+/* ===========================================================================
+   9 · DE UITSNEDE — één stuk van een scherm, met drie aanwijzingen erbij.
+   DE CIJFERS. Loonband 12 loopt van € 2.900 tot € 3.900, dus 1.000 breed; de
+   positie van een bedrag is (bedrag − 2.900) / 10 procent.
+     nu          € 3.248,00  →  34,8% van de band
+     voorstel    + 2,8%      →  3.248,00 × 1,028 = € 3.338,94
+     verschil    3.338,94 − 3.248,00 = € 90,94, en 90,94 / 3.248,00 = 2,80%
+     nieuwe stand (3.338,94 − 2.900) / 10 = 43,9% van de band
+   De 6,0% waaraan dit afgetoetst wordt, is het maximum per medewerker dat in
+   kernblok 4 staat; 2,8% zit daar ruim onder. Loonband 12 ligt onder de band 14
+   van voorstel 7 (€ 3.300 – € 4.700), dus de twee beelden spreken elkaar niet
+   tegen.
+   GEEN FOTO BIJ DEZE NAAM. De initialen staan er in plaats van een portret, net
+   als bij Lena Carlier op de pagina zelf. De vier stockportretten in assets/
+   mogen nergens onder een naam staan — zie ASSET-MANIFEST.md — en dat is geen
+   smaakkwestie: een gratis stockfoto komt zonder toestemming van het model.
+
+   DAT HET EEN UITSNEDE IS, MOET JE ZIEN. De kaart loopt daarom aan de
+   rechterkant van het blad af, binnen een venster met overflow: hidden zodat de
+   pagina er niet zijwaarts van gaat schuiven. Dat is het hele mechanisme: niet
+   het scherm kleiner maken, maar er een stuk uit knippen en dat stuk groot
+   laten.
+   =========================================================================== */
+.us { margin: 0; }
+/* Het venster loopt tot tegen de rand van het podium: de negatieve marge heft
+   precies de binnenmarge van het podium op (24px smal, 40px vanaf 768px). De
+   kaart wordt dus afgeknipt op de rand van het blad zelf, en dat is wat een
+   uitsnede moet laten zien. overflow: hidden hoort erbij, anders schuift de
+   pagina zijwaarts. */
+.us-venster { overflow: hidden; margin-right: -24px; }
+/* NIET "REPAREREN": een breedtecontrole die naar getBoundingClientRect kijkt,
+   meldt .us-kaart hier als te breed — tot 768px steekt de kaart een paar pixels
+   voorbij de vensterrand. Dat is precies de bedoeling en het is onzichtbaar,
+   want overflow: hidden hierboven knipt hem af. Gemeten op 320, 360, 390, 480,
+   640, 768, 1024, 1280 en 1440px: scrollWidth is overal gelijk aan clientWidth,
+   dus er is nergens een horizontale schuifbalk. */
+@media (min-width: 768px) { .us-venster { margin-right: -40px; } }
+.us-kaart { margin-right: -32px; padding: 20px 32px 20px 20px;
+            border: 1px solid #e1ebf0; border-right: 0;
+            border-radius: 12px 0 0 12px; background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.us-rij { display: flex; align-items: center; gap: 12px; }
+.us-rij + .us-rij { margin-top: 20px; }
+.us-initialen { display: grid; place-items: center; width: 44px; height: 44px; flex: none;
+                border-radius: 9999px; background: #d9efe4; color: #0a3327;
+                font-size: 15px; font-weight: 700; }
+.us-wie { min-width: 0; }
+.us-naam { display: block; font-size: 17px; line-height: 1.5; font-weight: 700;
+           color: #0a3327; }
+.us-waar { display: block; font-size: 13px; line-height: 1.4; color: #547068; }
+.us-nr { display: grid; place-items: center; width: 26px; height: 26px; flex: none;
+         margin-left: auto; border-radius: 9999px; background: #0a3327; color: #ffffff;
+         font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.us-bandvak { flex: 1 1 auto; min-width: 0; }
+.us-bandkop { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 8px;
+              font-size: 13px; line-height: 1.4; color: #547068;
+              font-variant-numeric: tabular-nums; }
+/* display: block hoort hier echt: dit is een <span>, en een inline element negeert
+   height en is geen bruikbaar referentievlak voor de twee stippen erin — die
+   landen dan allebei op 0. Gemeten in Chromium voordat deze regel er stond. */
+.us-band { display: block; position: relative; height: 10px; border-radius: 9999px;
+           background: #e1ebf0; }
+.us-wie { display: block; }
+.us-nu { position: absolute; top: -4px; left: 34.8%; width: 18px; height: 18px;
+         border-radius: 9999px; background: #0a3327; transform: translateX(-50%); }
+.us-straks { position: absolute; top: -4px; left: 43.9%; width: 18px; height: 18px;
+             border-radius: 9999px; background: #0af29f; border: 2px solid #154e3a;
+             transform: translateX(-50%); }
+.us-bedragen { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px;
+               flex: 1 1 auto; min-width: 0; }
+.us-oud { font-size: 15px; line-height: 1.5; color: #547068;
+          text-decoration: line-through; text-decoration-thickness: 1px;
+          font-variant-numeric: tabular-nums; }
+.us-nieuw { font-size: 24px; line-height: 1.2; font-weight: 700; color: #0a3327;
+            font-variant-numeric: tabular-nums; }
+.us-pct { border-radius: 9999px; background: #0af29f; color: #154e3a; padding: 2px 10px;
+          font-size: 13px; line-height: 1.5; font-weight: 700;
+          font-variant-numeric: tabular-nums; }
+/* De drie aanwijzingen staan als lijst ONDER de uitsnede en niet als zwevende
+   labeltjes erin. Een zwevend label moet op 320 px ergens staan waar het niets
+   raakt, en dan staat het nergens; een genummerde lijst klopt op elke breedte en
+   een schermlezer leest hem in de goede orde. */
+.us-nota { display: grid; gap: 12px; margin: 24px 0 0; padding: 0; list-style: none; }
+@media (min-width: 720px) { .us-nota { grid-template-columns: repeat(3, 1fr); } }
+.us-nota li { display: flex; gap: 10px; font-size: 15px; line-height: 1.5; color: #547068; }
+.us-nota b { color: #0a3327; }
+
+html.anim [data-speel]:not(.is-in) .us-straks { left: 34.8%; opacity: 0; }
+html.anim [data-speel]:not(.is-in) .us-nr { opacity: 0; }
+html.anim [data-speel].is-in .us-straks {
+  animation: usschuif 700ms var(--e-decelerate) 500ms both; }
+@keyframes usschuif {
+  0%   { left: 34.8%; opacity: 0; }
+  25%  { left: 34.8%; opacity: 1; }
+  100% { left: 43.9%; opacity: 1; }
+}
+html.anim [data-speel].is-in .us-nr {
+  animation: usnr 240ms var(--e-decelerate) both; }
+html.anim [data-speel].is-in .us-n1 { animation-delay: 150ms; }
+html.anim [data-speel].is-in .us-n2 { animation-delay: 350ms; }
+html.anim [data-speel].is-in .us-n3 { animation-delay: 1250ms; }
+@keyframes usnr { from { opacity: 0; transform: scale(.4); }
+                  to   { opacity: 1; transform: scale(1); } }
+
+/* ===========================================================================
+   10 · DE GEZICHTEN — mensen in plaats van rijen.
+   Zes teamleden, vier beoordeeld. Er staat verder niets: geen tabel, geen
+   kolomkoppen, geen bedragen. Het is het beeld met de minste tekst van de tien
+   en het enige waarin een mens te zien is die niet Nick is.
+
+   DE TELLER IS NOOIT ONWAAR, en dat is met opzet zo gebouwd. Er staan vijf
+   cijfers (0 tot 4) over elkaar en er is er altijd precies één zichtbaar; welke,
+   hangt aan dezelfde lus als de vinkjes. Het cijfer in beeld is dus altijd
+   gelijk aan het aantal vinkjes dat je ziet. Dat is het verschil met de
+   verwijderde opteller bij het grote cijfer: die liep los van wat er stond en
+   zette daarom 900ms lang onjuiste zinnen op de pagina. Een teller is niet het
+   probleem; een teller die niet aan iets zichtbaars hangt, is het.
+
+   DE VIER PORTRETTEN ZIJN STOCK EN DRAGEN DUS GEEN NAAM. Geen naam, geen
+   functie, geen bedrijf — ASSET-MANIFEST.md verbiedt dat, omdat een gratis
+   stockportret zonder toestemming van het model komt. Ze staan hier als decor in
+   een getekend scherm, wat de pagina zelf ook al doet in het hr-overzicht.
+   De twee die nog niet beoordeeld zijn, zijn een gestippelde lege cirkel en geen
+   grijze silhouetfoto: een lege cirkel leest als "nog te doen", een silhouet
+   leest als "foto ontbreekt".
+   =========================================================================== */
+.gz { margin: 0; }
+.gz-teller { display: flex; align-items: baseline; gap: 10px; margin: 0 0 24px; }
+.gz-cijfer { position: relative; display: inline-grid; font-weight: 700; color: #0a3327;
+             font-size: clamp(40px, 13cqw, 72px); line-height: 1;
+             font-variant-numeric: tabular-nums; }
+.gz-cijfer span { grid-area: 1 / 1; }
+.gz-cijfer span:not(.gz-c4) { opacity: 0; }
+.gz-van { font-size: 20px; line-height: 1.5; font-weight: 700; color: #547068; }
+.gz-rij { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.gz-mens { position: relative; width: 56px; height: 56px; flex: none; }
+.gz-foto { width: 56px; height: 56px; border-radius: 9999px; object-fit: cover;
+           background: #f6f8fa; display: block; }
+.gz-leeg { width: 56px; height: 56px; border-radius: 9999px; display: block;
+           border: 2px dashed #9dbcc2; background: #ffffff; }
+.gz-vink { position: absolute; right: -2px; bottom: -2px; display: grid;
+           place-items: center; width: 22px; height: 22px; border-radius: 9999px;
+           background: #0af29f; color: #154e3a; border: 2px solid #ffffff; }
+.gz-vink svg { width: 12px; height: 12px; }
+
+/* De lus duurt 8 seconden, hetzelfde ritme als het heroscherm dat er nu staat.
+   Eindtoestand zonder beweging: vier vinkjes en het cijfer 4. */
+html.anim [data-speel]:not(.is-in) .gz-vink { opacity: 0; }
+html.anim [data-speel].is-in .gz-vink { animation: gzvink 8s linear infinite both; }
+html.anim [data-speel].is-in .gz-v1 { animation-name: gzvink1; }
+html.anim [data-speel].is-in .gz-v2 { animation-name: gzvink2; }
+html.anim [data-speel].is-in .gz-v3 { animation-name: gzvink3; }
+html.anim [data-speel].is-in .gz-v4 { animation-name: gzvink4; }
+@keyframes gzvink  { 0%,100% { opacity: 1; } }
+@keyframes gzvink1 { 0%, 10% { opacity: 0; transform: scale(.4); }
+                     15%, 90% { opacity: 1; transform: scale(1); }
+                     95%,100% { opacity: 0; transform: scale(.4); } }
+@keyframes gzvink2 { 0%, 20% { opacity: 0; transform: scale(.4); }
+                     25%, 90% { opacity: 1; transform: scale(1); }
+                     95%,100% { opacity: 0; transform: scale(.4); } }
+@keyframes gzvink3 { 0%, 30% { opacity: 0; transform: scale(.4); }
+                     35%, 90% { opacity: 1; transform: scale(1); }
+                     95%,100% { opacity: 0; transform: scale(.4); } }
+@keyframes gzvink4 { 0%, 40% { opacity: 0; transform: scale(.4); }
+                     45%, 90% { opacity: 1; transform: scale(1); }
+                     95%,100% { opacity: 0; transform: scale(.4); } }
+
+/* De vijf cijfers. Precies één is zichtbaar, en de omslagpunten zijn dezelfde
+   als die van de vinkjes hierboven (10/20/30/40%), zodat cijfer en beeld nooit
+   uit elkaar kunnen lopen. */
+/* span.gz-c0 en niet .gz-c0: de regel erboven heeft één typeselector meer, dus
+   die zou anders winnen en dan staat er vóór het inscrollen even helemaal geen
+   cijfer. */
+html.anim [data-speel]:not(.is-in) .gz-cijfer span { opacity: 0; }
+html.anim [data-speel]:not(.is-in) .gz-cijfer span.gz-c0 { opacity: 1; }
+html.anim [data-speel].is-in .gz-cijfer span { animation: 8s steps(1, end) infinite both; }
+html.anim [data-speel].is-in .gz-c0 { animation-name: gzc0; }
+html.anim [data-speel].is-in .gz-c1 { animation-name: gzc1; }
+html.anim [data-speel].is-in .gz-c2 { animation-name: gzc2; }
+html.anim [data-speel].is-in .gz-c3 { animation-name: gzc3; }
+html.anim [data-speel].is-in .gz-c4 { animation-name: gzc4; }
+@keyframes gzc0 { 0% { opacity: 1; } 15% { opacity: 0; } 95% { opacity: 1; } }
+@keyframes gzc1 { 0% { opacity: 0; } 15% { opacity: 1; } 25% { opacity: 0; } }
+@keyframes gzc2 { 0% { opacity: 0; } 25% { opacity: 1; } 35% { opacity: 0; } }
+@keyframes gzc3 { 0% { opacity: 0; } 35% { opacity: 1; } 45% { opacity: 0; } }
+@keyframes gzc4 { 0% { opacity: 0; } 45% { opacity: 1; } 95% { opacity: 0; } }
+
+/* ===========================================================================
+   BEWEGING — één regel voor alle tien.
+   Standaard staat alles in de eindtoestand. Het script hieronder zet
+   html.anim ALLEEN als de bezoeker beweging niet heeft uitgezet; pas dan wordt
+   de begintoestand opgelegd, en pas als een blok in beeld komt speelt het.
+   =========================================================================== */
+html.anim [data-speel]:not(.is-in) .beweegt { animation: none !important; }
+</style>
+</head>
+<body>
+
+<!-- =========================================================================
+     PAGINAKOP. Geen minititel boven de kop: die regel van de briefing geldt
+     ook op een voorstelpagina.
+     ========================================================================= -->
+<header class="bg-surface border-b border-line">
+  <div class="shell py-12 md:py-20">
+    <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-[28px] w-auto">
+    <h1 class="mt-8 text-h1 lg:text-display max-w-[24ch]">
+      Tien manieren om het te laten zien
+    </h1>
+    <p class="mt-3 text-caption font-bold uppercase tracking-[0.08em] text-ink-soft">
+      Voorstel &middot; 21 oktober 2026
+    </p>
+    <p class="mt-5 text-h3 text-ink-soft max-w-prose">
+      Jana's kritiek klopt, en ze is scherper dan &ldquo;te veel schermen&rdquo;. De pagina
+      draagt achttien beelden; tien daarvan zijn een nagetekend productscherm, en die tien
+      dragen alle tien hetzelfde kader &mdash; dezelfde titelbalk, hetzelfde favicon,
+      dezelfde kleine kop. Je ziet dus tien keer dezelfde vorm met andere inhoud erin.
+    </p>
+    <p class="mt-5 text-body text-ink-soft max-w-prose">
+      Hieronder staat eerst de volledige inventaris, en daarna tien voorstellen. Het zijn
+      tien verschillende <b>mechanismen</b> en geen tien varianten op hetzelfde idee:
+      uitvergroten, voor en na, een verloop over tijd, een getal dat zichzelf uitlegt,
+      iconen die een proces vertellen, een beweging die iets demonstreert, een detail dat
+      voor het geheel staat. Elk ontwerp staat hier echt getekend, niet beschreven.
+    </p>
+
+    <nav class="mt-8" aria-label="Naar een voorstel">
+      <ul class="flex flex-wrap gap-3 m-0 p-0 list-none">
+        <li><a href="#inventaris" class="sprong" data-cta="voorstel-naar-inventaris"><b>&darr;</b> De inventaris</a></li>
+        <li><a href="#voorstel-1" class="sprong" data-cta="voorstel-naar-1"><b>1</b> Uitvergroten</a></li>
+        <li><a href="#voorstel-2" class="sprong" data-cta="voorstel-naar-2"><b>2</b> Voor en na</a></li>
+        <li><a href="#voorstel-3" class="sprong" data-cta="voorstel-naar-3"><b>3</b> De kalender</a></li>
+        <li><a href="#voorstel-4" class="sprong" data-cta="voorstel-naar-4"><b>4</b> Het getal</a></li>
+        <li><a href="#voorstel-5" class="sprong" data-cta="voorstel-naar-5"><b>5</b> De keten</a></li>
+        <li><a href="#voorstel-6" class="sprong" data-cta="voorstel-naar-6"><b>6</b> Over de lijn</a></li>
+        <li><a href="#voorstel-7" class="sprong" data-cta="voorstel-naar-7"><b>7</b> De afstand</a></li>
+        <li><a href="#voorstel-8" class="sprong" data-cta="voorstel-naar-8"><b>8</b> De instroom</a></li>
+        <li><a href="#voorstel-9" class="sprong" data-cta="voorstel-naar-9"><b>9</b> De uitsnede</a></li>
+        <li><a href="#voorstel-10" class="sprong" data-cta="voorstel-naar-10"><b>10</b> De gezichten</a></li>
+        <li><a href="#advies" class="sprong" data-cta="voorstel-naar-advies"><b>&rarr;</b> Onze keuze</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- =========================================================================
+     DE INVENTARIS
+     ========================================================================= -->
+<section id="inventaris" class="bg-paper band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">Wat er vandaag staat</h2>
+    <p class="mt-5 text-body text-ink-soft max-w-prose">
+      Achttien beelden, geteld in <b>draft-r3-01-definitief.html</b>, in de volgorde van de
+      pagina. Tien ervan zijn een nagetekend scherm. De telling van het kader is letterlijk:
+      tien keer <b>.panel-bar</b> en tien keer <b>.miniheader</b> in dat bestand.
+    </p>
+
+    <div class="podium podium-wit">
+      <p class="podium-naam">Het kader dat tien keer terugkomt</p>
+      <div class="panel max-w-[420px]">
+        <div class="panel-bar">
+          <img src="assets/img/favicon.svg" alt="" aria-hidden="true" class="h-4 w-auto">
+          <span class="miniheader">Een kop die per blok verandert</span>
+          <span class="ml-auto text-caption text-ink-soft">label</span>
+        </div>
+        <div class="p-5 text-caption text-ink-soft">
+          en daaronder, tien keer, iets anders
+        </div>
+      </div>
+    </div>
+
+    <ul class="inv">
+      <li class="inv-rij">
+        <p class="inv-naam">1 &middot; Heroscherm &ldquo;Voorstel voor jouw team&rdquo;</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Een manager loopt zijn team door; vier van de zes voorstellen vullen zich, het gemiddelde komt op 2,75% tegen een richtlijn van 3,0%. Acht seconden CSS in het vectorbestand zelf, dan opnieuw.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">2 &middot; Ronde foto van Nick, 176px</p>
+        <span class="inv-soort inv-anders">portret</span>
+        <p class="inv-zegt">Er is een mens die de demo geeft. Sinds 16 oktober klein en rond in plaats van een rechthoek met een rand.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">3 &middot; De logobalk</p>
+        <span class="inv-soort inv-beweging">beweging</span>
+        <p class="inv-zegt">Negen echte klantlogo's schuiven door op 15,8 px/s, met maskers aan beide randen en pauze bij hover en focus. Zegt: deze bedrijven vertrouwen Youbo.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">4 &middot; Kernblok 1 &mdash; Merit cycle 2027 &middot; voortgang</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Drie stappen naast elkaar, 38 van 50 klaar, een balk op 76%. Zegt: hr en managers werken in één proces.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">5 &middot; Kernblok 2 &mdash; Budgetbeheer</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Drie donuts: bonus 81%, promotie 54%, merit 121% in het rood. Zegt: je houdt je loonkosten onder controle.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">6 &middot; Kernblok 3 &mdash; Loonvoorstel</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Lena Carlier, &euro; 3.813,36 wordt &euro; 4.053,55, met index en merit als twee vakjes en twee ronde knoppen. Zegt: de suggestie is onderbouwd.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">7 &middot; Kernblok 4 &mdash; Loonbeleid &middot; cyclus 2027</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Vier ingestelde regels in een lijst, plus Manager &rarr; Hr &rarr; Finance als drie pilletjes. Zegt: jullie regels, jullie manier van werken.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">8 &middot; Vijf casekaarten</p>
+        <span class="inv-soort inv-anders">kaart</span>
+        <p class="inv-zegt">Logo, sector, de resultaatzin achter een stopwatch, en twee cijfervakjes met een icoon, een getal en een eenheid. Net vernieuwd &mdash; blijft hieronder ongemoeid.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">9 &middot; Rondleiding, stap 1 &mdash; vergelijken</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Managers beslissen onderbouwd: het team naast elkaar, met uitschieters.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">10 &middot; Rondleiding, stap 2 &mdash; budget</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Finance volgt de budgetten: drie budgetten los, realtime impact per beslissing.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">11 &middot; Rondleiding, stap 3 &mdash; overzicht</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Hr volgt de voortgang: 38 van 50 managers klaar, 76% afgerond, loopt tot 31 maart 2027, per afdeling een regel.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">12 &middot; Rondleiding, stap 4 &mdash; rewardletter</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Rewardletters in één klik: gepersonaliseerd en klaar om te versturen.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">13 &middot; De kleefkaart van de rondleiding</p>
+        <span class="inv-soort inv-beweging">beweging</span>
+        <p class="inv-zegt">Vanaf 1024px verhuizen de vier schermen naar een kaart die meeschuift; één leeslijn op de halve vensterhoogte wisselt ze. Op telefoon een leesbare stapel.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">14 &middot; Het grote cijfer</p>
+        <span class="inv-soort inv-anders">typografie</span>
+        <p class="inv-zegt">Eén zin op displayformaat: 19.000 medewerkers in 21 landen, beide getallen inline en alleen in kleur onderscheiden. De opteller is er bewust uit.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">15 &middot; EU-paneel &mdash; Loonverschil per afdeling</p>
+        <span class="inv-soort inv-scherm">scherm</span>
+        <p class="inv-zegt">Drie balken: Finance &minus;1,2%, Operations +0,4%, Sales &minus;2,1%. Zegt: je ziet je loonverschillen en kan ze wegwerken.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">16 &middot; De naaf</p>
+        <span class="inv-soort inv-anders">diagram</span>
+        <p class="inv-zegt">Youbo in het midden, vier functies eromheen op een ring, pulserende spaken. Staat op 1,6 op 1; ring en spaken in één SVG met straal 24&middot;&radic;2 op een viewBox van 100 bij 100.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">17 &middot; De quotecarrousel</p>
+        <span class="inv-soort inv-anders">kaart</span>
+        <p class="inv-zegt">Vijf veegbare kaarten met scroll-snap, klantlogo bovenaan, portret van 56px. Alle vijf de foto's zijn echt. Blijft hieronder ongemoeid.</p>
+      </li>
+      <li class="inv-rij">
+        <p class="inv-naam">18 &middot; De opkomst van elk blok</p>
+        <span class="inv-soort inv-beweging">beweging</span>
+        <p class="inv-zegt">Vierentwintig blokken komen 16px omhoog en vervagen in; elke donkere band laat het groen in 350ms inzakken. Versiering, geen boodschap.</p>
+      </li>
+    </ul>
+
+    <p class="mt-10 text-body text-ink-soft max-w-prose">
+      Daarnaast staan er nog de ISO-badge boven de footer, het formulier met Nicks ronde
+      foto en de FAQ-accordeon. Die dragen geen beeld dat iets over het product beweert, dus
+      staan ze buiten deze telling.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================================
+     1 · UITVERGROTEN
+     ========================================================================= -->
+<section id="voorstel-1" class="bg-surface band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">1 &middot; Uitvergroten</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>Kernblok 3, het paneel &ldquo;Loonvoorstel&rdquo;: titelbalk, avatar, naam,
+        loonband, oud en nieuw bedrag, twee vakjes en twee ronde knoppen. Veertien dingen om
+        naar te kijken.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>&ldquo;Elementen uitgelicht&rdquo; en &ldquo;zo min mogelijk tekst&rdquo;. Eén
+        element uit het scherm halen en groot zetten, in plaats van het hele scherm klein.</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>Geen kader meer. Eén bedrag op displayformaat, en daaronder de balk die laat zien
+        waar het uit opgebouwd is. De knoppen, de avatar en de loonband zijn weg.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">Een opslag is geen bedrag maar een som &mdash; en je ziet
+    waaruit hij bestaat.</p>
+
+    <div class="podium podium-wit" data-speel>
+      <p class="podium-naam">Het ontwerp</p>
+      <div class="lens beweegt">
+        <p class="m-0">
+          <span class="lens-oud tabular">&euro; 3.813,36</span>
+          <span class="lens-nieuw">&euro; 4.053,55</span>
+          <span class="lens-plus">+ &euro; 240,19 &middot; + 6,30%</span>
+        </p>
+        <div class="lens-balk" role="img"
+             aria-label="Van het verschil van 240,19 euro is 84,28 euro index en 155,91 euro merit.">
+          <span class="lens-deel lens-index beweegt"></span>
+          <span class="lens-deel lens-merit beweegt"></span>
+        </div>
+        <dl class="lens-sleutel">
+          <div>
+            <span class="lens-stip" style="background:#9dbcc2" aria-hidden="true"></span>
+            <dt class="lens-naam">Index 2,21%</dt>
+            <dd class="lens-getal">+ &euro; 84,28</dd>
+          </div>
+          <div>
+            <span class="lens-stip" style="background:#0af29f" aria-hidden="true"></span>
+            <dt class="lens-naam">Merit</dt>
+            <dd class="lens-getal">+ &euro; 155,91</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>Het bedrag is nu het eerste wat je ziet in plaats van het vierde, en de balk doet
+        het werk dat twee vakjes met labels eerst deden: je ziet in één beweging dat de index
+        het kleinste stuk is en de merit het grootste. Dat is precies de boodschap van het
+        blok &mdash; de suggestie is onderbouwd &mdash; en ze staat er nu zonder dat je iets
+        hoeft te lezen.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>Het paneel verdwijnt, en daarmee de suggestie dat dit uit een echt product komt.
+        Een bedrag zonder kader kan ook een slide zijn. Verder valt de naam van de medewerker
+        weg, en met haar de loonband: wie precies wil zien in welke band dit valt, moet naar
+        voorstel 9. En dit beeld is smal; naast de tekstkolom blijft er op een breed scherm
+        meer leegte over dan bij het paneel.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     2 · VOOR EN NA
+     ========================================================================= -->
+<section id="voorstel-2" class="bg-paper band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">2 &middot; Voor en na</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>Kernblok 1, het paneel &ldquo;Merit cycle 2027 &middot; voortgang&rdquo;: drie
+        stappen naast elkaar en een balk op 76%. Het laat zien dat er een proces is, maar
+        niet dat het iets oplevert.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>Iets dat in een oogopslag begrijpelijk is. De tekst van dat blok belooft
+        &ldquo;gedaan met splitsen en consolideren van spreadsheets&rdquo; &mdash; dat is een
+        vergelijking, en een vergelijking kan je tekenen.</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>Twee rijen, elk met een balk voor en een balk na. De lengtes zijn echt
+        proportioneel aan de cijfers van de case-pdf's, niet naar het oog gezet.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">Dezelfde looncyclus, een derde van de tijd.</p>
+
+    <div class="podium podium-wit" data-speel>
+      <p class="podium-naam">Het ontwerp</p>
+      <div class="vn beweegt">
+        <div class="vn-rij">
+          <p class="vn-kop">Een volledige looncyclus doorlopen
+            <span class="vn-bron">&middot; SD Worx, 7.000 medewerkers in 18 landen</span></p>
+          <div class="vn-spoor">
+            <div class="vn-lijn">
+              <span class="vn-label">Voor</span>
+              <span class="vn-spoorvak"><span class="vn-balk vn-voor">2 maanden</span></span>
+            </div>
+            <div class="vn-lijn">
+              <span class="vn-label">Na</span>
+              <span class="vn-spoorvak"><span class="vn-balk vn-na vn-na-sdworx beweegt"><span>3 weken</span></span><span class="vn-buiten">3 weken</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="vn-rij">
+          <p class="vn-kop">De bestanden voor de hele groep klaarzetten
+            <span class="vn-bron">&middot; DPG Media, meer dan 6.000 medewerkers</span></p>
+          <div class="vn-spoor">
+            <div class="vn-lijn">
+              <span class="vn-label">Voor</span>
+              <span class="vn-spoorvak"><span class="vn-balk vn-voor">7&times; zo lang</span></span>
+            </div>
+            <div class="vn-lijn">
+              <span class="vn-label">Na</span>
+              <span class="vn-spoorvak"><span class="vn-balk vn-na vn-na-dpg beweegt"><span>1&times;</span></span><span class="vn-buiten">1&times;</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>De voortgangsbalk van 76% zegt alleen dat er iets loopt. Dit zegt wat het
+        oplevert, in een vorm die niemand hoeft te ontcijferen: korter is beter. En het haalt
+        de twee sterkste cijfers van de pagina &mdash; die nu kleingedrukt op een casekaart
+        onderaan staan &mdash; naar boven, naar het blok dat ze toelicht.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>Je zet twee klanten in het bovenste derde van de pagina en dat moeten zij willen.
+        De omrekening van 2 maanden naar weken is onze aanname, niet die van de pdf; staat de
+        balk ooit verkeerd, dan zit het daar. En dit beeld verdwijnt zodra een van de twee
+        cases wordt ingetrokken, terwijl het paneel dat nu staat van niemands toestemming
+        afhangt.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     3 · DE KALENDER
+     ========================================================================= -->
+<section id="voorstel-3" class="bg-surface band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">3 &middot; De kalender</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>Het scherm bij stap 3 van de rondleiding: &ldquo;38 van 50 managers klaar&rdquo;,
+        een balk op 76%, &ldquo;loopt tot 31 maart 2027&rdquo; en vier afdelingsregels. Het
+        is het derde scherm met een voortgangsbalk op dezelfde pagina.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>Variatie in de manier van visualiseren, en iconen van taken en mensen. Een
+        looncyclus is in de eerste plaats een kalender; dat is een vorm die de pagina nog
+        nergens gebruikt.</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>Eén as van oktober tot maart. Vier momenten met een eigen icoon, twee afgevinkt
+        en twee nog open. Op telefoon staat dezelfde as verticaal.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">Een looncyclus is een kalender met vier momenten &mdash; en je ziet
+    waar hij nu staat.</p>
+
+    <div class="podium podium-wit" data-speel>
+      <p class="podium-naam">Het ontwerp</p>
+      <div class="tl beweegt">
+        <div class="tl-as">
+          <span class="tl-spoor" aria-hidden="true"></span>
+          <span class="tl-vol beweegt" aria-hidden="true"></span>
+          <ol class="tl-punten">
+            <li class="tl-punt tl-p1 tl-klaar beweegt">
+              <span class="tl-schijf" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9.5" cy="8.5" r="3.5"/>
+                  <path d="M3.5 19a6 6 0 0 1 12 0"/>
+                  <path d="M16.5 5.6a3.5 3.5 0 0 1 0 5.8"/>
+                  <path d="M17.5 19a6 6 0 0 0-1.6-4.1"/>
+                </svg>
+              </span>
+              <span>
+                <span class="tl-datum">1 okt</span>
+                <span class="tl-naam">Hr opent de cyclus</span>
+              </span>
+            </li>
+            <li class="tl-punt tl-p2 tl-klaar beweegt">
+              <span class="tl-schijf" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 4h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H9"/>
+                  <path d="M9 4v17"/>
+                  <path d="M4.5 9.5 6 11l2.5-3"/>
+                  <path d="M12.5 10h4.5M12.5 15h4.5"/>
+                </svg>
+              </span>
+              <span>
+                <span class="tl-datum">15 nov</span>
+                <span class="tl-naam">Managers beoordelen hun team</span>
+                <span class="tl-vink">38 van 50 klaar</span>
+              </span>
+            </li>
+            <li class="tl-punt tl-p3 beweegt">
+              <span class="tl-schijf" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="8.5"/>
+                  <path d="M14.5 9.2A3.5 3.5 0 0 0 9 12a3.5 3.5 0 0 0 5.5 2.8"/>
+                  <path d="M8 11h4M8 13.5h4"/>
+                </svg>
+              </span>
+              <span>
+                <span class="tl-datum">15 jan</span>
+                <span class="tl-naam">Finance keurt de budgetten goed</span>
+              </span>
+            </li>
+            <li class="tl-punt tl-p4 beweegt">
+              <span class="tl-schijf" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2.8" y="5.5" width="18.4" height="13" rx="2"/>
+                  <path d="M3.4 7 12 13l8.6-6"/>
+                </svg>
+              </span>
+              <span>
+                <span class="tl-datum">31 mrt</span>
+                <span class="tl-naam">Rewardletters de deur uit</span>
+              </span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>De vier rollen van de rondleiding &mdash; manager, finance, hr, medewerker
+        &mdash; staan nu op één lijn in de orde waarin ze aan de beurt komen, en die orde is
+        precies wat de rondleiding probeert te vertellen met vier schermen achter elkaar. Je
+        ziet in één blik dat dit een proces over maanden is en dat Youbo het ritme bepaalt.
+        Het vervangt een derde voortgangsbalk door iets wat de pagina nog niet had.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>De datums zijn voorbeelddatums van een cyclus die in oktober start, en dat is niet
+        bij elke klant zo; wie in april start, ziet een kalender die niet de zijne is. Er
+        staat daarom bewust geen &ldquo;vandaag&rdquo; op &mdash; dat zou binnen een week
+        onwaar zijn. En het beeld is breed en laag, dus het past slecht naast een tekstkolom:
+        dit wil over de volle breedte staan.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     4 · HET GETAL DAT ZICHZELF UITLEGT
+     ========================================================================= -->
+<section id="voorstel-4" class="bg-paper band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">4 &middot; Het getal dat zichzelf uitlegt</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>Het grote cijfer: één zin op displayformaat met 19.000 en 21 erin, alleen in
+        kleur onderscheiden. Het optellen is er in ronde 3 uitgehaald, en terecht &mdash; het
+        zette 900ms lang 107 onjuiste zinnen op het grootste lettertype van de pagina.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>In een oogopslag begrijpelijk, met zo min mogelijk tekst. Een getal van vijf
+        cijfers leest niemand als een hoeveelheid; het leest als tekst.</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>De zin blijft, maar er staat nu iets naast dat je kan natellen: negentien blokjes
+        van tien bolletjes, en eenentwintig landmarkeringen.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">Zoveel mensen is dat &mdash; en zoveel landen.</p>
+
+    <div class="podium podium-wit" data-speel>
+      <p class="podium-naam">Het ontwerp</p>
+      <div class="getal beweegt">
+        <div>
+          <p class="getal-zin">De loonsverhogingen, bonussen en promoties van
+            <span class="getal-uit">19.000</span> medewerkers in
+            <span class="getal-uit">21</span> landen worden al met Youbo beheerd</p>
+        </div>
+        <div>
+          <p class="getal-leg">190 bolletjes &middot; elk 100 medewerkers</p>
+          <ul class="getal-veld" role="img"
+              aria-label="Negentien blokjes van tien bolletjes: 190 bolletjes van 100 medewerkers, samen 19.000.">
+            <li class="getal-blok beweegt" style="--i:0"></li>
+            <li class="getal-blok beweegt" style="--i:1"></li>
+            <li class="getal-blok beweegt" style="--i:2"></li>
+            <li class="getal-blok beweegt" style="--i:3"></li>
+            <li class="getal-blok beweegt" style="--i:4"></li>
+            <li class="getal-blok beweegt" style="--i:5"></li>
+            <li class="getal-blok beweegt" style="--i:6"></li>
+            <li class="getal-blok beweegt" style="--i:7"></li>
+            <li class="getal-blok beweegt" style="--i:8"></li>
+            <li class="getal-blok beweegt" style="--i:9"></li>
+            <li class="getal-blok beweegt" style="--i:10"></li>
+            <li class="getal-blok beweegt" style="--i:11"></li>
+            <li class="getal-blok beweegt" style="--i:12"></li>
+            <li class="getal-blok beweegt" style="--i:13"></li>
+            <li class="getal-blok beweegt" style="--i:14"></li>
+            <li class="getal-blok beweegt" style="--i:15"></li>
+            <li class="getal-blok beweegt" style="--i:16"></li>
+            <li class="getal-blok beweegt" style="--i:17"></li>
+            <li class="getal-blok beweegt" style="--i:18"></li>
+          </ul>
+
+          <p class="getal-leg mt-6">21 landen</p>
+          <ul class="getal-landen" role="img" aria-label="Eenentwintig landmarkeringen.">
+            <li class="getal-land beweegt" style="--i:0"></li>
+            <li class="getal-land beweegt" style="--i:1"></li>
+            <li class="getal-land beweegt" style="--i:2"></li>
+            <li class="getal-land beweegt" style="--i:3"></li>
+            <li class="getal-land beweegt" style="--i:4"></li>
+            <li class="getal-land beweegt" style="--i:5"></li>
+            <li class="getal-land beweegt" style="--i:6"></li>
+            <li class="getal-land beweegt" style="--i:7"></li>
+            <li class="getal-land beweegt" style="--i:8"></li>
+            <li class="getal-land beweegt" style="--i:9"></li>
+            <li class="getal-land beweegt" style="--i:10"></li>
+            <li class="getal-land beweegt" style="--i:11"></li>
+            <li class="getal-land beweegt" style="--i:12"></li>
+            <li class="getal-land beweegt" style="--i:13"></li>
+            <li class="getal-land beweegt" style="--i:14"></li>
+            <li class="getal-land beweegt" style="--i:15"></li>
+            <li class="getal-land beweegt" style="--i:16"></li>
+            <li class="getal-land beweegt" style="--i:17"></li>
+            <li class="getal-land beweegt" style="--i:18"></li>
+            <li class="getal-land beweegt" style="--i:19"></li>
+            <li class="getal-land beweegt" style="--i:20"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>Het getal wordt een hoeveelheid die je kan zien, en de beweging komt terug zonder
+        het risico dat ze eruit haalde: &ldquo;19.000&rdquo; en &ldquo;21&rdquo; staan vanaf
+        het eerste frame compleet en veranderen nooit, alleen de bolletjes komen op. Er is dus
+        geen enkel moment waarop er een onjuist cijfer op de pagina staat. Dat was het hele
+        bezwaar tegen de opteller, en dit beeld heeft het niet.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>Je moet de legenda lezen om te weten dat één bolletje honderd mensen is, en dat is
+        tekst &mdash; precies wat zij er minder van wil. Een veld van 190 bolletjes is ook
+        groter dan de zin die het uitlegt, dus het blok wordt hoger dan het nu is. En de
+        bolletjes zijn geschilderde achtergrond en geen echte elementen: een schermlezer leest
+        de omschrijving, niet de bolletjes.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     5 · DE KETEN
+     ========================================================================= -->
+<section id="voorstel-5" class="bg-surface band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">5 &middot; De keten</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>Kernblok 4, het paneel &ldquo;Loonbeleid &middot; cyclus 2027&rdquo;: vier
+        instellingen in een lijst, en daaronder Manager &rarr; Hr &rarr; Finance als drie
+        pilletjes met een pijl ertussen. De keten is er dus al &mdash; maar als tekst.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>Iconen van taken en van mensen, en iets dat beweegt omdat het iets demonstreert.
+        Een goedkeuringsflow is een route, en een route kan je aflopen.</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>Drie stations met een eigen icoon. Het voorstel reist er zelf langs en elk station
+        zet een vinkje. Negen seconden, dan opnieuw.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">Eén voorstel, drie keer aftekenen &mdash; en Youbo volgt de route die
+    jullie zelf bepalen.</p>
+
+    <div class="podium podium-wit" data-speel>
+      <p class="podium-naam">Het ontwerp</p>
+      <div class="kt beweegt">
+        <div class="kt-rail" role="img"
+             aria-label="Een loonvoorstel gaat van de manager naar hr en dan naar finance; alle drie keuren het goed.">
+          <span class="kt-spoor" aria-hidden="true"></span>
+
+          <span class="kt-station">
+            <span class="kt-schijf" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9.5" cy="8.5" r="3.5"/>
+                <path d="M3.5 19a6 6 0 0 1 12 0"/>
+                <path d="M16.5 5.6a3.5 3.5 0 0 1 0 5.8"/>
+                <path d="M17.5 19a6 6 0 0 0-1.6-4.1"/>
+              </svg>
+              <span class="kt-vink kt-v1 beweegt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"
+                     stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+              </span>
+            </span>
+            <span class="kt-naam">Manager</span>
+          </span>
+
+          <span class="kt-station">
+            <span class="kt-schijf" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 4h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H9"/>
+                <path d="M9 4v17"/>
+                <path d="M4.5 9.5 6 11l2.5-3"/>
+                <path d="M12.5 10h4.5M12.5 15h4.5"/>
+              </svg>
+              <span class="kt-vink kt-v2 beweegt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"
+                     stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+              </span>
+            </span>
+            <span class="kt-naam">Hr</span>
+          </span>
+
+          <span class="kt-station">
+            <span class="kt-schijf" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8.5"/>
+                <path d="M14.5 9.2A3.5 3.5 0 0 0 9 12a3.5 3.5 0 0 0 5.5 2.8"/>
+                <path d="M8 11h4M8 13.5h4"/>
+              </svg>
+              <span class="kt-vink kt-v3 beweegt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"
+                     stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+              </span>
+            </span>
+            <span class="kt-naam">Finance</span>
+          </span>
+
+          <span class="kt-doc beweegt" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/>
+              <path d="M10 12h5M10 16h5"/>
+            </svg>
+          </span>
+        </div>
+
+        <p class="kt-klaar beweegt">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+               stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+          Goedgekeurd
+        </p>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>De drie pilletjes met pijlen zijn een plaatje van een lijst; dit is de lijst die
+        zichzelf aflegt. De boodschap van dat blok &mdash; Youbo volgt jullie flow &mdash;
+        is nu het eerste wat je ziet in plaats van de laatste regel onder vier instellingen.
+        En het is het enige beeld op de pagina zonder één cijfer erin, wat precies past bij
+        een blok waarvan het antwoord &ldquo;zoals jullie het willen&rdquo; is.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>De vier instellingen verdwijnen uit het beeld, en dat zijn juist de dingen die
+        bewijzen dat Youbo echt regels kent (loonband verplicht, maximum 6,0%,
+        prestatiescore maal 1,5). Die zouden eronder als tekst moeten terugkomen, of in
+        voorstel 9. En drie stations zijn drie; een klant met vijf goedkeuringsstappen ziet
+        hier een vereenvoudiging van zijn eigen proces.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     6 · OVER DE LIJN
+     ========================================================================= -->
+<section id="voorstel-6" class="bg-paper band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">6 &middot; Over de lijn</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>Kernblok 2, het paneel &ldquo;Budgetbeheer&rdquo;: drie donuts naast elkaar,
+        81%, 54% en 121%. De derde staat in het rood, maar je moet het percentage lezen om te
+        weten dat er iets mis is.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>Show, don't tell. De tekst van dat blok belooft &ldquo;stuur tijdig bij en
+        voorkom overschrijdingen&rdquo;. Dat is een gebeurtenis, en een gebeurtenis kan je
+        laten gebeuren.</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>Eén balk en één lijn. Vier toekenningen landen na elkaar; de vierde duwt de balk
+        over de lijn en de kleur kantelt precies dáár. Negen seconden, dan opnieuw.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">Je ziet het budget overlopen op het moment dat het gebeurt.</p>
+
+    <div class="podium podium-wit" data-speel>
+      <p class="podium-naam">Het ontwerp &mdash; meritbudget, cyclus 2027</p>
+      <div class="bg beweegt">
+        <div class="bg-spoor" role="img"
+             aria-label="Het meritbudget van 100.000 euro loopt op tot 121.032 euro door vier toekenningen; de vierde gaat 21.032 euro over het budget.">
+          <span class="bg-vul beweegt">
+            <span class="bg-knip" style="left:30.72%"></span>
+            <span class="bg-knip" style="left:54.48%"></span>
+            <span class="bg-knip" style="left:72.80%"></span>
+          </span>
+          <span class="bg-lijn" aria-hidden="true"></span>
+          <span class="bg-lijnnaam" aria-hidden="true">&euro; 100.000 budget</span>
+        </div>
+
+        <p class="bg-over beweegt">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+            <path d="M12 4.5 21 19.5H3z"/><path d="M12 10v4"/><path d="M12 16.6v.1"/>
+          </svg>
+          121% &middot; &euro; 21.032 over budget
+        </p>
+
+        <ul class="bg-sleutel">
+          <li><span class="bg-stip" style="background:#0af29f" aria-hidden="true"></span>Sales<b>+ &euro; 38.400</b></li>
+          <li><span class="bg-stip" style="background:#0af29f" aria-hidden="true"></span>Operations<b>+ &euro; 29.700</b></li>
+          <li><span class="bg-stip" style="background:#0af29f" aria-hidden="true"></span>Finance<b>+ &euro; 22.900</b></li>
+          <li><span class="bg-stip" style="background:#e5484d" aria-hidden="true"></span>R&amp;D<b>+ &euro; 30.032</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>&ldquo;Budget slippage&rdquo; is het woord waar de hele pagina om draait, en het
+        is nu nergens te zien &mdash; alleen te lezen, als een getal van 121% in een ring.
+        Hier gebeurt het: de balk kruipt naar de lijn en gaat er dan over, en de kleur kantelt
+        op de lijn en niet een paar pixels ernaast. Drie donuts worden één balk, dus het blok
+        wordt ook lager. En de vier bedragen eronder tellen op tot precies wat er staat.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>Je verliest de twee budgetten die het wél goed doen (bonus 81%, promotie 54%), en
+        dus het beeld dat Youbo er drie los beheert. Erger: dit beeld vertelt eerst slecht
+        nieuws. Dat werkt alleen als de tekst ernaast meteen zegt dat je dit ziet vóórdat het
+        verstuurd is &mdash; anders is de boodschap &ldquo;met Youbo gaat je budget over&rdquo;.
+        En rood op een pagina die verder alleen mint kent, is een opvallende uitzondering;
+        de donkerder trap #b42318 staat er omdat het bestaande rood als kleine tekst maar
+        3,91:1 haalt.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     7 · DE AFSTAND
+     ========================================================================= -->
+<section id="voorstel-7" class="bg-surface band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">7 &middot; De afstand</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>Het EU-paneel &ldquo;Loonverschil per afdeling&rdquo;: drie balken met
+        &minus;1,2%, +0,4% en &minus;2,1%. Een percentage van een percentage, in een scherm
+        dat eruitziet als de vier schermen erboven.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>In een oogopslag begrijpelijk. &ldquo;&minus;2,1%&rdquo; is niet in een oogopslag
+        begrijpelijk &mdash; 2,1% van wat, en hoeveel geld is dat dan?</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>Eén loonband, van links naar rechts. Elke punt is een medewerker op zijn echte
+        plek in de band. De twee gemiddelden staan als lijn, en de kloof is letterlijk het
+        groene vlak ertussen.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">De loonkloof is een afstand, en je ziet precies hoe groot hij
+    is.</p>
+
+    <div class="podium podium-wit" data-speel>
+      <p class="podium-naam">Het ontwerp</p>
+      <div class="ab beweegt">
+        <div class="ab-kop">
+          <span class="ab-waar">Sales &middot; loonband 14</span>
+        </div>
+        <p class="ab-kloof m-0">&minus; 2,1% <span>&middot; &euro; 90 per maand</span></p>
+
+        <div class="ab-vlak" role="img"
+             aria-label="Zestien medewerkers in loonband 14 van Sales, elk op hun eigen plek tussen 3.300 en 4.700 euro. Het gemiddelde van de negen mannen is 4.230 euro, dat van de zeven vrouwen 4.140 euro: 90 euro verschil, of 2,1 procent.">
+          <span class="ab-strip" aria-hidden="true"></span>
+
+          <span class="ab-rij ab-rij-m" aria-hidden="true">
+            <span class="ab-punt ab-punt-m beweegt" style="left:40.7%; --i:0"></span>
+            <span class="ab-punt ab-punt-m beweegt" style="left:47.1%; --i:1"></span>
+            <span class="ab-punt ab-punt-m beweegt" style="left:54.3%; --i:2"></span>
+            <span class="ab-punt ab-punt-m beweegt" style="left:60.7%; --i:3"></span>
+            <span class="ab-punt ab-punt-m beweegt" style="left:66.4%; --i:4"></span>
+            <span class="ab-punt ab-punt-m beweegt" style="left:72.1%; --i:5"></span>
+            <span class="ab-punt ab-punt-m beweegt" style="left:78.6%; --i:6"></span>
+            <span class="ab-punt ab-punt-m beweegt" style="left:85.0%; --i:7"></span>
+            <span class="ab-punt ab-punt-m beweegt" style="left:92.9%; --i:8"></span>
+          </span>
+
+          <span class="ab-rij ab-rij-v" aria-hidden="true">
+            <span class="ab-punt ab-punt-v beweegt" style="left:32.9%; --i:9"></span>
+            <span class="ab-punt ab-punt-v beweegt" style="left:42.9%; --i:10"></span>
+            <span class="ab-punt ab-punt-v beweegt" style="left:52.1%; --i:11"></span>
+            <span class="ab-punt ab-punt-v beweegt" style="left:60.0%; --i:12"></span>
+            <span class="ab-punt ab-punt-v beweegt" style="left:67.9%; --i:13"></span>
+            <span class="ab-punt ab-punt-v beweegt" style="left:77.1%; --i:14"></span>
+            <span class="ab-punt ab-punt-v beweegt" style="left:87.1%; --i:15"></span>
+          </span>
+
+          <span class="ab-gem ab-gem-m" aria-hidden="true"></span>
+          <span class="ab-gem ab-gem-v" aria-hidden="true"></span>
+          <span class="ab-haak beweegt" aria-hidden="true"></span>
+
+          <span class="ab-rand ab-rand-links" aria-hidden="true">&euro; 3.300</span>
+          <span class="ab-rand ab-rand-rechts" aria-hidden="true">&euro; 4.700</span>
+        </div>
+
+        <ul class="ab-sleutel">
+          <li><span class="ab-ruit" style="background:#0a3327" aria-hidden="true"></span>9 mannen, gemiddeld<b>&euro; 4.230</b></li>
+          <li><span class="ab-ruit" style="background:#0af29f;border:1px solid #154e3a" aria-hidden="true"></span>7 vrouwen, gemiddeld<b>&euro; 4.140</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>Dit is het enige beeld op de pagina dat de EU-richtlijn echt uitlegt: die vraagt
+        geen percentage, die vraagt of je kan aantonen dat gelijk werk gelijk betaald wordt.
+        Je ziet nu dat er overlap is, dat er uitschieters zijn aan beide kanten, en dat de
+        kloof een smal maar echt vlak is. Het percentage wordt een bedrag per maand, en dat
+        is wat een c&amp;b-manager aan zijn directie moet uitleggen.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>De drie afdelingen worden één; je verliest het beeld dat Youbo dit over de hele
+        organisatie doet. Het vraagt ook meer kijktijd dan drie balken &mdash; dit is het
+        traagste beeld van de tien, en het hoort dus niet in de hero. En zestien punten op
+        320px staan dicht bij elkaar: op telefoon is dit leesbaar als vorm, niet als zestien
+        afzonderlijke mensen.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     8 · DE INSTROOM
+     ========================================================================= -->
+<section id="voorstel-8" class="bg-paper band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">8 &middot; De instroom</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>De naaf: Youbo in het midden, vier functies op een ring, pulserende spaken. Hij
+        staat op 1,6 op 1 en die verhouding is vastgemeten tegen de hoogte van het EU-blok
+        ernaast, dus hij is niet vrij te verplaatsen.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>De visual mag integratie uitdrukken. Dat doet de naaf &mdash; maar een ring heeft
+        geen richting: alles is er even hard begin en eind, en de bezoeker ziet niet wat er
+        in gaat en wat er uit komt.</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>Vier banen die van links naar Youbo stromen, en daaronder wat eruit komt. De
+        iconen zijn dezelfde vier als in de naaf.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">Vier systemen die je al hebt gaan erin; er komt één looncyclus
+    uit.</p>
+
+    <div class="podium podium-wit" data-speel>
+      <p class="podium-naam">Het ontwerp</p>
+      <div class="is beweegt">
+        <div class="is-net" role="img"
+             aria-label="Payroll, tijdsregistratie, performancemanagement en core hr leveren allevier hun gegevens aan Youbo.">
+          <div class="is-lanen">
+            <div class="is-laan">
+              <span class="is-icoon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2.5" y="6" width="19" height="12" rx="2"/>
+                  <circle cx="12" cy="12" r="2.5"/><path d="M6 10v4M18 10v4"/>
+                </svg>
+              </span>
+              <span class="is-naam">Payroll</span>
+              <span class="is-stroom is-l1 beweegt"></span>
+            </div>
+            <div class="is-laan">
+              <span class="is-icoon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>
+                </svg>
+              </span>
+              <span class="is-naam">Tijdsregistratie</span>
+              <span class="is-stroom is-l2 beweegt"></span>
+            </div>
+            <div class="is-laan">
+              <span class="is-icoon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 17l5.5-5.5 3.5 3.5L21 7"/><path d="M15 7h6v6"/>
+                </svg>
+              </span>
+              <span class="is-naam">Performance&shy;management</span>
+              <span class="is-stroom is-l3 beweegt"></span>
+            </div>
+            <div class="is-laan">
+              <span class="is-icoon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9.5" cy="8.5" r="3.5"/>
+                  <path d="M3.5 19a6 6 0 0 1 12 0"/>
+                  <path d="M16.5 5.6a3.5 3.5 0 0 1 0 5.8"/>
+                  <path d="M17.5 19a6 6 0 0 0-1.6-4.1"/>
+                </svg>
+              </span>
+              <span class="is-naam">Core hr</span>
+              <span class="is-stroom is-l4 beweegt"></span>
+            </div>
+          </div>
+
+          <div class="is-hub">
+            <img src="assets/img/favicon.svg" alt="Youbo" width="32" height="32" class="h-8 w-8">
+          </div>
+        </div>
+
+        <p class="is-uit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 shrink-0" aria-hidden="true">
+            <path d="M5 12h13M13 6l6 6-6 6"/>
+          </svg>
+          E&eacute;n looncyclus, voor de hele organisatie
+        </p>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>Een richting is makkelijker te lezen dan een ring. Je ziet nu dat Youbo gegevens
+        <b>haalt</b> uit wat je al hebt &mdash; dat is precies wat de tekst eronder belooft en
+        wat de naaf niet zegt &mdash; en je ziet wat het resultaat is. Het beeld heeft ook
+        geen vaste verhouding: het is een raster zonder één coördinaat, dus het kan naast de
+        tekst staan, eronder, of in een smalle kolom, zonder opnieuw te meten.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>Je raakt de cirkel kwijt, en dat was letterlijk het voorbeeld dat zij aanwees. Een
+        rij banen is ook minder opvallend dan een ring: dit beeld vraagt geen aandacht, het
+        geeft antwoord. En &ldquo;vier banen in, één uit&rdquo; kan lezen als een
+        eenrichtingsverhaal, terwijl Youbo ook terugschrijft naar payroll &mdash; dat is met
+        deze vorm een extra pijl die nog gemaakt moet worden.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     9 · DE UITSNEDE
+     ========================================================================= -->
+<section id="voorstel-9" class="bg-surface band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">9 &middot; De uitsnede</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>De vier schermen van de rondleiding, elk een heel scherm in een kleefkaart die
+        meeschuift. Vier keer hetzelfde kader, en elk scherm vraagt dat je uitzoekt waar je
+        moet kijken.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>Elementen uitgelicht, en zo min mogelijk tekst. Niet het scherm kleiner maken
+        &mdash; er een stuk uit knippen en dat stuk groot laten, met de aanwijzing erbij.</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>&Eacute;&eacute;n medewerkersregel, afgesneden aan de rechterkant zodat je ziet
+        dat er meer is. Drie genummerde aanwijzingen die zeggen waar je naar kijkt.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">Dit is wat een manager beslist: &eacute;&eacute;n mens,
+    &eacute;&eacute;n plek in zijn loonband, &eacute;&eacute;n bedrag.</p>
+
+    <!-- Dit podium is met opzet grijs en niet wit: de kaart is wit en moet aan de
+         rechterkant zichtbaar afgesneden worden. Op een wit podium is een witte
+         kaart die wegloopt geen uitsnede, want je ziet de knip niet. -->
+    <div class="podium" data-speel>
+      <p class="podium-naam">Het ontwerp</p>
+      <div class="us beweegt">
+        <div class="us-venster">
+          <div class="us-kaart">
+            <div class="us-rij">
+              <span class="us-initialen" aria-hidden="true">JM</span>
+              <span class="us-wie">
+                <span class="us-naam">Joris Mertens</span>
+                <span class="us-waar">Operations &middot; loonband 12</span>
+              </span>
+              <span class="us-nr us-n1 beweegt" aria-hidden="true">1</span>
+            </div>
+
+            <div class="us-rij">
+              <span class="us-bandvak">
+                <span class="us-bandkop">
+                  <span>&euro; 2.900</span>
+                  <span>34,8% van de band</span>
+                  <span>&euro; 3.900</span>
+                </span>
+                <span class="us-band" role="img"
+                      aria-label="Joris staat op 34,8 procent van loonband 12; het voorstel brengt hem naar 43,9 procent.">
+                  <span class="us-nu" aria-hidden="true"></span>
+                  <span class="us-straks beweegt" aria-hidden="true"></span>
+                </span>
+              </span>
+              <span class="us-nr us-n2 beweegt" aria-hidden="true">2</span>
+            </div>
+
+            <div class="us-rij">
+              <span class="us-bedragen">
+                <span class="us-oud">&euro; 3.248,00</span>
+                <span class="us-nieuw">&euro; 3.338,94</span>
+                <span class="us-pct">+ 2,8%</span>
+              </span>
+              <span class="us-nr us-n3 beweegt" aria-hidden="true">3</span>
+            </div>
+          </div>
+        </div>
+
+        <ol class="us-nota">
+          <li><b>1</b> <span>Wie het is, en in welke loonband hij zit.</span></li>
+          <li><b>2</b> <span>Waar hij vandaag staat, en waar het voorstel hem brengt.</span></li>
+          <li><b>3</b> <span>Wat het voorstel is: + &euro; 90,94, ruim onder het maximum van 6,0%.</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>Een manager neemt deze beslissing per persoon, niet per scherm, en dit is die
+        beslissing. De loonband &mdash; het enige waar hij echt naar kijkt &mdash; is nu het
+        grootste element in beeld in plaats van een regeltje tekst, en de groene stip die
+        opschuift laat zien wat het voorstel dóet. De afgesneden rechterkant zegt zonder
+        woorden dat dit één regel uit een lijst is, dus het scherm is er nog, je ziet er
+        alleen het stuk van dat iets betekent.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>Je ziet het product niet meer als product: geen navigatie, geen kolomkoppen, geen
+        totalen. Wie wil weten of Youbo er echt zo uitziet, krijgt hier geen antwoord &mdash;
+        dat is de prijs van een uitsnede. En de drie aanwijzingen zijn drie regels tekst, wat
+        tegen &ldquo;zo min mogelijk tekst&rdquo; in gaat; ze kunnen weg, maar dan moet de
+        kijker zelf uitmaken waar hij kijkt.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     10 · DE GEZICHTEN
+     ========================================================================= -->
+<section id="voorstel-10" class="bg-paper band-pad border-b border-line">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">10 &middot; De gezichten</h2>
+
+    <dl class="uitleg">
+      <div>
+        <dt>Wat er nu staat</dt>
+        <dd>Het heroscherm &ldquo;Voorstel voor jouw team&rdquo;: zes tabelrijen die zich
+        vullen, met een balkje voor de loonbandpositie en een percentage per rij. Het eerste
+        wat een bezoeker ziet, is dus een tabel.</dd>
+      </div>
+      <div>
+        <dt>Wat zij vraagt</dt>
+        <dd>Letterlijk: &ldquo;icoontjes (van taken, mensen,&hellip;)&rdquo;, en zo min
+        mogelijk tekst. Een manager beoordeelt mensen, geen rijen.</dd>
+      </div>
+      <div>
+        <dt>Hoe het eruitziet</dt>
+        <dd>Zes mensen, vier afgevinkt. Eén teller. Verder niets: geen tabel, geen
+        kolomkoppen, geen bedragen.</dd>
+      </div>
+    </dl>
+
+    <p class="oogopslag">Vier van de zes mensen in je team zijn beoordeeld.</p>
+
+    <div class="podium podium-wit" data-speel>
+      <p class="podium-naam">Het ontwerp</p>
+      <div class="gz beweegt">
+        <p class="gz-teller m-0">
+          <span class="gz-cijfer beweegt" aria-hidden="true">
+            <span class="gz-c0">0</span>
+            <span class="gz-c1">1</span>
+            <span class="gz-c2">2</span>
+            <span class="gz-c3">3</span>
+            <span class="gz-c4">4</span>
+          </span>
+          <span class="gz-van">van de 6 beoordeeld</span>
+        </p>
+
+        <ul class="gz-rij" role="img"
+            aria-label="Zes teamleden, waarvan vier beoordeeld zijn en twee nog niet.">
+          <li class="gz-mens">
+            <img src="assets/img/avatar-demo-1.webp" alt="" aria-hidden="true" width="56" height="56" loading="lazy" decoding="async" class="gz-foto">
+            <span class="gz-vink gz-v1 beweegt">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"
+                   stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+            </span>
+          </li>
+          <li class="gz-mens">
+            <img src="assets/img/avatar-demo-2.webp" alt="" aria-hidden="true" width="56" height="56" loading="lazy" decoding="async" class="gz-foto">
+            <span class="gz-vink gz-v2 beweegt">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"
+                   stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+            </span>
+          </li>
+          <li class="gz-mens">
+            <img src="assets/img/avatar-demo-3.webp" alt="" aria-hidden="true" width="56" height="56" loading="lazy" decoding="async" class="gz-foto">
+            <span class="gz-vink gz-v3 beweegt">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"
+                   stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+            </span>
+          </li>
+          <li class="gz-mens">
+            <img src="assets/img/avatar-demo-4.webp" alt="" aria-hidden="true" width="56" height="56" loading="lazy" decoding="async" class="gz-foto">
+            <span class="gz-vink gz-v4 beweegt">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"
+                   stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+            </span>
+          </li>
+          <li class="gz-mens"><span class="gz-leeg" aria-hidden="true"></span></li>
+          <li class="gz-mens"><span class="gz-leeg" aria-hidden="true"></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <dl class="uitleg-2">
+      <div>
+        <dt>Waarom dit beter is</dt>
+        <dd>Dit is het beeld met de minste tekst van de tien, en het enige waarin de bezoeker
+        zichzelf terugziet: een manager met een handvol mensen en een deadline. De teller is
+        bovendien zo gebouwd dat hij nooit onwaar kan zijn &mdash; het cijfer in beeld is
+        altijd gelijk aan het aantal vinkjes, want het hangt aan dezelfde lus. Dat is precies
+        wat de opteller bij het grote cijfer niet deed, en het is het bewijs dat een teller
+        hier wél mag.</dd>
+      </div>
+      <div>
+        <dt>Wat het kost</dt>
+        <dd>Je ziet niet meer wat Youbo dóet. De loonbandpositie, de percentages en het
+        gemiddelde van 2,75% tegen de richtlijn van 3,0% verdwijnen allemaal, en dat is het
+        halve verhaal van de hero. Dit beeld werkt dus pas als er direct onder nog iets staat
+        dat het product toont &mdash; het is een opening, geen bewijs. En het zijn
+        stockportretten: zij dragen geen naam, mogen er nooit een krijgen, en als Youbo ooit
+        eigen fotografie laat maken, is dit het beeld dat opnieuw gemaakt moet worden.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================================
+     ONZE KEUZE
+     ========================================================================= -->
+<section id="advies" class="bg-surface band-pad">
+  <div class="shell">
+    <h2 class="text-h2 md:text-h1">Onze keuze</h2>
+    <p class="mt-5 text-h3 text-ink-soft max-w-prose">
+      Niet alle tien. Tien nieuwe beelden op één pagina is hetzelfde probleem als tien
+      schermen, alleen met andere vormen.
+    </p>
+
+    <div class="mt-10 grid gap-8 md:grid-cols-3">
+      <div class="card border border-line p-6">
+        <p class="m-0 text-caption font-bold uppercase tracking-[0.08em] text-ink-soft">Eerst deze vier</p>
+        <ul class="mt-4 m-0 p-0 list-none space-y-3 text-body text-ink">
+          <li><b>6 &middot; Over de lijn</b> in plaats van de drie donuts. Het woord waar de
+            hele pagina om draait &mdash; budget slippage &mdash; is nu nergens te zien.</li>
+          <li><b>1 &middot; Uitvergroten</b> in plaats van het loonvoorstelpaneel. Zelfde
+            cijfers, een kwart van de elementen.</li>
+          <li><b>5 &middot; De keten</b> in plaats van het loonbeleidpaneel. Het enige beeld
+            zonder cijfer, bij het enige blok zonder cijfer.</li>
+          <li><b>8 &middot; De instroom</b> naast of in plaats van de naaf. Geen vaste
+            verhouding, dus geen hermeting van het blok ernaast.</li>
+        </ul>
+      </div>
+      <div class="card border border-line p-6">
+        <p class="m-0 text-caption font-bold uppercase tracking-[0.08em] text-ink-soft">Daarna, als zij ja zegt</p>
+        <ul class="mt-4 m-0 p-0 list-none space-y-3 text-body text-ink">
+          <li><b>3 &middot; De kalender</b> als spil van de rondleiding, in plaats van een
+            derde voortgangsbalk.</li>
+          <li><b>9 &middot; De uitsnede</b> als mechanisme voor de vier rondleidingschermen.</li>
+          <li><b>7 &middot; De afstand</b> bij het EU-blok. Het sterkste beeld van de tien en
+            ook het traagste, dus het hoort onderaan en niet bovenaan.</li>
+          <li><b>4 &middot; Het getal</b> bij het grote cijfer, als zij de beweging daar
+            terug wil &mdash; nu zonder het risico dat haar eruit haalde.</li>
+        </ul>
+      </div>
+      <div class="card border border-line p-6">
+        <p class="m-0 text-caption font-bold uppercase tracking-[0.08em] text-ink-soft">Twee vragen aan haar</p>
+        <ul class="mt-4 m-0 p-0 list-none space-y-3 text-body text-ink">
+          <li><b>2 &middot; Voor en na</b> zet SD Worx en DPG Media in het bovenste derde van
+            de pagina. Mag dat, of blijven hun cijfers op de casekaart staan?</li>
+          <li><b>10 &middot; De gezichten</b> opent met vier stockportretten in plaats van met
+            het product. Dat is een keuze over wat de hero moet beweren, niet over vormgeving.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="mt-10 text-body text-ink-soft max-w-prose">
+      Twee beelden blijven met opzet ongemoeid: de <b>casekaarten</b>, waarvan de cijfers net
+      in vakjes met een icoon zijn gezet, en de <b>quotecarrousel</b>, waar sinds 6 oktober
+      alle vijf de echte portretten in staan. Die zijn al wat Jana vraagt.
+    </p>
+    <p class="mt-5 text-body text-ink-soft max-w-prose">
+      En één opmerking over de weging: ook ná deze tien blijven er zes productschermen op de
+      pagina. Dat is niet erg &mdash; het zijn de enige beelden die bewijzen dat het product
+      bestaat. Het verschil is dat ze dan niet meer de hele pagina zijn.
+    </p>
+  </div>
+</section>
+
+<script>
+/* ---------------------------------------------------------------------------
+   DE ENIGE JAVASCRIPT OP DEZE PAGINA. Twee regels werk:
+
+   1. Als de bezoeker beweging NIET heeft uitgezet, krijgt <html> de klasse
+      "anim". Alle begintoestanden in de stijl hangen aan die klasse, dus
+      zonder JavaScript en bij prefers-reduced-motion: reduce staat elk ontwerp
+      meteen in zijn eindtoestand. Niet een uitgeklede versie — precies het
+      beeld dat er na de beweging ook staat.
+   2. Een blok speelt pas als het in beeld komt. Anders is elke animatie al
+      afgelopen voordat Jana eraan toe is, en dat is bij een beweging die iets
+      moet demonstreren hetzelfde als geen beweging.
+   --------------------------------------------------------------------------- */
+(function () {
+  var stil = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (stil && stil.matches) return;
+  if (!('IntersectionObserver' in window)) return;
+  document.documentElement.classList.add('anim');
+
+  var kijker = new IntersectionObserver(function (rijen) {
+    rijen.forEach(function (rij) {
+      if (rij.isIntersecting) rij.target.classList.add('is-in');
+    });
+  }, { threshold: 0.25 });
+
+  document.querySelectorAll('[data-speel]').forEach(function (el) { kijker.observe(el); });
+})();
+</script>
+
+</body>
+</html>
