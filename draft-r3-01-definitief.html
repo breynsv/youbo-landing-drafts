@@ -511,6 +511,115 @@ tailwind.config = {
     .shell    { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
   }
 
+  /* =====================================================================
+     R6-03 · VIER SCHERMEN, STILSTAAND
+     ---------------------------------------------------------------------
+     Geen kleefkaart, geen wisselend beeld, geen stand die van de
+     scrollpositie afhangt. Op desktop is dit dezelfde lijst als op telefoon,
+     alleen naast elkaar gezet: per stap de tekst links en het scherm rechts.
+     Daarmee is wat op telefoon staat en wat op desktop staat één vorm, en is
+     er niets meer dat uit de pas kan lopen.
+
+     Buiten elke @layer, dus dit verslaat @layer components zonder
+     !important. Wat desktop-eigen is staat achter
+     (prefers-reduced-motion: no-preference), zodat "beweging uit" gewoon de
+     telefoonstapel over de volle breedte oplevert, precies zoals het
+     @media (prefers-reduced-motion)-blok verderop dat al regelt.
+     ===================================================================== */
+  /* Op telefoon verandert er niets: daar is dit gewoon de leesbare stapel en
+     is er niets om naartoe te springen wat niet al in beeld komt. */
+  .sc-index { display: none; }
+
+  @media (min-width: 1024px) {
+    /* De kolom rechts was 569px op élk desktopformaat, want .shell snoeit de
+       inhoud op 1024px (max-w-shell 1280 min tweemaal xl:px-32). Een viewBox
+       van 1200 in 569px is schaal 0,474: de 20px-labels in de schermen
+       stonden op 9,5px. Hier dragen de schermen het hele blok, dus krijgen
+       ze de breedte die ze nodig hebben. */
+    .shell-rondleiding { max-width: 1536px; padding-inline: 64px; }
+
+    /* De springlijst naast de kop: vier nummers die naar hun stap scrollen.
+       Het blok is ±2.500px lang, en dat is precies zoveel als vier leesbare
+       schermen kosten — een inhoudsopgave hoort daarbij. De nummers komen
+       uit een CSS-teller, dus klopt de lijst ook als er in het CMS een vijfde
+       stap bij komt. */
+    .sc-index { display: block; }
+    .sc-index .sc-bars { counter-reset: sc-stap; margin-left: 0; gap: 2px; }
+    .sc-index .sc-bar { counter-increment: sc-stap; }
+    .sc-index .sc-bar > span { display: none; }
+    .sc-index .sc-bar::after {
+      content: counter(sc-stap, decimal-leading-zero);
+      font-size: .8125rem; font-weight: 700; letter-spacing: .06em;
+      color: var(--inv-soft); font-variant-numeric: tabular-nums;
+      transition: color var(--m-base) var(--e-standard);
+    }
+    .sc-index .sc-bar:hover::after, .sc-index .sc-bar:focus-visible::after { color: #0af29f; }
+    .sc-index .sc-bar:focus-visible { outline: 2px solid #0af29f; outline-offset: 2px; border-radius: 4px; }
+  }
+
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    /* Eén kolom, en elke stap is zelf de twee kolommen. De verticale maat van
+       de kleefkaart (18vh boven en onder, 42vh onderaan — gemeten 487px zwart
+       tussen twee alinea's van drie regels op een venster van 1200px hoog, en
+       573px op 1440px) is weg: hier staat tussen twee stappen alleen de
+       adempauze die een lijst nodig heeft. */
+    .scrolly { display: block; }
+
+    .sc-step { display: grid;
+               grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+               grid-template-rows: auto auto auto 1fr;
+               column-gap: 56px; align-items: start;
+               padding: clamp(40px, 5vh, 72px) 0; }
+    .sc-step:first-child  { padding-top: clamp(16px, 2vh, 28px); }
+    .sc-step:last-of-type { padding-bottom: 0; }
+
+    .sc-step > .sc-mark            { grid-column: 1; grid-row: 1; }
+    .sc-step > p[data-herhaal-nr]  { grid-column: 1; grid-row: 2; }
+    .sc-step > .sc-titel           { grid-column: 1; grid-row: 3;
+                                     font-size: 1.625rem; line-height: 1.2; }
+    .sc-step > p.text-body         { grid-column: 1; grid-row: 4; }
+    /* Het scherm staat rechts, over de volle hoogte van de stap, en houdt
+       zijn eigen verhouding: er is hier geen gedeelde kaart meer, dus hoeft
+       geen van de vier tekeningen in de maat van de hoogste gegoten te worden. */
+    .sc-step > figure.panel        { grid-column: 2; grid-row: 1 / -1;
+                                     align-self: center; margin: 0;
+                                     width: 100%; max-width: 880px; }
+
+    /* Er is geen actieve stap meer, dus staan alle vier in de leeskleur. */
+    .sc-mark  { background: #0af29f; }
+    .sc-titel { color: #ffffff; }
+  }
+
+
+  /* =====================================================================
+     R7-01 · HET SCHERM VULT ZICH
+     ---------------------------------------------------------------------
+     Een scherm dat al helemaal af in beeld schuift is een plaatje. Een scherm
+     dat zich vult terwijl je het nadert, is software die iets doet. Dus blijft
+     het wit van de pagina staan — dat is het eerste kind van de SVG en dat
+     raakt deze regel niet aan — en komt al het andere er in LEESVOLGORDE bij:
+     de kaartranden, de labels, de bedragen, de lijntjes. Van boven naar onder,
+     13ms per element.
+
+     ER STAAT GEEN SEKONDE EEN ONWAARHEID OP HET SCHERM. Een bedrag dat van nul
+     naar € 4.284,50 loopt, toont honderd verkeerde salarissen; dat is precies
+     waarom de opteller bij het grote cijfer in blok 6 verwijderd is (107 foute
+     zinnen in 900ms). Hier verandert geen enkel getal van waarde: het is er
+     nog niet, of het is er, en dan is het meteen juist.
+
+     Geen enkele wijziging in de SVG's zelf. De vertraging per element komt uit
+     --i, dat het script op de directe kinderen zet, dus blijven de vier
+     tekeningen letterlijk wat ze waren en blijft schermenbank() werken.
+     ===================================================================== */
+  @media (prefers-reduced-motion: no-preference) {
+    html.js [data-scrolly] .sc-shot svg > *:not(:first-child) {
+      opacity: 0;
+      transition: opacity var(--m-medium) var(--e-decelerate);
+      transition-delay: calc(var(--i, 0) * 13ms);
+    }
+    html.js [data-scrolly] .sc-shot.is-vol svg > *:not(:first-child) { opacity: 1; }
+  }
+
   /* ---- alle beweging uit wanneer het besturingssysteem daarom vraagt ------- */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -2758,69 +2867,65 @@ tailwind.config = {
      5 · ONTDEK HOE HET WERKT — DONKER (#031317, dark-surface).
      Vlak in plaats van verlopend, zodat de echte schermen de enige kleur in
      het blok zijn.
-     Vanaf 1024px is dit het meescrollende blok: de tekst staat links, het
-     productscherm kleeft rechts mee: je ziet het scherm van de stap waarvan
-     de tekst het midden van je venster bedekt.
-     DAARONDER NIET. Op telefoon staat per stap eerst de tekst en dan het
-     scherm — Jana's vraag in ronde 3 — en dat is onverenigbaar met een kaart
-     die bovenaan vastkleeft, want die staat altijd bóven de tekst. Op telefoon
-     is dit dus gewoon een leesbare stapel van vier stappen met hun scherm:
-     precies wat er ook zonder JavaScript staat.
-     Het script verhuist de vier figuren naar de kleefkaart zodra het venster
-     breed genoeg is, en zet ze terug zodra het dat niet meer is. Bij
-     prefers-reduced-motion: reduce doet het niets.
+     Er is geen mechanisme meer: geen kleefkaart, geen wisselend beeld, geen
+     stand die van de scrollpositie afhangt. Vanaf 1024px staat per stap de
+     tekst links en het scherm rechts; op telefoon staat precies dezelfde
+     lijst, alleen onder elkaar. Dat is ook wat er zonder JavaScript en bij
+     prefers-reduced-motion: reduce staat — één vorm, drie keer.
+     Naast de kop staat een springlijst van vier nummers. Het blok is lang,
+     want vier schermen die groot genoeg zijn om te lezen kosten ruimte, en
+     die lijst maakt het met een toetsenbord doorloopbaar.
      ========================================================================= -->
 <section class="band band-night band-kleef band-pad" aria-labelledby="hoe-titel">
-  <div class="shell">
+  <div class="shell shell-rondleiding">
 
-    <div data-reveal>
+    <div data-reveal class="lg:flex lg:items-end lg:justify-between lg:gap-10">
       <h2 id="hoe-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="rondleiding.kop">Ontdek hoe Youbo werkt</h2>
+
+      <!-- De springlijst. Zelfde knoppen, zelfde HERHAAL-markeringen en zelfde
+           data-inhoud-sleutels als de streepjes in de oude kleefkaart; alleen
+           staan ze nu naast de kop en tonen ze hun nummer. -->
+      <div class="sc-index" data-scrolly-index>
+        <div class="sc-bars" role="group" aria-label="Spring naar een stap">
+          <!-- HERHAAL:rondleiding.stappen:BEGIN — één springknop per stap, gegenereerd. -->
+          <button type="button" class="sc-bar" data-scrolly-jump="0" aria-current="true"
+                  aria-label="Ga naar stap 1: Managers beslissen onderbouwd"
+                  data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.1.titel}: {rondleiding.stappen.1.titel}"
+                  data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.1.titel}"
+                  data-inhoud-aria-current="{eerste:rondleiding.stappen.1.titel}"
+                  data-cta="rondleiding-stap-1"
+                  data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.1.titel}"><span aria-hidden="true"></span></button>
+
+          <button type="button" class="sc-bar" data-scrolly-jump="1" aria-current="false"
+                  aria-label="Ga naar stap 2: Finance volgt de budgetten"
+                  data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.2.titel}: {rondleiding.stappen.2.titel}"
+                  data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.2.titel}"
+                  data-inhoud-aria-current="{eerste:rondleiding.stappen.2.titel}"
+                  data-cta="rondleiding-stap-2"
+                  data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.2.titel}"><span aria-hidden="true"></span></button>
+
+          <button type="button" class="sc-bar" data-scrolly-jump="2" aria-current="false"
+                  aria-label="Ga naar stap 3: Hr volgt de voortgang"
+                  data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.3.titel}: {rondleiding.stappen.3.titel}"
+                  data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.3.titel}"
+                  data-inhoud-aria-current="{eerste:rondleiding.stappen.3.titel}"
+                  data-cta="rondleiding-stap-3"
+                  data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.3.titel}"><span aria-hidden="true"></span></button>
+
+          <button type="button" class="sc-bar" data-scrolly-jump="3" aria-current="false"
+                  aria-label="Ga naar stap 4: Rewardletters in één klik"
+                  data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.4.titel}: {rondleiding.stappen.4.titel}"
+                  data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.4.titel}"
+                  data-inhoud-aria-current="{eerste:rondleiding.stappen.4.titel}"
+                  data-cta="rondleiding-stap-4"
+                  data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.4.titel}"><span aria-hidden="true"></span></button>
+          <!-- HERHAAL:rondleiding.stappen:EINDE -->
+        </div>
+      </div>
     </div>
 
     <div class="scrolly mt-8 md:mt-10" data-scrolly>
 
-      <!-- De kleefkaart. Leeg in de bron: het script hangt er de vier figuren
-           hieronder in. Zonder JavaScript bestaat dit blok niet. -->
-      <div class="scrolly-visual" data-scrolly-visual>
-        <div class="sc-cue">
-          <div class="sc-bars" role="group" aria-label="Spring naar een stap">
-            <!-- HERHAAL:rondleiding.stappen:BEGIN — één springknop per stap, gegenereerd. -->
-            <button type="button" class="sc-bar" data-scrolly-jump="0" aria-current="true"
-                    aria-label="Ga naar stap 1: Managers beslissen onderbouwd"
-                    data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.1.titel}: {rondleiding.stappen.1.titel}"
-                    data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.1.titel}"
-                    data-inhoud-aria-current="{eerste:rondleiding.stappen.1.titel}"
-                    data-cta="rondleiding-stap-1"
-                    data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.1.titel}"><span aria-hidden="true"></span></button>
-
-            <button type="button" class="sc-bar" data-scrolly-jump="1" aria-current="false"
-                    aria-label="Ga naar stap 2: Finance volgt de budgetten"
-                    data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.2.titel}: {rondleiding.stappen.2.titel}"
-                    data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.2.titel}"
-                    data-inhoud-aria-current="{eerste:rondleiding.stappen.2.titel}"
-                    data-cta="rondleiding-stap-2"
-                    data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.2.titel}"><span aria-hidden="true"></span></button>
-
-            <button type="button" class="sc-bar" data-scrolly-jump="2" aria-current="false"
-                    aria-label="Ga naar stap 3: Hr volgt de voortgang"
-                    data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.3.titel}: {rondleiding.stappen.3.titel}"
-                    data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.3.titel}"
-                    data-inhoud-aria-current="{eerste:rondleiding.stappen.3.titel}"
-                    data-cta="rondleiding-stap-3"
-                    data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.3.titel}"><span aria-hidden="true"></span></button>
-
-            <button type="button" class="sc-bar" data-scrolly-jump="3" aria-current="false"
-                    aria-label="Ga naar stap 4: Rewardletters in één klik"
-                    data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.4.titel}: {rondleiding.stappen.4.titel}"
-                    data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.4.titel}"
-                    data-inhoud-aria-current="{eerste:rondleiding.stappen.4.titel}"
-                    data-cta="rondleiding-stap-4"
-                    data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.4.titel}"><span aria-hidden="true"></span></button>
-            <!-- HERHAAL:rondleiding.stappen:EINDE -->
-          </div>
-        </div>
-        <div class="sc-stage" data-scrolly-stage></div>
-      </div>
 
       <div class="scrolly-steps">
 
@@ -4292,149 +4397,92 @@ tailwind.config = {
   })();
 
   /* -------------------------------------------------------------------------
-     DE MEESCROLLENDE RONDLEIDING — blok 5
+     DE RONDLEIDING, STILSTAAND — blok 5
      ---------------------------------------------------------------------------
-     In de HTML staat elk productscherm onder zijn eigen stap: eerst het
-     streepje, het nummer, de kop en de tekst, en dan het scherm. Dat is de
-     leesvolgorde die Jana vraagt, en het is ook de volgorde zonder JavaScript.
+     Er is geen mechanisme meer. Elk productscherm staat onder zijn eigen stap,
+     op telefoon én op desktop, en er is niets wat van stand verandert: geen
+     kleefkaart, geen leeslijn, geen scrollpositie die bepaalt wat je ziet.
+     De CSS zet de vier stappen op desktop naast hun scherm; zonder JavaScript,
+     en bij prefers-reduced-motion: reduce, blijft precies dezelfde lijst over.
 
-     RONDE 3 — TWEE DINGEN ZIJN VERANDERD.
-
-     1 · HET MECHANISME BESTAAT ALLEEN NAAST ELKAAR (vanaf 1024px).
-         Een kaart die bovenaan vastkleeft staat altijd bóven de tekst die
-         eronder doorschuift. Op telefoon is "eerst de tekst, dan de
-         afbeelding" dus onverenigbaar met een kleefkaart, en de vraag van de
-         klant wint. Onder 1024px blijven de vier figuren staan waar ze in de
-         HTML staan en gebeurt er niets; daarboven verhuizen ze naar de kaart.
-         Verhuizen, niet kopiëren: geen tweede download en geen tweede
-         alt-tekst in de voorleesvolgorde. Wordt het venster weer smaller, dan
-         gaan ze terug naar hun eigen stap — vandaar `thuis`.
-
-     2 · ÉÉN LEESLIJN, EN DE JUISTE KANT OP GEMETEN.
-         De oude versie koos de BOVENSTE stap waarvan de titel vrij in beeld
-         stond. Naast elkaar bedekt de kaart niets, dus was die leeszone het
-         hele venster en wisselde het beeld al zodra de vorige titel de
-         bovenrand uit schoof — terwijl de tekst van die vorige stap nog
-         ruim in beeld stond. Dat is de "zit nog niet goed".
-         Nu is er één leeslijn op exact de helft van de vensterhoogte en is de
-         actieve stap de LAATSTE waarvan de titel die lijn voorbij is. In één
-         zin: je ziet het scherm van de stap waarvan de tekst het midden van
-         je venster bedekt. Dat is ook de regel die na elke wijziging na te
-         meten is, en dat is waarom de lijn op 50% ligt en niet op een
-         smaakgetal: op 42% bestond er een strook van 8% vensterhoogte waarin
-         de tekst van de volgende stap al over het midden liep terwijl het
-         beeld nog van de vorige was — dezelfde fout als de oude, alleen
-         kleiner. De knoppen springen naar diezelfde lijn: één constante
-         (LIJN) voor het meten én het springen, zodat die twee niet uit
-         elkaar kunnen lopen.
-
-         Dat maakt de meting ook snel-scrollveilig: ze leidt de stand volledig
-         af uit de huidige geometrie en telt niets op. Hoeveel scrollgebeurtenissen
-         de browser overslaat maakt dus niet uit — de laatste meting is altijd
-         de juiste. Vóór het blok staat stap 1, voorbij het blok stap 4.
-
-     Bij prefers-reduced-motion: reduce doet het script niets en verbergt de CSS
-     de kleefkaart — alles staat dan meteen in eindtoestand, zonder wisselend
-     beeld en zonder smooth scroll.
-
-     De vier streepjes in de kaart zijn echte knoppen. Dat is wat deze vorm met
-     een toetsenbord bedienbaar maakt: scrollen alleen is geen besturing.
+     Wat hier nog wel staat, is de springlijst naast de kop. Het blok is lang —
+     vier schermen die groot genoeg zijn om te lezen kosten nu eenmaal ruimte —
+     en vier knoppen die naar hun stap scrollen maken het met een toetsenbord
+     doorloopbaar in plaats van alleen scrollbaar. Ze dragen geen stand, dus
+     wordt aria-current hier weggehaald: de bouw schrijft het in de pagina
+     (data-inhoud-aria-current) omdat de vorige vorm het nodig had, en een
+     "huidige" knop die nooit verandert is een onwaarheid in de voorleesvolgorde.
      ------------------------------------------------------------------------- */
   (function () {
     var wortel = document.querySelector('[data-scrolly]');
-    if (!wortel) { return; }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+    var index  = document.querySelector('[data-scrolly-index]');
+    if (!wortel || !index) { return; }
 
-    var visual  = wortel.querySelector('[data-scrolly-visual]');
-    var stage   = wortel.querySelector('[data-scrolly-stage]');
     var stappen = [].slice.call(wortel.querySelectorAll('[data-scrolly-step]'));
-    var knoppen = [].slice.call(wortel.querySelectorAll('[data-scrolly-jump]'));
-    var dias    = stappen.map(function (s) { return s.querySelector('[data-scrolly-slide]'); });
+    var knoppen = [].slice.call(index.querySelectorAll('[data-scrolly-jump]'));
+    if (!stappen.length || knoppen.length !== stappen.length) { return; }
 
-    if (!visual || !stage || !stappen.length ||
-        dias.some(function (d) { return !d; })) { return; }
-
-    /* Waar elke figuur in de HTML staat, onthouden vóór de eerste verhuizing,
-       zodat hij bij een smaller venster exact terugkomt waar hij hoort. */
-    var thuis = dias.map(function (d) {
-      return { ouder: d.parentNode, na: d.nextSibling };
-    });
-
-    var breed   = window.matchMedia('(min-width: 1024px)');
-    var koppen  = stappen.map(function (s) { return s.querySelector('.sc-titel') || s; });
-    var LIJN    = 0.50;                 /* de leeslijn: het midden van het venster */
-    var huidig  = -1;
-    var inKaart = false;
-
-    function naarKaart() {
-      if (inKaart) { return; }
-      inKaart = true;
-      huidig = -1;
-      dias.forEach(function (d) {
-        d.classList.add('sc-slide');
-        d.classList.remove('mt-6');
-        stage.appendChild(d);
-      });
-    }
-
-    function naarStap() {
-      if (!inKaart) { return; }
-      inKaart = false;
-      huidig = -1;
-      dias.forEach(function (d, i) {
-        d.classList.remove('sc-slide', 'is-on');
-        d.classList.add('mt-6');
-        thuis[i].ouder.insertBefore(d, thuis[i].na);
-      });
-      stappen.forEach(function (s) { s.classList.remove('is-actief'); });
-    }
-
-    function verf(i) {
-      if (i === huidig) { return; }
-      huidig = i;
-      dias.forEach(function (d, j) { d.classList.toggle('is-on', j === i); });
-      stappen.forEach(function (s, j) { s.classList.toggle('is-actief', j === i); });
-      knoppen.forEach(function (b, j) { b.setAttribute('aria-current', j === i ? 'true' : 'false'); });
-    }
-
-    var bezig = false;
-    function meet() {
-      bezig = false;
-      if (!inKaart) { return; }
-      var lijn = window.innerHeight * LIJN;
-      var actief = 0;
-      for (var i = 0; i < koppen.length; i++) {
-        if (koppen[i].getBoundingClientRect().top <= lijn + 0.5) { actief = i; }
-        else { break; }
-      }
-      verf(actief);
-    }
-    function bij() { if (!bezig) { bezig = true; window.requestAnimationFrame(meet); } }
+    var koppen = stappen.map(function (s) { return s.querySelector('.sc-titel') || s; });
 
     knoppen.forEach(function (b) {
+      b.removeAttribute('aria-current');
       b.addEventListener('click', function () {
         var i = parseInt(b.getAttribute('data-scrolly-jump'), 10) || 0;
-        /* Acht pixel BOVEN de leeslijn, niet precies erop: op de lijn is het
-           afronden van een subpixel het verschil tussen twee stappen. */
-        var y = window.pageYOffset + koppen[i].getBoundingClientRect().top -
-                (window.innerHeight * LIJN - 8);
-        /* Geen behavior meegeven: de CSS bepaalt smooth of niet, en die staat uit
-           bij prefers-reduced-motion. */
+        /* 32px boven de kop, zodat het streepje en het nummer mee in beeld
+           komen en de stap niet tegen de bovenrand geplakt begint. */
+        var y = window.pageYOffset + koppen[i].getBoundingClientRect().top - 32;
+        /* Geen behavior meegeven: de CSS bepaalt smooth of niet, en die staat
+           uit bij prefers-reduced-motion. */
         window.scrollTo({ top: Math.max(0, y) });
       });
     });
+  })();
 
-    function stand() {
-      if (breed.matches) { naarKaart(); } else { naarStap(); }
-      meet();
+  /* -------------------------------------------------------------------------
+     R7-01 · HET SCHERM VULT ZICH
+     ---------------------------------------------------------------------------
+     Eén IntersectionObserver per schermvak. Komt het vak in beeld, dan gaat
+     .is-vol erop en doet de CSS de rest; daarna wordt er niet meer naar
+     gekeken, want dit mag precies één keer gebeuren.
+
+     Het script zet alleen --i, de plaats van een element in de tekening. Het
+     eerste kind krijgt er geen: dat is het witte vlak, en dat moet van het
+     eerste frame af staan — anders kijk je door de tekening heen naar de
+     zwarte band.
+
+     Bij prefers-reduced-motion: reduce doet dit niets en zegt de CSS niets, dus
+     staat alles meteen in eindtoestand. Zonder JavaScript ook: de verbergregel
+     hangt aan html.js.
+     ------------------------------------------------------------------------- */
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+
+    var vakken = [].slice.call(document.querySelectorAll('[data-scrolly] .sc-shot'));
+    if (!vakken.length) { return; }
+
+    vakken.forEach(function (vak) {
+      var svg = vak.querySelector('svg');
+      if (!svg) { return; }
+      [].slice.call(svg.children).forEach(function (el, i) {
+        if (i > 0) { el.style.setProperty('--i', i - 1); }
+      });
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      vakken.forEach(function (v) { v.classList.add('is-vol'); });
+      return;
     }
 
-    if (breed.addEventListener) { breed.addEventListener('change', stand); }
-    else if (breed.addListener) { breed.addListener(stand); }
-    window.addEventListener('scroll', bij, { passive: true });
-    window.addEventListener('resize', bij);
-    if (window.ResizeObserver) { new window.ResizeObserver(bij).observe(visual); }
-    stand();
+    var kijker = new IntersectionObserver(function (waarnemingen) {
+      waarnemingen.forEach(function (w) {
+        if (w.isIntersecting) {
+          w.target.classList.add('is-vol');
+          kijker.unobserve(w.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+
+    vakken.forEach(function (v) { kijker.observe(v); });
   })();
 
   /* -------------------------------------------------------------------------
