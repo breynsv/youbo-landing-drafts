@@ -553,7 +553,15 @@ tailwind.config = {
      het wit van de pagina staan — dat is het eerste kind van de SVG en dat
      raakt deze regel niet aan — en komt al het andere er in LEESVOLGORDE bij:
      de kaartranden, de labels, de bedragen, de lijntjes. Van boven naar onder,
-     13ms per element.
+     26ms per element, 400ms per element in duur: een scherm van 43 elementen
+     is daarmee in ±1,5s vol.
+
+     DE SNELHEID IS TWEE KEER GEMETEN EN ÉÉN KEER BIJGESTELD. Op 13ms en 300ms
+     was het blok in 860ms vol, en de waarneming van de klant was dat je het
+     nauwelijks zag. Dat lag niet alleen aan de duur: de waarnemer sloeg toe
+     zodra 12% van het scherm in beeld was, dus vulde het zich terwijl het nog
+     grotendeels onder de vouw zat. Nu begint hij pas bij 35%, met de ondermarge
+     op -18% in plaats van -8%.
 
      ER STAAT GEEN SEKONDE EEN ONWAARHEID OP HET SCHERM. Een bedrag dat van nul
      naar € 4.284,50 loopt, toont honderd verkeerde salarissen; dat is precies
@@ -568,8 +576,8 @@ tailwind.config = {
   @media (prefers-reduced-motion: no-preference) {
     html.js [data-scrolly] .sc-shot svg > *:not(:first-child) {
       opacity: 0;
-      transition: opacity var(--m-medium) var(--e-decelerate);
-      transition-delay: calc(var(--i, 0) * 13ms);
+      transition: opacity 400ms var(--e-decelerate);
+      transition-delay: calc(var(--i, 0) * 26ms);
     }
     html.js [data-scrolly] .sc-shot.is-vol svg > *:not(:first-child) { opacity: 1; }
   }
@@ -4432,7 +4440,7 @@ tailwind.config = {
           kijker.unobserve(w.target);
         }
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    }, { rootMargin: '0px 0px -18% 0px', threshold: 0.35 });
 
     vakken.forEach(function (v) { kijker.observe(v); });
   })();
