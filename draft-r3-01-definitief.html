@@ -410,19 +410,18 @@ tailwind.config = {
        dus zet hij de snoei uit in plaats van de kleefkaart te laten stukgaan. */
     .band-kleef { overflow: visible; }
 
-    /* RONDE 3 — DE KLEEFKAART BESTAAT ALLEEN NOG NAAST ELKAAR (vanaf 1024px).
-       Jana's eerste vraag voor dit blok is: op telefoon eerst de tekst, dan de
-       afbeelding. Een kaart die bovenaan vastkleeft staat per definitie bóven
-       de tekst die eronder doorschuift, dus bestaat er op telefoon geen versie
-       van dit mechanisme die aan die vraag voldoet. Op telefoon valt het blok
-       daarom terug op precies de stapel die er zonder JavaScript ook staat:
-       per stap eerst het streepje, het nummer, de kop en de tekst, en dan het
-       scherm. Dat beantwoordt haar tweede vraag mee — op telefoon is er niets
-       meer dat uit de pas kan lopen — en de kaart neemt ook geen derde van het
-       scherm meer in op het formaat waar 70 à 80% van het verkeer zit. */
-    .scrolly-visual { display: none; }
-
-    .sc-cue  { @apply flex items-center mb-1; }   /* sinds 2026-10-21 alleen nog de bars: de zin «Scroll verder» is weg op vraag van Jana (opmerking 88), de tekentjes blijven */
+    /* DE KLEEFKAART IS WEG sinds 2026-11-02, en daarmee .scrolly-visual,
+       .sc-stage, .sc-slide en .sc-cue. Jana en Bart vonden het meescrollende
+       blok vreemd ogen, en gemeten klopte dat: de kaart was 569px breed op
+       élk desktopformaat — .shell snoeit de inhoud op 1024px — dus stonden de
+       20px-labels in de vier schermen op 9,5px, en hoe hoger het venster, hoe
+       leger het eromheen werd. De schermen staan nu vast naast hun tekst en
+       vullen zich tijdens het scrollen; zie "HET SCHERM VULT ZICH" verderop.
+       De regels van de kaart zijn verwijderd in plaats van uitgezet: ze sloegen
+       nergens meer op, en CSS die een mechanisme beschrijft dat niet bestaat
+       is de duurste soort commentaar.
+       Wat hier blijft staan — .sc-bars en .sc-bar — draagt nu de springlijst
+       naast de kop, niet meer de streepjes in de kaart. */
     /* De vier stapknoppen waren 36x44px: hoog genoeg, te smal. px-3 maakt er
        44x44 van (20px streepje plus 2x12px), de maat die als richtlijn geldt, en
        de gap gaat van 4 naar 6px zodat vier knoppen naast elkaar niet meer als
@@ -435,42 +434,6 @@ tailwind.config = {
                      background: rgba(255,255,255,.35);
                      transition: background-color var(--m-base) var(--e-standard),
                                  width var(--m-base) var(--e-standard); }
-    .sc-bar[aria-current="true"] > span { background: #0af29f; width: 30px; }
-
-    /* --sc-h is een PLAFOND, geen vaste hoogte. Dat verschil is de hele bug:
-       een vak met een vaste hoogte en een tekening die haar verhouding houdt,
-       laat het verschil over als wit — op 1440 was de kaart 564 px hoog met een
-       tekening van 323 px erin, en wie op de verkeerde scrollhoogte keek, zag
-       alleen dat witte bovenstuk en dus een "lege kaart".
-       Nu bepaalt de tekening de hoogte (aspect-ratio) en knijpt het plafond de
-       kaart in de BREEDTE af als die hoogte niet past. De verhouding blijft dan
-       kloppen en er komt nooit wit bij. */
-    .sc-stage { position: relative; --sc-h: clamp(120px, 20vh, 190px);
-                max-width: calc(var(--sc-h) * 1200 / 680); margin-inline: auto; }
-    .sc-stage .sc-slide { display: none; margin: 0; }
-    .sc-stage .sc-slide.is-on { display: block; }
-    /* Eén verhouding voor alle vier de schermen, en het is die van het hoogste
-       (1200 × 680). Anders zou de kaart per stap 37 px op en neer gaan, en een
-       kleefkaart die tijdens het scrollen van maat verandert, leest als een fout.
-       De drie kortere tekeningen (600 en 640 hoog) houden daardoor 18 tot 37 px
-       over, gelijk verdeeld boven en onder — dat is kaartmarge, geen leeg vlak. */
-    .sc-stage .sc-shot { aspect-ratio: 1200 / 680; overflow: hidden;
-                         display: flex; align-items: center; justify-content: center; }
-    /* Een krappere balk in de kleefkaart: op telefoon is hoogte het schaarse goed,
-       en een schermtitel die bij stap 4 naar twee regels vouwt maakt de kaart
-       23 px hoger dan bij stap 1 — een kleefkaart die van maat verandert leest
-       als een fout, dus blijft de balk hier één regel. */
-    .sc-stage .panel-bar { @apply py-2; }
-    .sc-stage .panel-bar .miniheader { min-width: 0; white-space: nowrap;
-                                       overflow: hidden; text-overflow: ellipsis; }
-    /* De vier schermen zijn nu <svg>'s, geen bitmaps. Ze schalen dus mee en
-       passen altijd in de breedte — de "sleep opzij"-hint en de horizontale
-       schuifbalk die de schermafdrukken nodig hadden, zijn daarmee weg. */
-    .sc-stage .sc-shot svg { min-width: 0; width: 100%; height: auto;
-                             max-width: 100%; max-height: 100%; }
-    .sc-stage .sc-shot img { min-width: 0; width: 100%; height: 100%;
-                             object-fit: contain; }
-
     .sc-step { padding: 28px 0; }
     .sc-step:first-child { padding-top: 16px; }
     /* Geen opacity op de tekst: wit op #031317 zakt dan onder de contrastdrempel.
@@ -486,15 +449,6 @@ tailwind.config = {
     @media (min-width: 1024px) {
       .scrolly { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; }
       .scrolly-steps { order: -1; }                 /* tekst links, beeld rechts */
-      /* Hier, en alleen hier, bestaat de kleefkaart. Naast elkaar schuift er
-         niets onder haar door, dus heeft ze geen eigen vlak en geen uitvloeier
-         nodig — ze staat in de kolom rechts. */
-      html.js .scrolly-visual { display: block; position: sticky; top: 48px; z-index: 2; }
-      /* Ook naast elkaar één maat, zodat de kaart niet per stap van hoogte wisselt.
-         Het plafond bijt hier alleen op een laag venster; normaal bepaalt de
-         breedte van de kolom de kaart. */
-      .sc-stage { --sc-h: clamp(20rem, 52vh, 34rem); }
-      .sc-stage .panel-bar { @apply py-3; }
       .sc-step { padding: 18vh 0; }
       .sc-step:first-child { padding-top: 12vh; }
       .sc-step:last-of-type { padding-bottom: 42vh; }
@@ -647,12 +601,10 @@ tailwind.config = {
        Niets hier staat buiten een laag, dus deze regels verslaan de
        @media (min-width: 1024px)-regels uit @layer components ook zonder
        !important; die staat er alleen waar hij het verhaal duidelijker maakt. */
-    html.js .scrolly-visual { display: none !important; }
     .scrolly { display: block; }
     .sc-step { padding: 28px 0; }
     .sc-step:first-child { padding-top: 16px; }
     .sc-step:last-of-type { padding-bottom: 28px; }
-    .sc-stage { --sc-h: clamp(120px, 20vh, 190px); }
     .sc-mark  { background: #0af29f !important; }
     .sc-titel { color: #ffffff !important; }
   }
