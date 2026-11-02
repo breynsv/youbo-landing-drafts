@@ -993,6 +993,22 @@ async function verzend(pg, voorbereiding) {
   });
   const was = pg.url();
   if (voorbereiding) { await voorbereiding(pg); }
+  /* DE VERPLICHTE VELDEN WORDEN HIER GEVULD, EN MET OPZET RECHTSTREEKS.
+     Sinds 2026-11-02 houdt het formulier een lege verzending zelf tegen met een
+     veldcontrole, met een eigen melding. Zonder deze twee waarden meet elke
+     toets hieronder die controle in plaats van de val, de drempel of de wacht —
+     en dan staan ze groen om de verkeerde reden, of rood zonder dat er iets
+     stuk is.
+     Er wordt .value gezet en er wordt niets gefocust of getypt. Dat verschil is
+     het hele punt: een echte handeling zet de vlag «aangeraakt», en juist die
+     vlag is wat de drempeltoets hieronder wil meten. Wie hier pg.fill gebruikt,
+     maakt de drempeltoets vacuüm. */
+  await pg.evaluate(() => {
+    const n = document.getElementById('name');
+    const e = document.getElementById('email');
+    if (n && !n.value) { n.value = 'Toets Toetsenaar'; }
+    if (e && !e.value) { e.value = 'toets@voorbeeld.be'; }
+  });
   await pg.evaluate(() => document.querySelector('form').requestSubmit());
   await pg.waitForTimeout(700);
   await pg.unroute('**/request-demo');

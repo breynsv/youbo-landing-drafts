@@ -5,7 +5,7 @@ SCHAKELING: de overgang tussen licht en donker is zelf de belangrijkste beweging
 TITELS: één kop per sectie, nooit twee. De negen minititels boven de koppen zijn weg — Jana keurde die expliciet af en de briefing verbiedt ze. "Bonus & Merit" naast het woordmerk is er in ronde 3 ook uit; wat overblijft zijn de vier stapnummers in de rondleiding, die iets anders zijn dan een titel.
 FOOTER EN TOESTEMMING: de footer is sinds 2026-10-08 niet langer nagebouwd maar hún component zelf, ingesloten — de inhoud van /components/nl/footer.html van youbo.io, met hun klassenamen, hun volgorde en hun negen links, waaronder Nieuws dat in de versie van augustus nog in commentaar stond. Hij is daarmee licht geworden in plaats van zwart, want zo staat hij op hun site: wit met een lijn erboven. Ingesloten en niet opgehaald, omdat deze draft op breynsv.github.io staat waar /js/footer.js en /components/ niet bestaan en de footer dus leeg zou blijven; het blok draagt een comment met de twee regels die hem op hun server weer door footer.js laten vullen. Uit /css/global.css zijn alleen de 21 footerregels overgenomen, elk achter .yb-footer gezet — dat bestand in zijn geheel laden zou via 41 globale elementselectors de typografie en elk formulierveld van deze pagina herschrijven. De juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. De ISO 27001:2022-badge staat als los element bóven de footer, want hun sitefooter draagt hem niet en Jana's campagneplan vraagt hem wel. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan. Sinds 2026-10-09 is LinkedIn er echt — partner ID 10139124 — en laadt dus pas na Toestaan. Sinds 2026-10-12 is Google er ook: container GTM-MXTKMSBR, met de GA4-stroom van demo.youbo.io erin. Op 2026-10-15 is de toestemming nagelopen op de AVG en op drie punten bijgesteld: de zin noemt nu ook de advertentiecookies van LinkedIn (toestemming moet geïnformeerd zijn over álles wat laadt), Weigeren heeft dezelfde donkere rand als de tekst gekregen zodat hij even goed te zien is als Toestaan, en boven de footer staat «Cookievoorkeuren wijzigen» — intrekken moet even makkelijk zijn als toestemmen (AVG artikel 7, lid 3), en dat was het niet: de balk verdween na één klik voorgoed.
 HERO: de tekst komt eerst — kop, intro, knop — en het portret van Nick staat eronder op telefoon en ernaast op desktop. Dat is Jana's uitdrukkelijke vraag in ronde 3; in ronde 2 stond de foto bovenaan. De cijferregel en het blokje "Bonus & Merit" zijn uit de hero weg, en de fotoplek is vervangen door de echte foto (assets/img/nick-portret.webp, 900×1140 — exact het formaat dat BRIEF-R3.md noemt). Op 2026-10-16 is dat portret variant 1 uit hero-varianten-nick.html geworden: klein en rond, 176 beeldpunten, dezelfde vorm als bij het formulier. De rechthoek met de dunne rand is daarmee weg — dat kader was waar Jana over viel — en Nick weegt nog ongeveer een achtste van wat hij woog.
-LOGOBALK: NEGEN echte logo's sinds 2026-10-08, geen tekstzetting meer. De vier SVG's die er stonden (SD Worx, DPG Media, Kaneka, Aertssen Group) blijven — die bestaan in twee polariteiten en een PNG daarvoor inruilen is achteruit — en Anchr, Crelan, Axi, Mourik en Protime komen uit de map die Bart De Nil doorstuurde. Protime kwam er als laatste bij: het stond bij ons als integratiepartner genoteerd en er was eerder gevraagd de vermelding weg te laten, maar Bart bevestigde op 2026-10-08 dat Protime óók klant is, dus hoort het in een balk die zegt dat deze bedrijven Youbo vertrouwen. De zichtbare vraag eronder is daarmee beantwoord en weg. Verder ongewijzigd: een doorlopende marquee met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de statische rij. De tussenruimte blijft op 44 → 170px per breekpunt, want de reeks is uit zichzelf al ruim breder dan de balk; gemeten over 60 standen van één volle reeks raken er 2 tot 4 van de 9 items de balk op 390px en 4 tot 5 op 1440px, en op geen enkele stand staat een naam twee keer in beeld. Het tempo is opnieuw gemeten op 15,8 à 15,9 px/s; de duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo — met het negende logo erbij ging dat tempo eerst naar 17,7 px/s en zijn de vier duren opnieuw gezet.
+LOGOBALK: NEGEN echte logo's sinds 2026-10-08, geen tekstzetting meer. De vier SVG's die er stonden (SD Worx, DPG Media, Kaneka, Aertssen Group) blijven — die bestaan in twee polariteiten en een PNG daarvoor inruilen is achteruit — en Anchr, Crelan, Axi, Mourik en Protime komen uit de map die Bart De Nil doorstuurde. Protime kwam er als laatste bij: het stond bij ons als integratiepartner genoteerd en er was eerder gevraagd de vermelding weg te laten, maar Bart bevestigde op 2026-10-08 dat Protime óók klant is, dus hoort het in een balk die zegt dat deze bedrijven Youbo vertrouwen. De zichtbare vraag eronder is daarmee beantwoord en weg. Verder ongewijzigd: een doorlopende marquee met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de statische rij. De tussenruimte blijft op 44 → 170px per breekpunt, want de reeks is uit zichzelf al ruim breder dan de balk; gemeten over 60 standen van één volle reeks raken er 2 tot 4 van de 9 items de balk op 390px en 4 tot 5 op 1440px, en op geen enkele stand staat een naam twee keer in beeld. Het tempo stond op 15,8 à 15,9 px/s — Jana's vraag in ronde 3 was dat van figures.hr — en staat sinds 2026-11-02 op 23,9 px/s omdat Jelle de balk te traag vond en Jana zich daarbij aansloot. De duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo.
 CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px). Sinds Anchr op 2026-10-08 een echt logo kreeg, is het TODO-blokje op die kaart weg en is die leegte opnieuw gemeten op 340px, nu in Kaneka en Anchr; de volgorde ligt vast in het campagneplan, dus de knip blijft waar hij staat.
 RONDLEIDING: het meescrollende blok bestaat alleen nog naast elkaar, vanaf 1024px, met één leeslijn op precies de helft van de vensterhoogte. Op telefoon staat per stap eerst de tekst en dan het scherm — Jana's vraag — en dat kan niet samen met een kaart die bovenaan vastkleeft, want die staat altijd bóven de tekst. De knop Boek een demo midden in dat blok is op desktop weg, en het losse brede blok Merit cycle 2027 is geschrapt: het herhaalde de cijfers van stap 1 en stap 3.
 HET GROTE CIJFER: de aanpak van draft-r2-04 overgenomen. Één doorlopende zin op displayformaat met 19.000 en 21 inline in dezelfde maat, alleen in kleur onderscheiden. In ronde 2 stond 19.000 op een eigen regel van 40/56px en 21 in gewone koptekst; dat verschil was Jana's klacht. Het optellen van die twee getallen is er in deze ronde uit: gemeten stonden er tijdens die 900ms 107 verschillende volledige zinnen op de pagina die alle 107 feitelijk onjuist waren.
@@ -28,7 +28,7 @@ DE CIJFERS OP DE KAARTEN KOMEN UIT DE PDF'S, en dat is sinds 2026-10-16 de regel
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title data-inhoud="vindbaarheid.titel">Loon, bonus en promotie beheren zonder Excel | Youbo</title>
-<meta name="description" data-inhoud-content="vindbaarheid.omschrijving" content="Youbo beheert de loonsverhogingen, bonussen en promoties van 19.000 medewerkers in 21 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.">
+<meta name="description" data-inhoud-content="vindbaarheid.omschrijving" content="Youbo beheert de loonsverhogingen, bonussen en promoties van meer dan 30.000 medewerkers in 25 landen. Eén platform voor hr en managers, met verdeelsuggesties en realtime budgetinzicht. Boek een demo bij Nick en zie het op jouw eigen looncyclus.">
 <link rel="canonical" href="https://demo.youbo.io/">
 
 <meta property="og:type" content="website">
@@ -1314,12 +1314,20 @@ tailwind.config = {
 
      Dus: duur = aantal × seconden-per-logo. Eén logo neemt zijn eigen breedte
      plus twee keer de tussenruimte in; de negen logo's meten samen 573px, dus
-     gemiddeld 63,7px. Seconden per logo = (63,7 + 2 × tussenruimte) ÷ 15,9:
+     gemiddeld 63,7px. Seconden per logo = (63,7 + 2 × tussenruimte) ÷ tempo:
 
-       tussenruimte 44px  → (103,6 + 88)  ÷ 15,9 = 12,050s   × 9 = 108,5s
-       tussenruimte 96px  → (103,6 + 192) ÷ 15,9 = 18,591s   × 9 = 167,3s
-       tussenruimte 130px → (103,6 + 260) ÷ 15,9 = 22,868s   × 9 = 205,8s
-       tussenruimte 170px → (103,6 + 340) ÷ 15,9 = 27,899s   × 9 = 251,1s
+       tussenruimte 44px  → (103,6 + 88)  ÷ 23,9 =  8,017s   × 9 =  72,2s
+       tussenruimte 96px  → (103,6 + 192) ÷ 23,9 = 12,368s   × 9 = 111,3s
+       tussenruimte 130px → (103,6 + 260) ÷ 23,9 = 15,213s   × 9 = 136,9s
+       tussenruimte 170px → (103,6 + 340) ÷ 23,9 = 18,561s   × 9 = 167,0s
+
+     HET TEMPO GING OP 2026-11-02 VAN 15,9 NAAR 23,9 px/s, EN DAT WIJKT AF VAN
+     EEN EERDERE VRAAG. Die 15,9 was geen smaakgetal: Jana vroeg in ronde 3 om
+     de logo's "aan hetzelfde tempo voorbij te laten rollen als op figures.hr",
+     en daar is het op gemeten. Jelle vindt de balk te traag en Jana sluit zich
+     bij zijn feedback aan, dus staat hij nu anderhalf keer sneller. Moet de
+     gelijkenis met figures.hr tóch wegen, dan is dit het getal dat terug moet
+     — en dan rekenen deze vier rijen zich vanzelf weer uit.
 
      DE GEMIDDELDE BREEDTE IS OP 2026-10-21 VAN 63,7 NAAR 103,6 PIXELS GEGAAN.
      Jana vroeg die dag om prominentere logo's, dus zijn alle negen hoogtes met
@@ -1335,10 +1343,10 @@ tailwind.config = {
      145, 183 en 228), dus verandert de balk van vandaag geen merkbare haar:
      het verschil is hoogstens 0,5 van 86 seconden. Het aantal komt uit
      content/pagina.yml en wordt door build-inhoud.mjs hieronder gezet. */
-  .logo-balk { --logo-tussen: 44px; --logo-duur: calc(var(--logo-n) * 12.050s); }
-  @media (min-width: 768px)  { .logo-balk { --logo-tussen: 96px;  --logo-duur: calc(var(--logo-n) * 18.591s); } }
-  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 130px; --logo-duur: calc(var(--logo-n) * 22.868s); } }
-  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 170px; --logo-duur: calc(var(--logo-n) * 27.899s); } }
+  .logo-balk { --logo-tussen: 44px; --logo-duur: calc(var(--logo-n) * 8.017s); }
+  @media (min-width: 768px)  { .logo-balk { --logo-tussen: 96px;  --logo-duur: calc(var(--logo-n) * 12.368s); } }
+  @media (min-width: 1280px) { .logo-balk { --logo-tussen: 130px; --logo-duur: calc(var(--logo-n) * 15.213s); } }
+  @media (min-width: 1920px) { .logo-balk { --logo-tussen: 170px; --logo-duur: calc(var(--logo-n) * 18.561s); } }
   /* LOGO-AANTAL:BEGIN — gegenereerd uit content/pagina.yml door build-inhoud.mjs */
   .logo-balk { --logo-n: 9; }
   /* LOGO-AANTAL:EINDE */
@@ -2711,7 +2719,7 @@ tailwind.config = {
             <div class="kaartfeiten">
               <p class="case-gebruik v3-gebruik text-ink-soft" data-inhoud="cases.gebruik">Gebruikt Youbo voor</p>
               <ul class="v3-rooster" data-inhoud="cases.items.5.cijfers">
-                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19v-1a3.5 3.5 0 0 0-3.5-3.5h-4A3.5 3.5 0 0 0 4 18v1"/><circle cx="9.5" cy="8" r="3.2"/><path d="M16.5 5.2a3 3 0 0 1 0 5.6"/><path d="M20 19v-1a3.5 3.5 0 0 0-2.4-3.3"/></svg></span><span class="v3-getal tabular">+6000</span><span class="v3-eenheid">medewerkers</span></li>
+                <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19v-1a3.5 3.5 0 0 0-3.5-3.5h-4A3.5 3.5 0 0 0 4 18v1"/><circle cx="9.5" cy="8" r="3.2"/><path d="M16.5 5.2a3 3 0 0 1 0 5.6"/><path d="M20 19v-1a3.5 3.5 0 0 0-2.4-3.3"/></svg></span><span class="v3-getal tabular">4.500</span><span class="v3-eenheid">medewerkers</span></li>
                 <li class="v3-feit"><span class="v3-icoon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.3 2.3 3.4 5.3 3.4 8.5s-1.1 6.2-3.4 8.5c-2.3-2.3-3.4-5.3-3.4-8.5S9.7 5.8 12 3.5Z"/></svg></span><span class="v3-getal tabular">2</span><span class="v3-eenheid">landen</span></li>
               </ul>
             </div>
@@ -3140,9 +3148,9 @@ tailwind.config = {
   <div class="shell text-center" data-reveal>
     <h2 id="cijfer-titel" class="mx-auto max-w-[24ch] text-[28px] leading-[1.2] md:text-h1 lg:text-display">
       <span data-inhoud="cijfer.aanloop">De loonsverhogingen, bonussen en promoties van</span>
-      <span class="tabular cijfer-uit" data-telop data-inhoud="cijfer.medewerkers">19.000</span>
+      <span class="tabular cijfer-uit" data-telop data-inhoud="cijfer.medewerkers">+30.000</span>
       <span data-inhoud="cijfer.midden">medewerkers in</span>
-      <span class="tabular cijfer-uit" data-telop data-inhoud="cijfer.landen">21</span>
+      <span class="tabular cijfer-uit" data-telop data-inhoud="cijfer.landen">25</span>
       <span data-inhoud="cijfer.slot">landen worden al met Youbo beheerd</span>
     </h2>
   </div>
@@ -3420,7 +3428,7 @@ tailwind.config = {
                  data-inhoud-src="quotes.items.2.foto" data-inhoud-alt="quotes.items.2.naam">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.2.naam">Bart Verhoeven</span>
-              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.2.functie">Hr manager</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.2.functie">HR &amp; General Affairs Manager</span>
             </span>
           </figcaption>
         </figure>
@@ -3443,7 +3451,7 @@ tailwind.config = {
                  data-inhoud-src="quotes.items.3.foto" data-inhoud-alt="quotes.items.3.naam">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.3.naam">Mieke Catthoor</span>
-              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.3.functie">Compensation &amp; benefits</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.3.functie">Compensation &amp; Benefits Manager</span>
             </span>
           </figcaption>
         </figure>
@@ -3466,7 +3474,7 @@ tailwind.config = {
                  data-inhoud-src="quotes.items.4.foto" data-inhoud-alt="quotes.items.4.naam">
             <span class="min-w-0">
               <span class="block text-body font-bold on-dark" data-inhoud="quotes.items.4.naam">Joris Valkenborgh</span>
-              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.4.functie">Team manager</span>
+              <span class="block text-caption on-dark-soft" data-inhoud="quotes.items.4.functie">Operations Director Belgium</span>
             </span>
           </figcaption>
         </figure>
@@ -3552,9 +3560,17 @@ tailwind.config = {
           </button>
         </h3>
         <div id="faq-0" x-show="open === 0" x-collapse>
-          <p class="pb-6 pr-6 text-body text-ink-soft">
-            Samen met een vaste contactpersoon stemmen we Youbo af op je loonbeleid, laden we je data in en leiden we je managers op. Tussen het eerste contact en de eerste beloningsronde verlopen er gemiddeld 10 tot 12 weken, afhankelijk van de omvang van je organisatie en de complexiteit van je loonbeleid. Daarna kun je zelfstandig aan de slag. Je kan de configuratie aanpassen wanneer je loonbeleid verandert. Je vaste contactpersoon blijft beschikbaar voor ondersteuning. Tijdens de demo krijg je een concreet zicht op de timing voor jouw organisatie.
-          </p>
+          <div class="pb-6 pr-6">
+            <p class="text-body text-ink-soft">
+              Samen met een vaste contactpersoon stemmen we Youbo af op je loonbeleid, laden we je data in en leiden we je managers op.
+            </p>
+            <p class="text-body text-ink-soft mt-4">
+              Tussen het eerste contact en de eerste beloningsronde verlopen er gemiddeld 10 tot 12 weken, afhankelijk van de omvang van je organisatie en de complexiteit van je loonbeleid. Daarna kun je zelfstandig aan de slag. Je kan de configuratie aanpassen wanneer je loonbeleid verandert.
+            </p>
+            <p class="text-body text-ink-soft mt-4">
+              Je vaste contactpersoon blijft beschikbaar voor ondersteuning. Tijdens de demo krijg je een concreet zicht op de timing voor jouw organisatie.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -3833,14 +3849,24 @@ tailwind.config = {
              de bezoeker iets moet doen. -->
         <div data-turnstile></div>
 
-        <!-- DE MELDING ALS HET NIET LUKT. hidden, dus geen zichtbare tekst
-             zolang er niets misgaat — gemeten. Ze gaat aan wanneer de val, de
-             drempel of Turnstile een inzending tegenhoudt, en ze noemt het
-             alternatief dat onder dit formulier staat. Een formulier dat op de
-             knop drukken stil negeert, is de duurste fout die hier mogelijk is:
-             die verkoopkans zie je nooit meer terug. -->
+        <!-- DE MELDING. hidden, dus geen zichtbare tekst zolang er niets
+             misgaat — gemeten. Een formulier dat op de knop drukken stil
+             negeert, is de duurste fout die hier mogelijk is: die verkoopkans
+             zie je nooit meer terug.
+
+             DEZE TEKST IS DE MELDING BIJ EEN ECHTE STORING: de val, de drempel
+             of Turnstile. Het script zet er een andere zin in wanneer er alleen
+             een verplicht veld leeg is — dat is geen storing en hoort niet zo
+             te klinken.
+
+             Ze noemde tot 2026-11-02 "zijn adres staat onder dit formulier", en
+             dat klopte niet meer: op vraag van Jana staan Nicks e-mailadres en
+             telefoonnummer sinds 2026-10-19 alleen nog op de bedankpagina, en
+             onder dit formulier staat zijn agenda. Jana meldde de zin en gaf
+             het adres door; het staat nu in de melding zelf, want dat is de
+             enige plek waar het nog nodig is. -->
         <p data-formulier-melding hidden role="alert"
-           class="mt-4 text-caption text-ink">Je aanvraag is niet verstuurd. Probeer het nog een keer — lukt het dan nog niet, mail Nick dan rechtstreeks; zijn adres staat onder dit formulier.</p>
+           class="mt-4 text-caption text-ink">Je aanvraag is niet verstuurd. Probeer het nog een keer — lukt het dan nog niet, mail Nick dan rechtstreeks op nick.vanlangendonck@youbo.io.</p>
 
         <button type="submit" class="btn-primary mt-8 w-full sm:w-auto" data-cta="formulier-vraag-demo" data-inhoud="formulier.verzendknop">Boek je demo</button>
 
@@ -4909,10 +4935,51 @@ tailwind.config = {
       return '';
     }
 
-    function melding(aan) {
+    /* De zin die in de HTML staat, is de zin bij een echte storing. We houden
+       hem apart zodat de veldcontrole er haar eigen zin in kan zetten en alles
+       wat daarna misgaat de vaste zin terugkrijgt. */
+    var MELDING_VAST = (function () {
+      var el = document.querySelector('[data-formulier-melding]');
+      return el ? el.textContent : '';
+    })();
+
+    function melding(aan, tekst) {
       var el = document.querySelector('[data-formulier-melding]');
       if (!el) { return; }
+      el.textContent = tekst || MELDING_VAST;
       if (aan) { el.removeAttribute('hidden'); } else { el.setAttribute('hidden', ''); }
+    }
+
+    /* WAT ER NOG MIST, IN DE VOLGORDE VAN HET FORMULIER.
+       Op het formulier staat novalidate, dus de browser zegt zelf niets. Tot
+       2026-11-02 zei niemand iets: een leeg formulier liep door naar de
+       bot-bewaking en kreeg "Je aanvraag is niet verstuurd" — een zin over een
+       storing die er niet was, terwijl de bezoeker alleen zijn naam nog moest
+       invullen. Jana meldde het.
+       De veldnaam komt uit het label, en dus uit /beheer/: verandert Jana
+       "E-mailadres" in iets anders, dan verandert deze zin mee. */
+    function ontbrekend(f) {
+      var uit = [];
+      [].forEach.call(f.querySelectorAll('[required]'), function (veld) {
+        if (veld.disabled || veld.type === 'hidden') { return; }
+        if (veld.checkValidity && veld.checkValidity()) { return; }
+        var label = veld.id ? f.querySelector('label[for="' + veld.id + '"]') : null;
+        var bron = label ? (label.querySelector('[data-inhoud]') || label) : null;
+        var naam = bron ? bron.textContent.replace(/\*/g, '').trim().toLowerCase() : 'dit veld';
+        uit.push({ veld: veld, naam: naam, leeg: String(veld.value || '').trim() === '' });
+      });
+      return uit;
+    }
+
+    function zinVoor(lijst) {
+      if (lijst.length === 1 && !lijst[0].leeg) {
+        return 'Dit ' + lijst[0].naam + ' lijkt niet te kloppen. Kijk het even na.';
+      }
+      var namen = lijst.map(function (x) { return x.naam; });
+      var opsomming = namen.length > 1
+        ? namen.slice(0, -1).join(', ') + ' en ' + namen[namen.length - 1]
+        : namen[0];
+      return 'Vul je ' + opsomming + ' in, dan kan Nick je contacteren.';
     }
 
     function mislukt(code) {
@@ -5022,6 +5089,19 @@ tailwind.config = {
       var f = e.target;
       if (!f || !f.querySelector) { return; }
       melding(false);
+
+      /* EERST DE VELDEN, DAN PAS DE BOTS. Een leeg formulier is geen storing
+         en geen bot: het is iemand die nog iets moet invullen en dat moet
+         horen welk veld. De focus gaat naar het eerste veld dat mist, zodat
+         wie met een toetsenbord werkt er meteen staat. */
+      var mist = ontbrekend(f);
+      if (mist.length) {
+        e.preventDefault();
+        melding(true, zinVoor(mist));
+        if (mist[0].veld.focus) { mist[0].veld.focus(); }
+        return;
+      }
+
       var oord = oordeel(f);
       if (oord === '') { return; }
       e.preventDefault();

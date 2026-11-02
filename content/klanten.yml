@@ -56,7 +56,7 @@ cases:
       logo_hoogte: 24
       voordeel: 7x sneller bestanden klaar
       cijfers:
-        - +6000 medewerkers
+        - 4.500 medewerkers
         - 2 landen
       sector: Mediagroep
       downloadlink: cases/youbo-case-dpg-media.pdf
@@ -76,21 +76,21 @@ quotes:
       tekst: '“Toen ik een demo zag, wist ik: hier hebben we op gewacht.”'
       foto: assets/img/bart-verhoeven.webp
       naam: Bart Verhoeven
-      functie: Hr manager
+      functie: HR & General Affairs Manager
     - bedrijf: DPG Media
       logo: assets/img/dpg-logo.svg
       logo_hoogte: 31
       tekst: “Youbo helpt om de loonkloof weg te werken.”
       foto: assets/img/mieke-catthoor.webp
       naam: Mieke Catthoor
-      functie: Compensation & benefits
+      functie: Compensation & Benefits Manager
     - bedrijf: SD Worx
       logo: assets/img/sdworx-logo.svg
       logo_hoogte: 39
       tekst: “Dankzij Youbo is de interne billijkheid toegenomen. Door de transparantie voer ik nu betere inhoudelijke gesprekken met mijn team.”
       foto: assets/img/joris-valkenborgh.webp
       naam: Joris Valkenborgh
-      functie: Team manager
+      functie: Operations Director Belgium
     - bedrijf: Anchr
       logo: assets/img/anchr-logo.webp
       logo_hoogte: 22

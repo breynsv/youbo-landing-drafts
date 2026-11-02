@@ -1328,10 +1328,51 @@ tailwind.config = {
       return '';
     }
 
-    function melding(aan) {
+    /* De zin die in de HTML staat, is de zin bij een echte storing. We houden
+       hem apart zodat de veldcontrole er haar eigen zin in kan zetten en alles
+       wat daarna misgaat de vaste zin terugkrijgt. */
+    var MELDING_VAST = (function () {
+      var el = document.querySelector('[data-formulier-melding]');
+      return el ? el.textContent : '';
+    })();
+
+    function melding(aan, tekst) {
       var el = document.querySelector('[data-formulier-melding]');
       if (!el) { return; }
+      el.textContent = tekst || MELDING_VAST;
       if (aan) { el.removeAttribute('hidden'); } else { el.setAttribute('hidden', ''); }
+    }
+
+    /* WAT ER NOG MIST, IN DE VOLGORDE VAN HET FORMULIER.
+       Op het formulier staat novalidate, dus de browser zegt zelf niets. Tot
+       2026-11-02 zei niemand iets: een leeg formulier liep door naar de
+       bot-bewaking en kreeg "Je aanvraag is niet verstuurd" — een zin over een
+       storing die er niet was, terwijl de bezoeker alleen zijn naam nog moest
+       invullen. Jana meldde het.
+       De veldnaam komt uit het label, en dus uit /beheer/: verandert Jana
+       "E-mailadres" in iets anders, dan verandert deze zin mee. */
+    function ontbrekend(f) {
+      var uit = [];
+      [].forEach.call(f.querySelectorAll('[required]'), function (veld) {
+        if (veld.disabled || veld.type === 'hidden') { return; }
+        if (veld.checkValidity && veld.checkValidity()) { return; }
+        var label = veld.id ? f.querySelector('label[for="' + veld.id + '"]') : null;
+        var bron = label ? (label.querySelector('[data-inhoud]') || label) : null;
+        var naam = bron ? bron.textContent.replace(/\*/g, '').trim().toLowerCase() : 'dit veld';
+        uit.push({ veld: veld, naam: naam, leeg: String(veld.value || '').trim() === '' });
+      });
+      return uit;
+    }
+
+    function zinVoor(lijst) {
+      if (lijst.length === 1 && !lijst[0].leeg) {
+        return 'Dit ' + lijst[0].naam + ' lijkt niet te kloppen. Kijk het even na.';
+      }
+      var namen = lijst.map(function (x) { return x.naam; });
+      var opsomming = namen.length > 1
+        ? namen.slice(0, -1).join(', ') + ' en ' + namen[namen.length - 1]
+        : namen[0];
+      return 'Vul je ' + opsomming + ' in, dan kan Nick je contacteren.';
     }
 
     function mislukt(code) {
@@ -1441,6 +1482,19 @@ tailwind.config = {
       var f = e.target;
       if (!f || !f.querySelector) { return; }
       melding(false);
+
+      /* EERST DE VELDEN, DAN PAS DE BOTS. Een leeg formulier is geen storing
+         en geen bot: het is iemand die nog iets moet invullen en dat moet
+         horen welk veld. De focus gaat naar het eerste veld dat mist, zodat
+         wie met een toetsenbord werkt er meteen staat. */
+      var mist = ontbrekend(f);
+      if (mist.length) {
+        e.preventDefault();
+        melding(true, zinVoor(mist));
+        if (mist[0].veld.focus) { mist[0].veld.focus(); }
+        return;
+      }
+
       var oord = oordeel(f);
       if (oord === '') { return; }
       e.preventDefault();
