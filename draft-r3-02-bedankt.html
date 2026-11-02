@@ -821,15 +821,19 @@ tailwind.config = {
        weten, dan is dat het verschil tussen file_download en case_pdf_geopend,
        of een twintigste gebeurtenisnaam in de container.
 
-     EEN NAAM PER VOORVOEGSEL WAAR HET CMS DE HAAK MAAKT. De cases, de quotes,
-     de rondleidingstappen en de FAQ zijn lijsten die Jana in /beheer/ kan laten
-     groeien, en hun haak draagt dus een naam of een nummer uit de inhoud
-     (case-pdf-sd-worx, faq-prijs, rondleiding-stap-3). Een vaste tabel per haak
-     zou bij de zesde case stil niets meer meten — precies het soort stilte waar
-     deze repo elders overal tegen bouwt. Daarom staan die drie als voorvoegsel,
-     en wat er achter het voorvoegsel staat gaat als cta_detail mee. De vaste
-     tabel gaat eerst, anders valt rondleiding-boek-demo onder het voorvoegsel
-     "rondleiding-stap-".
+     EEN NAAM PER VOORVOEGSEL WAAR HET CMS DE HAAK MAAKT. De cases en de FAQ
+     zijn lijsten die Jana in /beheer/ kan laten groeien, en hun haak draagt dus
+     een naam of een nummer uit de inhoud (case-pdf-sd-worx, faq-prijs). Een
+     vaste tabel per haak zou bij de zesde case stil niets meer meten — precies
+     het soort stilte waar deze repo elders overal tegen bouwt. Daarom staan die
+     twee als voorvoegsel, en wat er achter het voorvoegsel staat gaat als
+     cta_detail mee. De vaste tabel gaat eerst, zodat een volledige naam altijd
+     wint van een voorvoegsel dat er toevallig op lijkt.
+
+     "rondleiding-stap-" stond hier tot 2026-11-02 als derde. De vier
+     springknoppen naast de kop van de rondleiding zijn weg — ze bedienden de
+     kleefkaart, en die bestaat niet meer — dus valt er niets meer te kiezen en
+     dus ook niets meer te meten.
 
      TOESTEMMING: WACHTRIJ, EN ALLEEN IN HET GEHEUGEN. Voor een keuze vertrekt
      er niets naar Google of LinkedIn. De gebeurtenis gaat in een wachtrij in
@@ -953,8 +957,7 @@ tailwind.config = {
        voorvoegsel staat, gaat als cta_detail mee. */
     var VOORVOEGSEL = [
       ['case-pdf-',         'case_pdf_geopend'],
-      ['faq-',              'vraag_opengeklapt'],
-      ['rondleiding-stap-', 'rondleiding_stap_gekozen']
+      ['faq-',              'vraag_opengeklapt']
     ];
 
     /* Deze haak wordt op het submit-event gemeten, niet op zijn klik. */

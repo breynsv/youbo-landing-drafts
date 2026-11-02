@@ -86,8 +86,12 @@ const GA4_EIGEN = [
 ];
 
 /* De haken waarvan de naam vastgepind hoort te zijn. De lijstharken van het CMS
-   (case-pdf-…, faq-…, rondleiding-stap-…) staan er met één voorbeeld bij; hun
-   regel is het voorvoegsel en niet de volledige naam. */
+   (case-pdf-…, faq-…) staan er met één voorbeeld bij; hun regel is het
+   voorvoegsel en niet de volledige naam.
+
+   rondleiding-stap-… stond hier tot 2026-11-02 bij. De vier springknoppen in de
+   rondleiding zijn weg samen met de kleefkaart die ze bedienden, dus is er geen
+   haak meer om te pinnen. */
 const VERWACHT = {
   'hero-wordmerk': 'logo_geklikt',
   'hero-boek-demo': 'demo_knop_geklikt',
@@ -110,7 +114,6 @@ const VERWACHT = {
   'quotes-volgende': 'klantverhaal_doorgebladerd',
   'case-pdf-kaneka': 'case_pdf_geopend',
   'faq-prijs': 'vraag_opengeklapt',
-  'rondleiding-stap-3': 'rondleiding_stap_gekozen',
 };
 
 /* Een haak die met opzet niets mag opleveren.
@@ -536,10 +539,10 @@ for (const [paginaNaam, pad] of [['landingspagina', LANDING], ['bevestigingspagi
     ok('een case-pdf zegt in cta_detail WELKE case het was — dat is wat Google\'s file_download niet weet',
        cases.length === 5 && cases.every((u) => u.nieuw[0].cta_detail && u.nieuw[0].cta_detail.length > 1),
        cases.map((u) => u.nieuw[0].cta_detail).join(', '));
-    const stap = uitkomst.find((u) => u.haak === 'rondleiding-stap-3');
-    ok('een rondleidingstap zegt welk nummer',
-       !!stap && stap.nieuw.length === 1 && stap.nieuw[0].cta_detail === '3',
-       stap ? JSON.stringify(stap.nieuw) : 'de haak rondleiding-stap-3 bestaat niet');
+    const springers = uitkomst.filter((u) => u.haak.indexOf('rondleiding-stap-') === 0);
+    ok('de springknoppen van de rondleiding zijn weg, en meten dus niets meer',
+       springers.length === 0,
+       springers.map((u) => u.haak).join(', '));
   }
   await ctx.close();
 }

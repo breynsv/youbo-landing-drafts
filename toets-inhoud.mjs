@@ -511,9 +511,14 @@ console.log('\n2. De pagina komt overeen met de bron');
 
     /* ---- de vaste vorm van de aria-labels ---- */
 
-    // De vier knoppen in de rondleiding dragen "Ga naar stap 1: <kop>". Die kop
-    // staat ook als tekst op de pagina. Als die twee niet uit hetzelfde veld
-    // komen, lopen ze uiteen en hoort een schermlezer de kop van vorige maand.
+    // De kop van een rondleidingstap stond tot 2026-11-02 op twee plaatsen in de
+    // pagina: als tekst, en in de aria-label van de springknop ernaast ("Ga naar
+    // stap 1: <kop>"). Die knoppen zijn weg met de kleefkaart die ze bedienden.
+    // Het gevaar dat deze toets bewaakte is dat niet: twee kopieën van dezelfde
+    // kop lopen uiteen zodra er één uit het CMS komt en de andere niet. Daarom
+    // eist hij nu het sterkere: na een wijziging staat de nieuwe kop er, en komt
+    // de oude NERGENS meer in de pagina voor. Een tweede, vastgetypte kopie —
+    // een aria-label, een alt-tekst, een overzichtje — valt daar meteen door.
     const anders = maakWegwerp();
     try {
       if (verander(anders, 'pagina.yml',
@@ -521,12 +526,12 @@ console.log('\n2. De pagina komt overeen met de bron');
                    'titel: Managers kiezen met cijfers')) {
         const r = bouw(anders);
         const na = readFileSync(join(anders, 'draft-r3-01-definitief.html'), 'utf8');
-        eis('de aria-label van een rondleidingknop loopt mee met de kop ernaast',
+        const zonderCommentaar = na.replace(/<!--[\s\S]*?-->/g, ' ');
+        eis('de kop van een rondleidingstap komt uit het CMS, en staat nergens een tweede keer',
             r.code === 0 &&
             na.includes('data-inhoud="rondleiding.stappen.1.titel">Managers kiezen met cijfers<') &&
-            na.includes('aria-label="Ga naar stap 1: Managers kiezen met cijfers"') &&
-            !na.includes('aria-label="Ga naar stap 1: Managers beslissen onderbouwd"'),
-            r.uit.trim() || 'de aria-label bleef op de oude kop staan');
+            !zonderCommentaar.includes('Managers beslissen onderbouwd'),
+            r.uit.trim() || 'de oude kop staat nog ergens in de pagina');
       }
     } finally { rmSync(anders, { recursive: true, force: true }); }
   } finally { rmSync(schoon, { recursive: true, force: true }); }

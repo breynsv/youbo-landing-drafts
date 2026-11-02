@@ -420,20 +420,13 @@ tailwind.config = {
        De regels van de kaart zijn verwijderd in plaats van uitgezet: ze sloegen
        nergens meer op, en CSS die een mechanisme beschrijft dat niet bestaat
        is de duurste soort commentaar.
-       Wat hier blijft staan — .sc-bars en .sc-bar — draagt nu de springlijst
-       naast de kop, niet meer de streepjes in de kaart. */
-    /* De vier stapknoppen waren 36x44px: hoog genoeg, te smal. px-3 maakt er
-       44x44 van (20px streepje plus 2x12px), de maat die als richtlijn geldt, en
-       de gap gaat van 4 naar 6px zodat vier knoppen naast elkaar niet meer als
-       één balk aanvoelen. Op 360px blijft de rij met "Scroll verder" ernaast
-       binnen de kaart. */
-    .sc-bars { @apply ml-auto flex items-center; gap: 6px; }
-    .sc-bar  { @apply flex items-center px-3 cursor-pointer;
-               min-height: 44px; background: none; border: 0; }
-    .sc-bar > span { display: block; height: 3px; width: 20px; border-radius: 9999px;
-                     background: rgba(255,255,255,.35);
-                     transition: background-color var(--m-base) var(--e-standard),
-                                 width var(--m-base) var(--e-standard); }
+       Diezelfde dag volgden .sc-bars, .sc-bar en .sc-index: de vier knopjes
+       naast de kop. Ze waren het laatste stuk kleefkaart. Scrollen bediende
+       toen een kaart, en een besturing die alleen op scrollen werkt is met een
+       toetsenbord onbruikbaar — vandaar echte knoppen. Nu bedient scrollen
+       niets meer en draagt elke stap haar eigen 01 tot 04, dus waren het vier
+       nummers die naar nummers wezen. De haak rondleiding-stap- is daarmee ook
+       uit de meting en uit toets-meting.mjs gehaald. */
     .sc-step { padding: 28px 0; }
     .sc-step:first-child { padding-top: 16px; }
     /* Geen opacity op de tekst: wit op #031317 zakt dan onder de contrastdrempel.
@@ -480,10 +473,6 @@ tailwind.config = {
      telefoonstapel over de volle breedte oplevert, precies zoals het
      @media (prefers-reduced-motion)-blok verderop dat al regelt.
      ===================================================================== */
-  /* Op telefoon verandert er niets: daar is dit gewoon de leesbare stapel en
-     is er niets om naartoe te springen wat niet al in beeld komt. */
-  .sc-index { display: none; }
-
   @media (min-width: 1024px) {
     /* De kolom rechts was 569px op élk desktopformaat, want .shell snoeit de
        inhoud op 1024px (max-w-shell 1280 min tweemaal xl:px-32). Een viewBox
@@ -491,24 +480,6 @@ tailwind.config = {
        stonden op 9,5px. Hier dragen de schermen het hele blok, dus krijgen
        ze de breedte die ze nodig hebben. */
     .shell-rondleiding { max-width: 1536px; padding-inline: 64px; }
-
-    /* De springlijst naast de kop: vier nummers die naar hun stap scrollen.
-       Het blok is ±2.500px lang, en dat is precies zoveel als vier leesbare
-       schermen kosten — een inhoudsopgave hoort daarbij. De nummers komen
-       uit een CSS-teller, dus klopt de lijst ook als er in het CMS een vijfde
-       stap bij komt. */
-    .sc-index { display: block; }
-    .sc-index .sc-bars { counter-reset: sc-stap; margin-left: 0; gap: 2px; }
-    .sc-index .sc-bar { counter-increment: sc-stap; }
-    .sc-index .sc-bar > span { display: none; }
-    .sc-index .sc-bar::after {
-      content: counter(sc-stap, decimal-leading-zero);
-      font-size: .8125rem; font-weight: 700; letter-spacing: .06em;
-      color: var(--inv-soft); font-variant-numeric: tabular-nums;
-      transition: color var(--m-base) var(--e-standard);
-    }
-    .sc-index .sc-bar:hover::after, .sc-index .sc-bar:focus-visible::after { color: #0af29f; }
-    .sc-index .sc-bar:focus-visible { outline: 2px solid #0af29f; outline-offset: 2px; border-radius: 4px; }
   }
 
   @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
@@ -2832,56 +2803,12 @@ tailwind.config = {
      tekst links en het scherm rechts; op telefoon staat precies dezelfde
      lijst, alleen onder elkaar. Dat is ook wat er zonder JavaScript en bij
      prefers-reduced-motion: reduce staat — één vorm, drie keer.
-     Naast de kop staat een springlijst van vier nummers. Het blok is lang,
-     want vier schermen die groot genoeg zijn om te lezen kosten ruimte, en
-     die lijst maakt het met een toetsenbord doorloopbaar.
      ========================================================================= -->
 <section class="band band-night band-kleef band-pad" aria-labelledby="hoe-titel">
   <div class="shell shell-rondleiding">
 
-    <div data-reveal class="lg:flex lg:items-end lg:justify-between lg:gap-10">
+    <div data-reveal>
       <h2 id="hoe-titel" class="text-h2 md:text-h1 on-dark max-w-[20ch]" data-inhoud="rondleiding.kop">Ontdek hoe Youbo werkt</h2>
-
-      <!-- De springlijst. Zelfde knoppen, zelfde HERHAAL-markeringen en zelfde
-           data-inhoud-sleutels als de streepjes in de oude kleefkaart; alleen
-           staan ze nu naast de kop en tonen ze hun nummer. -->
-      <div class="sc-index" data-scrolly-index>
-        <div class="sc-bars" role="group" aria-label="Spring naar een stap">
-          <!-- HERHAAL:rondleiding.stappen:BEGIN — één springknop per stap, gegenereerd. -->
-          <button type="button" class="sc-bar" data-scrolly-jump="0" aria-current="true"
-                  aria-label="Ga naar stap 1: Managers beslissen onderbouwd"
-                  data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.1.titel}: {rondleiding.stappen.1.titel}"
-                  data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.1.titel}"
-                  data-inhoud-aria-current="{eerste:rondleiding.stappen.1.titel}"
-                  data-cta="rondleiding-stap-1"
-                  data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.1.titel}"><span aria-hidden="true"></span></button>
-
-          <button type="button" class="sc-bar" data-scrolly-jump="1" aria-current="false"
-                  aria-label="Ga naar stap 2: Finance volgt de budgetten"
-                  data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.2.titel}: {rondleiding.stappen.2.titel}"
-                  data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.2.titel}"
-                  data-inhoud-aria-current="{eerste:rondleiding.stappen.2.titel}"
-                  data-cta="rondleiding-stap-2"
-                  data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.2.titel}"><span aria-hidden="true"></span></button>
-
-          <button type="button" class="sc-bar" data-scrolly-jump="2" aria-current="false"
-                  aria-label="Ga naar stap 3: Hr volgt de voortgang"
-                  data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.3.titel}: {rondleiding.stappen.3.titel}"
-                  data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.3.titel}"
-                  data-inhoud-aria-current="{eerste:rondleiding.stappen.3.titel}"
-                  data-cta="rondleiding-stap-3"
-                  data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.3.titel}"><span aria-hidden="true"></span></button>
-
-          <button type="button" class="sc-bar" data-scrolly-jump="3" aria-current="false"
-                  aria-label="Ga naar stap 4: Rewardletters in één klik"
-                  data-inhoud-aria-label="Ga naar stap {nummer:rondleiding.stappen.4.titel}: {rondleiding.stappen.4.titel}"
-                  data-inhoud-data-scrolly-jump="{nummer0:rondleiding.stappen.4.titel}"
-                  data-inhoud-aria-current="{eerste:rondleiding.stappen.4.titel}"
-                  data-cta="rondleiding-stap-4"
-                  data-inhoud-data-cta="rondleiding-stap-{nummer:rondleiding.stappen.4.titel}"><span aria-hidden="true"></span></button>
-          <!-- HERHAAL:rondleiding.stappen:EINDE -->
-        </div>
-      </div>
     </div>
 
     <div class="scrolly mt-8 md:mt-10" data-scrolly>
@@ -4357,46 +4284,17 @@ tailwind.config = {
   })();
 
   /* -------------------------------------------------------------------------
-     DE RONDLEIDING, STILSTAAND — blok 5
+     DE RONDLEIDING HEEFT GEEN SCRIPT MEER — blok 5
      ---------------------------------------------------------------------------
-     Er is geen mechanisme meer. Elk productscherm staat onder zijn eigen stap,
-     op telefoon én op desktop, en er is niets wat van stand verandert: geen
-     kleefkaart, geen leeslijn, geen scrollpositie die bepaalt wat je ziet.
-     De CSS zet de vier stappen op desktop naast hun scherm; zonder JavaScript,
-     en bij prefers-reduced-motion: reduce, blijft precies dezelfde lijst over.
-
-     Wat hier nog wel staat, is de springlijst naast de kop. Het blok is lang —
-     vier schermen die groot genoeg zijn om te lezen kosten nu eenmaal ruimte —
-     en vier knoppen die naar hun stap scrollen maken het met een toetsenbord
-     doorloopbaar in plaats van alleen scrollbaar. Ze dragen geen stand, dus
-     wordt aria-current hier weggehaald: de bouw schrijft het in de pagina
-     (data-inhoud-aria-current) omdat de vorige vorm het nodig had, en een
-     "huidige" knop die nooit verandert is een onwaarheid in de voorleesvolgorde.
+     Hier stond het script van de springlijst: vier knoppen naast de kop die
+     naar hun stap scrolden. Ze zijn op 2026-11-02 weg, en daarmee ook de reden
+     waarom ze er waren. Een besturing die alleen op scrollen werkt is met een
+     toetsenbord onbruikbaar, dus had de kleefkaart echte knoppen nodig. Nu
+     bedient scrollen niets meer: de vier stappen staan er gewoon, elk met haar
+     eigen nummer en haar eigen kop, en een schermlezer loopt ze af op kop.
+     Vier extra knoppen die naar zichtbare nummers wijzen voegden daar niets
+     aan toe.
      ------------------------------------------------------------------------- */
-  (function () {
-    var wortel = document.querySelector('[data-scrolly]');
-    var index  = document.querySelector('[data-scrolly-index]');
-    if (!wortel || !index) { return; }
-
-    var stappen = [].slice.call(wortel.querySelectorAll('[data-scrolly-step]'));
-    var knoppen = [].slice.call(index.querySelectorAll('[data-scrolly-jump]'));
-    if (!stappen.length || knoppen.length !== stappen.length) { return; }
-
-    var koppen = stappen.map(function (s) { return s.querySelector('.sc-titel') || s; });
-
-    knoppen.forEach(function (b) {
-      b.removeAttribute('aria-current');
-      b.addEventListener('click', function () {
-        var i = parseInt(b.getAttribute('data-scrolly-jump'), 10) || 0;
-        /* 32px boven de kop, zodat het streepje en het nummer mee in beeld
-           komen en de stap niet tegen de bovenrand geplakt begint. */
-        var y = window.pageYOffset + koppen[i].getBoundingClientRect().top - 32;
-        /* Geen behavior meegeven: de CSS bepaalt smooth of niet, en die staat
-           uit bij prefers-reduced-motion. */
-        window.scrollTo({ top: Math.max(0, y) });
-      });
-    });
-  })();
 
   /* -------------------------------------------------------------------------
      R7-01 · HET SCHERM VULT ZICH
@@ -4504,15 +4402,19 @@ tailwind.config = {
        weten, dan is dat het verschil tussen file_download en case_pdf_geopend,
        of een twintigste gebeurtenisnaam in de container.
 
-     EEN NAAM PER VOORVOEGSEL WAAR HET CMS DE HAAK MAAKT. De cases, de quotes,
-     de rondleidingstappen en de FAQ zijn lijsten die Jana in /beheer/ kan laten
-     groeien, en hun haak draagt dus een naam of een nummer uit de inhoud
-     (case-pdf-sd-worx, faq-prijs, rondleiding-stap-3). Een vaste tabel per haak
-     zou bij de zesde case stil niets meer meten — precies het soort stilte waar
-     deze repo elders overal tegen bouwt. Daarom staan die drie als voorvoegsel,
-     en wat er achter het voorvoegsel staat gaat als cta_detail mee. De vaste
-     tabel gaat eerst, anders valt rondleiding-boek-demo onder het voorvoegsel
-     "rondleiding-stap-".
+     EEN NAAM PER VOORVOEGSEL WAAR HET CMS DE HAAK MAAKT. De cases en de FAQ
+     zijn lijsten die Jana in /beheer/ kan laten groeien, en hun haak draagt dus
+     een naam of een nummer uit de inhoud (case-pdf-sd-worx, faq-prijs). Een
+     vaste tabel per haak zou bij de zesde case stil niets meer meten — precies
+     het soort stilte waar deze repo elders overal tegen bouwt. Daarom staan die
+     twee als voorvoegsel, en wat er achter het voorvoegsel staat gaat als
+     cta_detail mee. De vaste tabel gaat eerst, zodat een volledige naam altijd
+     wint van een voorvoegsel dat er toevallig op lijkt.
+
+     "rondleiding-stap-" stond hier tot 2026-11-02 als derde. De vier
+     springknoppen naast de kop van de rondleiding zijn weg — ze bedienden de
+     kleefkaart, en die bestaat niet meer — dus valt er niets meer te kiezen en
+     dus ook niets meer te meten.
 
      TOESTEMMING: WACHTRIJ, EN ALLEEN IN HET GEHEUGEN. Voor een keuze vertrekt
      er niets naar Google of LinkedIn. De gebeurtenis gaat in een wachtrij in
@@ -4636,8 +4538,7 @@ tailwind.config = {
        voorvoegsel staat, gaat als cta_detail mee. */
     var VOORVOEGSEL = [
       ['case-pdf-',         'case_pdf_geopend'],
-      ['faq-',              'vraag_opengeklapt'],
-      ['rondleiding-stap-', 'rondleiding_stap_gekozen']
+      ['faq-',              'vraag_opengeklapt']
     ];
 
     /* Deze haak wordt op het submit-event gemeten, niet op zijn klik. */
