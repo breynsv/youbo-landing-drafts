@@ -43,7 +43,6 @@ voet:
   taal_1: English
   taal_2: Nederlands
   taal_3: Français
-  nota: 'TODO — te bevestigen: de footer van youbo.io draagt een schakelaar English · Nederlands · Français. Deze pagina bestaat alleen in het Nederlands, dus staan die twee andere namen er zonder link. Zodra er een Engelse of Franse versie is, worden het weer echte links — op youbo.io vult footer.js ze uit data-url-en en data-url-fr — en dan hoort er ook hreflang in de head'
   copyright: Youbo by
   copyright_linktekst: Teal Partners
   entiteit: Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542

@@ -6,18 +6,17 @@ TITELS: één kop per sectie, nooit twee. De negen minititels boven de koppen zi
 FOOTER EN TOESTEMMING: de footer is sinds 2026-10-08 niet langer nagebouwd maar hún component zelf, ingesloten — de inhoud van /components/nl/footer.html van youbo.io, met hun klassenamen, hun volgorde en hun negen links, waaronder Nieuws dat in de versie van augustus nog in commentaar stond. Hij is daarmee licht geworden in plaats van zwart, want zo staat hij op hun site: wit met een lijn erboven. Ingesloten en niet opgehaald, omdat deze draft op breynsv.github.io staat waar /js/footer.js en /components/ niet bestaan en de footer dus leeg zou blijven; het blok draagt een comment met de twee regels die hem op hun server weer door footer.js laten vullen. Uit /css/global.css zijn alleen de 21 footerregels overgenomen, elk achter .yb-footer gezet — dat bestand in zijn geheel laden zou via 41 globale elementselectors de typografie en elk formulierveld van deze pagina herschrijven. De juridische paden zijn /nl/legal/cookie-policy.html, -responsible-disclosure-policy.html, -disclaimer.html en -gebruiksvoorwaarden.html, en de privacy policy staat op tealpartners.com. De ISO 27001:2022-badge staat als los element bóven de footer, want hun sitefooter draagt hem niet en Jana's campagneplan vraagt hem wel. Onderaan staat één smalle cookiebalk van één regel (gemeten 45px op 390px, was 111px), gestapeld bovenop de vaste demobalk; LinkedIn én Google laden pas na Toestaan, via laadMeettags(), met Consent Mode v2 op denied tot dan. Sinds 2026-10-09 is LinkedIn er echt — partner ID 10139124 — en laadt dus pas na Toestaan. Sinds 2026-10-12 is Google er ook: container GTM-MXTKMSBR, met de GA4-stroom van demo.youbo.io erin. Op 2026-10-15 is de toestemming nagelopen op de AVG en op drie punten bijgesteld: de zin noemt nu ook de advertentiecookies van LinkedIn (toestemming moet geïnformeerd zijn over álles wat laadt), Weigeren heeft dezelfde donkere rand als de tekst gekregen zodat hij even goed te zien is als Toestaan, en boven de footer staat «Cookievoorkeuren wijzigen» — intrekken moet even makkelijk zijn als toestemmen (AVG artikel 7, lid 3), en dat was het niet: de balk verdween na één klik voorgoed.
 HERO: de tekst komt eerst — kop, intro, knop — en het portret van Nick staat eronder op telefoon en ernaast op desktop. Dat is Jana's uitdrukkelijke vraag in ronde 3; in ronde 2 stond de foto bovenaan. De cijferregel en het blokje "Bonus & Merit" zijn uit de hero weg, en de fotoplek is vervangen door de echte foto (assets/img/nick-portret.webp, 900×1140 — exact het formaat dat BRIEF-R3.md noemt). Op 2026-10-16 is dat portret variant 1 uit hero-varianten-nick.html geworden: klein en rond, 176 beeldpunten, dezelfde vorm als bij het formulier. De rechthoek met de dunne rand is daarmee weg — dat kader was waar Jana over viel — en Nick weegt nog ongeveer een achtste van wat hij woog.
 LOGOBALK: NEGEN echte logo's sinds 2026-10-08, geen tekstzetting meer. De vier SVG's die er stonden (SD Worx, DPG Media, Kaneka, Aertssen Group) blijven — die bestaan in twee polariteiten en een PNG daarvoor inruilen is achteruit — en Anchr, Crelan, Axi, Mourik en Protime komen uit de map die Bart De Nil doorstuurde. Protime kwam er als laatste bij: het stond bij ons als integratiepartner genoteerd en er was eerder gevraagd de vermelding weg te laten, maar Bart bevestigde op 2026-10-08 dat Protime óók klant is, dus hoort het in een balk die zegt dat deze bedrijven Youbo vertrouwen. De zichtbare vraag eronder is daarmee beantwoord en weg. Verder ongewijzigd: een doorlopende marquee met maskers aan beide randen, pauze bij hover en focus, en bij prefers-reduced-motion de statische rij. De tussenruimte blijft op 44 → 170px per breekpunt, want de reeks is uit zichzelf al ruim breder dan de balk; gemeten over 60 standen van één volle reeks raken er 2 tot 4 van de 9 items de balk op 390px en 4 tot 5 op 1440px, en op geen enkele stand staat een naam twee keer in beeld. Het tempo stond op 15,8 à 15,9 px/s — Jana's vraag in ronde 3 was dat van figures.hr — en staat sinds 2026-11-02 op 23,9 px/s omdat Jelle de balk te traag vond en Jana zich daarbij aansloot. De duur loopt per breekpunt mee met de reeksbreedte, want één vaste duur geeft bij een bredere reeks een hoger tempo.
-CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px). Sinds Anchr op 2026-10-08 een echt logo kreeg, is het TODO-blokje op die kaart weg en is die leegte opnieuw gemeten op 340px, nu in Kaneka en Anchr; de volgorde ligt vast in het campagneplan, dus de knip blijft waar hij staat.
+CASES: geen carrousel meer op desktop maar een raster van vijf kaarten in twee rijen — drie smalle boven, twee brede onder — zonder kop erboven, met het voordeel als anker en de cijfers als opsomming, in de volgorde Kaneka · Anchr · Aertssen Group · SD Worx · DPG Media. Die volgorde en de sectoromschrijvingen komen sinds 2026-10-06 letterlijk uit Jana's eigen campagneplan; wij hadden de laatste twee omgedraaid. Jana noemt dit het meest overtuigende blok van de pagina, dus is het blok gemeten in plaats van beredeneerd: elke kaart heeft dezelfde vier blokken in dezelfde maatvoering en dezelfde voet met de downloadlink, en de rijverdeling drie-plus-twee is die waarin de minste leegte overblijft (185px tegen 334px in ronde 3 en 366px bij twee brede boven, gemeten op 1440px). Sinds Anchr op 2026-10-08 een echt logo kreeg, is die leegte opnieuw gemeten op 340px, nu in Kaneka en Anchr; de volgorde ligt vast in het campagneplan, dus de knip blijft waar hij staat.
 RONDLEIDING: het meescrollende blok bestaat alleen nog naast elkaar, vanaf 1024px, met één leeslijn op precies de helft van de vensterhoogte. Op telefoon staat per stap eerst de tekst en dan het scherm — Jana's vraag — en dat kan niet samen met een kaart die bovenaan vastkleeft, want die staat altijd bóven de tekst. De knop Boek een demo midden in dat blok is op desktop weg, en het losse brede blok Merit cycle 2027 is geschrapt: het herhaalde de cijfers van stap 1 en stap 3.
 HET GROTE CIJFER: de aanpak van draft-r2-04 overgenomen. Één doorlopende zin op displayformaat met 19.000 en 21 inline in dezelfde maat, alleen in kleur onderscheiden. In ronde 2 stond 19.000 op een eigen regel van 40/56px en 21 in gewone koptekst; dat verschil was Jana's klacht. Het optellen van die twee getallen is er in deze ronde uit: gemeten stonden er tijdens die 900ms 107 verschillende volledige zinnen op de pagina die alle 107 feitelijk onjuist waren.
-QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. Alle vijf de quotes hebben sinds 2026-10-06 een echte foto: de klant leverde bart-verhoeven.webp, joris-valkenborgh.webp en evi-van-der-vliet.webp aan (alle drie 320×320, vierkant, hoofd gecentreerd), naast de bestaande pieter-jan.webp en mieke-catthoor.webp. De lege fotoplek en de fotoTODO zijn daarmee weg. Portretten blijven 56px, want marlies.png in het caseblok is maar 360×360 en breekt boven ±120px. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr draagt sinds 2026-10-08 ook hier een echt logo: één mint-groen bestand doet beide banden, gemeten 4,8:1 op de donkere band.
+QUOTES: niet meer alle vijf tegelijk, maar één veegbare rij met scroll-snap — op telefoon één per keer, op desktop twee volledig plus een derde die half in beeld begint, want dat halve kaartje zegt zonder woorden dat er nog volgen. Pijlen vanaf md, vijf puntjes als telling. Alle vijf de quotes hebben sinds 2026-10-06 een echte foto: de klant leverde bart-verhoeven.webp, joris-valkenborgh.webp en evi-van-der-vliet.webp aan (alle drie 320×320, vierkant, hoofd gecentreerd), naast de bestaande pieter-jan.webp en mieke-catthoor.webp. De lege fotoplek is daarmee weg. Portretten blijven 56px, want marlies.png in het caseblok is maar 360×360 en breekt boven ±120px. Het klantlogo staat bovenaan de kaart en de functieregel noemt alleen de functie, zodat een schermlezer de klantnaam niet twee keer hoort. Anchr draagt sinds 2026-10-08 ook hier een echt logo: één mint-groen bestand doet beide banden, gemeten 4,8:1 op de donkere band.
 FAQ: de tekst staat sinds 2026-10-09 NIET MEER IN DIT BESTAND. Ze komt uit content/faq.yml en wordt bij de bouw hierin gezet door build-faq.mjs, dat meeloopt in het ene build command van Cloudflare Pages (node stamp-version.mjs). De blokken tussen FAQ-LIJST:BEGIN/EINDE en FAQ-JSONLD:BEGIN/EINDE zijn dus gegenereerd: aanpassen heeft hier geen zin, want de volgende bouw overschrijft het. Reden: Jana verfijnt de antwoorden zelf met Nick en Bart, en dat was het enige dat de oplevering nog tegenhield — nu kan ze dat zonder ontwikkelaar. Het gebouwde resultaat staat in git omdat GitHub Pages dit bestand rechtstreeks serveert, zonder build; `node build-faq.mjs --check` zegt of het nog overeenkomt. De zichtbare tekst is woord voor woord die van de vorige versie. Alleen de FAQ werkt zo; de cases, de quotes en de hero blijven HTML, want dit is een proef en geen verbouwing.
 FORMULIER: Nicks ronde foto (nick-rond.webp) staat naast de intro, en die intro draagt zijn volledige naam. De functietitel «reward expert» stond er sinds 2026-10-06 bij en is er op 2026-10-19 weer af: Nick is er zelf niet comfortabel mee (Jana, ronde 4). Het formulier komt eerst; eronder staat in de kleine zetting één rustig blok met één alternatief: "Of boek direct een afspraak in Nicks agenda", als echte link. Zijn e-mailadres en telefoonnummer stonden daar tot 2026-10-19 bij en staan nu alleen nog op de bedankpagina — Jana vond drie keuzes naast elkaar "wat too much". Die gegevens stonden er in ronde 1, verdwenen in ronde 2 samen met de geschrapte zin "Liever meteen met iemand spreken" en zijn nu door Jana bevestigd — de gegevens komen dus terug, die zin niet. Het kader "Liever meteen iemand spreken" en de hint "Bij voorkeur je werkadres" zijn weg, het label Bericht is "Stel gerust al je vragen" geworden en de nieuwsbriefregel staat er letterlijk zoals Jana hem schreef, met "1x kwartaal" en met de slotpunt — ronde 3 had daar ongemerkt "1× per kwartaal" van gemaakt.
 VASTE BAND: terug, en nu écht permanent in beeld — ook vóór de cookiekeuze. In ronde 3 wachtte hij op die keuze, waardoor Jana's punt 10 onzichtbaar was voor élke nieuwe bezoeker; hij zet zelf geen cookie, dus is er ook geen reden om te wachten. De cookiebalk staat nu als smalle strook bovenóp hem in één vaste omhulling. Eén actie: Boek een demo. Hij verdwijnt zodra #demo in beeld komt — IntersectionObserver, met 96px marge zodat hij weg is vóórdat hij de kop van die sectie raakt — en ruimte() meet de hoogte van de omhulling (dus de som van wat er staat, niet het maximum van de twee) en zet die als padding-bottom op body, zodat geen van beide over de laatste regels van de footer valt. Gemeten op 390px: 45 + 69 = 114px samen, 69px zodra de cookiebalk weg is. x-show zet display:none, dus een knop in een balk die er niet staat, staat ook niet in de tabvolgorde. Bij prefers-reduced-motion verschijnen ze beide zonder overgang.
 STRUCTUUR: exact de volgorde van Jana's ChatGPT-concept (hero · logobalk · drie genummerde kernblokken · cases · hoe het werkt · het grote cijfer · EU Pay Transparency én de hr-tools · quotes · faq · formulier · footer). EU Pay Transparency en de hr-tools waren twee banden en zijn er in ronde 3 één: Jana noemt ze qua belang gelijkwaardig en wil ze op desktop naast elkaar, en naast elkaar bestaat niet over twee banden heen.
 LOGO'S PER SECTIE: logobalk en cases staan op licht en dragen de -dark varianten van de vier SVG's; de vijf PNG-logo's van 2026-10-08 zijn volkleurenbestanden en hebben geen tweede versie nodig. Protime staat alleen op de lichte balk: op donker verdwijnt het grijze «time» bijna. De hr-tools dragen sinds ronde 3 geen enkel logo meer — het zijn functies met een zelfgetekend icoon, zodat de pagina niet meer wacht op het antwoord of de merklogo's getoond mogen worden. De quotes staan op de donkere verloopband en dragen daar de originele witte uitsparingen. Het Youbo-woordmerk staat nu drie keer op licht — hero, vaste band en footer — en dus overal als youbo_logo.svg; sinds de footer hun eigen, witte component is, gebruikt deze pagina youbo_logo_white.svg nergens meer.
 AFWIJKING VAN DE TOKENS: geen enkele nieuwe kleurwaarde. De enige afgeleiden zijn witte transparanties (72%, 16%, 6%) voor secundaire tekst, randen en vlakken op de donkere banden — het systeem documenteert daar geen aparte token voor, en #547068 op zwart haalt de contrastdrempel niet.
-TODO OP DE PAGINA: waar de bronnen elkaar tegenspreken staat een zichtbaar TODO-blokje in plaats van een gekozen cijfer. Jana besliste op 2026-10-05 over SD Worx (21 landen), Kaneka (204 medewerkers) en DPG Media (6.214, van 2 weken naar 2 dagen); die drie blokjes zijn weg. Op 2026-10-06 zijn er drie blokjes bij weggevallen, elk omdat de vraag een antwoord kreeg: Nicks achternaam en functietitel (Nick Van Langendonck, reward expert — die titel is op 2026-10-19 weer weggehaald), de merklogo's bij de hr-tools (Jana: "Ik denk dat die icoontjes beter zijn, laten we het daar op houden") en de ontbrekende quotefoto's (alle drie aangeleverd). Op 2026-10-08 vielen er drie bij weg, alle drie doordat Bart De Nil de klantlogo's doorstuurde: het logobestand van Anchr op de casekaart, dezelfde vraag op de quoteband, en de vraag of Protime als klant in de logobalk hoort — Bart antwoordde diezelfde dag dat Protime effectief ook klant is, dus rolt het logo mee en is het blokje eronder weg. Op 2026-10-15 viel het kader over de case-pdf's weg: Jana stuurde ze alle vijf door en de downloadlinks wijzen nu naar een echt bestand. Op 2026-10-16 vielen de laatste vier weg, in één mail van Jana: Aertssen zit in 2 landen, en de drie kaarten die hun eigen pdf tegenspraken zijn gelijkgetrokken mét die pdf's — "we hoopten de meest recente cijfers goedgekeurd te krijgen, maar dat is niet gelukt, dus we handhaven de cijfers uit de pdfs". Op 2026-10-19 viel de agendalink weg: die stond al in Jana's eigen case-pdf's. Open blijven: de integratielijst en het antwoord op "hoeveel kost het". De volgorde van de cases is op 2026-10-06 door het campagneplan beslecht en is geen TODO meer.
-NEEDS FROM CLIENT: (0) het Google meet-id (GTM-container of GA4) — het LinkedIn partner ID is er wél: 10139124, ingevuld op 2026-10-09; (1) — vervallen op 2026-10-19: de agendalink van Nick bestaat en staat onder het formulier; hij zat in de case-pdf's van Jana; (2) — vervallen op 2026-10-08: het logobestand van Anchr is er, en dat éne mint-groene bestand werkt op licht én op donker; (3) — vervallen op 2026-10-15: de vijf case-pdf's zijn er, staan in cases/ en openen in een nieuw tabblad; pro forma legt Jana ze nog voor aan de vijf bedrijven, dus kan er nog een vervangen worden — zelfde bestandsnaam, dan hoeft er aan de pagina niets te veranderen; (4) — vervallen op 2026-10-08: Bart De Nil bevestigde dat Protime ook klant is, dus staat het logo in de balk; het blijft daarnaast integratiepartner, en dat is geen tegenspraak; (5) het landental van Aertssen, dat in haar eigen campagneplan als X geschreven staat en dus bij Bart of Nick ligt — de 130 managers bij DPG Media komen in dat campagneplan niet voor en zijn van de pagina af; (6) de juiste integratielijst; (7) het antwoord op de prijsvraag; (8) — half vervallen op 2026-10-09: Jana stuurde de installatiemail van LinkedIn door, dus is het partner ID binnen (10139124, advertentieaccount YouboMerit) en is de Insight Tag actief achter de cookiebalk; open blijft het endpoint waar het formulier naartoe post; (9) de beslissing over de talen — de pagina is NL-only en de footer van youbo.io draagt sinds kort een schakelaar English/Nederlands/Français; zolang er geen vertaling is, staan die twee andere namen in de footer zonder link, en bij een ja horen er ook twee adressen bij (data-url-en en data-url-fr) plus hreflang in de head.
+OPEN PUNTEN: geen meer op de pagina. Alle cijfers, logo’s, foto’s, case-pdf’s en de agendalink van Nick zijn aangeleverd en verwerkt. Wat er technisch nog in te vullen valt staat als lege waarde in de meetcode onderaan: de conversie-id’s van LinkedIn, en de sitesleutel van Turnstile als dat ooit aangezet wordt.
 DE CIJFERS OP DE KAARTEN KOMEN UIT DE PDF'S, en dat is sinds 2026-10-16 de regel. Jana koos op 2026-10-05 nog nieuwere cijfers (Kaneka 204, SD Worx 21 landen, DPG Media 6.214), maar die raakten bij de bedrijven niet goedgekeurd, dus gelden de cijfers van de case-pdf die onder elke kaart hangt: Kaneka 370 medewerkers, SD Worx 18 landen, DPG Media 1.500 Belgische medewerkers en 130 leidinggevenden, Aertssen 450 bedienden in 2 landen. Dat is geen smaakkwestie maar een controleerbare: de bezoeker heeft die pdf één klik verderop in handen, dus elk cijfer dat ervan afwijkt is voor hém een fout. Wijzigt er ooit een pdf, dan wijzigt de kaart mee. Let op: de 19.000 medewerkers in 21 landen in de paginabeschrijving staan hier los van — dat is het totaalcijfer van Youbo zelf uit FACTS.md, niet dat van SD Worx.
 -->
 <html lang="nl-BE">
@@ -283,7 +282,7 @@ tailwind.config = {
     .card-inv { @apply rounded-sm; background: var(--inv-fill);
                 border: 1px solid var(--inv-line); }
 
-    /* ---- het zichtbare TODO-blokje, volledig binnen het palet --------------- */
+    /* ---- de zichtbare nota, volledig binnen het palet ---------------------- */
     .todo { @apply block rounded-sm border border-dashed border-line-btn bg-surface
                    px-4 py-3 text-caption text-ink-soft; }
     .todo b { @apply font-bold text-brand-ink; }
@@ -904,20 +903,21 @@ tailwind.config = {
      1 · DE RIJVERDELING IS OMGEKEERD: DRIE SMALLE BOVEN, TWEE BREDE ONDER.
      De leegte in een kaart is niets anders dan het hoogteverschil met de
      hoogste kaart van dezelfde rij, en dat verschil is hier bijna helemaal
-     één ding: het zichtbare TODO-blokje. Na het campagneplan van 2026-10-06
-     dragen alleen Anchr en Aertssen Group er nog één, en dat zijn kaart twee
-     en drie. Zet je de knip na kaart twee, dan belandt de TODO van Aertssen
-     in de ONDERSTE rij, naast de twee kaarten die er geen hebben, en betaal
-     je hem twee keer. Zet je de knip na kaart drie, dan staan beide TODO's
-     in de bovenste rij en is de onderste rij vlak.
+     één ding: de zichtbare nota op een kaart. Na het campagneplan van
+     2026-10-06 droegen alleen Anchr en Aertssen Group er nog één, en dat zijn
+     kaart twee en drie. Zet je de knip na kaart twee, dan belandt de nota van
+     Aertssen in de ONDERSTE rij, naast de twee kaarten die er geen hebben, en
+     betaal je haar twee keer. Zet je de knip na kaart drie, dan staan beide
+     nota's in de bovenste rij en is de onderste rij vlak.
 
-     BIJGESTELD OP 2026-10-08. Anchr heeft nu een logobestand, dus is dat
-     TODO-blokje weg en draagt alleen Aertssen Group er nog één. Daarmee klopt
+     BIJGESTELD OP 2026-10-08. Anchr heeft nu een logobestand, dus is die
+     nota weg en draagt alleen Aertssen Group er nog één; sinds 2026-10-16
+     draagt geen enkele kaart er nog een. Daarmee klopt
      het getal hieronder niet meer: opnieuw gemeten op 1440px is de som van de
      leegte 340px in plaats van 185px, en zit ze nu in Kaneka (155) en Anchr
      (155) in plaats van in Kaneka (155) en DPG Media (31). De knip blijft
      na kaart drie staan — de volgorde van de vijf kaarten ligt vast in Jana's
-     campagneplan en is dus geen vrije variabele meer, en met één TODO in
+     campagneplan en is dus geen vrije variabele meer, en met één nota in
      plaats van twee valt er in de bovenste rij niets meer te verplaatsen.
      Het blok eronder is de redenering van toen, met de getallen van toen:
 
@@ -948,13 +948,13 @@ tailwind.config = {
      3 · DE VOET IS EEN VOET. De downloadlink stond met mt-auto onderaan, maar
      zonder iets wat die onderkant markeerde: de leegte lag tússen de tekst en
      een losse link. Nu staat de link in een voet over de volle kaartbreedte
-     met een haarlijn erboven, en zit de TODO-regel daar vlak boven in plaats
+     met een haarlijn erboven, en zit een nota daar vlak boven in plaats
      van midden in de cijfers. Daarmee is wat overblijft "ruimte boven de
      voet" in plaats van "een gat na de laatste regel" — in élke kaart op
      dezelfde plek. De link blijft een tekstlink met zijn icoon; Jana vroeg
      uitdrukkelijk om géén brede knop, en er komt er ook geen bij.
 
-     De voet heeft geen eigen vlak. Het TODO-blokje is al een vlak (bg-surface
+     De voet heeft geen eigen vlak. Een nota is zelf al een vlak (bg-surface
      met stippellijn) en twee getinte banden boven elkaar lezen als één vlek.
      Een haarlijn in de randkleur van de huisstijl volstaat om de onderkant te
      begrenzen. Geen nieuwe kleurwaarde, geen overflow: hidden — de
@@ -1069,12 +1069,12 @@ tailwind.config = {
   .case-foot  { padding: 16px 24px; border-top: 1px solid #e1ebf0; }
 
   /* ---------------------------------------------------------------------
-     HET TODO-KADER STAAT OP TELEFOON ONDER DE RIJ, NIET IN DE KAART
+     DE NOTA STAAT OP TELEFOON ONDER DE RIJ, NIET IN DE KAART
      ---------------------------------------------------------------------
      Onder lg is dit een veegbare rij met scroll-snap, en in zo'n rij krijgt
-     ELKE kaart de hoogte van de hoogste. De hoogste is Aertssen Group, want
-     die draagt als enige nog een zichtbaar TODO-kader, en dat kader meet op
-     360 beeldpunten 161px plus 16px marge. Die 177px betaalden alle vijf de
+     ELKE kaart de hoogte van de hoogste. Toen één kaart nog een zichtbare
+     nota droeg, was zij de hoogste: dat kader meet op 360 beeldpunten 161px
+     plus 16px marge. Die 177px betaalden alle vijf de
      kaarten mee: gemeten op 360 bleef er bij SD Worx en DPG Media 246px leeg
      tussen de sectorregel en de voet, bij Kaneka 223,5px. Bijna een half
      scherm, en het leest als een kaart die stuk is.
@@ -1092,15 +1092,14 @@ tailwind.config = {
      Het kader compacter zetten (13px, smallere marges) haalde het gat van
      246 naar 186,7px op 360. Dat is minder lelijk en nog altijd een gat.
 
-     DUS VERHUIST HET KADER, EN VERDWIJNT HET NIET. Op telefoon staat het
-     onder de puntjes, naast het TODO-kader dat daar al over de case-pdf's
-     staat — twee open punten van dezelfde sectie, in dezelfde vorm en op
-     dezelfde breedte. Grootste gat in een kaart: van 246 naar 69px op 360 en
+     DUS VERHUIST HET KADER, EN VERDWIJNT HET NIET. Op telefoon staat een
+     nota onder de puntjes, in dezelfde vorm en op dezelfde breedte als de
+     rij erboven. Grootste gat in een kaart: van 246 naar 69px op 360 en
      van 223,5 naar 52,8px op 390, en de sectie wordt er 14,5px korter van.
 
      Vanaf lg verandert er niets. Daar is het een raster van drie plus twee,
-     daar is geen gedeelde rijhoogte over een veegrij heen, en daar hoort het
-     kader in de kaart waar het over gaat. Gemeten op 1024 en 1440: dezelfde
+     daar is geen gedeelde rijhoogte over een veegrij heen, en daar hoort de
+     nota in de kaart waar ze over gaat. Gemeten op 1024 en 1440: dezelfde
      kaarthoogtes als voorheen, tot op de px.
      --------------------------------------------------------------------- */
   /* De plek die de bouw herhaalt. Leeg is hij nul beeldpunten hoog, en met
@@ -1135,9 +1134,9 @@ tailwind.config = {
      Drie regels die hetzelfde zeggen: je hoeft dit formulier niet in te
      vullen. Ze staan dus als één blok en niet als drie losse alinea's met de
      gewone alinea-afstand ertussen; `.alt-weg` is enkel die groepering, geen
-     eigen vlak. Een tweede getint vlak naast het TODO-blokje (dat al
-     bg-surface met een stippellijn is) zou als één vlek lezen — dezelfde
-     afweging als bij de voet van de casekaarten.
+     eigen vlak. Een tweede getint vlak naast een nota (die al bg-surface met
+     een stippellijn is) zou als één vlek lezen — dezelfde afweging als bij de
+     voet van de casekaarten.
 
      DE KLEUR. #00718c, dezelfde als `text-link-licht` elders op de pagina en
      als de focusomlijning op licht: 5,61:1 op wit, dus ruim boven de 4,5:1
@@ -1150,7 +1149,7 @@ tailwind.config = {
      DE FOCUSOMLIJNING. Niets aan deze constructie snijdt hem af. Er is geen
      overflow: hidden tussen hier en de sectie, en de ring heeft 2px dikte plus
      2px offset nodig: boven de e-mailregel zit 8px (mt-2) en onder het blok
-     12px (mt-3) voor het TODO-blokje, in beide gevallen meer dan de 4px die de
+     12px (mt-3) onder het blok, in beide gevallen meer dan de 4px die de
      ring vraagt. De ring staat niet op de hele regel maar op de link zelf,
      want dat is wat de focus heeft.
 
@@ -1471,11 +1470,9 @@ tailwind.config = {
     .yb-footer .footer-languages { gap: 24px; }
   }
 
-  /* De twee stukjes van dit blok die niet uit hun stijlblad komen: het
-     TODO-kader over de talen (46rem breed, want 1080px is geen leesregel) en
-     de ondernemingsregel onder het copyright. De inerte taalnamen erven de
+  /* Het ene stukje van dit blok dat niet uit hun stijlblad komt: de
+     ondernemingsregel onder het copyright. De inerte taalnamen erven de
      tekstkleur van .yb-footer a/p en staan dus op 5,39:1. */
-  .yb-footer .footer-talen-todo { max-width: calc(46rem + 48px); margin: 0 auto 40px; padding: 0 24px; }
   .yb-footer .footer-entiteit { margin-top: 8px; }
   .yb-footer .inert-language { color: var(--color-grey-700); }
 
@@ -2533,13 +2530,8 @@ tailwind.config = {
      datzelfde document komen ook de sectoromschrijvingen letterlijk, en de
      kop van DPG Media: "7× sneller", bij 6.214 medewerkers in 2 landen. De
      oudere kop "van 2 weken naar 2 dagen" kwam uit haar ChatGPT-concept en is
-     weg, net als de TODO over de 130 managers — dat getal staat in haar
-     campagneplan nergens, dus valt er niets meer te bevestigen.
-
-     Bij Aertssen Group blijft er wél een TODO, en nu mét bewijs: haar eigen
-     document schrijft daar letterlijk "450 bedienden in X landen", met de X
-     erin. Het landental is dus ook bij de klant onbekend en ligt bij Bart of
-     Nick, niet bij Jana.
+     weg, net als het getal van 130 managers — dat staat in haar campagneplan
+     nergens.
 
      Op telefoon blijft het een veegbare rij met scroll-snap, want vijf
      kaarten onder elkaar is daar een halve pagina scrollen.
@@ -2555,8 +2547,8 @@ tailwind.config = {
      anker (niet het aantal medewerkers — dat is Jana's eigen regel), en de
      cijfers eronder als opsomming in plaats van als zin. Elke kaart heeft
      dezelfde blokken in dezelfde maatvoering en onderaan dezelfde voet
-     met de downloadlink; de TODO-blokjes staan vlak boven die voet in plaats
-     van midden tussen de cijfers.
+     met de downloadlink; een nota staat vlak boven die voet in plaats van
+     midden tussen de cijfers.
 
      BOVEN DIE CIJFERS STAAT SINDS 2026-10-10 ÉÉN ZINSNEDE, OP ELKE KAART
      DEZELFDE: "Gebruikt Youbo voor". Ze komt uit Jana's eigen opmerking van
@@ -2613,7 +2605,7 @@ tailwind.config = {
             </div>
           </div>
           <div class="case-slot">
-            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.1.nota" data-inhoud="cases.items.1.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.1.nota" data-inhoud="cases.items.1.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
               <a href="cases/youbo-case-kaneka.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-kaneka" data-bladen="cases/preview/kaneka-1.svg, cases/preview/kaneka-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.1.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.1.bedrijf}-1.svg, cases/preview/{slug:cases.items.1.bedrijf}-2.svg" data-inhoud-href="cases.items.1.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2641,7 +2633,7 @@ tailwind.config = {
             </div>
           </div>
           <div class="case-slot">
-            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.2.nota" data-inhoud="cases.items.2.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.2.nota" data-inhoud="cases.items.2.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
               <a href="cases/youbo-case-anchr.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-anchr" data-bladen="cases/preview/anchr-1.svg, cases/preview/anchr-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.2.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.2.bedrijf}-1.svg, cases/preview/{slug:cases.items.2.bedrijf}-2.svg" data-inhoud-href="cases.items.2.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2669,7 +2661,7 @@ tailwind.config = {
             </div>
           </div>
           <div class="case-slot">
-            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.3.nota" data-inhoud="cases.items.3.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.3.nota" data-inhoud="cases.items.3.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
               <a href="cases/youbo-case-aertssen-group.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-aertssen-group" data-bladen="cases/preview/aertssen-group-1.svg, cases/preview/aertssen-group-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.3.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.3.bedrijf}-1.svg, cases/preview/{slug:cases.items.3.bedrijf}-2.svg" data-inhoud-href="cases.items.3.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2697,7 +2689,7 @@ tailwind.config = {
             </div>
           </div>
           <div class="case-slot">
-            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.4.nota" data-inhoud="cases.items.4.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.4.nota" data-inhoud="cases.items.4.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
               <a href="cases/youbo-case-sd-worx.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-sd-worx" data-bladen="cases/preview/sd-worx-1.svg, cases/preview/sd-worx-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.4.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.4.bedrijf}-1.svg, cases/preview/{slug:cases.items.4.bedrijf}-2.svg" data-inhoud-href="cases.items.4.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2725,7 +2717,7 @@ tailwind.config = {
             </div>
           </div>
           <div class="case-slot">
-            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.5.nota" data-inhoud="cases.items.5.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+            <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-todo" data-herhaal-weg-als-leeg="cases.items.5.nota" data-inhoud="cases.items.5.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
             <div class="case-foot">
               <a href="cases/youbo-case-dpg-media.pdf" class="caselink" target="_blank" rel="noopener" data-cta="case-pdf-dpg-media" data-bladen="cases/preview/dpg-media-1.svg, cases/preview/dpg-media-2.svg" data-inhoud-data-cta="case-pdf-{slug:cases.items.5.bedrijf}" data-inhoud-data-bladen="cases/preview/{slug:cases.items.5.bedrijf}-1.svg, cases/preview/{slug:cases.items.5.bedrijf}-2.svg" data-inhoud-href="cases.items.5.downloadlink">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4 shrink-0" aria-hidden="true"><path d="M7 3h7l4 4v14H7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 3v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-inhoud="cases.downloadtekst">Download de case (pdf)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="pijl h-4 w-4 shrink-0" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2765,12 +2757,11 @@ tailwind.config = {
       </template>
     </div>
 
-    <!-- DE OPEN PUNTEN VAN DE KAARTEN, OP TELEFOON HIER IN PLAATS VAN IN DE
-         KAART. Waarom, en met welke getallen gemeten: zie "HET TODO-KADER
-         STAAT OP TELEFOON ONDER DE RIJ" bij de stijlbladen. Het kader zelf
-         blijft staan — het is een openstaand punt van de klant en hoort
-         zichtbaar te zijn; alleen de plek verschilt per breedte. Vanaf lg is
-         dit onzichtbaar en staat het kader in de kaart, waar het hoort.
+    <!-- DE NOTA'S VAN DE KAARTEN, OP TELEFOON HIER IN PLAATS VAN IN DE
+         KAART. Waarom, en met welke getallen gemeten: zie "DE NOTA STAAT OP
+         TELEFOON ONDER DE RIJ" bij de stijlbladen. Vandaag draagt geen enkele
+         kaart er een; de vorm blijft staan voor als dat verandert. Vanaf lg
+         staat ze in de kaart, waar ze hoort.
 
          Het is dezelfde lijst als hierboven en dus dezelfde markering: één
          nota per case, en een case zonder nota levert niets. De <div> eromheen
@@ -2779,23 +2770,23 @@ tailwind.config = {
          volgende bouw geen vorm meer. Hij is leeg nul beeldpunten hoog. -->
     <!-- HERHAAL:cases.items:BEGIN — gegenereerd uit content/klanten.yml door build-inhoud.mjs. -->
       <div class="case-notaplek">
-        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.1.nota" data-inhoud="cases.items.1.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.1.nota" data-inhoud="cases.items.1.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
       </div>
 
       <div class="case-notaplek">
-        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.2.nota" data-inhoud="cases.items.2.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.2.nota" data-inhoud="cases.items.2.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
       </div>
 
       <div class="case-notaplek">
-        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.3.nota" data-inhoud="cases.items.3.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.3.nota" data-inhoud="cases.items.3.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
       </div>
 
       <div class="case-notaplek">
-        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.4.nota" data-inhoud="cases.items.4.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.4.nota" data-inhoud="cases.items.4.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
       </div>
 
       <div class="case-notaplek">
-        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.5.nota" data-inhoud="cases.items.5.nota"><b>TODO — te bevestigen bij Jana</b>: de kaart zegt 204 medewerkers, haar eigen case-pdf zegt er 370. Op 2026-10-05 koos ze 204; de pdf die hieronder te downloaden is, zegt iets anders</span> HERHAAL-NIETS-TE-ZEGGEN-->
+        <!--HERHAAL-NIETS-TE-ZEGGEN <span class="todo case-nota-telefoon max-w-prose" data-herhaal-weg-als-leeg="cases.items.5.nota" data-inhoud="cases.items.5.nota"></span> HERHAAL-NIETS-TE-ZEGGEN-->
       </div>
     <!-- HERHAAL:cases.items:EINDE -->
 
@@ -3095,8 +3086,6 @@ tailwind.config = {
          en stap 3 van de rondleiding hierboven al tonen. Twee keer hetzelfde
          cijfer op één pagina is geen bevestiging maar een uitnodiging om te
          gaan natellen. Het blok is dus geschrapt in plaats van uitgelijnd. -->
-
-    <p class="todo-inv mt-8" data-inhoud="rondleiding.nota"><b>TODO — te bevestigen</b>: de vier schermen zijn nagetekend met eigen, sluitende voorbeeldcijfers uit één demodataset, omdat het bestaande hero-scherm van youbo.io dezelfde medewerker op twee verschillende bedragen zet. Zodra er toegang is tot de app vervangen we ze door echte schermen met geanonimiseerde data</p>
   </div>
 </section>
 
@@ -3319,7 +3308,7 @@ tailwind.config = {
 
      · De fotoplek was daar GEEN bolletje met initialen en geen grijs silhouet,
        maar een stippellijncirkel met het woord "foto" erin, en de reden stond
-       als leesbare regel ONDER de naam ("TODO — foto nodig"). Dat is op
+       als leesbare regel ONDER de naam. Dat is op
        2026-10-06 overbodig geworden: de klant leverde bart-verhoeven.webp,
        joris-valkenborgh.webp en evi-van-der-vliet.webp aan, dus staan er nu
        vijf echte portretten en is er geen lege plek meer om te ontwerpen.
@@ -3526,10 +3515,9 @@ tailwind.config = {
       </template>
     </div>
 
-    <!-- Geen TODO meer in dit blok. De fotoTODO verviel op 2026-10-06 met de drie
-         ontbrekende portretten; de logoTODO verviel op 2026-10-08 met het logo van
-         Anchr. Dat ene bestand doet beide polariteiten: mint op bijna zwart is
-         hier zelfs leesbaarder dan op de lichte band. -->
+    <!-- De drie ontbrekende portretten kwamen op 2026-10-06 binnen, het logo van
+         Anchr op 2026-10-08. Dat ene bestand doet beide polariteiten: mint op
+         bijna zwart is hier zelfs leesbaarder dan op de lichte band. -->
   </div>
 </section>
 
@@ -3681,9 +3669,8 @@ tailwind.config = {
        hoofdweg; rechtstreeks boeken is het alternatief en staat dus ónder het
        formulier in de kleine zetting, niet ernaast in een eigen kader. Het
        kader "Liever meteen iemand spreken" is weg, zoals gevraagd.
-     · DE LINK NAAR NICKS AGENDA BESTAAT NIET. Er staat dus geen knop en geen
-       href="#": alleen de regel en een zichtbare TODO. Een knop die nergens
-       naartoe gaat is in een review niet van een werkende te onderscheiden.
+     · DE LINK NAAR NICKS AGENDA STAAT ER ALS ÉÉN KLEINE REGEL onder het
+       formulier en niet als knop: hij is het alternatief, niet de hoofdweg.
      · DE HINT "Bij voorkeur je werkadres" onder het e-mailveld is weg, het
        label "Bericht" is "Stel gerust al je vragen" geworden, en de
        nieuwsbriefregel staat er nu écht letterlijk zoals Jana hem schreef:
@@ -3900,9 +3887,7 @@ tailwind.config = {
            alleen nog op de bedankpagina, waar ze al stonden. Zet ze hier niet
            opnieuw bij zonder dat zij het vraagt.
 
-           EN DE AGENDALINK BESTAAT NU. Hij stond wekenlang als TODO op deze
-           plek omdat niemand hem had; hij zat intussen in de case-pdf's van
-           Jana. Daarom geen TODO-kader meer maar een echte link, met de haak
+           DE AGENDALINK komt uit de case-pdf's van Jana en draagt de haak
            formulier-agenda-nick — de naam die hiervoor al in de meetlijst
            klaarstond. target="_blank", want een agenda is een
            afspraak maken en niet de pagina verlaten. -->
@@ -3949,7 +3934,7 @@ tailwind.config = {
      Daarmee vervalt ook het CSS-blok «r3: echte footer» onderaan de stijlen:
      daar doet /css/global.css het werk al. De twee data-url-* attributen zijn
      de adressen van déze pagina in het Engels en het Frans; die bestaan nog
-     niet — zie het TODO-blokje in de footer zelf.
+     niet, en zolang dat zo is staan de twee andere taalnamen er zonder link.
 
      WAT VOOR DEZE PREVIEW IS AANGEPAST, en wat met de omwisseling terugdraait
      · BEELDPADEN. Hun markup haalt het woordmerk uit de map img/logo en het
@@ -3985,7 +3970,8 @@ tailwind.config = {
      · DE ENGELSE LABELS BLIJVEN ENGELS. «Legal», «Cookie policy», «Terms of
        use»: zo staat het in hun Nederlandse footer. Dat is hun chrome, niet
        onze copy, dus is het niet vernederlandst.
-     · DE TALEN. Zie het TODO-blokje hieronder.
+     · DE TALEN. De twee andere taalnamen staan er zonder link, want deze
+       pagina bestaat alleen in het Nederlands.
      · ÉÉN REGEL DIE NIET VAN HEN KOMT: de ondernemingsgegevens van Teal
        Partners. Hun sitefooter draagt die niet, onze vorige footer wel, en op
        een advertentiepagina die persoonsgegevens verzamelt is het adres van de
@@ -4068,20 +4054,13 @@ tailwind.config = {
        met een lege href, die footer.js vult uit data-url-en en data-url-fr.
        Deze pagina bestaat alleen in het Nederlands, dus zou dat hier een lege
        href opleveren: een link die de bezoeker terugzet op dezelfde pagina, of
-       na het vullen een 404. Daarom staan de drie namen er wél — zo ziet Jana
-       hoe de echte footer eruitziet en blijft de openstaande beslissing
-       zichtbaar — maar als <span>: geen href, niet in de tabvolgorde, niets om
-       op te klikken. Verbergen was het alternatief; dan was de enige
-       openstaande vraag van dit blok onzichtbaar geworden, en dat is precies
-       wat deze drafts nergens doen. -->
+       na het vullen een 404. Daarom staan de drie namen er wél — de footer
+       ziet er zo uit als op youbo.io — maar als <span>: geen href, niet in de
+       tabvolgorde, niets om op te klikken. -->
   <div class="footer-languages">
     <span class="inert-language" data-inhoud="voet.taal_1">English</span>
     <span class="active-language" data-inhoud="voet.taal_2">Nederlands</span>
     <span class="inert-language" data-inhoud="voet.taal_3">Français</span>
-  </div>
-
-  <div class="footer-talen-todo">
-    <p class="todo" data-inhoud="voet.nota"><b>TODO — te bevestigen</b>: de footer van youbo.io draagt een schakelaar English · Nederlands · Français. Deze pagina bestaat alleen in het Nederlands, dus staan die twee andere namen er zonder link. Zodra er een Engelse of Franse versie is, worden het weer echte links — op youbo.io vult footer.js ze uit data-url-en en data-url-fr — en dan hoort er ook hreflang in de head</p>
   </div>
 
   <div class="footer-copyright">

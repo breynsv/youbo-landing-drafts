@@ -458,14 +458,6 @@ collections:
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'nota'
-                label: 'Open punt'
-                widget: 'string'
-                required: true
-                hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
           - name: 'cijfer'
             label: 'Het grote cijfer'
             widget: 'object'
@@ -1164,7 +1156,7 @@ collections:
                 label: 'Taal 1'
                 widget: 'string'
                 required: true
-                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands. Zie het open punt onderaan.'
+                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands.'
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
@@ -1172,7 +1164,7 @@ collections:
                 label: 'Taal 2'
                 widget: 'string'
                 required: true
-                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands. Zie het open punt onderaan.'
+                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands.'
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
@@ -1180,15 +1172,7 @@ collections:
                 label: 'Taal 3'
                 widget: 'string'
                 required: true
-                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands. Zie het open punt onderaan.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'nota'
-                label: 'Open punt'
-                widget: 'string'
-                required: true
-                hint: 'Een open punt. Begin met "TODO — " en zet een dubbele punt na wie het moet antwoorden; dan krijgt het op de pagina het kader met de stippellijn. Haal het weg zodra het antwoord er is.'
+                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands.'
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
