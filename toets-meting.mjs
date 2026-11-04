@@ -30,7 +30,7 @@
  *     container die met navigator.sendBeacon verstuurt, zodat te zien is of de
  *     gebeurtenis de navigatie overleeft.
  *  6. Het formulier, met en zonder action, en de bevestigingspagina.
- *  7. LinkedIn: met de conversie-id's leeg gaat er niets naar LinkedIn, en met
+ *  7. LinkedIn: de echte conversie vertrekt, en met het id leeggemaakt gaat er
  *     één ingevuld (in een omgeleide kopie van de pagina, niet in het bestand)
  *     gaat het er wél naartoe. Dat is het bewijs dat de lege plek de enige
  *     drempel is en dat invullen één handeling blijft.
@@ -215,17 +215,27 @@ for (const [naam, html] of Object.entries(bron)) {
      !/<noscript>[\s\S]{0,400}googletagmanager\.com\/ns\.html/i.test(html));
 }
 
-/* De lege plekken voor LinkedIn. Ze moeten er staan én leeg zijn: verdwijnt de
-   tabel, dan is er geen plek meer om in te vullen en valt dat niemand op. */
+/* De tabel voor LinkedIn. Sinds 2026-11-04 is de eerste rij ingevuld: de
+   conversie "Demo aangevraagd" bestaat in Campagnebeheer en draagt een echt
+   nummer. De twee andere zijn stappen in de trechter en blijven leeg — een
+   conversie die bij LinkedIn niet bestaat, levert daar alleen ruis op.
+
+   Wat deze controle bewaakt is dus niet "alles leeg" maar de VORM: drie rijen,
+   de echte conversie vooraan, en haar nummer louter cijfers. Een id dat met
+   een plakfout een aanhalingsteken of een spatie meekrijgt, is bij LinkedIn
+   stil ongeldig — die conversie telt dan nooit, en niemand ziet waarom. */
 const lk = (blokL || '').match(/var LINKEDIN_CONVERSIE = \{([\s\S]*?)\};/);
 const lkRegels = lk ? [...lk[1].matchAll(/([a-z_]+):\s*'([^']*)'/g)] : [];
-ok('er staat een lege plek voor elke LinkedIn-conversie', lkRegels.length === 3,
+ok('er staat een rij voor elke LinkedIn-conversie', lkRegels.length === 3,
    lkRegels.map((m) => m[1]).join(', '));
-ok('en alle drie staan ze leeg, dus gaat er niets naar LinkedIn',
-   lkRegels.every((m) => m[2] === ''), lkRegels.map((m) => `${m[1]}='${m[2]}'`).join(' '));
 ok('de echte conversie is de eerste: demo_aanvraag_bevestigd',
    lkRegels.length > 0 && lkRegels[0][1] === 'demo_aanvraag_bevestigd',
    lkRegels.length ? lkRegels[0][1] : '');
+const CONVERSIE_ID = lkRegels.length ? lkRegels[0][2] : '';
+ok('en ze draagt een id van louter cijfers', /^[0-9]+$/.test(CONVERSIE_ID), `'${CONVERSIE_ID}'`);
+ok('de twee trechterstappen staan leeg, dus stuurt de pagina ze niet',
+   lkRegels.slice(1).every((m) => m[2] === ''),
+   lkRegels.slice(1).map((m) => `${m[1]}='${m[2]}'`).join(' '));
 
 /* Elke haak in de HTML moet een naam hebben. Dit is de poort die het goedkoopst
    vangt dat iemand een knop bijzet zonder de naamtabel aan te vullen. */
@@ -936,7 +946,11 @@ const lintrkStub = `
     for (var i = 0; i < q.length; i++) { window.__lintrk.push(q[i]); }
   })();`;
 
-for (const [wat, conversie] of [['leeg', null], ['gevuld met 12345678', '12345678']]) {
+/* Twee keer dezelfde pagina, en de tweede keer met het id weggehaald. De
+   eerste proef bewijst dat de echte conversie vertrekt; de tweede dat de
+   pagina niets stuurt zodra dat veld leeg is — anders zou de eerste ook groen
+   staan als onze code altijd iets verstuurt, ongeacht wat erin staat. */
+for (const [wat, conversie] of [[`zoals ze staat (${CONVERSIE_ID})`, CONVERSIE_ID], ['leeggemaakt', null]]) {
   const { ctx, pg } = await open('/' + BEDANKT, {
     keuze: 'toegestaan',
     wacht: 2500,
@@ -944,11 +958,11 @@ for (const [wat, conversie] of [['leeg', null], ['gevuld met 12345678', '1234567
       await p.route(/snap\.licdn\.com/, (r) =>
         r.fulfill({ status: 200, contentType: 'text/javascript', body: lintrkStub }));
       await p.route(/googletagmanager\.com/, (r) => r.abort());
-      if (conversie) {
+      if (!conversie) {
         await p.route(new RegExp(BEDANKT.replace(/\./g, '\\.')), async (r) => {
           const res = await r.fetch();
           const html = (await res.text())
-            .replace("demo_aanvraag_bevestigd:  ''", `demo_aanvraag_bevestigd:  '${conversie}'`);
+            .replace(`demo_aanvraag_bevestigd:  '${CONVERSIE_ID}'`, "demo_aanvraag_bevestigd:  ''");
           await r.fulfill({ response: res, body: html, headers: { 'content-type': 'text/html; charset=utf-8' } });
         });
       }
