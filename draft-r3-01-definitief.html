@@ -21,8 +21,6 @@ DE CIJFERS OP DE KAARTEN KOMEN UIT DE PDF'S, en dat is sinds 2026-10-16 de regel
 -->
 <html lang="nl-BE">
 <head>
-<meta name="ontwerp-versie" content="3.3+20261019">
-<meta name="ontwerp-versie-leesbaar" content="v3.3 — 19 oktober 2026">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -4040,7 +4038,7 @@ tailwind.config = {
 
     <div class="footer-links-legal">
       <p data-inhoud="voet.kop_legal">Legal</p>
-      <a href="https://www.youbo.io/nl/legal/cookie-policy.html" data-cta="footer-cookiebeleid" data-inhoud="voet.legal_1">Cookie policy</a>
+      <a href="/cookies" data-cta="footer-cookiebeleid" data-inhoud="voet.legal_1">Cookie policy</a>
       <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener" data-cta="footer-privacy" data-inhoud="voet.legal_2">Privacy policy</a>
       <a href="https://www.youbo.io/nl/legal/responsible-disclosure-policy.html" data-cta="footer-rdp" data-inhoud="voet.legal_3">Responsible disclosure policy</a>
       <a href="https://www.youbo.io/nl/legal/disclaimer.html" data-cta="footer-disclaimer" data-inhoud="voet.legal_4">Disclaimer</a>
@@ -4140,7 +4138,7 @@ tailwind.config = {
        role="region" aria-label="Cookies">
     <div class="max-w-shell mx-auto px-4 md:px-6 py-1 flex items-center gap-3">
       <p class="flex-1 min-w-0 m-0 text-[13px] leading-[1.35] text-ink-soft">
-        <span>We gebruiken</span> <a href="https://www.youbo.io/nl/legal/cookie-policy.html"
+        <span>We gebruiken</span> <a href="/cookies"
            class="text-link-licht underline underline-offset-2 hover:text-link-hover"
            style="transition: color var(--m-base) var(--e-standard)"
            data-cta="cookiebalk-beleid">cookies</a> <span>om het bezoek aan deze pagina te meten en de pagina te verbeteren</span>.
@@ -6126,6 +6124,34 @@ tailwind.config = {
     if (doel) { doel.scrollIntoView({ behavior: stil() ? 'auto' : 'smooth', block: 'start' }); }
   });
 })();
+</script>
+
+<script>
+  /* DE PREVIEW KENT /cookies EN /bedankt NIET.
+
+     Op demo.youbo.io zijn de adressen /, /bedankt en /cookies; op
+     breynsv.github.io, waar Jana de drafts bekijkt, staan dezelfde pagina's
+     als drie bestanden naast elkaar en is de wortel van dat domein niet van
+     ons. Een link naar /cookies belandt daar dus op een 404 — net op de pagina
+     die uitlegt wat we meten.
+
+     Dezelfde afweging als bij bedanktadres(): de pagina kijkt naar haar eigen
+     bestandsnaam. Heet ze draft-r3-0…, dan is dit een preview en wijzen de
+     drie adressen naar het bestand ernaast. Op de server heet ze index.html,
+     bedankt.html of cookies.html, dus gebeurt hier niets. */
+  (function () {
+    var hier = location.pathname.split('/').pop();
+    if (hier.indexOf('draft-r3-0') !== 0) { return; }
+    var naar = {
+      '/': 'draft-r3-01-definitief.html',
+      '/bedankt': 'draft-r3-02-bedankt.html',
+      '/cookies': 'draft-r3-03-cookies.html'
+    };
+    [].forEach.call(document.querySelectorAll('a[href]'), function (a) {
+      var h = a.getAttribute('href');
+      if (naar[h]) { a.setAttribute('href', naar[h]); }
+    });
+  })();
 </script>
 
 </body>

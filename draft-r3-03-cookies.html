@@ -1,0 +1,648 @@
+<!doctype html>
+<!--
+CONCEPT: de cookiepagina van demo.youbo.io, derde en laatste pagina van deze campagne.
+
+COOKIEPAGINA VAN demo.youbo.io — de derde en laatste pagina van deze campagne.
+
+WAAROM ZE BESTAAT: de cookiebalk op de landingspagina linkte naar
+youbo.io/nl/legal/cookie-policy.html, en dat document somt uitsluitend
+essentiële sessiecookies op voor merit, shares en login. Het noemt geen
+Google Analytics, geen LinkedIn en niet demo.youbo.io. Afgesproken met Teal op
+2026-10-15: op youbo.io zelf komt geen tracking, op deze campagnepagina wel,
+dus hun beleid klopt voor hún site en wij hebben een eigen tekst nodig. Zonder
+die tekst las een bezoeker dat er geen meetcookies zijn en kreeg hij er na
+Toestaan twee — dat is tegenstrijdige informatie, en toestemming die daarop
+steunt is niet geldig.
+
+DE TABELLEN ZIJN GEMETEN, NIET OVERGESCHREVEN. Op 2026-10-15 is de live pagina
+in een schone browser geopend en is de cookielijst twee keer afgelezen: voor de
+keuze en na Toestaan. Dat staat met de meetmethode in TOESTEMMING.md. Verandert
+er een tag, dan hoort deze tabel in dezelfde commit mee te veranderen.
+
+GEEN ENKELE MEETTAG OP DEZE PAGINA, en dat is een keuze: dit is de pagina waar
+iemand komt kijken wat er gemeten wordt. Dus geen Tag Manager, geen Consent
+Mode, geen Insight Tag, en ook geen cookiebalk — deze pagina zet zelf niets.
+Daarom staan er ook geen data-cta-haken op: er is niets om ze aan te melden.
+
+GEEN TWEEDE SET STIJLEN: het blok hieronder komt letterlijk uit
+draft-r3-02-bedankt.html, dat het op zijn beurt letterlijk uit de
+landingspagina haalt. Eén set tokens, drie pagina's.
+
+DE KNOP OM IN TE TREKKEN WERKT ZONDER ALPINE. De landingspagina gebruikt een
+Alpine-store; hier is dat een paar regels gewoon javascript, want Alpine laden
+om één knop te laten werken is een bibliotheek voor niets. Zonder javascript is
+de knop verborgen en staat er in de plaats uitleg over de browserinstelling.
+-->
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Vierde soort naast landingspagina, bevestiging en vergelijking. Een
+     beleidspagina draagt geen formulier en hoeft er ook geen te hebben; zie de
+     toelichting bij SOORTEN in check-drafts.mjs. -->
+<meta name="pagina-soort" content="beleid">
+
+<title>Cookies op deze pagina | Youbo</title>
+<meta name="description" content="Welke cookies demo.youbo.io plaatst, wanneer en waarvoor — en hoe je je keuze weer intrekt.">
+<link rel="canonical" href="https://demo.youbo.io/cookies">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_BE">
+<meta property="og:site_name" content="Youbo">
+<meta property="og:title" content="Cookies op deze pagina | Youbo">
+<meta property="og:description" content="Welke cookies demo.youbo.io plaatst, wanneer en waarvoor.">
+<meta property="og:image" content="assets/img/open_graph.png">
+<meta name="theme-color" content="#0af29f">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" sizes="120x120" href="assets/img/120x120.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/180x180.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* ---------------------------------------------------------------------------
+   Exact de tokenconfiguratie van draft-r3-01-definitief.html, overgenomen en
+   niet opnieuw opgemeten. Deze pagina mag geen eigen kleur, maat of radius
+   hebben: ze is hetzelfde adres, één klik later.
+   --------------------------------------------------------------------------- */
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand:   { DEFAULT: '#0af29f', ink: '#154e3a' },   /* primary + primary-text   */
+        ink:     { DEFAULT: '#0a3327', soft: '#547068',    /* text-primary + secondary */
+                   inv: '#ffffff' },
+        paper:   '#ffffff',                                 /* background               */
+        surface: '#f6f8fa',                                 /* surface                  */
+        line:    { DEFAULT: '#e1ebf0', btn: '#9dbcc2' },    /* border + border-button   */
+        /* Het cyaanblauw van de huisstijl haalt op licht de leesnorm niet:
+           2,67:1 op wit en 2,51:1 op #f6f8fa, waar 4,5:1 nodig is. Deze pagina
+           is volledig licht, dus staat overal de goedgekeurde donkerder
+           variant #00718c: 5,61:1 op wit en 5,27:1 op #f6f8fa. */
+        link:    { DEFAULT: '#00acd6', hover: '#006c87', licht: '#00718c' },
+        night:   { DEFAULT: '#000000', surface: '#031317' },/* dark-background/-surface */
+        forest:  '#154e3a',                                 /* gradient-dark-end        */
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      fontSize: {
+        caption: ['15px', { lineHeight: '1.5' }],
+        body:    ['17px', { lineHeight: '1.5' }],
+        h3:      ['20px', { lineHeight: '1.5' }],
+        h2:      ['24px', { lineHeight: '1.2' }],
+        h1:      ['36px', { lineHeight: '1.2' }],
+        display: ['56px', { lineHeight: '1.2' }],
+      },
+      /* de spatiëringsschaal 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 80 · 128 */
+      spacing: {
+        '1': '4px',  '2': '8px',   '3': '12px', '4': '16px', '5': '20px',
+        '6': '24px', '8': '32px',  '10': '40px','12': '48px','20': '80px',
+        '32': '128px',
+      },
+      borderRadius: { sm: '8px', DEFAULT: '12px', md: '12px', lg: '24px' },
+      maxWidth: { shell: '1280px', text: '34rem', prose: '46rem' },
+      boxShadow: {
+        card: '0 1px 3px rgba(0,0,0,.08)',
+        lift: '0 4px 12px rgba(0,0,0,.12)',
+        panel: '0 24px 60px -28px rgba(0,0,0,.65)',
+      },
+      transitionDuration: { fast: '150ms', base: '200ms', medium: '300ms', slow: '350ms' },
+      transitionTimingFunction: {
+        standard:   'ease-in-out',
+        decelerate: 'ease-out',
+        accelerate: 'cubic-bezier(0, 1, 0.3, 1)',
+      },
+    }
+  }
+}
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    :root {
+      /* motion-tokens, één keer gedeclareerd en overal hergebruikt */
+      --m-fast: 150ms;
+      --m-base: 200ms;
+      --m-medium: 300ms;
+      --m-slow: 350ms;
+      --e-standard: ease-in-out;
+      --e-decelerate: ease-out;
+      --e-accelerate: cubic-bezier(0, 1, 0.3, 1);
+      /* De focusomlijning. #00acd6 haalt 2,67:1 op wit en 2,51:1 op #f6f8fa,
+         terwijl een bedieningselement 3:1 moet halen. Deze pagina is volledig
+         licht — er is geen donkere band die de variabele onderweg omzet — dus
+         staat hier de donkerder trap #00718c (5,61 en 5,27) en nergens iets
+         anders. */
+      --c-focus: #00718c;
+    }
+    html { scroll-behavior: smooth; }
+    body { @apply font-sans text-body font-medium text-ink bg-paper antialiased; }
+    h1, h2, h3 { @apply font-sans font-bold text-ink; text-wrap: balance;
+                 hyphens: auto; overflow-wrap: break-word; }
+    p { text-wrap: pretty; }
+    :focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: 8px; }
+    [x-cloak] { display: none !important; }
+  }
+
+  @layer components {
+    /* ---- knoppen, exact de componentspecificatie uit de designbron ---------- */
+    .btn { @apply inline-flex items-center justify-center gap-2 rounded-sm text-body
+                  font-bold min-h-[48px] px-6 py-[14px] cursor-pointer;
+           transition: background-color var(--m-base) var(--e-standard),
+                       color var(--m-base) var(--e-standard),
+                       border-color var(--m-base) var(--e-standard); }
+    .btn-primary { @apply btn bg-brand text-brand-ink; }
+    .btn-primary:hover { background-color: #000000; color: #0af29f; }
+    .btn-primary:active { background-color: #031317; color: #0af29f; }
+    .btn-secondary { @apply btn bg-paper text-ink border border-line-btn px-3 py-2; }
+    .btn-secondary:hover { background-color: #f6f8fa; border-color: #e1ebf0; }
+
+    /* ---------------------------------------------------------------------
+       HET VINKJE — een zelfgetekend merk, geen icoonbibliotheek
+       ---------------------------------------------------------------------
+       Mint vlak met het donkergroen van de huisstijl erin: exact het paar
+       #0af29f / #154e3a dat ook .btn-primary draagt, en dus al nagemeten.
+       Het is puur decoratief — de kop zegt in woorden wat het zegt — dus
+       staat het op aria-hidden en leest geen schermlezer het voor.
+       --------------------------------------------------------------------- */
+    .vink { @apply flex h-12 w-12 shrink-0 items-center justify-center rounded-[50%] bg-brand; }
+    .vink svg { @apply h-6 w-6; color: #154e3a; }
+
+    /* ---------------------------------------------------------------------
+       DE ALTERNATIEVEN — letterlijk dezelfde zetting als onder het formulier
+       op de landingspagina, inclusief de afwegingen die daar gemeten zijn.
+       ---------------------------------------------------------------------
+       DE KLEUR. #00718c, dezelfde als de focusomlijning op licht: 5,61:1 op
+       wit, ruim boven de 4,5:1 voor lopende tekst en boven de 3:1 voor een
+       bedieningselement. Het cyaan van de huisstijl (#00acd6) haalt op wit
+       maar 2,67:1 en mag hier dus niet staan. De onderstreping staat er van
+       begin af aan: een link die alleen aan zijn kleur te herkennen is, is
+       voor wie kleuren slecht onderscheidt geen link.
+
+       ELK ALTERNATIEF OP ZIJN EIGEN REGEL. Op 390px past het adres niet naast
+       zijn aanloopzin en wikkelt het naar de volgende regel; met twee links
+       achter elkaar begint de regel daarna met het scheidingspunt, en een punt
+       bovenaan een regel leest als vuil. Twee regels met dezelfde aanloop
+       ("Mail hem op" / "Of bel hem op") lossen dat op zonder uitzonderings-
+       regel, en geven elke link zijn eigen focusomlijning zonder dat die van
+       de buur hem raakt.
+
+       WAAROM HET ADRES NIET AFBREEKT MAAR WEL MAG WIKKELEN. Een half
+       e-mailadres aan het einde van een regel is niet over te typen. Vandaar
+       nowrap op de link zelf en niets anders.
+       --------------------------------------------------------------------- */
+    .alt-weg .alt-link {
+      color: #00718c;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      transition: color var(--m-base) var(--e-standard);
+      white-space: nowrap;
+    }
+    .alt-weg .alt-link:hover { color: #006c87; }
+  }
+
+  @layer utilities {
+    /* de bloklengte: 80px verticaal op desktop, 48px op telefoon */
+    .band-pad { @apply py-12 md:py-20; }
+    .shell    { @apply max-w-shell mx-auto px-6 md:px-12 lg:px-20 xl:px-32; }
+  }
+
+  /* Onder 390px is het adres breder dan de kolom. Daar wint afbreken van
+     buiten de kolom hangen — dezelfde afweging en dezelfde ondergrens als op
+     de landingspagina. */
+  @media (max-width: 374px) {
+    .alt-weg .alt-link { white-space: normal; overflow-wrap: anywhere; }
+  }
+
+  /* ---- alle beweging uit wanneer het besturingssysteem daarom vraagt ------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+    /* De cookiebalk verschijnt dan zonder overgang. Er is op deze pagina geen
+       tweede bewegend element: geen schakelende banden, geen marquee, geen
+       meescrollende kaart, geen carrousel. */
+    [data-cookiebalk] { transition: none !important; }
+  }
+
+  /* === r3: echte footer === */
+  /* ---------------------------------------------------------------------
+     DE FOOTER VAN YOUBO.IO, OVERGENOMEN ZONDER HUN STIJLBLAD TE LADEN
+     ---------------------------------------------------------------------
+     /css/global.css van youbo.io is 14 KB en 121 regels, en 41 daarvan zijn
+     globale elementselectors: *, html, body, h1 t/m h6, p, a, ul, button,
+     input, select, textarea, hr. Dat bestand hier gewoon inladen zou de
+     volledige typografie en élk formulierveld van deze pagina herschrijven —
+     hun h1 is 3,5rem en gecentreerd, hun a is cyaan #00acd6 (2,67:1 op wit),
+     hun body is 1,0625rem. Niets daarvan hoort hier.
+
+     Dus is alleen overgenomen wat de footer nodig heeft: de 21 regels uit dat
+     bestand die over de footer gaan, één op één, met één wijziging — elke
+     selector staat achter .yb-footer. Daarmee kan geen van deze regels iets
+     buiten de footer raken, en dat is gemeten: de berekende stijl van alle 557
+     elementen buiten de footer is op 390px en op 1440px identiek aan vóór deze
+     wijziging.
+
+     HUN VARIABELEN STAAN LOKAAL, NIET OP :root. Anders zou een naam uit
+     global.css (--color-border, --color-grey-900) alsnog over de hele pagina
+     beschikbaar zijn en in een volgende ronde per ongeluk hergebruikt worden.
+     Geen van de waarden is nieuw: alle zes staan één op één gelijk aan een
+     token dat deze pagina al gebruikt.
+
+     DRIE DINGEN ZIJN BEWUST NIET OVERGENOMEN
+     1 · `opacity: .6` op de taalnamen. #547068 op wit haalt 5,39:1, maar op
+         60% dekking zakt dat naar #98a9a4 en 2,46:1 — leestekst moet 4,5:1
+         halen, dus is dat een echte fout in hun stijlblad en staan de namen
+         hier op volle dekking. (Daarmee vervalt ook de `opacity: 1` die hun
+         .active-language nodig had om eronderuit te komen.)
+     2 · `--color-link: #00acd6` als hoverkleur. Datzelfde cyaan haalt 2,67:1
+         op wit. Deze pagina gebruikt daarvoor al de goedgekeurde donkerder
+         trap #00718c (5,61:1), zoals in de tailwind-config hierboven staat
+         uitgelegd, en de footer volgt diezelfde regel.
+     3 · `align-self: end`. Dat hoort bij hun grid-opzet met <page-container>
+         en betekent hier niets.
+
+     ÉÉN REGEL IS TOEGEVOEGD DIE ZIJ NIET HEBBEN, en wel om hun eigen
+     weergave te herstellen: `display: inline-block` op het woordmerk. Tailwind
+     zet in zijn preflight élke afbeelding op `display: block`; op hun site is
+     een afbeelding inline, en daar is de gecentreerde footer op telefoon van
+     afhankelijk (`text-align: center` doet niets met een blokelement). Zonder
+     deze regel staat het logo op 390px links in plaats van gecentreerd.
+
+     WAT WEL VERSCHILT MET HUN SITE, en waarom het zo blijft
+     · De footer is 1128px breed, de rest van deze pagina 1280px. Dat is hun
+       eigen maat (max-width: calc(1080px + 48px)); hem oprekken zou de preview
+       iets laten zien wat straks niet zo staat.
+     · De copyrightregel staat ±17px krapper dan op hun site: Tailwind zet de
+       standaardmarge van <p> op 0 en hun stijlblad zet er niets voor terug.
+     --------------------------------------------------------------------- */
+  .yb-footer {
+    --color-grey-700: #547068;        /* = token ink.soft    */
+    --color-grey-800: #154e3a;        /* = token brand.ink   */
+    --color-grey-900: #0a3327;        /* = token ink         */
+    --color-border:   #e1ebf0;        /* = token line        */
+    --color-brand-primary: #0af29f;   /* = token brand       */
+    --color-link:     #00718c;        /* = token link.licht  */
+    border-top: 1px solid var(--color-border);
+    padding: 32px 0;
+    background-color: #ffffff;
+  }
+  .yb-footer a,
+  .yb-footer p { color: var(--color-grey-700); font-size: 15px; }
+  .yb-footer a:hover { color: var(--color-link); }
+  .yb-footer .footer-links {
+    display: flex;
+    max-width: calc(1080px + 48px);
+    margin: auto;
+    gap: 40px;
+    padding: 0 24px 40px 24px;
+  }
+  .yb-footer .footer-links p { font-weight: bold; color: var(--color-grey-900); margin: 0; }
+  .yb-footer .footer-links a { display: block; }
+  .yb-footer .footer-links-logo { width: 100%; }
+  .yb-footer .footer-links-logo img {
+    display: inline-block;            /* preflight-compensatie, zie hierboven */
+    height: 32px;
+    width: auto;
+    transition: .3s all;
+  }
+  .yb-footer .footer-links-logo img:hover { transform: scale(.95); }
+  .yb-footer .footer-linkedin { display: flex; margin-top: 16px; align-items: center; }
+  .yb-footer .footer-linkedin img { height: 16px; width: auto; margin-right: 8px; margin-top: 0; }
+  .yb-footer .footer-links-about,
+  .yb-footer .footer-links-legal { width: 35%; display: flex; flex-direction: column; gap: 16px; }
+  .yb-footer .footer-languages {
+    max-width: calc(1080px + 48px);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin: auto;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+  }
+  .yb-footer .footer-languages a,
+  .yb-footer .footer-languages span { font-size: 14px; }
+  .yb-footer .active-language { color: var(--color-grey-800); pointer-events: none; font-weight: 500; }
+  .yb-footer .footer-copyright { text-align: center; font-size: .875rem; }
+  .yb-footer .footer-copyright a {
+    border-bottom: .0625rem solid var(--color-brand-primary);
+    padding-bottom: .125rem;
+    color: var(--color-grey-800);
+  }
+  @media (max-width: 656px) {
+    .yb-footer .footer-links-logo { justify-content: center; margin: auto; }
+    .yb-footer .footer-links { flex-direction: column; text-align: center; }
+    .yb-footer .footer-links-about,
+    .yb-footer .footer-links-legal { gap: 24px; width: 100%; }
+    .yb-footer .footer-languages { gap: 24px; }
+  }
+
+  /* Het ene stukje van dit blok dat niet uit hun stijlblad komt: de
+     ondernemingsregel onder het copyright. De inerte taalnamen erven de
+     tekstkleur van .yb-footer a/p en staan dus op 5,39:1. */
+  .yb-footer .footer-entiteit { margin-top: 8px; }
+  .yb-footer .inert-language { color: var(--color-grey-700); }
+</style>
+<style>
+  /* De cookietabellen. Vier kolommen passen niet op 360 beeldpunten, dus
+     schuift de tabel daar horizontaal in plaats van dat de kolommen op elkaar
+     kruipen; vanaf de leesmaat van de tekst (46rem) is dat nooit nodig. De
+     koppen blijven leesbaar op de zachte tint: #547068 op wit is 5,39:1. */
+  .ct-wrap { margin-block: 16px; }
+  table.ct { width: 100%; min-width: 34rem; border-collapse: collapse; font-size: 15px; }
+  table.ct caption { text-align: left; font-size: 13px; color: #547068; padding-bottom: 8px; }
+  table.ct th, table.ct td { text-align: left; vertical-align: top; padding: 10px 12px 10px 0; border-bottom: 1px solid #e1ebf0; }
+  table.ct th { font-weight: 700; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: #547068; }
+  table.ct td code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
+
+  /* ONDER 600px IS DIT GEEN TABEL MEER, EN DAT IS DE HELE REDEN.
+     Vier kolommen passen daar niet. Horizontaal laten schuiven was de eerste
+     poging en is verworpen: dan valt "Waarvoor" buiten beeld, en dat is net de
+     kolom waarvoor iemand deze pagina opent — gemeten op 390px, waar alleen
+     Cookie, Domein en het begin van Duur in beeld stonden, zonder dat iets
+     verraadt dat er nog een kolom achter zit. Elke cookie wordt dus een blokje
+     met zijn eigen regels, en het label van de kolom staat ervoor. */
+  @media (max-width: 599.98px) {
+    table.ct { min-width: 0; }
+    table.ct thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    table.ct tbody, table.ct tr, table.ct td { display: block; }
+    table.ct tr { border-bottom: 1px solid #e1ebf0; padding: 12px 0; }
+    table.ct td { border: 0; padding: 2px 0; }
+    table.ct td::before { content: attr(data-label) " · "; font-size: 13px; color: #547068; }
+    table.ct td[data-label="Cookie"]::before { content: none; }
+    table.ct td[data-label="Cookie"] { padding-bottom: 6px; }
+  }
+  /* De knop staat er alleen als javascript draait; zonder javascript doet hij
+     niets en is de uitleg eronder het echte antwoord. */
+  .alleen-js { display: none; }
+  html.js .alleen-js { display: block; }
+  html.js .zonder-js { display: none; }
+</style>
+
+<script>document.documentElement.classList.add('js');</script>
+
+<body class="min-h-screen flex flex-col">
+
+<!-- Het merkanker, zoals op de bevestigingspagina. Hier is de weg terug de
+     landingspagina zelf en niet youbo.io: wie hier staat, was daar net. -->
+<div class="bg-paper">
+  <div class="shell pt-6 md:pt-10">
+    <a href="/" class="inline-block">
+      <img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28" class="h-7 w-auto">
+    </a>
+  </div>
+</div>
+
+<main class="flex-1 bg-paper band-pad">
+  <div class="shell">
+    <div class="max-w-prose">
+
+      <h1 class="text-h1 text-ink">Cookies op deze pagina</h1>
+
+      <p class="mt-6 text-body text-ink-soft">Deze pagina hoort bij
+        <strong class="text-ink">demo.youbo.io</strong>, de campagnepagina van Youbo. Ze legt uit
+        welke cookies hier geplaatst worden, wanneer dat gebeurt en waarvoor ze dienen.
+        Verwerkingsverantwoordelijke is Teal Partners BV, Damplein 23, 2060 Antwerpen,
+        ondernemingsnummer BE 0642.824.542.</p>
+
+      <p class="mt-4 text-body text-ink-soft">De website youbo.io zelf heeft een eigen
+        cookiebeleid, en dat gaat over andere adressen: merit, shares en login. Daar wordt niets
+        gemeten. Deze pagina wel, omdat ze uit een advertentie bezocht wordt en we willen weten of
+        die advertentie werkt. Daarom deze aparte tekst. Het beleid van de hoofdsite staat op
+        <a class="text-link-licht underline underline-offset-2 hover:text-link-hover"
+           href="https://www.youbo.io/nl/legal/cookie-policy.html" target="_blank" rel="noopener">youbo.io/nl/legal/cookie-policy</a>.</p>
+
+      <h2 class="mt-10 text-h3 text-ink">Niets wordt geplaatst voordat je kiest</h2>
+
+      <p class="mt-4 text-body text-ink-soft">Zolang je niets gekozen hebt, laadt deze site geen
+        enkele meet- of advertentietag. Er vertrekt dan ook geen enkel verzoek naar Google of
+        LinkedIn. Wat er wél staat, zijn twee technische cookies van de server waarop de pagina
+        draait:</p>
+
+      <div class="ct-wrap">
+        <table class="ct">
+          <caption>Vóór je keuze — strikt noodzakelijk, geen toestemming vereist</caption>
+          <thead>
+            <tr><th>Cookie</th><th>Domein</th><th>Duur</th><th>Waarvoor</th></tr>
+          </thead>
+          <tbody>
+            <tr><td data-label="Cookie"><code>ARRAffinity</code></td><td data-label="Domein">demo.youbo.io</td><td data-label="Duur">sessie</td><td data-label="Waarvoor">Verkeersverdeling door Azure, de server waarop deze pagina staat</td></tr>
+            <tr><td data-label="Cookie"><code>ARRAffinitySameSite</code></td><td data-label="Domein">demo.youbo.io</td><td data-label="Duur">sessie</td><td data-label="Waarvoor">Hetzelfde, voor browsers die SameSite afdwingen</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-4 text-body text-ink-soft">Daarnaast onthoudt de pagina je keuze zelf, in de
+        opslag van je browser onder de naam <code>youbo-toestemming</code>. Zonder dat zou de balk
+        je bij elke klik opnieuw hetzelfde vragen.</p>
+
+      <h2 class="mt-10 text-h3 text-ink">Wat erbij komt als je Toestaan kiest</h2>
+
+      <div class="ct-wrap">
+        <table class="ct">
+          <caption>Na je toestemming — meten en advertentiemeting</caption>
+          <thead>
+            <tr><th>Cookie</th><th>Domein</th><th>Duur</th><th>Waarvoor</th></tr>
+          </thead>
+          <tbody>
+            <tr><td data-label="Cookie"><code>_ga</code></td><td data-label="Domein">.youbo.io</td><td data-label="Duur">400 dagen</td><td data-label="Waarvoor">Google Analytics 4 — één bezoeker van een andere onderscheiden</td></tr>
+            <tr><td data-label="Cookie"><code>_ga_3RMJLLMCKB</code></td><td data-label="Domein">.youbo.io</td><td data-label="Duur">400 dagen</td><td data-label="Waarvoor">Google Analytics 4 — de sessie van deze pagina</td></tr>
+            <tr><td data-label="Cookie"><code>bcookie</code></td><td data-label="Domein">.linkedin.com</td><td data-label="Duur">365 dagen</td><td data-label="Waarvoor">LinkedIn Insight Tag — herkent het toestel</td></tr>
+            <tr><td data-label="Cookie"><code>li_gc</code></td><td data-label="Domein">.linkedin.com</td><td data-label="Duur">180 dagen</td><td data-label="Waarvoor">LinkedIn — de toestemmingsstand van LinkedIn zelf</td></tr>
+            <tr><td data-label="Cookie"><code>lidc</code></td><td data-label="Domein">.linkedin.com</td><td data-label="Duur">1 dag</td><td data-label="Waarvoor">LinkedIn — routering binnen hun netwerk</td></tr>
+            <tr><td data-label="Cookie"><code>__cf_bm</code></td><td data-label="Domein">.linkedin.com</td><td data-label="Duur">30 minuten</td><td data-label="Waarvoor">Botfilter van Cloudflare bij LinkedIn</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-4 text-body text-ink-soft">Ben je op dat moment ingelogd op LinkedIn, dan kan
+        LinkedIn daar nog cookies aan toevoegen, zoals <code>UserMatchHistory</code> en
+        <code>AnalyticsSyncHistory</code>. Die stonden er bij onze meting niet, maar ze kunnen
+        verschijnen. Ze staan op het domein van LinkedIn, niet op het onze.</p>
+
+      <h2 class="mt-10 text-h3 text-ink">Waarvoor we het gebruiken</h2>
+
+      <p class="mt-4 text-body text-ink-soft">Twee dingen, en niets anders. Google Analytics 4
+        vertelt ons hoeveel mensen deze pagina bekijken, hoe ver ze lezen en of ze een demo
+        aanvragen — zodat we de pagina kunnen verbeteren. De LinkedIn Insight Tag vertelt ons of
+        onze LinkedIn-campagne bezoekers oplevert. We verkopen geen gegevens, we koppelen ze niet
+        aan je naam, en we gebruiken ze niet om je buiten deze campagne te volgen.</p>
+
+      <p class="mt-4 text-body text-ink-soft">Wat je in het aanvraagformulier invult, is iets
+        anders dan een cookie: dat gaat rechtstreeks naar Youbo om je aanvraag op te volgen. Hoe
+        daarmee omgegaan wordt, staat in de
+        <a class="text-link-licht underline underline-offset-2 hover:text-link-hover"
+           href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener">privacyverklaring van Teal Partners</a>.</p>
+
+      <h2 class="mt-10 text-h3 text-ink">Je keuze wijzigen of intrekken</h2>
+
+      <p class="mt-4 text-body text-ink-soft">Je mag je toestemming op elk moment intrekken, en dat
+        hoort even makkelijk te zijn als ze geven. Met de knop hieronder wissen we je keuze en de
+        meetcookies van Google die op dit domein staan. Daarna vraagt de pagina het je opnieuw.</p>
+
+      <div class="alleen-js mt-5">
+        <button type="button" id="intrekken" class="btn-primary">Mijn keuze intrekken</button>
+        <p id="intrekken-klaar" hidden class="mt-3 text-caption text-ink-soft">Je keuze is gewist en
+          de meetcookies van Google op dit domein zijn verwijderd. Bij je volgende bezoek aan de
+          campagnepagina vragen we het opnieuw.</p>
+      </div>
+
+      <p class="zonder-js mt-5 text-body text-ink-soft">Je browser voert geen javascript uit, dus
+        kunnen we de knop hier niet aanbieden. Je kan de cookies van deze site verwijderen via de
+        instellingen van je browser.</p>
+
+      <p class="mt-4 text-body text-ink-soft">De cookies van LinkedIn staan op het domein van
+        LinkedIn en kunnen van hieruit niet verwijderd worden. Die beheer je in je
+        <a class="text-link-licht underline underline-offset-2 hover:text-link-hover"
+           href="https://www.linkedin.com/psettings/guest-controls" target="_blank" rel="noopener">cookie-instellingen bij LinkedIn</a>
+        of via je browser.</p>
+
+      <h2 class="mt-10 text-h3 text-ink">Vragen</h2>
+
+      <p class="mt-4 text-body text-ink-soft">Vragen over je gegevens of over deze tekst gaan naar
+        Teal Partners, via de
+        <a class="text-link-licht underline underline-offset-2 hover:text-link-hover"
+           href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener">privacyverklaring</a>,
+        waar ook staat welke rechten je hebt en bij wie je terechtkan.</p>
+
+      <p class="mt-10 text-caption text-ink-soft">Laatst bijgewerkt op 4 november 2026. De cookies
+        hierboven zijn op de pagina zelf nagemeten en niet uit een voorbeeldtekst overgenomen.</p>
+
+      <p class="mt-8"><a class="text-link-licht underline underline-offset-2 hover:text-link-hover"
+         href="/">Terug naar de pagina</a></p>
+
+    </div>
+  </div>
+</main>
+
+<footer class="yb-footer">
+
+  <div class="footer-links">
+    <div class="footer-links-logo">
+      <a href="https://www.youbo.io/nl/" data-cta="footer-logo"><img src="assets/img/youbo_logo.svg" alt="Youbo" width="102" height="28"></a>
+      <a class="footer-linkedin" href="https://www.linkedin.com/company/youbomerit/" target="_blank" rel="noopener" data-cta="footer-linkedin"><img src="assets/img/linkedin.svg" alt="" aria-hidden="true" width="14" height="14">LinkedIn</a>
+    </div>
+
+    <div class="footer-links-about">
+      <p>Over Youbo</p>
+      <a href="https://www.youbo.io/nl/cases/" data-cta="footer-cases">Referentie cases</a>
+      <a href="https://www.youbo.io/nl/nieuws/" data-cta="footer-nieuws">Nieuws</a>
+      <a href="https://www.youbo.io/nl/contact.html" data-cta="footer-contact">Contact</a>
+    </div>
+
+    <div class="footer-links-legal">
+      <p>Legal</p>
+      <a href="/cookies" data-cta="footer-cookiebeleid">Cookie policy</a>
+      <a href="https://www.tealpartners.com/nl/legal/privacy-policy" target="_blank" rel="noopener" data-cta="footer-privacy">Privacy policy</a>
+      <a href="https://www.youbo.io/nl/legal/responsible-disclosure-policy.html" data-cta="footer-rdp">Responsible disclosure policy</a>
+      <a href="https://www.youbo.io/nl/legal/disclaimer.html" data-cta="footer-disclaimer">Disclaimer</a>
+      <a href="https://www.youbo.io/nl/legal/gebruiksvoorwaarden.html" data-cta="footer-voorwaarden">Terms of use</a>
+    </div>
+
+  </div>
+
+  <!-- DE TAALSCHAKELAAR — drie namen, en geen van de twee andere is een link.
+       Hun component zet hier <a id="footer-url-en"> en <a id="footer-url-fr">
+       met een lege href, die footer.js vult uit data-url-en en data-url-fr.
+       Deze pagina bestaat alleen in het Nederlands, dus zou dat hier een lege
+       href opleveren: een link die de bezoeker terugzet op dezelfde pagina, of
+       na het vullen een 404. Daarom staan de drie namen er wél — de footer
+       ziet er zo uit als op youbo.io — maar als <span>: geen href, niet in de
+       tabvolgorde, niets om op te klikken. -->
+  <div class="footer-languages">
+    <span class="inert-language">English</span>
+    <span class="active-language">Nederlands</span>
+    <span class="inert-language">Français</span>
+  </div>
+
+  <div class="footer-copyright">
+    <p>© <span id="currentYear">2026</span> Youbo by <a href="https://www.tealpartners.com/" target="_blank" rel="noopener" data-cta="footer-tealpartners">Teal Partners</a></p>
+    <p class="footer-entiteit">Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542</p>
+  </div>
+
+</footer>
+
+<script>
+  /* De echte footer van youbo.io vult het jaartal met JavaScript. Hetzelfde
+     hier, zodat er over twee jaar geen verkeerd jaartal in de voettekst staat. */
+  (function () {
+    var jaar = document.getElementById('currentYear');
+    if (jaar) { jaar.textContent = String(new Date().getFullYear()); }
+  })();
+</script>
+
+<script>
+  /* INTREKKEN ZONDER ALPINE.
+
+     Drie dingen, in deze volgorde: de keuze uit de browseropslag, de
+     meetcookies van Google van dit domein, en dan pas de bevestiging — zodat
+     er niet "gewist" staat als het wissen mislukte.
+
+     De cookies van Google staan op .youbo.io en niet op demo.youbo.io, dus
+     wordt elke naam op beide geprobeerd. Wissen gebeurt door de vervaldatum in
+     het verleden te zetten; een andere manier is er in de browser niet.
+
+     De cookies van LinkedIn staan op .linkedin.com. Daar kan deze pagina per
+     ontwerp niet bij, en dat staat ook zo in de tekst hierboven. */
+  (function () {
+    var knop = document.getElementById('intrekken');
+    if (!knop) { return; }
+
+    var NAMEN = ['_ga', '_ga_3RMJLLMCKB', '_gid', '_gcl_au'];
+    var DOMEINEN = ['', '; domain=.youbo.io', '; domain=' + location.hostname];
+
+    knop.addEventListener('click', function () {
+      try { localStorage.removeItem('youbo-toestemming'); } catch (e) {}
+      for (var i = 0; i < NAMEN.length; i++) {
+        for (var j = 0; j < DOMEINEN.length; j++) {
+          document.cookie = NAMEN[i] + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT' + DOMEINEN[j];
+        }
+      }
+      var klaar = document.getElementById('intrekken-klaar');
+      if (klaar) { klaar.removeAttribute('hidden'); }
+      knop.disabled = true;
+    });
+  })();
+</script>
+
+<script>
+  /* DE PREVIEW KENT /cookies EN /bedankt NIET.
+
+     Op demo.youbo.io zijn de adressen /, /bedankt en /cookies; op
+     breynsv.github.io, waar Jana de drafts bekijkt, staan dezelfde pagina's
+     als drie bestanden naast elkaar en is de wortel van dat domein niet van
+     ons. Een link naar /cookies belandt daar dus op een 404 — net op de pagina
+     die uitlegt wat we meten.
+
+     Dezelfde afweging als bij bedanktadres(): de pagina kijkt naar haar eigen
+     bestandsnaam. Heet ze draft-r3-0…, dan is dit een preview en wijzen de
+     drie adressen naar het bestand ernaast. Op de server heet ze index.html,
+     bedankt.html of cookies.html, dus gebeurt hier niets. */
+  (function () {
+    var hier = location.pathname.split('/').pop();
+    if (hier.indexOf('draft-r3-0') !== 0) { return; }
+    var naar = {
+      '/': 'draft-r3-01-definitief.html',
+      '/bedankt': 'draft-r3-02-bedankt.html',
+      '/cookies': 'draft-r3-03-cookies.html'
+    };
+    [].forEach.call(document.querySelectorAll('a[href]'), function (a) {
+      var h = a.getAttribute('href');
+      if (naar[h]) { a.setAttribute('href', naar[h]); }
+    });
+  })();
+</script>
+
+</body>
+</html>

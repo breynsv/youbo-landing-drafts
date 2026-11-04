@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Stelt de publicatiemap samen: ALLEEN wat de twee productiepagina's werkelijk
+ * Stelt de publicatiemap samen: ALLEEN wat de productiepagina's werkelijk
  * nodig hebben.
  *
  *     node publiceer.mjs             # bouwt publicatie-uit/
@@ -83,12 +83,17 @@ export const PRODUCTIEHOSTS = ['demo.youbo.io'];
 export const PAGINAS = [
   { bron: 'draft-r3-01-definitief.html', doel: 'index.html' },
   { bron: 'draft-r3-02-bedankt.html', doel: 'bedankt.html' },
+  // De cookiepagina, sinds 2026-11-04. Zelfde reden om haar in de wortel te
+  // zetten als bedankt.html: de relatieve paden naar assets/ blijven kloppen,
+  // en /cookies komt van een herschrijfregel in web.config.
+  { bron: 'draft-r3-03-cookies.html', doel: 'cookies.html' },
 ];
 
 // De adressen die deze site zelf heeft. Een interne link naar iets anders is
 // een dode link, en die wil je bij de bouw weten en niet van de klant horen.
 // /bedankt staat erbij omdat web.config die herschrijft naar bedankt.html.
-const ROUTES = new Set(['/', '/index.html', '/bedankt', '/bedankt/', '/bedankt.html']);
+const ROUTES = new Set(['/', '/index.html', '/bedankt', '/bedankt/', '/bedankt.html',
+                        '/cookies', '/cookies/', '/cookies.html']);
 
 const STANDAARD_UIT = 'publicatie-uit';
 const WEBCONFIG_BRON = join(hier, 'publicatie', 'web.config');
@@ -234,7 +239,7 @@ const routes = new Map();
 
 for (const { bron } of PAGINAS) {
   const pad = join(hier, bron);
-  if (!existsSync(pad)) stop(`${bron} ontbreekt — dit is een van de twee productiepagina's`);
+  if (!existsSync(pad)) stop(`${bron} ontbreekt — dit is een van de productiepagina's`);
   const html = readFileSync(pad, 'utf8');
 
   // De bouw moet gedraaid hebben. Zonder stempel is de FAQ misschien ook niet

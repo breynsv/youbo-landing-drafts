@@ -44,6 +44,7 @@ const TYPEN = { '.html':'text/html', '.svg':'image/svg+xml', '.webp':'image/webp
 const srv = createServer((req, res) => {
   let p = decodeURI(req.url.split('?')[0]);
   if (/^\/bedankt\/?$/.test(p)) p = '/bedankt.html';          // de herschrijfregel
+  if (/^\/cookies\/?$/.test(p)) p = '/cookies.html';          // en die van de cookiepagina
   if (p.endsWith('/')) p += 'index.html';                       // het standaarddocument
   const vol = join(WORTEL, p);
   if (!vol.startsWith(WORTEL) || !existsSync(vol) || statSync(vol).isDirectory()) {
@@ -59,7 +60,8 @@ const basis = `http://127.0.0.1:${srv.address().port}`;
 
 const browser = await chromium.launch({ headless: true });
 let stuk = 0;
-for (const [naam, url] of [['/', basis + '/'], ['/bedankt', basis + '/bedankt']]) {
+for (const [naam, url] of [['/', basis + '/'], ['/bedankt', basis + '/bedankt'],
+                           ['/cookies', basis + '/cookies']]) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const pg = await ctx.newPage();
   const mislukt = [];

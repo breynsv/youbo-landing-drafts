@@ -400,13 +400,21 @@ for (const file of drafts) {
   // kiezen; ze wordt nooit gepubliceerd en ze is geen kandidaat voor /demo.
   // Drie regels hieronder slaan voor haar anders uit, en alle drie omgekeerd in
   // plaats van uitgezet — zie de reden telkens ter plaatse.
-  const SOORTEN = ['landingspagina', 'bevestiging', 'vergelijking'];
+  // Sinds 2026-11-04 is er een vierde soort. Een BELEIDSPAGINA (/cookies) legt
+  // uit wat de landingspagina meet. Ze draagt met opzet geen formulier, geen
+  // meettag en geen cookiebalk, dus de twee regels die een landingspagina
+  // kenmerken — een <form> en een e-mailveld — gelden voor haar niet. Ze mag
+  // wél in de zoekresultaten: wie zoekt naar wat deze site meet, hoort dat te
+  // kunnen vinden, en een verborgen cookiebeleid is een cookiebeleid dat
+  // niemand leest.
+  const SOORTEN = ['landingspagina', 'bevestiging', 'vergelijking', 'beleid'];
   const soort = (html.match(/<meta[^>]+name=["']pagina-soort["'][^>]+content=["']([^"']+)["']/i)
     || [, 'landingspagina'])[1].trim().toLowerCase();
   if (!SOORTEN.includes(soort))
     errors.push(`onbekende pagina-soort "${soort}" — kies uit ${SOORTEN.join(', ')}`);
   const bevestiging = soort === 'bevestiging';
   const vergelijking = soort === 'vergelijking';
+  const beleid = soort === 'beleid';
 
   // --- Language and structure -------------------------------------------------
   if (!/<html[^>]+lang=["']nl-BE["']/i.test(html)) errors.push('missing lang="nl-BE"');
@@ -471,7 +479,13 @@ for (const file of drafts) {
     .some(b => /aanvaard|accepteer|akkoord|toestaan|weiger|afwijzen|alleen noodzakelijke|enkel noodzakelijk|consent-(accept|refuse|aanvaard|weiger|toestaan|decline)/i.test(b[0]));
   const consentRegion = /aria-label=["'][^"']*(cookie|toestemming|consent)/i.test(visible) ||
     /\b(id|class)=["'][^"']*(cookie|consent)[-_]?(bar|banner|balk|notice|melding)/i.test(visible);
-  if ((hasLinkedIn || hasGooglePlaceholder) && !(consentButton && consentRegion))
+  // EEN BELEIDSPAGINA IS HIER DE UITZONDERING, en precies omdat ze haar werk
+  // doet: ze NOEMT Google Analytics en de LinkedIn Insight Tag in lopende tekst,
+  // want dat is wat een cookiebeleid hoort te vertellen, en ze laadt er geen
+  // van beide. Deze controle kijkt naar woorden en niet naar verzoeken, dus zou
+  // ze hier altijd aanslaan — een waarschuwing die bij elke run terugkomt en
+  // niets betekent, leert iedereen de hele regel te negeren.
+  if (!beleid && (hasLinkedIn || hasGooglePlaceholder) && !(consentButton && consentRegion))
     warns.push(`tracking-plaatshouder zonder toestemmingsbalk — ${hasGooglePlaceholder
       ? 'de LinkedIn Insight Tag en de Google-tag mogen' : 'de LinkedIn Insight Tag mag'}` +
       ' in België pas na opt-in laden, dus zonder balk kan deze pagina niet live');
@@ -494,7 +508,7 @@ for (const file of drafts) {
   // formulier in zit hangt af van welk stuk vergeleken wordt, dus zegt de
   // aanwezigheid ervan hier niets — geen eis in de ene richting en geen verbod in
   // de andere. De regel voor een landingspagina blijft onaangeroerd hard.
-  if (vergelijking) {
+  if (vergelijking || beleid) {
     // niets: zie hierboven
   } else if (bevestiging) {
     if (/<form[\s>]/i.test(visible))
@@ -562,6 +576,11 @@ for (const file of drafts) {
   if (bevestiging) {
     if (!noindex)
       errors.push('bevestigingspagina zonder <meta robots noindex> — ze hoort niet in de zoekresultaten en elk bezoek telt als conversie');
+  } else if (beleid) {
+    // Vierde geval, en het enige waar de gate niets eist. Een beleidspagina mag
+    // gevonden worden en mag evengoed verborgen staan; beide zijn verdedigbaar
+    // en geen van beide is een fout die later duur wordt. Wat ze wél moet zijn,
+    // is wáár — en dat bewijst een linter niet.
   } else if (vergelijking) {
     // Derde geval, derde richting, en ook deze is een eis. Een
     // vergelijkingspagina zet vijf tegenstrijdige versies van hetzelfde blok op

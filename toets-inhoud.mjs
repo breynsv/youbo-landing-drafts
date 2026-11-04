@@ -239,6 +239,7 @@ function maakWegwerp() {
 function maakWegwerpMetPublicatie() {
   const map = maakWegwerp();
   cpSync(join(hier, 'draft-r3-02-bedankt.html'), join(map, 'draft-r3-02-bedankt.html'));
+  cpSync(join(hier, 'draft-r3-03-cookies.html'), join(map, 'draft-r3-03-cookies.html'));
   cpSync(join(hier, 'robots.txt'), join(map, 'robots.txt'));
   cpSync(join(hier, 'assets'), join(map, 'assets'), { recursive: true });
   /* En cases/ in zijn geheel: daar staan de vijf pdf's én de tien bladen die
