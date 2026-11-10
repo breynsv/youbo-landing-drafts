@@ -618,7 +618,7 @@ tailwind.config = {
   })();
 </script>
 
-<script>
+<script data-alleen-voorbeeld>
   /* DE PREVIEW KENT /cookies EN /bedankt NIET.
 
      Op demo.youbo.io zijn de adressen /, /bedankt en /cookies; op
@@ -639,6 +639,8 @@ tailwind.config = {
       '/bedankt': 'draft-r3-02-bedankt.html',
       '/cookies': 'draft-r3-03-cookies.html'
     };
+    /* Ook het doel ná het formulier. Zie bedanktadres() in het meetblok. */
+    window.__BEDANKT_URL = naar['/bedankt'];
     [].forEach.call(document.querySelectorAll('a[href]'), function (a) {
       var h = a.getAttribute('href');
       if (naar[h]) { a.setAttribute('href', naar[h]); }

@@ -28,7 +28,7 @@
  * terugvalletter, en dan verschilt élke tekstregel een paar pixels.
  */
 import { createServer } from 'node:http';
-import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 import { chromium } from 'playwright';
 
@@ -81,10 +81,11 @@ for (const [draft, doel] of PAREN) {
       + '       node stamp-version.mjs && node publiceer.mjs');
     process.exit(2);
   }
-  const stempel = /<meta name="ontwerp-versie"/;
-  if (stempel.test(d) !== stempel.test(p)) {
-    console.error(`STOP — ${draft} en publicatie-uit/${doel} lopen uiteen op de\n`
-      + '       versiestempel, dus die bouw is niet van deze drafts. Draai eerst:\n'
+  /* Is die bouw van déze drafts? De versiestempel kan dat niet meer zeggen:
+     publiceer.mjs haalt hem er juist uit. De wijzigingstijd wel. */
+  if (statSync(join('publicatie-uit', doel)).mtimeMs < statSync(draft).mtimeMs) {
+    console.error(`STOP — publicatie-uit/${doel} is ouder dan ${draft}, dus die bouw\n`
+      + '       is niet van deze drafts. Draai eerst:\n'
       + '       node stamp-version.mjs && node publiceer.mjs');
     process.exit(2);
   }
@@ -133,7 +134,13 @@ for (const [draft, doel] of PAREN) {
   for (const [w, h] of BREEDTES) {
     const A = await meet(`${BRON}/${draft}`, w, h);
     const B = await meet(`${UIT}/${doel}`, w, h);
-    const zelfde = A.tekst === B.tekst && A.elementen === B.elementen
+    /* Het TOTALE aantal elementen hoort hier NIET bij, en dat is met opzet.
+       De publicatie mist er een paar die niemand ziet: het voorbeeldblok
+       onderaan en de interne meta-tags, allebei bewust weggehaald. Wat wél
+       gelijk moet zijn is alles wat de bezoeker merkt — de tekst, het aantal
+       elementen dat werkelijk ruimte inneemt, de afmetingen en het beeld.
+       Of de code nog hetzelfde dóet, bewijst deel 2 hieronder. */
+    const zelfde = A.tekst === B.tekst
       && A.zichtbaar === B.zichtbaar && A.breed === B.breed && A.hoog === B.hoog
       && A.beeld.equals(B.beeld);
     console.log(`${zelfde ? 'OK ' : 'FOUT'}  ${doel} @ ${w}px — ${A.elementen}/${B.elementen} elementen, `

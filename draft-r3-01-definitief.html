@@ -5002,11 +5002,15 @@ tailwind.config = {
 
     /* Waar de bedankpagina staat, hangt af van waar deze pagina staat. Op de
        server van de klant is dat /bedankt, via een herschrijfregel in
-       web.config; op de draftsite is het het losse bestand ernaast. Een voorstel
-       voor Jana werkt daardoor net zo goed als de echte pagina. */
+       web.config. Op de draftsite staan de drie pagina's als losse bestanden
+       naast elkaar, en zet het voorbeeldblok onderaan __BEDANKT_URL.
+
+       Waarom via een globale en niet gewoon de bestandsnaam bekijken, zoals
+       hier tot 2026-11-10 stond: dat blok gaat er bij publicatie uit, deze
+       code niet. Zo noemt wat naar de klant gaat nergens meer een
+       draftbestand. */
     function bedanktadres() {
-      var hier = location.pathname.split('/').pop();
-      return hier.indexOf('draft-r3-01') === 0 ? 'draft-r3-02-bedankt.html' : '/bedankt';
+      return window.__BEDANKT_URL || '/bedankt';
     }
 
     function verstuur(f) {
@@ -6134,7 +6138,7 @@ tailwind.config = {
 })();
 </script>
 
-<script>
+<script data-alleen-voorbeeld>
   /* DE PREVIEW KENT /cookies EN /bedankt NIET.
 
      Op demo.youbo.io zijn de adressen /, /bedankt en /cookies; op
@@ -6155,6 +6159,8 @@ tailwind.config = {
       '/bedankt': 'draft-r3-02-bedankt.html',
       '/cookies': 'draft-r3-03-cookies.html'
     };
+    /* Ook het doel ná het formulier. Zie bedanktadres() in het meetblok. */
+    window.__BEDANKT_URL = naar['/bedankt'];
     [].forEach.call(document.querySelectorAll('a[href]'), function (a) {
       var h = a.getAttribute('href');
       if (naar[h]) { a.setAttribute('href', naar[h]); }

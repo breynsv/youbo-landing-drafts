@@ -372,6 +372,62 @@ function cssZonderCommentaar(css, naam) {
   return uit.replace(/[ \t]+$/gm, '').replace(/\n{3,}/g, '\n\n');
 }
 
+/* Wat er verder nog uit moet: het gereedschap van de bouwer.
+   Een onafhankelijke controle van de live pagina's op 2026-11-10 vond drie
+   dingen die geen commentaar zijn en toch niet bij de klant horen.
+
+   1 · HET VOORBEELDBLOK. Op de draftsite staan de drie pagina's als losse
+       bestanden naast elkaar, dus zet een blokje onderaan de links en het
+       doel na het formulier om. Op de server deed het niets — het stopte
+       meteen — maar het nóemde wel draft-r3-01-definitief.html en zo. Dat
+       verraadt het werkproces zonder iets op te leveren. Het blok draagt
+       daarom data-alleen-voorbeeld en gaat hier in zijn geheel weg.
+
+   2 · DE INTERNE META-TAGS. ontwerp-versie en ontwerp-versie-leesbaar zijn er
+       voor de reviewtool, pagina-soort voor check-drafts.mjs. Allemaal
+       bureau-administratie. publiceer.mjs eist de versiestempel nog steeds in
+       de BRON — dat is de controle dat de bouw gedraaid heeft — maar de klant
+       hoeft hem niet te krijgen.
+
+   3 · DE SJABLOONATTRIBUTEN van het inhoudssysteem: data-inhoud-src,
+       data-inhoud-href, data-herhaal-… Ze worden alleen tijdens de bouw
+       gelezen en dragen de namen van de inhoudsvelden naar buiten.
+
+       MAAR NIET ALLEMAAL, EN DAT WORDT HIER UITGEZOCHT IN PLAATS VAN
+       OPGESCHREVEN. Twee van die attributen blijken wél nodig: de foutmelding
+       van het formulier zoekt de veldnaam op met
+       `label.querySelector('[data-inhoud]')`, en een stijlregel hangt aan
+       `p[data-herhaal-nr]`. Ze weghalen zou geen foutmelding geven — de
+       melding zou stilletjes "dit veld" gaan zeggen en de stijlregel zou op
+       niets meer passen.
+
+       Een handmatige uitzonderingslijst zou de volgende keer verouderd zijn.
+       Dus leest deze stap eerst alle script- en stijlblokken en houdt elk
+       data-attribuut dat daar genoemd wordt. Wat de pagina zelf nergens
+       gebruikt, mag weg. */
+function zonderBouwgereedschap(html) {
+  /* Het voorbeeldblok, inhoud en al. */
+  let uit = html.replace(/<script\b[^>]*\bdata-alleen-voorbeeld\b[^>]*>[\s\S]*?<\/script\s*>\s*/gi, '');
+
+  /* De interne meta-tags. */
+  uit = uit.replace(/[ \t]*<meta\s+name="(?:ontwerp-versie|ontwerp-versie-leesbaar|pagina-soort)"[^>]*>\n?/gi, '');
+
+  /* En de sjabloonattributen — maar alleen buiten script en style, want
+     daarbinnen is "data-inhoud-" gewone tekst in code en geen attribuut. */
+  const stukken = [];
+  uit = uit.replace(/<(script|style)\b[\s\S]*?<\/\1\s*>/gi, (m) => {
+    stukken.push(m);
+    return `\u0000BLOK${stukken.length - 1}\u0000`;
+  });
+  const gebruikt = new Set();
+  for (const blok of stukken) {
+    for (const m of blok.matchAll(/data-[a-z][a-z0-9-]*/gi)) gebruikt.add(m[0].toLowerCase());
+  }
+  uit = uit.replace(/\s+(data-(?:inhoud-[a-z-]+|herhaal[a-z-]*))(?:="[^"]*")?/gi,
+    (heel, naam) => (gebruikt.has(naam.toLowerCase()) ? heel : ''));
+  return uit.replace(/\u0000BLOK(\d+)\u0000/g, (m, i) => stukken[Number(i)]);
+}
+
 function zonderCodecommentaar(html, naam) {
   return html.replace(/(<(script|style)\b([^>]*)>)([\s\S]*?)(<\/\2\s*>)/gi,
     (heel, open, merk, attrs, inhoud, sluit) => {
@@ -439,7 +495,8 @@ for (const r of lijst) {
   mkdirSync(dirname(doel), { recursive: true });
   if (PAGINADOELEN.has(r.naar)) {
     const bron = readFileSync(join(hier, r.van), 'utf8');
-    const schoon = zonderCodecommentaar(zonderCommentaar(bron, r.van), r.van);
+    const schoon = zonderBouwgereedschap(
+      zonderCodecommentaar(zonderCommentaar(bron, r.van), r.van));
     commentaarWeg += Buffer.byteLength(bron) - Buffer.byteLength(schoon);
     writeFileSync(doel, schoon);
   } else {
