@@ -325,17 +325,16 @@ tailwind.config = {
      Geen van de waarden is nieuw: alle zes staan één op één gelijk aan een
      token dat deze pagina al gebruikt.
 
-     DRIE DINGEN ZIJN BEWUST NIET OVERGENOMEN
-     1 · `opacity: .6` op de taalnamen. #547068 op wit haalt 5,39:1, maar op
-         60% dekking zakt dat naar #98a9a4 en 2,46:1 — leestekst moet 4,5:1
-         halen, dus is dat een echte fout in hun stijlblad en staan de namen
-         hier op volle dekking. (Daarmee vervalt ook de `opacity: 1` die hun
-         .active-language nodig had om eronderuit te komen.)
-     2 · `--color-link: #00acd6` als hoverkleur. Datzelfde cyaan haalt 2,67:1
+     TWEE DINGEN ZIJN BEWUST NIET OVERGENOMEN
+     (Een derde, `opacity: .6` op de taalnamen, is sinds 2026-11-10 niet meer
+     van toepassing: de taalbalk staat er niet meer. Hij stond in hun stijlblad
+     op 60% dekking, waarmee #547068 op wit van 5,39:1 naar 2,46:1 zakte —
+     onder de 4,5:1 die leestekst moet halen.)
+     1 · `--color-link: #00acd6` als hoverkleur. Datzelfde cyaan haalt 2,67:1
          op wit. Deze pagina gebruikt daarvoor al de goedgekeurde donkerder
          trap #00718c (5,61:1), zoals in de tailwind-config hierboven staat
          uitgelegd, en de footer volgt diezelfde regel.
-     3 · `align-self: end`. Dat hoort bij hun grid-opzet met <page-container>
+     2 · `align-self: end`. Dat hoort bij hun grid-opzet met <page-container>
          en betekent hier niets.
 
      ÉÉN REGEL IS TOEGEVOEGD DIE ZIJ NIET HEBBEN, en wel om hun eigen
@@ -387,22 +386,20 @@ tailwind.config = {
   .yb-footer .footer-linkedin img { height: 16px; width: auto; margin-right: 8px; margin-top: 0; }
   .yb-footer .footer-links-about,
   .yb-footer .footer-links-legal { width: 35%; display: flex; flex-direction: column; gap: 16px; }
-  .yb-footer .footer-languages {
+  /* === r3: de taalbalk is weg (2026-11-10) ===
+     Jana: er komen voorlopig alleen Nederlandse demo's, dus de drie taalnamen
+     zegden niets — twee ervan waren al geen link. Wat ze wél deden was de
+     footer in tweeën delen: zij droegen de lijn boven het copyright en de 40px
+     eronder. Die taak gaat hier over op het copyrightblok zelf, zodat de
+     footer er even rustig uitziet als voorheen en niet plots dichtgeschoven. */
+  .yb-footer .footer-copyright {
+    text-align: center;
+    font-size: .875rem;
     max-width: calc(1080px + 48px);
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
     margin: auto;
-    justify-content: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    padding: 16px 24px;
-    margin-bottom: 40px;
+    border-top: 1px solid var(--color-border);
+    padding: 40px 24px 0;
   }
-  .yb-footer .footer-languages a,
-  .yb-footer .footer-languages span { font-size: 14px; }
-  .yb-footer .active-language { color: var(--color-grey-800); pointer-events: none; font-weight: 500; }
-  .yb-footer .footer-copyright { text-align: center; font-size: .875rem; }
   .yb-footer .footer-copyright a {
     border-bottom: .0625rem solid var(--color-brand-primary);
     padding-bottom: .125rem;
@@ -413,14 +410,32 @@ tailwind.config = {
     .yb-footer .footer-links { flex-direction: column; text-align: center; }
     .yb-footer .footer-links-about,
     .yb-footer .footer-links-legal { gap: 24px; width: 100%; }
-    .yb-footer .footer-languages { gap: 24px; }
   }
 
   /* Het ene stukje van dit blok dat niet uit hun stijlblad komt: de
-     ondernemingsregel onder het copyright. De inerte taalnamen erven de
-     tekstkleur van .yb-footer a/p en staan dus op 5,39:1. */
+     ondernemingsregel onder het copyright. */
   .yb-footer .footer-entiteit { margin-top: 8px; }
-  .yb-footer .inert-language { color: var(--color-grey-700); }
+  /* De ondertekening. Een echte, volgbare link en geen HTML-commentaar: een
+     commentaarblok telt voor een zoekmachine niet mee en levert dus geen
+     verwijzing op. Wel bewust kleiner en lichter dan de ondernemingsregel —
+     het is onze naam op hun pagina, dus hij hoort er te staan zonder de
+     aandacht te trekken. De link draagt niet de groene onderlijn van de
+     andere footerlinks, om dezelfde reden.
+
+     HIJ DRAAGT ALS ENIGE LINK OP DEZE PAGINA GEEN data-cta-HAAK, met opzet:
+     dit is onze ondertekening en geen onderdeel van Youbo's meetplan. Een haak
+     zou een twintigste gebeurtenisnaam vragen in een lijst van negentien die
+     met hen is afgesproken, en onze kliks in hún GA4 zetten. */
+  .yb-footer .footer-maker { margin-top: 12px; font-size: .75rem; color: var(--color-grey-700); }
+  .yb-footer .footer-maker a {
+    border-bottom: 0;
+    padding-bottom: 0;
+    color: inherit;
+    /* De footerlinks dragen hun eigen 15px; zonder deze regel staat «Trouvee»
+       groter dan de zin waar hij in staat. */
+    font-size: inherit;
+  }
+  .yb-footer .footer-maker a:hover { color: var(--color-grey-800); text-decoration: underline; }
 </style>
 
 <script>document.documentElement.classList.add('js');</script>
@@ -555,7 +570,7 @@ tailwind.config = {
      -------------------------------------------------------------------------
      Dit is niet langer een nagebouwde footer maar hún component, letterlijk:
      de inhoud van /components/nl/footer.html van youbo.io, met hun eigen
-     klassenamen (.footer-links, .footer-languages, .footer-copyright) in hun
+     klassenamen (.footer-links, .footer-copyright) in hun
      eigen volgorde. De vorige versie hier was met de hand nagebouwd in
      Tailwind op een zwarte band; die is weg.
 
@@ -580,8 +595,10 @@ tailwind.config = {
 
      Daarmee vervalt ook het CSS-blok «r3: echte footer» onderaan de stijlen:
      daar doet /css/global.css het werk al. De twee data-url-* attributen zijn
-     de adressen van déze pagina in het Engels en het Frans; die bestaan nog
-     niet, en zolang dat zo is staan de twee andere taalnamen er zonder link.
+     de adressen van déze pagina in het Engels en het Frans. Die bestaan niet,
+     en de taalbalk staat hier sinds 2026-11-10 ook niet meer — wordt deze
+     pagina ooit vertaald, dan horen ze ingevuld te worden en komt hun eigen
+     taalbalk vanzelf terug.
 
      WAT VOOR DEZE PREVIEW IS AANGEPAST, en wat met de omwisseling terugdraait
      · BEELDPADEN. Hun markup haalt het woordmerk uit de map img/logo en het
@@ -593,7 +610,7 @@ tailwind.config = {
        als https://www.youbo.io/… zodat elke link ook vanaf het previewdomein
        werkt. Geen enkele is bedacht of afgeleid: alle negen komen uit het
        component zelf. «Nieuws» stond in de versie van augustus nog in
-       commentaar en is nu een echte link; Français is er nieuw bij.
+       commentaar en is nu een echte link.
      · HET WOORDMERK WIJST NAAR /nl/, zoals hun eigen component. Dit stond tot
        2026-10-08 op /nl/merit/, omdat /nl/ niet in de opgeslagen pagina's in
        _raw/ staat en check-drafts.mjs de bestaande adressen daaruit afleidt.
@@ -617,8 +634,12 @@ tailwind.config = {
      · DE ENGELSE LABELS BLIJVEN ENGELS. «Legal», «Cookie policy», «Terms of
        use»: zo staat het in hun Nederlandse footer. Dat is hun chrome, niet
        onze copy, dus is het niet vernederlandst.
-     · DE TALEN. De twee andere taalnamen staan er zonder link, want deze
-       pagina bestaat alleen in het Nederlands.
+     · DE TAALBALK IS WEG, sinds 2026-11-10. Youbo geeft voorlopig alleen
+       Nederlandse demo's, dus bestond deze pagina maar in één taal en waren
+       twee van de drie namen al geen link: drie woorden die niets deden en
+       wel een rij in de footer innamen. De lijn die zij boven het copyright
+       droegen staat nu op het copyrightblok zelf, zodat de footer er even
+       rustig uitziet als voorheen.
      · ÉÉN REGEL DIE NIET VAN HEN KOMT: de ondernemingsgegevens van Teal
        Partners. Hun sitefooter draagt die niet, onze vorige footer wel, en op
        een advertentiepagina die persoonsgegevens verzamelt is het adres van de
@@ -683,23 +704,10 @@ tailwind.config = {
 
   </div>
 
-  <!-- DE TAALSCHAKELAAR — drie namen, en geen van de twee andere is een link.
-       Hun component zet hier <a id="footer-url-en"> en <a id="footer-url-fr">
-       met een lege href, die footer.js vult uit data-url-en en data-url-fr.
-       Deze pagina bestaat alleen in het Nederlands, dus zou dat hier een lege
-       href opleveren: een link die de bezoeker terugzet op dezelfde pagina, of
-       na het vullen een 404. Daarom staan de drie namen er wél — de footer
-       ziet er zo uit als op youbo.io — maar als <span>: geen href, niet in de
-       tabvolgorde, niets om op te klikken. -->
-  <div class="footer-languages">
-    <span class="inert-language">English</span>
-    <span class="active-language">Nederlands</span>
-    <span class="inert-language">Français</span>
-  </div>
-
   <div class="footer-copyright">
     <p>© <span id="currentYear">2026</span> Youbo by <a href="https://www.tealpartners.com/" target="_blank" rel="noopener" data-cta="footer-tealpartners">Teal Partners</a></p>
     <p class="footer-entiteit">Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542</p>
+    <p class="footer-maker">Ontwerp en bouw: <a href="https://trouvee.be" target="_blank" rel="noopener">Trouvee</a></p>
   </div>
 
 </footer>

@@ -5,6 +5,8 @@
  *     node toets-meting.mjs
  *
  * Op de twee r3-pagina's staat op elke knop en elke link een data-cta-haak.
+ * Op één na: de ondertekening van Trouvee onderaan de footer draagt er geen,
+ * met opzet — zie de toelichting bij .footer-maker in de stijlen.
  * Sinds 2026-10-12 luistert daar iets naar: het blok DE METING, onderaan beide
  * pagina's, letterlijk hetzelfde op allebei. Deze toets is het bewijs dat het
  * doet wat de uitleg zegt — en, net zo belangrijk, dat het niets doet wat het

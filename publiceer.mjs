@@ -305,6 +305,40 @@ if (fouten.length) {
   process.exit(1);
 }
 
+// ── Het commentaar gaat er bij publicatie af ────────────────────────────────
+//
+// De drafts zijn het werkdocument: elk blok legt uit waarom het staat zoals het
+// staat, welke opmerking van Jana eraan ten grondslag ligt en wat er eerder
+// stond. Dat is 79 KB op de landingspagina, een vijfde van het bestand, en het
+// is waardevol — in de repo. Op de productieserver is het iets anders: daar is
+// het een intern logboek dat iedereen die «bron weergeven» doet kan lezen, met
+// namen, data, afgewezen varianten en afwegingen erin die de klant nooit
+// gevraagd heeft te publiceren.
+//
+// Dus: de bron houdt alles, de publicatie houdt niets. Niet met de hand
+// opschonen — dan is de draft na één ronde zijn geheugen kwijt — maar hier, op
+// het ene punt waar het bestand toch al van naam verandert.
+//
+// WAAROM DIT NIET ZOMAAR EEN VERVANGING IS
+// Een <!-- binnen een <script> of <style> is gewone tekst voor de browser maar
+// ziet er voor een reguliere uitdrukking uit als het begin van commentaar. Eén
+// zo'n teken en deze stap knipt een stuk werkende code weg, zonder dat er iets
+// stuk lijkt tot de pagina op de server staat. Daarom wordt daar eerst op
+// gecontroleerd, en stopt de bouw als het voorkomt, in plaats van te gokken.
+function zonderCommentaar(html, naam) {
+  for (const blok of html.matchAll(/<(script|style)\b[^>]*>([\s\S]*?)<\/\1>/gi)) {
+    if (/<!--|-->/.test(blok[2])) {
+      stop(`${naam} heeft "<!--" of "-->" binnen een <${blok[1]}>. Deze stap haalt het\n`
+        + '       commentaar uit de gepubliceerde pagina, en zou daar nu werkende code\n'
+        + '       mee weghalen. Schrijf het in de code anders op (bv. "<!" + "--").');
+    }
+  }
+  // Het hele blok gaat weg, inhoud en al. Dat is met opzet: een element dat
+  // bewust in commentaar staat — de weggelaten case-nota's bijvoorbeeld — hoort
+  // weg te blijven en niet alsnog zichtbaar te worden.
+  return html.replace(/<!--[\s\S]*?-->/g, '');
+}
+
 // ── Samenstellen ────────────────────────────────────────────────────────────
 const lijst = [
   ...PAGINAS.map((p) => ({ van: p.bron, naar: p.doel })),
@@ -323,10 +357,19 @@ if (alleenLijst) {
 }
 
 rmSync(uitMap, { recursive: true, force: true });
+const PAGINADOELEN = new Set(PAGINAS.map((p) => p.doel));
+let commentaarWeg = 0;
 for (const r of lijst) {
   const doel = join(uitMap, r.naar);
   mkdirSync(dirname(doel), { recursive: true });
-  cpSync(join(hier, r.van), doel);
+  if (PAGINADOELEN.has(r.naar)) {
+    const bron = readFileSync(join(hier, r.van), 'utf8');
+    const schoon = zonderCommentaar(bron, r.van);
+    commentaarWeg += Buffer.byteLength(bron) - Buffer.byteLength(schoon);
+    writeFileSync(doel, schoon);
+  } else {
+    cpSync(join(hier, r.van), doel);
+  }
 }
 
 // ── Nakijken wat er écht in de map staat ────────────────────────────────────
@@ -357,6 +400,22 @@ if (inMap.length !== lijst.length) {
   stop(`${inMap.length} bestanden in de map, ${lijst.length} verwacht`);
 }
 
+// En er staat werkelijk geen commentaar meer in. Op het resultaat gecontroleerd
+// en niet op de bedoeling: dit is de hele reden dat de stap bestaat, en een
+// vervanging die stil niets doet zou er precies zo uitzien als een die werkt.
+for (const naam of htmlInMap) {
+  const rest = (readFileSync(join(uitMap, naam), 'utf8').match(/<!--[\s\S]*?-->/g) || []);
+  if (rest.length) {
+    stop(`${naam} draagt nog ${rest.length} commentaarblok(ken), bv.:\n       `
+      + rest[0].slice(0, 120).replace(/\s+/g, ' '));
+  }
+  // En de ondertekening staat er als échte link in, niet als commentaar: een
+  // <!-- --> telt voor een zoekmachine niet mee.
+  if (!readFileSync(join(uitMap, naam), 'utf8').includes('https://trouvee.be')) {
+    stop(`${naam} draagt geen link naar trouvee.be meer`);
+  }
+}
+
 // ── Wat het geworden is ─────────────────────────────────────────────────────
 const perType = new Map();
 for (const p of inMap) {
@@ -374,6 +433,7 @@ for (const [t, v] of [...perType].sort((a, b) => b[1].b - a[1].b)) {
 console.log(`\n  pagina's  : ${verwacht.join(', ')}  (in de wortel, dus assets/ blijft kloppen)`);
 console.log(`  drafts    : 0  (van de ${readdirSync(hier).filter((f) => /^draft-.*\.html$/.test(f)).length} in de repo)`);
 console.log(`  afbeeldingen: ${bestanden.size} van de ${readdirSync(join(hier, 'assets', 'img')).length} in assets/img`);
+console.log(`  commentaar: ${(commentaarWeg / 1024).toFixed(1)} kB uit de pagina's gehaald (de drafts houden het)`);
 console.log('');
 
 /* De noindex-kop is bewust tijdelijk, en het vergeten ervan is het grotere

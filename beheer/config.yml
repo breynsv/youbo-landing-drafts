@@ -1152,30 +1152,6 @@ collections:
                 pattern:
                   - '^[^<\n]*$'
                   - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'taal_1'
-                label: 'Taal 1'
-                widget: 'string'
-                required: true
-                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'taal_2'
-                label: 'Taal 2'
-                widget: 'string'
-                required: true
-                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
-              - name: 'taal_3'
-                label: 'Taal 3'
-                widget: 'string'
-                required: true
-                hint: 'Staat er zonder link: deze pagina bestaat alleen in het Nederlands.'
-                pattern:
-                  - '^[^<\n]*$'
-                  - 'Gewone tekst, anders bouwt de pagina niet: geen < en geen nieuwe regel.'
               - name: 'copyright'
                 label: 'Het stukje achter het jaartal'
                 widget: 'string'
