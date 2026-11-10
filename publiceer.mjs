@@ -53,6 +53,7 @@ import {
   readdirSync,
 } from 'node:fs';
 import { dirname, join, posix, relative, extname } from 'node:path';
+import { transformSync } from 'esbuild';
 import { fileURLToPath } from 'node:url';
 
 const hier = dirname(fileURLToPath(import.meta.url));
@@ -325,6 +326,80 @@ if (fouten.length) {
 // zo'n teken en deze stap knipt een stuk werkende code weg, zonder dat er iets
 // stuk lijkt tot de pagina op de server staat. Daarom wordt daar eerst op
 // gecontroleerd, en stopt de bouw als het voorkomt, in plaats van te gokken.
+/* En hetzelfde voor het commentaar IN de code. Dat is het grotere deel: op de
+   landingspagina staat 118 kB aan blokcommentaar in de script- en
+   stijlblokken, tegen 100 kB in de HTML. Met dezelfde namen, dezelfde data en
+   dezelfde afgewezen varianten erin.
+
+   WAAROM HIER TWEE VERSCHILLENDE AANPAKKEN STAAN
+
+   JavaScript kun je niet met zoeken-en-vervangen opschonen. Een `/` is daar
+   soms een deling en soms het begin van een reguliere uitdrukking, en `/*` kan
+   even goed in een tekenreeks of een sjabloonstring staan. Alleen iets dat de
+   taal echt ontleedt weet het verschil, dus doet esbuild dat — het leest de
+   code in en schrijft ze terug zonder commentaar.
+
+   De stijlblokken gaan daar NIET door, en dat is geen slordigheid: ze dragen
+   type="text/tailwindcss" en staan vol @apply en theme(). Dat is geen CSS die
+   een browser leest maar invoer voor Tailwind, en een CSS-ontleder zou er zijn
+   eigen idee van maken. Daarom een eigen aftaster die precies één ding doet —
+   commentaar weghalen — en elke andere byte laat staan. CSS is daarvoor
+   eenvoudig genoeg: commentaar nestelt niet, dus je hoeft alleen te weten of
+   je in een tekenreeks zit. */
+const JS_SOORTEN = new Set(['', 'text/javascript', 'application/javascript', 'module']);
+
+function cssZonderCommentaar(css, naam) {
+  let uit = '', i = 0, aanhaling = null;
+  while (i < css.length) {
+    const c = css[i];
+    if (aanhaling) {
+      if (c === '\\') { uit += c + (css[i + 1] ?? ''); i += 2; continue; }
+      if (c === aanhaling) aanhaling = null;
+      uit += c; i += 1; continue;
+    }
+    if (c === '"' || c === "'") { aanhaling = c; uit += c; i += 1; continue; }
+    if (c === '/' && css[i + 1] === '*') {
+      const eind = css.indexOf('*/', i + 2);
+      if (eind === -1) stop(`${naam}: een stijlblok heeft een commentaar dat nooit sluit`);
+      i = eind + 2;
+      continue;
+    }
+    uit += c; i += 1;
+  }
+  /* De lege regels die achterblijven waar het commentaar stond, weg. Buiten een
+     tekenreeks is witruimte in CSS betekenisloos, en een tekenreeks over
+     meerdere regels is in CSS sowieso ongeldig. */
+  return uit.replace(/[ \t]+$/gm, '').replace(/\n{3,}/g, '\n\n');
+}
+
+function zonderCodecommentaar(html, naam) {
+  return html.replace(/(<(script|style)\b([^>]*)>)([\s\S]*?)(<\/\2\s*>)/gi,
+    (heel, open, merk, attrs, inhoud, sluit) => {
+      if (!inhoud.trim()) return heel;
+      const soort = (attrs.match(/type\s*=\s*["']?([^"'\s>]+)/i) || ['', ''])[1].toLowerCase();
+      if (merk.toLowerCase() === 'style') {
+        return open + cssZonderCommentaar(inhoud, naam) + sluit;
+      }
+      /* application/ld+json is geen JavaScript. Het is de structuurdata voor de
+         FAQ, JSON kent geen commentaar, en esbuild zou er terecht op vallen. */
+      if (!JS_SOORTEN.has(soort)) return heel;
+      try {
+        /* minifyWhitespace en niets anders. Zonder die schakelaar laat esbuild
+           het commentaar BINNEN objectliteralen staan — en dat is precies waar
+           de namentabel van de meting zit, met de uitleg per haak erin. De
+           andere twee schakelaars blijven uit: minifyIdentifiers hernoemt
+           variabelen en minifySyntax herschrijft code, en geen van beide is
+           nodig om commentaar kwijt te raken. */
+        const uit = transformSync(inhoud, {
+          loader: 'js', legalComments: 'none', minifyWhitespace: true,
+        }).code;
+        return open + '\n' + uit + sluit;
+      } catch (e) {
+        stop(`${naam}: esbuild kan een <script> niet lezen — ${e.message.split('\n')[0]}`);
+      }
+    });
+}
+
 function zonderCommentaar(html, naam) {
   for (const blok of html.matchAll(/<(script|style)\b[^>]*>([\s\S]*?)<\/\1>/gi)) {
     if (/<!--|-->/.test(blok[2])) {
@@ -364,7 +439,7 @@ for (const r of lijst) {
   mkdirSync(dirname(doel), { recursive: true });
   if (PAGINADOELEN.has(r.naar)) {
     const bron = readFileSync(join(hier, r.van), 'utf8');
-    const schoon = zonderCommentaar(bron, r.van);
+    const schoon = zonderCodecommentaar(zonderCommentaar(bron, r.van), r.van);
     commentaarWeg += Buffer.byteLength(bron) - Buffer.byteLength(schoon);
     writeFileSync(doel, schoon);
   } else {
@@ -409,9 +484,22 @@ for (const naam of htmlInMap) {
     stop(`${naam} draagt nog ${rest.length} commentaarblok(ken), bv.:\n       `
       + rest[0].slice(0, 120).replace(/\s+/g, ' '));
   }
+  // En ook geen commentaar meer IN de code. Op het resultaat geteld, want een
+  // ontleder die een blok stilletjes overslaat ziet er precies zo uit als een
+  // die werkt.
+  const tekst = readFileSync(join(uitMap, naam), 'utf8');
+  for (const b of tekst.matchAll(/<(script|style)\b([^>]*)>([\s\S]*?)<\/\1\s*>/gi)) {
+    if (/json/i.test(b[2])) continue;
+    const c = b[3].match(/\/\*[\s\S]*?\*\//g);
+    if (c) {
+      stop(`${naam}: er staat nog commentaar in een <${b[1]}>, bv.:\n       `
+        + c[0].slice(0, 120).replace(/\s+/g, ' '));
+    }
+  }
+
   // En de ondertekening staat er als échte link in, niet als commentaar: een
-  // <!-- --> telt voor een zoekmachine niet mee.
-  if (!readFileSync(join(uitMap, naam), 'utf8').includes('https://trouvee.be')) {
+  // commentaarblok telt voor een zoekmachine niet mee.
+  if (!tekst.includes('https://trouvee.be')) {
     stop(`${naam} draagt geen link naar trouvee.be meer`);
   }
 }

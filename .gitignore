@@ -1,6 +1,12 @@
 node_modules/
-package-lock.json
 .DS_Store
+
+# package-lock.json stond hier tot 2026-11-10. Hij hoort er nu WEL in: sinds
+# publiceer.mjs esbuild gebruikt om het commentaar uit de script-blokken te
+# halen, herschrijft een afhankelijkheid de code die bij de klant terechtkomt.
+# Dan wil je weten wélke versie dat deed, en niet wat npm die dag toevallig
+# ophaalde. De publicatie-actie draait bovendien `npm ci`, en die weigert
+# zonder lockbestand.
 
 # QA artefacts — 83MB of screenshots and audit JSON, regenerable with
 # `node qa-audit.mjs` and `node qa-shots.mjs`.

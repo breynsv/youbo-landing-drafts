@@ -47,7 +47,7 @@
  *     afsluitcode wordt gelezen.
  */
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -226,6 +226,11 @@ const SCRIPTS = ['build-inhoud.mjs', 'build-faq.mjs', 'inhoud-opmaak.js',
 
 function maakWegwerp() {
   const map = mkdtempSync(join(tmpdir(), 'youbo-inhoud-'));
+  /* publiceer.mjs gebruikt sinds 2026-11-10 esbuild om het commentaar uit de
+     script-blokken te halen. Node zoekt dat pakket vanaf de map waar het
+     script staat, dus moet deze kopie bij node_modules kunnen. Een verwijzing
+     volstaat en kost niets; kopiëren zou tientallen MB per toetsronde zijn. */
+  symlinkSync(join(hier, 'node_modules'), join(map, 'node_modules'), 'dir');
   for (const f of SCRIPTS) cpSync(join(hier, f), join(map, f));
   cpSync(join(hier, 'draft-r3-01-definitief.html'), join(map, 'draft-r3-01-definitief.html'));
   mkdirSync(join(map, 'content'));

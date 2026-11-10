@@ -112,10 +112,20 @@ jobs:
         with:
           node-version: '24'
 
-      # Geen `npm ci`. stamp-version.mjs, build-faq.mjs, check-drafts.mjs en
-      # publiceer.mjs gebruiken alleen ingebouwde node-modules — nagekeken, niet
-      # aangenomen. De playwright-afhankelijkheid is er voor de QA-scripts, en
-      # die horen niet in een publicatie.
+      # Sinds 2026-11-10 heeft publiceer.mjs één afhankelijkheid: esbuild, om
+      # het commentaar uit de script-blokken te halen. Dat kan niet met zoeken
+      # en vervangen — in JavaScript is `/` soms een deling en soms het begin
+      # van een reguliere uitdrukking — dus moet er iets de taal echt ontleden.
+      #
+      # `--omit=dev` is het hele punt: esbuild staat bij "dependencies" en
+      # playwright en yaml bij "devDependencies", dus haalt deze stap alleen
+      # esbuild binnen en niet de browsers van de QA-scripts.
+      #
+      # Het Cloudflare-bouwcommando draait alleen stamp-version.mjs, en dát
+      # script blijft met opzet afhankelijkheidsvrij: Pages bouwt met
+      # SKIP_DEPENDENCY_INSTALL=1 en heeft daar helemaal geen node_modules.
+      - name: 0 · De ene afhankelijkheid van de bouw
+        run: npm ci --omit=dev
 
       - name: 1 · Bouwen — de FAQ in de HTML en de versiestempel erop
         id: bouwen

@@ -44,6 +44,13 @@ function serveer(wortel) {
     const s = createServer((req, res) => {
       let p = decodeURI(req.url.split('?')[0]);
       if (p === '/') p = '/index.html';
+      /* Dezelfde herschrijfregels als publicatie/web.config. Zonder deze landt
+         de gepubliceerde pagina na het versturen van het formulier op een 404
+         terwijl de draft netjes op de bedankpagina komt — en dan vergelijk je
+         twee verschillende pagina's met elkaar in plaats van twee versies van
+         dezelfde. */
+      if (/^\/bedankt\/?$/.test(p)) p = '/bedankt.html';
+      if (/^\/cookies\/?$/.test(p)) p = '/cookies.html';
       const vol = join(wortel, p);
       if (!existsSync(vol)) { res.writeHead(404); return res.end(); }
       res.writeHead(200, { 'content-type': TYPEN[extname(vol).toLowerCase()] || 'application/octet-stream' });
@@ -144,6 +151,134 @@ for (const [draft, doel] of PAREN) {
   }
 }
 
+
+/* ───────────────────────────────────────────────────────────────────────────
+   DEEL 2 — DOET DE CODE NOG HETZELFDE?
+
+   Deel 1 vergelijkt het beeld, en dat bewijst de stijlen. Het bewijst niets
+   over het JavaScript: een kapotte meetcode of een formulier dat niet meer
+   verstuurt, ziet er op een schermafdruk precies hetzelfde uit.
+
+   Daarom hier dezelfde handelingen op beide versies, en een vergelijking van
+   wat de pagina DOET: welke gebeurtenissen in dataLayer komen, wat er naar
+   Google en LinkedIn vertrekt, en wat het formulier verstuurt. De drafts en de
+   publicatie moeten tot op het veld hetzelfde antwoord geven.
+   ──────────────────────────────────────────────────────────────────────── */
+console.log('');
+
+/* Google's en LinkedIn's adressen dragen een willekeurige bezoeker-id en een
+   tijdstempel. Die verschillen per lading en zeggen niets, dus blijft alleen
+   over wat wél iets zegt. */
+const INTERESSANT = ['en', 'tid', 'gcs', 'conversion_id', 'conversionId', 'pid', 'fmt'];
+function kaal(url) {
+  try {
+    const u = new URL(url);
+    const p = INTERESSANT.map((k) => (u.searchParams.has(k) ? `${k}=${u.searchParams.get(k)}` : null))
+      .filter(Boolean).join('&');
+    /* De twee servers draaien op verschillende poorten, dus zou de eigen host
+       altijd verschillen. Hij zegt hier niets: het gaat om WAT er gevraagd
+       wordt, niet van welke poort. */
+    const host = u.hostname === '127.0.0.1' ? '(zelf)' : u.host;
+    return host + u.pathname + (p ? '?' + p : '');
+  } catch { return url; }
+}
+
+async function gedragVan(url, soort) {
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const pag = await ctx.newPage();
+  const verzoeken = [];
+  const verstuurd = [];
+  const fouten = [];
+  pag.on('pageerror', (e) => fouten.push(String(e).split('\n')[0]));
+  pag.on('console', (m) => { if (m.type() === 'error') fouten.push('console: ' + m.text().slice(0, 160)); });
+  await pag.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
+  /* Alles wat naar buiten zou gaan wordt hier opgevangen en beantwoord, zodat
+     deze toets met niemand buiten 127.0.0.1 praat. */
+  /* Alleen verzoeken naar buiten. Zonder de hostbegrenzing vangt "linkedin"
+     ook /assets/img/linkedin.svg van onze eigen server. */
+  await pag.route(/^https?:\/\/(?!127\.0\.0\.1)[^/]*(googletagmanager|google-analytics|analytics\.google|linkedin|licdn|doubleclick|cloudflare)/i,
+    async (r) => {
+      verzoeken.push(kaal(r.request().url()));
+      await r.fulfill({ status: 200, contentType: 'text/javascript', body: '' });
+    });
+  await pag.route(/\/request-demo/, async (r) => {
+    verstuurd.push(r.request().postData());
+    await r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
+  });
+  await pag.goto(url, { waitUntil: 'networkidle' });
+  await pag.evaluate(() => document.fonts.ready);
+
+  /* Geen enkele klik mag wegnavigeren: dan stopt de meting halverwege en
+     vergelijken we twee verschillende momenten. */
+  await pag.evaluate(() => {
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest && e.target.closest('a[href]');
+      if (a) e.preventDefault();
+    }, true);
+  });
+
+  const toestaan = await pag.$('[data-cta="cookiebalk-toestaan"]');
+  if (toestaan) { await toestaan.click(); await pag.waitForTimeout(1200); }
+
+  /* Elke zichtbare haak één keer, in de volgorde waarin ze in de pagina staan. */
+  const haken = await pag.$$eval('[data-cta]', (els) => els.map((e) => e.getAttribute('data-cta')));
+  for (const h of haken) {
+    const el = await pag.$(`[data-cta="${h}"]`);
+    if (!el) continue;
+    try { await el.click({ timeout: 1500, force: true }); } catch { /* onklikbaar: telt als niets */ }
+  }
+  await pag.waitForTimeout(400);
+
+  if (soort === 'landing') {
+    await pag.fill('#name', 'Toets Persoon');
+    await pag.fill('#email', 'toets@voorbeeld.be');
+    await pag.waitForTimeout(1600);          /* de drempel tegen te snel versturen */
+    await pag.click('[data-cta="formulier-vraag-demo"]').catch(() => {});
+    await pag.waitForTimeout(1200);
+  }
+
+  const dl = await pag.evaluate(() => (window.dataLayer || [])
+    .map((r) => JSON.stringify({ event: r.event, cta: r.cta, cta_detail: r.cta_detail })));
+  const koekjes = (await ctx.cookies()).map((c) => c.name).sort();
+  await ctx.close();
+  return { haken, dl, verzoeken: verzoeken.map(kaal), verstuurd, koekjes, fouten };
+}
+
+let gedragStuk = 0;
+for (const [draft, doel, soort] of [
+  [PAREN[0][0], PAREN[0][1], 'landing'],
+  [PAREN[1][0], PAREN[1][1], 'bedankt'],
+  [PAREN[2][0], PAREN[2][1], 'cookies'],
+]) {
+  const A = await gedragVan(`${BRON}/${draft}`, soort);
+  const B = await gedragVan(`${UIT}/${doel}`, soort);
+  const velden = [
+    ['haken', A.haken, B.haken],
+    ['gebeurtenissen', A.dl, B.dl],
+    ['verzoeken', A.verzoeken, B.verzoeken],
+    ['formulierinhoud', A.verstuurd, B.verstuurd],
+    ['cookies', A.koekjes, B.koekjes],
+    /* Hier staan altijd een paar net::ERR_FAILED-regels: dat zijn de
+       lettertypeverzoeken die deze toets zelf afbreekt. Ze horen aan beide
+       kanten even vaak voor te komen — een fout die alleen in de publicatie
+       opduikt, is wél een echte. */
+    ['scriptfouten', A.fouten, B.fouten],
+  ];
+  for (const [naam, x, y] of velden) {
+    const zelfde = JSON.stringify(x) === JSON.stringify(y);
+    if (!zelfde) gedragStuk++;
+    console.log(`${zelfde ? 'OK ' : 'FOUT'}  ${doel} · ${naam}: ${x.length} tegen ${y.length}`);
+    if (!zelfde) {
+      const alleen = (p, q) => p.filter((v) => !q.includes(v)).slice(0, 4);
+      console.log('      alleen in de draft     : ' + (JSON.stringify(alleen(x, y)) || '[]'));
+      console.log('      alleen in de publicatie: ' + (JSON.stringify(alleen(y, x)) || '[]'));
+    }
+  }
+}
+
 await browser.close(); a.close(); b.close();
+console.log(gedragStuk ? `\n${gedragStuk} gedragsverschil(len)` : 'En de code doet hetzelfde: gelijke gebeurtenissen, gelijke verzoeken, gelijk formulier.');
+if (gedragStuk) process.exitCode = 1;
+
 console.log(stuk ? `\n${stuk} verschil(len)` : '\nGeen enkel verschil: het commentaar droeg niets.');
 process.exit(stuk ? 1 : 0);
