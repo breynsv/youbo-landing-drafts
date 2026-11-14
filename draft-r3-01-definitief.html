@@ -5013,6 +5013,21 @@ tailwind.config = {
       return window.__BEDANKT_URL || '/bedankt';
     }
 
+    function campagne() {
+      var sleutels = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+      var zoek = String(location.search || '');
+      var uit = [];
+      for (var i = 0; i < sleutels.length; i++) {
+        var m = zoek.match(new RegExp('[?&]' + sleutels[i] + '=([^&#]*)'));
+        if (!m) { continue; }
+        var w = m[1];
+        try { w = decodeURIComponent(w.replace(/\+/g, ' ')); } catch (e) { /* stuk adres: neem het ruw */ }
+        w = w.toLowerCase().replace(/[^a-z0-9 ._-]+/g, '').trim().slice(0, 60);
+        if (w) { uit.push(sleutels[i].slice(4) + '=' + w); }
+      }
+      return uit.length ? 'Campagne: ' + uit.join(', ') : '';
+    }
+
     function verstuur(f) {
       var knop = f.querySelector('button[type="submit"]');
       var knoptekst = knop ? knop.textContent : '';
@@ -5028,6 +5043,29 @@ tailwind.config = {
          is "van welke pagina" iets wat niemand anders meer kan beantwoorden. */
       var bericht = veld(f, 'message');
       var herkomst = 'Via: de landingspagina op demo.youbo.io';
+
+      /* En de campagne, als ze in het adres staat. Sinds 2026-11-14.
+
+         WAAROM: GA4 ziet de UTM's vanzelf, maar de mail in Nicks mailbox
+         niet — en dáár wordt beslist of een lead opgevolgd wordt. Zonder
+         deze regel weet hij wel dát er een aanvraag is, maar niet uit welke
+         advertentie. Het gaat in message mee en niet in een nieuw veld,
+         zodat het eindpunt van Thomas niets hoeft te veranderen.
+
+         ER WORDT NIETS OPGESLAGEN. Geen sessionStorage, geen cookie: dat zou
+         toestemming vragen voor iets wat de bezoeker niet gevraagd heeft, en
+         het formulier staat toch op dezelfde pagina als waar hij binnenkwam,
+         dus staan de parameters nog gewoon in de adresbalk. Herlaadt hij de
+         pagina zonder parameters, dan missen we de campagne. Dat is de
+         eerlijke uitkomst en geen reden om iets weg te schrijven.
+
+         EN HET WORDT GESCHOOND. Deze waarden komen uit het adres — dus van
+         buiten — en belanden in een e-mail bij een mens. Zonder de filter
+         hieronder kan iemand met een zelfgemaakte link tekst in die mail
+         zetten. Alleen letters, cijfers, punt, streepje en spatie blijven
+         over, en hoogstens 60 tekens per waarde. */
+      var camp = campagne();
+      if (camp) { herkomst += '\n' + camp; }
 
       var lading = {
         name: veld(f, 'name'),

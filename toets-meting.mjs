@@ -184,8 +184,12 @@ ok('en het is op beide pagina\'s teken voor teken hetzelfde blok',
 /* De namen die de pagina gebruikt, uit het blok zelf gelezen. */
 const namenInBlok = new Set([...(blokL || '').matchAll(/'([a-z0-9_]+)'(?=,|\s*\})/g)].map((m) => m[1]));
 for (const [, naam] of (blokL || '').matchAll(/:\s*'([a-z][a-z0-9_]+)'/g)) namenInBlok.add(naam);
+/* utm_* staat erbuiten: dat zijn de namen van de campagneparameters die
+   campagne() uit het adres leest, geen gebeurtenisnamen. Ze staan in een
+   gewone array met aanhalingstekens en komma's, en dáár kijkt het patroon
+   hierboven naar. */
 const onbekend = [...namenInBlok].filter((n) => n.indexOf('_') > 0 && NAMEN.indexOf(n) === -1
-  && !/^gtm|^geen$|^ga4$/.test(n));
+  && !/^gtm|^geen$|^ga4$|^utm_/.test(n));
 ok(`het blok gebruikt geen naam buiten de ${NAMEN.length} afgesproken namen`,
    onbekend.length === 0, onbekend.join(', '));
 
@@ -838,6 +842,68 @@ console.log('\n6b. Wat er werkelijk op de lijn gaat');
      L.message === 'Via: de landingspagina op demo.youbo.io', String(L.message));
   ok('en een niet aangevinkte nieuwsbrief vertrekt als "nee"',
      L.newsletter === 'nee', String(L.newsletter));
+  await ctx.close();
+}
+
+{
+  /* DE CAMPAGNE IN DE MAIL — sinds 2026-11-14.
+
+     GA4 ziet de UTM's vanzelf, maar de mail in Nicks mailbox niet, en dáár
+     wordt beslist of een lead opgevolgd wordt. Dus gaat de campagne mee in
+     message. Hier wordt gemeten dat ze er werkelijk in staat, en dat ze
+     geschoond is: de waarden komen uit het adres en belanden bij een mens in
+     een e-mail, dus mag een zelfgemaakte link daar geen tekst in kunnen
+     zetten. */
+  const adres = '/' + LANDING
+    + '?utm_source=LinkedIn&utm_medium=paid-social'
+    + '&utm_campaign=youbo-demo-2026-11&utm_content=nick-video';
+  const { ctx, pg } = await open(adres, { keuze: 'toegestaan', wacht: 3500, laatNavigeren: true });
+  let lichaam = null;
+  await pg.route('**/request-demo', async (route) => {
+    lichaam = route.request().postData();
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' });
+  });
+  await pg.fill('#name', 'Anne Peeters');
+  await pg.fill('#email', 'anne@bedrijf.be');
+  await pg.evaluate(() => document.querySelector('form').requestSubmit());
+  await pg.waitForTimeout(900);
+  const L = JSON.parse(lichaam || '{}');
+  const regel = String(L.message || '').split('\n').filter((r) => r.indexOf('Campagne:') === 0)[0] || '';
+  ok('de campagne uit het adres gaat mee in de mail', !!regel, String(L.message));
+  ok('met bron, medium, campagne en advertentie erin',
+     /source=linkedin/.test(regel) && /medium=paid-social/.test(regel)
+     && /campaign=youbo-demo-2026-11/.test(regel) && /content=nick-video/.test(regel), regel);
+  ok('en LinkedIn is linkedin geworden — GA4 ziet hoofdletters als een andere bron',
+     regel.indexOf('source=linkedin,') !== -1, regel);
+  ok('de herkomstregel staat er nog steeds bij',
+     String(L.message).indexOf('Via: de landingspagina op demo.youbo.io') !== -1);
+  await ctx.close();
+}
+
+{
+  /* En wat een zelfgemaakte link erin probeert te zetten. */
+  const vuil = '/' + LANDING + '?utm_source=' + encodeURIComponent('<b>klik hier</b>\nVan: de directie')
+    + '&utm_campaign=' + encodeURIComponent('x'.repeat(200));
+  const { ctx, pg } = await open(vuil, { keuze: 'toegestaan', wacht: 3500, laatNavigeren: true });
+  let lichaam = null;
+  await pg.route('**/request-demo', async (route) => {
+    lichaam = route.request().postData();
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' });
+  });
+  await pg.fill('#name', 'Anne Peeters');
+  await pg.fill('#email', 'anne@bedrijf.be');
+  await pg.evaluate(() => document.querySelector('form').requestSubmit());
+  await pg.waitForTimeout(900);
+  const bericht = String(JSON.parse(lichaam || '{}').message || '');
+  const regel = bericht.split('\n').filter((r) => r.indexOf('Campagne:') === 0)[0] || '';
+  ok('er komen geen haakjes of tekens uit het adres in de mail terecht',
+     !/[<>&"\u0027]/.test(regel), regel);
+  ok('en geen tweede regel die zich als afzender voordoet',
+     bericht.split('\n').filter((r) => /^van:/i.test(r.trim())).length === 0,
+     JSON.stringify(bericht));
+  ok('een te lange waarde wordt afgekapt op 60 tekens',
+     (regel.match(/campaign=(x+)/) || ['', ''])[1].length === 60,
+     String((regel.match(/campaign=(x+)/) || ['', ''])[1].length));
   await ctx.close();
 }
 
