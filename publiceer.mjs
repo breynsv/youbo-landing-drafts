@@ -554,11 +554,6 @@ for (const naam of htmlInMap) {
     }
   }
 
-  // En de ondertekening staat er als échte link in, niet als commentaar: een
-  // commentaarblok telt voor een zoekmachine niet mee.
-  if (!tekst.includes('https://trouvee.be')) {
-    stop(`${naam} draagt geen link naar trouvee.be meer`);
-  }
 }
 
 // ── Wat het geworden is ─────────────────────────────────────────────────────

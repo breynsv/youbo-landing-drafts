@@ -415,27 +415,6 @@ tailwind.config = {
   /* Het ene stukje van dit blok dat niet uit hun stijlblad komt: de
      ondernemingsregel onder het copyright. */
   .yb-footer .footer-entiteit { margin-top: 8px; }
-  /* De ondertekening. Een echte, volgbare link en geen HTML-commentaar: een
-     commentaarblok telt voor een zoekmachine niet mee en levert dus geen
-     verwijzing op. Wel bewust kleiner en lichter dan de ondernemingsregel —
-     het is onze naam op hun pagina, dus hij hoort er te staan zonder de
-     aandacht te trekken. De link draagt niet de groene onderlijn van de
-     andere footerlinks, om dezelfde reden.
-
-     HIJ DRAAGT ALS ENIGE LINK OP DEZE PAGINA GEEN data-cta-HAAK, met opzet:
-     dit is onze ondertekening en geen onderdeel van Youbo's meetplan. Een haak
-     zou een twintigste gebeurtenisnaam vragen in een lijst van negentien die
-     met hen is afgesproken, en onze kliks in hún GA4 zetten. */
-  .yb-footer .footer-maker { margin-top: 12px; font-size: .75rem; color: var(--color-grey-700); }
-  .yb-footer .footer-maker a {
-    border-bottom: 0;
-    padding-bottom: 0;
-    color: inherit;
-    /* De footerlinks dragen hun eigen 15px; zonder deze regel staat «Trouvee»
-       groter dan de zin waar hij in staat. */
-    font-size: inherit;
-  }
-  .yb-footer .footer-maker a:hover { color: var(--color-grey-800); text-decoration: underline; }
 </style>
 
 <script>document.documentElement.classList.add('js');</script>
@@ -707,7 +686,6 @@ tailwind.config = {
   <div class="footer-copyright">
     <p>© <span id="currentYear">2026</span> Youbo by <a href="https://www.tealpartners.com/" target="_blank" rel="noopener" data-cta="footer-tealpartners">Teal Partners</a></p>
     <p class="footer-entiteit">Teal Partners BV · Damplein 23, 2060 Antwerpen · BE 0642.824.542</p>
-    <p class="footer-maker">Webdesign: <a href="https://trouvee.be" target="_blank" rel="noopener">Trouvee</a></p>
   </div>
 
 </footer>
