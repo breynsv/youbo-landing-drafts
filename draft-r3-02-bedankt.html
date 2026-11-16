@@ -717,22 +717,54 @@ tailwind.config = {
        data-cookiebalk
        class="border-t border-line bg-paper/95 backdrop-blur"
        role="region" aria-label="Cookies">
-    <div class="max-w-shell mx-auto px-4 md:px-6 py-1 flex items-center gap-3">
+    <!-- Op telefoon onder elkaar: met drie acties naast de zin op één rij
+         bleef er voor de tekst één woord per regel over (gemeten op 390px:
+         een balk van 290px, waar hij er met twee knoppen 45 was). -->
+    <div class="max-w-shell mx-auto px-4 md:px-6 py-1 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
       <p class="flex-1 min-w-0 m-0 text-[13px] leading-[1.35] text-ink-soft">
         We gebruiken <a href="/cookies"
            class="text-link-licht underline underline-offset-2 hover:text-link-hover"
            style="transition: color var(--m-base) var(--e-standard)"
            data-cta="cookiebalk-beleid">cookies</a> om het bezoek aan deze pagina te meten en de pagina te verbeteren.
       </p>
-      <div class="flex items-center gap-2 shrink-0">
-        <button type="button" @click="$store.toestemming.zet('geweigerd')"
-                class="btn-secondary border-ink hover:border-ink min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">
-          Weigeren
-        </button>
-        <button type="button" @click="$store.toestemming.zet('toegestaan')"
-                class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan">
-          Toestaan
-        </button>
+      <div class="flex flex-wrap items-center justify-end gap-2 shrink-0 w-full sm:w-auto">
+        <button type="button" @click="$store.toestemming.aanpassen()"
+                :aria-expanded="$store.toestemming.paneel ? 'true' : 'false'"
+                aria-controls="cookie-voorkeuren"
+                class="min-h-[36px] px-2 py-1 text-[13px] underline underline-offset-2 text-ink-soft hover:text-ink"
+                data-cta="cookiebalk-aanpassen">Aanpassen</button>
+        <button type="button" @click="$store.toestemming.weiger()"
+                class="btn-secondary border-ink hover:border-ink min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">Optionele weigeren</button>
+        <button type="button" @click="$store.toestemming.allesToestaan()"
+                class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan">Alles toestaan</button>
+      </div>
+    </div>
+
+    <!-- HET PANEEL ACHTER «AANPASSEN».
+         Twee keuzes en niet meer, want er zijn er twee: Google meet het gebruik
+         van deze pagina, LinkedIn meet wat de advertenties opleveren. Een derde
+         schuifje voor "noodzakelijke cookies" dat toch niet uit kan, staat er
+         met opzet niet — dat is een vinkje dat doet alsof er iets te kiezen
+         valt. Wat er altijd staat, staat uitgelegd op /cookies.
+
+         Dicht bij het openen: wie niets aanpast, krijgt niets. -->
+    <div id="cookie-voorkeuren" x-show="$store.toestemming.paneel" x-cloak
+         x-transition.opacity.duration.150ms
+         class="max-w-shell mx-auto px-4 md:px-6 pb-2 pt-1 border-t border-line/70">
+      <div class="flex flex-wrap items-start gap-x-6 gap-y-2">
+        <label class="flex items-start gap-2 text-[13px] leading-[1.35] text-ink-soft">
+          <input type="checkbox" x-model="$store.toestemming.meting"
+                 class="mt-[2px] h-4 w-4 shrink-0 accent-[var(--color-brand-primary)]">
+          <span><strong class="font-medium text-ink">Meting</strong> — hoe deze pagina gebruikt wordt (Google Analytics)</span>
+        </label>
+        <label class="flex items-start gap-2 text-[13px] leading-[1.35] text-ink-soft">
+          <input type="checkbox" x-model="$store.toestemming.advertenties"
+                 class="mt-[2px] h-4 w-4 shrink-0 accent-[var(--color-brand-primary)]">
+          <span><strong class="font-medium text-ink">Advertenties</strong> — wat de campagne oplevert (LinkedIn)</span>
+        </label>
+        <button type="button" @click="$store.toestemming.bewaarVoorkeuren()"
+                class="btn-secondary border-ink hover:border-ink min-h-[36px] px-3 py-1 text-[13px] ml-auto"
+                data-cta="cookiebalk-bewaren">Bewaren</button>
       </div>
     </div>
   </div>
@@ -902,6 +934,11 @@ tailwind.config = {
       'footer-voorwaarden':      'juridische_tekst_geopend',
       'cookiebalk-beleid':       'juridische_tekst_geopend',
       'cookiebalk-toestaan':     'cookies_toegestaan',
+      /* «Bewaren» in het voorkeurenpaneel is net zo goed een gegeven
+         toestemming als «Alles toestaan», dus dezelfde naam. Hij vertrekt
+         alleen als de bezoeker meting toeliet — zonder dat laadt er geen
+         Google en gaat er niets weg. */
+      'cookiebalk-bewaren':      'cookies_toegestaan',
       /* "Cookievoorkeuren wijzigen" wordt NIET gemeten. Op het moment van die
          klik IS er toestemming, dus zou het mogen — maar de pagina herlaadt
          meteen daarna en die gebeurtenis zou dus een race zijn met het
@@ -915,6 +952,10 @@ tailwind.config = {
          is er geen grond om er iets over te versturen. Hoeveel mensen weigeren
          blijft wel te zien: aan het verschil tussen de bezoeken en
          cookies_toegestaan, en niet aan een meting die juist niet mag. */
+      /* Het paneel openen is geen toestemming en geen weigering: het is de
+         vraag nog eens bekijken. Niets te melden, en op dat moment mág er
+         ook nog niets vertrekken. */
+      'cookiebalk-aanpassen':    null,
       'cookiebalk-weigeren':     null
     };
 
@@ -1580,18 +1621,35 @@ tailwind.config = {
      telt ook de aanvragen die daarna mislukken.
      ------------------------------------------------------------------------- */
   var meettagsGeladen = false;
-  function laadMeettags() {
+  function laadMeettags(keuze) {
     if (meettagsGeladen) { return; }
     meettagsGeladen = true;
 
-    /* Google weet nu dat er toestemming is. Dit werkt ook als de tag zelf er
-       nog niet is: de push blijft in dataLayer staan tot hij opgepikt wordt. */
+    /* SINDS 2026-11-16 KOMT DE KEUZE PER SOORT BINNEN, niet meer als één ja.
+       Elfi van Teal vroeg de balk gelijk te zetten met hun eigen site: daar
+       staan accept, decline én customize, en dat laatste was bij hun audit
+       vorig jaar een uitdrukkelijk punt. «Aanpassen» heeft alleen zin als er
+       iets te kiezen valt, dus staat de toestemming nu in twee soorten:
+
+         meting       → Google (Tag Manager, en de GA4-tag daarbinnen)
+         advertenties → de LinkedIn Insight Tag
+
+       Dat is precies de scheiding die er al was zonder dat de bezoeker ze kon
+       maken: analytics_storage hoort bij de eerste, de drie ad_*-signalen bij
+       de tweede. */
+    var mag = keuze || { meting: false, advertenties: false };
+    var m = mag.meting ? 'granted' : 'denied';
+    var a = mag.advertenties ? 'granted' : 'denied';
+
+    /* Google weet nu wat er mag. Dit werkt ook als de tag zelf er nog niet is:
+       de push blijft in dataLayer staan tot hij opgepikt wordt. Ook een
+       'denied' wordt gestuurd — dan weet Google dat de vraag gesteld is. */
     if (typeof gtag === 'function') {
       gtag('consent', 'update', {
-        ad_storage: 'granted',
-        ad_user_data: 'granted',
-        ad_personalization: 'granted',
-        analytics_storage: 'granted'
+        ad_storage: a,
+        ad_user_data: a,
+        ad_personalization: a,
+        analytics_storage: m
       });
     }
 
@@ -1647,11 +1705,11 @@ tailwind.config = {
        LinkedIn-tag — niet meer bereikt. Gevonden door toets-voorbeeld.mjs, die
        klaagde dat de browser niets meer tegenhield. */
     window.dataLayer = window.dataLayer || [];
-    if (GOOGLE_GTM_ID) {
+    if (GOOGLE_GTM_ID && mag.meting) {
       METING.kanaal('gtm');
       window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
       laadScript('https://www.googletagmanager.com/gtm.js?id=' + GOOGLE_GTM_ID);
-    } else if (GOOGLE_GA4_ID) {
+    } else if (GOOGLE_GA4_ID && mag.meting) {
       METING.kanaal('ga4');
       laadScript('https://www.googletagmanager.com/gtag/js?id=' + GOOGLE_GA4_ID);
       if (typeof gtag === 'function') {
@@ -1660,8 +1718,9 @@ tailwind.config = {
       }
     }
 
-    /* LinkedIn Insight Tag — het blok uit de <head>, nu op het juiste moment. */
-    if (LINKEDIN_PARTNER_ID) {
+    /* LinkedIn Insight Tag — het blok uit de <head>, nu op het juiste moment,
+       en alleen als de bezoeker advertentiecookies toeliet. */
+    if (LINKEDIN_PARTNER_ID && mag.advertenties) {
       window._linkedin_partner_id = LINKEDIN_PARTNER_ID;
       window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
       window._linkedin_data_partner_ids.push(LINKEDIN_PARTNER_ID);
@@ -1673,7 +1732,9 @@ tailwind.config = {
     /* En nu pas mag de meting vertrekken. Wat de bezoeker vóór zijn keuze deed,
        staat in de wachtrij van METING en gaat hier alsnog mee — zie het blok
        DE METING hierboven. */
-    METING.vrijgeven();
+    /* Alleen vrijgeven als er iets mag. Weigert iemand allebei, dan blijft de
+       wachtrij dicht en gaat er nooit iets weg. */
+    if (mag.meting || mag.advertenties) { METING.vrijgeven(); }
   }
 
   /* -------------------------------------------------------------------------
@@ -1761,31 +1822,77 @@ tailwind.config = {
 
   document.addEventListener('alpine:init', () => {
 
-    /* De toestemming. Dezelfde sleutel als op de landingspagina — dat is de
-       hele reden dat deze balk hier mag staan zonder iemand twee keer te
-       vragen. Drie standen: niets (nog geen keuze, dus balk tonen),
-       'geweigerd' en 'toegestaan'. localStorage kan in een privévenster
-       gooien, dus elke lees- en schrijfactie staat in try. */
+    /* DE TOESTEMMING, PER SOORT — sinds 2026-11-16.
+
+       Dezelfde sleutel in localStorage als op de landingspagina,
+       'youbo-toestemming' — dat is de hele reden dat deze balk hier mag
+       staan zonder iemand twee keer te vragen. Daarin stond tot nu
+       'toegestaan' of 'geweigerd'; er staat nu JSON met twee vlaggen:
+       {"meting":true,"advertenties":false}. De twee oude waarden worden nog
+       gelezen en vertaald, want ze staan in de browser van iedereen die hier
+       al geweest is — die opnieuw laten kiezen zou hun keuze ongevraagd
+       weggooien.
+
+       Niets in localStorage = nog geen keuze = balk tonen. localStorage kan in
+       een privévenster gooien, dus elke lees- en schrijfactie staat in try. */
     Alpine.store('toestemming', {
       keuze: null,
+      paneel: false,
+      meting: false,
+      advertenties: false,
+
+      lees() {
+        var ruw = null;
+        try { ruw = localStorage.getItem('youbo-toestemming'); } catch (e) { return null; }
+        if (!ruw) { return null; }
+        if (ruw === 'toegestaan') { return { meting: true, advertenties: true }; }
+        if (ruw === 'geweigerd') { return { meting: false, advertenties: false }; }
+        try {
+          var o = JSON.parse(ruw);
+          return { meting: !!o.meting, advertenties: !!o.advertenties };
+        } catch (e) { return null; }
+      },
+
       init() {
-        try { this.keuze = localStorage.getItem('youbo-toestemming'); } catch (e) { this.keuze = null; }
-        if (this.keuze === 'toegestaan') { laadMeettags(); }
-        /* Wie eerder weigerde, ziet deze balk niet meer — maar hij kan vóór
-           alpine:init al op iets geklikt hebben, en dat staat dan in de
-           wachtrij van METING. Hier wordt het weggegooid. */
-        if (this.keuze === 'geweigerd') { METING.vergeten(); }
+        this.keuze = this.lees();
+        if (!this.keuze) { return; }
+        this.meting = this.keuze.meting;
+        this.advertenties = this.keuze.advertenties;
+        if (this.keuze.meting || this.keuze.advertenties) {
+          laadMeettags(this.keuze);
+        } else {
+          /* Wie alles weigerde ziet deze balk niet meer — maar hij kan vóór
+             alpine:init al op iets geklikt hebben, en dat staat dan in de
+             wachtrij van METING. Hier wordt het weggegooid. */
+          METING.vergeten();
+        }
       },
-      get beantwoord() {
-        return this.keuze === 'toegestaan' || this.keuze === 'geweigerd';
+
+      get beantwoord() { return this.keuze !== null; },
+
+      /* De drie knoppen van de balk, in dezelfde volgorde als op
+         tealpartners.com: alles toestaan, optionele weigeren, aanpassen. */
+      allesToestaan() { this.bewaarKeuze({ meting: true, advertenties: true }); },
+      weiger() { this.bewaarKeuze({ meting: false, advertenties: false }); },
+      aanpassen() { this.paneel = !this.paneel; },
+      bewaarVoorkeuren() {
+        this.bewaarKeuze({ meting: !!this.meting, advertenties: !!this.advertenties });
       },
-      zet(keuze) {
+
+      bewaarKeuze(keuze) {
         this.keuze = keuze;
-        try { localStorage.setItem('youbo-toestemming', keuze); } catch (e) {}
-        if (keuze === 'toegestaan') { laadMeettags(); }
-        /* Weigeren gooit de wachtrij weg en houdt haar dicht. Zonder deze regel
-           zou een klik van vóór de keuze blijven staan — zie DE METING. */
-        if (keuze === 'geweigerd') { METING.vergeten(); }
+        this.meting = keuze.meting;
+        this.advertenties = keuze.advertenties;
+        this.paneel = false;
+        try { localStorage.setItem('youbo-toestemming', JSON.stringify(keuze)); } catch (e) {}
+        if (keuze.meting || keuze.advertenties) {
+          laadMeettags(keuze);
+        } else {
+          /* Weigeren gooit de wachtrij weg. Zonder deze regel zou een klik van
+             vóór de keuze blijven staan en alsnog vertrekken als de bezoeker
+             later in dezelfde weergave toch toestemt — zie DE METING hierboven. */
+          METING.vergeten();
+        }
       },
 
       /* INTREKKEN — AVG artikel 7, lid 3: even makkelijk als toestemmen.
@@ -1793,6 +1900,10 @@ tailwind.config = {
          verdwijnt na de eerste klik en komt nooit terug, want de keuze staat in
          localStorage; wie zich vergiste of van gedacht veranderde kon alleen
          nog zijn browseropslag leegmaken, en dat is niet "even makkelijk".
+
+         Dit is óók de weg om een keuze te WIJZIGEN in plaats van weg te
+         gooien: de balk komt terug met het paneel, dus wie eerst alleen meting
+         toestond kan er later advertenties bij zetten.
 
          Vier dingen, in deze volgorde, en de laatste is de belangrijkste:
          Consent Mode terug op denied (zodat Google het hoort, ook als de tag al

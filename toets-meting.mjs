@@ -129,8 +129,13 @@ const VERWACHT = {
    "Weigeren" omdat er op dat moment geen grond is om iets te versturen,
    "Download de pdf" omdat GA4 dat zelf al als file_download telt, en de
    terugknop op de bevestigingspagina omdat die sinds 2026-10-19 naar de
-   landingspagina gaat en GA4 die terugkomst zelf als page_view meet. */
-const STIL = ['cookiebalk-weigeren', 'paneel-download', 'bedankt-terug-pagina'];
+   landingspagina gaat en GA4 die terugkomst zelf als page_view meet.
+
+   "Aanpassen" staat er sinds 2026-11-16 bij, om de eerste reden: het paneel
+   openen is de vraag nog eens bekijken, geen antwoord erop — en op dat moment
+   is er nog geen toestemming, dus mág er ook niets vertrekken. */
+const STIL = ['cookiebalk-weigeren', 'cookiebalk-aanpassen', 'paneel-download',
+              'bedankt-terug-pagina'];
 
 const MEETHOSTS = /googletagmanager\.com|google-analytics\.com|analytics\.google\.com|snap\.licdn\.com|px\.ads\.linkedin\.com|doubleclick/i;
 
@@ -404,6 +409,101 @@ console.log('\n3. Na Toestaan — wat er dan wél vertrekt');
   ok('geen enkele fout in de console', fout.length === 0, fout.slice(0, 2).join(' · '));
   ok('het kanaal is de container en niet GA4 rechtstreeks',
      (await pg.evaluate(() => METING.stand())).kanaal === 'gtm');
+  await ctx.close();
+}
+
+/* ─────────── 3b · toestemming per soort — «Aanpassen» ────────────────────── */
+console.log('\n3b. Per soort — wat laadt er bij een gedeeltelijke keuze');
+
+{
+  /* Sinds 2026-11-16 staat er naast toestaan en weigeren ook «Aanpassen», op
+     vraag van Elfi bij Teal: hun eigen site heeft die drie, en bij hun audit
+     vorig jaar was dat een uitdrukkelijk punt.
+
+     Aanpassen heeft alleen zin als de keuzes ook écht uit elkaar lopen, en
+     juist dát is het soort ding dat er in een demo goed uitziet en in
+     werkelijkheid allebei laadt. Dus wordt hier gemeten welke tag er bij welke
+     keuze vertrekt — en vooral: welke NIET. */
+  const GOOGLE = /googletagmanager\.com|google-analytics\.com|analytics\.google\.com/;
+  const LINKEDIN = /snap\.licdn\.com|px\.ads\.linkedin\.com/;
+
+  const gevallen = [
+    ['alleen meting', JSON.stringify({ meting: true, advertenties: false }), true, false],
+    ['alleen advertenties', JSON.stringify({ meting: false, advertenties: true }), false, true],
+    ['allebei', JSON.stringify({ meting: true, advertenties: true }), true, true],
+    ['geen van beide', JSON.stringify({ meting: false, advertenties: false }), false, false],
+    /* De waarde die vóór vandaag in de browser van elke bezoeker stond. Wie
+       toen toestemde, moet niet opnieuw gevraagd worden. */
+    ['de oude waarde "toegestaan"', 'toegestaan', true, true],
+    ['de oude waarde "geweigerd"', 'geweigerd', false, false],
+  ];
+
+  for (const [wat, waarde, googleVerwacht, linkedinVerwacht] of gevallen) {
+    const { ctx, pg, verzoeken, fout } = await open('/' + LANDING, { keuze: waarde, wacht: 2500 });
+    const google = verzoeken.filter((u) => GOOGLE.test(u));
+    const linkedin = verzoeken.filter((u) => LINKEDIN.test(u));
+    ok(`${wat}: Google ${googleVerwacht ? 'laadt' : 'laadt NIET'}`,
+       (google.length > 0) === googleVerwacht, `${google.length} verzoek(en)`);
+    ok(`${wat}: LinkedIn ${linkedinVerwacht ? 'laadt' : 'laadt NIET'}`,
+       (linkedin.length > 0) === linkedinVerwacht, `${linkedin.length} verzoek(en)`);
+
+    /* En wat Google te horen krijgt. Consent Mode is wat Google zelf laat
+       weten wat er mag; staat die op granted terwijl de bezoeker nee zei, dan
+       is de balk een gordijn. */
+    const toestemming = await pg.evaluate(() => {
+      /* gtag() duwt zijn `arguments` in dataLayer, en dat is array-ACHTIG maar
+         geen echte array: Array.isArray() geeft daar false op. Daarom hier op
+         de inhoud gekeken en niet op het type. */
+      const rijen = [...(window.dataLayer || [])]
+        .filter((r) => r && typeof r === 'object' && r[0] === 'consent' && r[1] === 'update');
+      const laatste = rijen.pop();
+      return laatste ? laatste[2] : null;
+    });
+    if (toestemming) {
+      ok(`${wat}: analytics_storage staat op ${googleVerwacht ? 'granted' : 'denied'}`,
+         toestemming.analytics_storage === (googleVerwacht ? 'granted' : 'denied'),
+         String(toestemming.analytics_storage));
+      ok(`${wat}: de drie ad_*-signalen staan op ${linkedinVerwacht ? 'granted' : 'denied'}`,
+         toestemming.ad_storage === (linkedinVerwacht ? 'granted' : 'denied')
+         && toestemming.ad_user_data === toestemming.ad_storage
+         && toestemming.ad_personalization === toestemming.ad_storage,
+         `${toestemming.ad_storage} / ${toestemming.ad_user_data} / ${toestemming.ad_personalization}`);
+    } else {
+      ok(`${wat}: er is een Consent Mode-bericht`, !googleVerwacht && !linkedinVerwacht,
+         'geen consent-update gevonden');
+    }
+    ok(`${wat}: geen fout in de console`, fout.length === 0, fout.slice(0, 2).join(' · '));
+    await ctx.close();
+  }
+}
+
+{
+  /* En de weg erheen: de knop «Aanpassen» opent het paneel, de twee vinkjes
+     staan uit, en «Bewaren» legt precies vast wat er aanstaat. */
+  const { ctx, pg, verzoeken } = await open('/' + LANDING, { wacht: 1500, laatNavigeren: true });
+  const paneelVoor = await pg.isVisible('#cookie-voorkeuren').catch(() => false);
+  ok('het voorkeurenpaneel staat dicht tot iemand erom vraagt', paneelVoor === false, String(paneelVoor));
+
+  await pg.click('[data-cta="cookiebalk-aanpassen"]');
+  await pg.waitForTimeout(300);
+  ok('«Aanpassen» opent het paneel', await pg.isVisible('#cookie-voorkeuren'));
+
+  const vinkjes = await pg.$$eval('#cookie-voorkeuren input[type=checkbox]', (els) => els.map((e) => e.checked));
+  ok('en beide keuzes staan uit — niets aanvinken levert niets op',
+     vinkjes.length === 2 && vinkjes.every((v) => v === false), JSON.stringify(vinkjes));
+
+  /* Alleen meting aanzetten en bewaren. */
+  await pg.$$eval('#cookie-voorkeuren input[type=checkbox]', (els) => { els[0].click(); });
+  await pg.waitForTimeout(200);
+  await pg.click('[data-cta="cookiebalk-bewaren"]');
+  await pg.waitForTimeout(2500);
+
+  const opgeslagen = await pg.evaluate(() => { try { return localStorage.getItem('youbo-toestemming'); } catch (e) { return null; } });
+  ok('«Bewaren» legt de keuze per soort vast', opgeslagen === '{"meting":true,"advertenties":false}', String(opgeslagen));
+  ok('de balk is daarna weg', (await pg.isVisible('[data-cookiebalk]')) === false);
+  const linkedin = verzoeken.filter((u) => /snap\.licdn\.com|px\.ads\.linkedin\.com/.test(u));
+  ok('en LinkedIn is niet geladen, want advertenties stonden uit',
+     linkedin.length === 0, linkedin.join(' · '));
   await ctx.close();
 }
 
