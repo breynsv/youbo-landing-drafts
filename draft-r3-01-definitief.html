@@ -4610,7 +4610,23 @@ tailwind.config = {
     var LINKEDIN_CONVERSIE = {
       demo_aanvraag_bevestigd:  '30369460',   /* aangemaakt 2026-11-04 — de conversie */
       demo_formulier_verstuurd: '',   /* bv. '12345679' — de poging */
-      demo_knop_geklikt:        ''    /* bv. '12345680' — de intentie */
+      demo_knop_geklikt:        '',   /* bv. '12345680' — de intentie */
+      /* DE ZACHTE CONVERSIE, plaats gemaakt op 2026-11-17. Jana op de 17de:
+         «als ze al iets aanklikken van case of iets downloaden, is 't ook al
+         mooi». Terecht — met 14 kliks en nul demo-aanvragen staat haar
+         dashboard anders wekenlang op nul, en dan weet ze niet of er niets
+         gebeurt of alleen niets gemeten wordt.
+
+         Het openen van een case gebeurt veel vaker dan een demo-aanvraag, en
+         het zegt iets: iemand wil weten wat Youbo bij een ander deed. Vul hier
+         het id in dat Campaign Manager geeft bij een nieuwe conversie van het
+         type Insight Tag JavaScript-event, en hij vertrekt vanaf dat moment
+         vanzelf — deze tabel is de enige plek waar dat geregeld hoeft te
+         worden.
+
+         Zolang hij leeg staat gaat er niets naar LinkedIn, en blijft de
+         case-opening alleen in GA4 staan. */
+      case_pdf_geopend:         ''    /* bv. '12345681' — de zachte conversie */
     };
 
     var DEDUP_MS = 500;

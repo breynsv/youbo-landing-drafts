@@ -228,23 +228,29 @@ for (const [naam, html] of Object.entries(bron)) {
 
 /* De tabel voor LinkedIn. Sinds 2026-11-04 is de eerste rij ingevuld: de
    conversie "Demo aangevraagd" bestaat in Campagnebeheer en draagt een echt
-   nummer. De twee andere zijn stappen in de trechter en blijven leeg — een
-   conversie die bij LinkedIn niet bestaat, levert daar alleen ruis op.
+   nummer. De andere blijven leeg tot er bij LinkedIn een conversie voor
+   bestaat — een id dat daar niet bestaat, levert alleen ruis op.
 
-   Wat deze controle bewaakt is dus niet "alles leeg" maar de VORM: drie rijen,
-   de echte conversie vooraan, en haar nummer louter cijfers. Een id dat met
-   een plakfout een aanhalingsteken of een spatie meekrijgt, is bij LinkedIn
-   stil ongeldig — die conversie telt dan nooit, en niemand ziet waarom. */
+   Sinds 2026-11-17 zijn het er VIER: case_pdf_geopend kwam erbij als zachte
+   conversie, op vraag van Jana. Haar redenering klopt: met veertien kliks en
+   nul demo-aanvragen staat haar dashboard anders wekenlang op nul, en dan weet
+   ze niet of er niets gebeurt of alleen niets gemeten wordt.
+
+   Wat deze controle bewaakt is dus niet "alles leeg" maar de VORM: het aantal
+   rijen, de echte conversie vooraan, en haar nummer louter cijfers. Een id dat
+   met een plakfout een aanhalingsteken of een spatie meekrijgt, is bij
+   LinkedIn stil ongeldig — die conversie telt dan nooit, en niemand ziet
+   waarom. */
 const lk = (blokL || '').match(/var LINKEDIN_CONVERSIE = \{([\s\S]*?)\};/);
 const lkRegels = lk ? [...lk[1].matchAll(/([a-z_]+):\s*'([^']*)'/g)] : [];
-ok('er staat een rij voor elke LinkedIn-conversie', lkRegels.length === 3,
+ok('er staat een rij voor elke LinkedIn-conversie', lkRegels.length === 4,
    lkRegels.map((m) => m[1]).join(', '));
 ok('de echte conversie is de eerste: demo_aanvraag_bevestigd',
    lkRegels.length > 0 && lkRegels[0][1] === 'demo_aanvraag_bevestigd',
    lkRegels.length ? lkRegels[0][1] : '');
 const CONVERSIE_ID = lkRegels.length ? lkRegels[0][2] : '';
 ok('en ze draagt een id van louter cijfers', /^[0-9]+$/.test(CONVERSIE_ID), `'${CONVERSIE_ID}'`);
-ok('de twee trechterstappen staan leeg, dus stuurt de pagina ze niet',
+ok('de nog niet aangemaakte conversies staan leeg, dus stuurt de pagina ze niet',
    lkRegels.slice(1).every((m) => m[2] === ''),
    lkRegels.slice(1).map((m) => `${m[1]}='${m[2]}'`).join(' '));
 
