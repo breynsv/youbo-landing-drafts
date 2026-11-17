@@ -515,12 +515,113 @@ console.log('\n3b. Per soort — wat laadt er bij een gedeeltelijke keuze');
   await pg.waitForTimeout(2500);
 
   const opgeslagen = await pg.evaluate(() => { try { return localStorage.getItem('youbo-toestemming'); } catch (e) { return null; } });
-  ok('«Bewaren» legt de keuze per soort vast', opgeslagen === '{"meting":true,"advertenties":false}', String(opgeslagen));
+  let bewaard = null;
+  try { bewaard = JSON.parse(opgeslagen); } catch (e) { /* blijft null; de toets hieronder valt dan rood */ }
+  ok('«Bewaren» legt de keuze per soort vast',
+     !!bewaard && bewaard.meting === true && bewaard.advertenties === false, String(opgeslagen));
+  ok('en met een verse datum erbij, want zonder datum kan de keuze nooit vervallen',
+     !!bewaard && typeof bewaard.op === 'number' && Math.abs(Date.now() - bewaard.op) < 120000,
+     bewaard ? String(bewaard.op) : 'geen');
   ok('de balk is daarna weg', (await pg.isVisible('[data-cookiebalk]')) === false);
   const linkedin = verzoeken.filter((u) => /snap\.licdn\.com|px\.ads\.linkedin\.com/.test(u));
   ok('en LinkedIn is niet geladen, want advertenties stonden uit',
      linkedin.length === 0, linkedin.join(' · '));
   await ctx.close();
+}
+
+/* ─────────── 3c · de keuze vervalt, en de twee knoppen wegen gelijk ──────── */
+console.log('\n3c. De termijn van zes maanden, en het gewicht van de knoppen');
+
+{
+  /* De Cookie checklist van de Gegevensbeschermingsautoriteit vraagt onder
+     Verantwoordingsplicht dat de onthouden voorkeur van de bezoeker "slechts
+     gedurende een beperkte tijd bewaard" wordt, en noemt zes maanden in
+     beginsel redelijk. Tot 2026-11-17 kende deze pagina geen termijn.
+
+     Dit is precies het soort regel dat makkelijk te schrijven en moeilijk te
+     zien is: een vervaldag doet pas zes maanden na de eerste keuze iets, en
+     dan kijkt er niemand meer. De datum wordt hier dus gezet in plaats van
+     afgewacht — een keuze van 183 dagen oud bestaat vandaag. */
+  const DAG = 24 * 60 * 60 * 1000;
+  const GOOGLE = /googletagmanager\.com|google-analytics\.com|analytics\.google\.com/;
+  const stempel = (dagenGeleden) => JSON.stringify({
+    meting: true, advertenties: true, op: Date.now() - dagenGeleden * DAG,
+  });
+
+  /* 183 dagen: één dag over de termijn van 182. */
+  {
+    const { ctx, pg, verzoeken } = await open('/' + LANDING, { keuze: stempel(183), wacht: 2000 });
+    ok('een keuze van 183 dagen oud is verlopen: de balk staat er weer',
+       await pg.locator('[data-cookiebalk]').isVisible());
+    const google = verzoeken.filter((u) => GOOGLE.test(u));
+    ok('en er laadt niets van Google, want er is geen geldige toestemming meer',
+       google.length === 0, google.join(' · '));
+    ok('en de verlopen waarde is uit de opslag verwijderd',
+       (await pg.evaluate(() => {
+         try { return localStorage.getItem('youbo-toestemming'); } catch (e) { return 'onleesbaar'; }
+       })) === null);
+    await ctx.close();
+  }
+
+  /* 100 dagen: ruim binnen de termijn, dus er hoort niets te veranderen. Deze
+     helft staat er omdat een vervaldag die ALLES laat vervallen er van buiten
+     net zo uitziet als een die werkt. */
+  {
+    const { ctx, pg, verzoeken } = await open('/' + LANDING, { keuze: stempel(100), wacht: 2000 });
+    ok('een keuze van 100 dagen oud geldt nog: de balk blijft weg',
+       (await pg.isVisible('[data-cookiebalk]')) === false);
+    ok('en Google laadt gewoon', verzoeken.filter((u) => GOOGLE.test(u)).length > 0);
+    await ctx.close();
+  }
+
+  /* De waarden van vóór de termijn dragen geen datum: de twee oude
+     tekstwaarden en de JSON van 16 november. Ze blijven gelden, want hun
+     eigenaar heeft echt gekozen, maar ze krijgen er bij het eerste bezoek een.
+     Zonder die stap zou er een toestemming overblijven die nooit vervalt. */
+  for (const oud of ['toegestaan', JSON.stringify({ meting: true, advertenties: true })]) {
+    const { ctx, pg } = await open('/' + LANDING, { keuze: oud, wacht: 2000 });
+    ok(`de oude waarde ${oud.slice(0, 26)} blijft gelden: de balk blijft weg`,
+       (await pg.isVisible('[data-cookiebalk]')) === false);
+    const na = await pg.evaluate(() => {
+      try { return JSON.parse(localStorage.getItem('youbo-toestemming')); } catch (e) { return null; }
+    });
+    ok('en ze draagt nu een datum, dus vervalt ze over zes maanden',
+       !!na && typeof na.op === 'number' && Math.abs(Date.now() - na.op) < 120000,
+       JSON.stringify(na));
+    await ctx.close();
+  }
+
+  /* Een stempel uit de toekomst betekent een verzette klok of geknoei in de
+     opslag. De leeftijd is dan niet te berekenen, dus wordt de datum vervangen
+     in plaats van geloofd — anders zou een waarde met op: het jaar 3000 nooit
+     vervallen, en dat is de goedkoopste manier om deze termijn te omzeilen. */
+  {
+    const toekomst = JSON.stringify({ meting: true, advertenties: true, op: Date.now() + 400 * DAG });
+    const { ctx, pg } = await open('/' + LANDING, { keuze: toekomst, wacht: 2000 });
+    const na = await pg.evaluate(() => {
+      try { return JSON.parse(localStorage.getItem('youbo-toestemming')); } catch (e) { return null; }
+    });
+    ok('een stempel uit de toekomst wordt vervangen door nu, niet geloofd',
+       !!na && typeof na.op === 'number' && na.op < Date.now() + 120000, JSON.stringify(na));
+    await ctx.close();
+  }
+
+  /* DE TWEE KNOPPEN WEGEN GELIJK.
+     Dezelfde checklist verbiedt "nudging door middel van kleurgebruik" en geeft
+     als goed voorbeeld (voetnoot 5) dat "alles weigeren" en "alles aanvaarden"
+     op dezelfde wijze worden weergegeven. Toestaan was tot 2026-11-17 een
+     gevulde merkknop en Weigeren een omrande.
+
+     Dit is een vergelijking van de klassenrij en geen schermafbeelding, omdat
+     het die rij is die bij een volgende wijziging uit elkaar getrokken wordt —
+     één knop die een nieuwe klasse krijgt en de andere niet. */
+  for (const [naam, html] of Object.entries(bron)) {
+    const klas = (haak) => (html.match(new RegExp('class="([^"]*)"\\s+data-cta="' + haak + '"')) || [, null])[1];
+    const w = klas('cookiebalk-weigeren');
+    const s = klas('cookiebalk-toestaan');
+    ok(`${naam}: weigeren en toestaan worden identiek weergegeven`,
+       !!w && !!s && w === s, `weigeren=${w} · toestaan=${s}`);
+  }
 }
 
 /* ─────────────── 4 · intrekken, even makkelijk als toestemmen ─────────────── */

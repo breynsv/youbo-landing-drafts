@@ -733,10 +733,24 @@ tailwind.config = {
                 aria-controls="cookie-voorkeuren"
                 class="min-h-[36px] px-2 py-1 text-[13px] underline underline-offset-2 text-ink-soft hover:text-ink"
                 data-cta="cookiebalk-aanpassen">Aanpassen</button>
+        <!-- WEIGEREN EN TOESTAAN DRAGEN MET OPZET DEZELFDE KLASSEN, sinds 2026-11-17.
+             De Cookie checklist van de Gegevensbeschermingsautoriteit verbiedt
+             "nudging door middel van kleurgebruik" en geeft als goed voorbeeld
+             (voetnoot 5) dat de knoppen "alles weigeren" en "alles aanvaarden"
+             op dezelfde wijze worden weergegeven. Toestaan was hier een gevulde
+             merkknop en Weigeren een omrande: een verschil in gewicht, hoe klein
+             ook, op precies de plaats waar Teal vorig jaar al een auditopmerking
+             over kreeg.
+             Dit zet geen overtreding recht. Het EDPB legt in zijn rapport over
+             cookiebanners uitdrukkelijk geen kleurnorm op en beoordeelt geval
+             per geval; het enige dat zij onomwonden misleidend noemen is een
+             knop waarvan de tekst door te weinig contrast onleesbaar is. Dit is
+             het goede voorbeeld volgen op de plaats waar ernaar gekeken wordt.
+             toets-meting valt rood zodra de twee klassenrijen uit elkaar lopen. -->
         <button type="button" @click="$store.toestemming.weiger()"
                 class="btn-secondary border-ink hover:border-ink min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-weigeren">Optionele weigeren</button>
         <button type="button" @click="$store.toestemming.allesToestaan()"
-                class="btn-primary min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan">Alles toestaan</button>
+                class="btn-secondary border-ink hover:border-ink min-h-[36px] px-3 py-1 text-[13px]" data-cta="cookiebalk-toestaan">Alles toestaan</button>
       </div>
     </div>
 
@@ -1866,24 +1880,98 @@ tailwind.config = {
        al geweest is — die opnieuw laten kiezen zou hun keuze ongevraagd
        weggooien.
 
-       Niets in localStorage = nog geen keuze = balk tonen. localStorage kan in
-       een privévenster gooien, dus elke lees- en schrijfactie staat in try. */
+       Niets in localStorage = nog geen keuze = balk tonen. Een bewaarde keuze
+       vervalt na zes maanden; waarom dat moet en waarom er 182 dagen geteld
+       worden, staat bij GELDIG_MS hieronder. localStorage kan in een
+       privévenster gooien, dus elke lees- en schrijfactie staat in try. */
     Alpine.store('toestemming', {
       keuze: null,
       paneel: false,
       meting: false,
       advertenties: false,
 
+      /* ZES MAANDEN — sinds 2026-11-17.
+
+         De Cookie checklist van de Gegevensbeschermingsautoriteit zegt onder
+         Verantwoordingsplicht dat de onthouden cookievoorkeur van de bezoeker
+         "slechts gedurende een beperkte tijd bewaard" mag worden, en noemt een
+         termijn van zes maanden in beginsel redelijk. Tot vandaag stond hier
+         geen termijn: wie één keer toestemde, stond dat jaren later nog altijd
+         toe zonder dat het ooit opnieuw gevraagd werd.
+
+         182 dagen, en niet zes maanden geteld in maanden. Maanden zijn niet
+         even lang, en een datumberekening die over een jaargrens stapt is
+         precies het soort rekenwerk dat één keer per jaar stil fout gaat en
+         dan niemand opvalt. Een half jaar in dagen is hier nauwkeurig genoeg:
+         de GBA noemt zes maanden redelijk, geen exacte vervaldag. */
+      GELDIG_MS: 182 * 24 * 60 * 60 * 1000,
+
+      /* De enige plaats waar de sleutel geschreven wordt. Eén plaats, zodat de
+         datum er niet bij één van de twee paden af kan vallen. */
+      bewaarOpslag(keuze) {
+        try {
+          localStorage.setItem('youbo-toestemming', JSON.stringify({
+            meting: !!keuze.meting, advertenties: !!keuze.advertenties, op: Date.now()
+          }));
+        } catch (e) {}
+      },
+
       lees() {
         var ruw = null;
         try { ruw = localStorage.getItem('youbo-toestemming'); } catch (e) { return null; }
         if (!ruw) { return null; }
-        if (ruw === 'toegestaan') { return { meting: true, advertenties: true }; }
-        if (ruw === 'geweigerd') { return { meting: false, advertenties: false }; }
-        try {
-          var o = JSON.parse(ruw);
-          return { meting: !!o.meting, advertenties: !!o.advertenties };
-        } catch (e) { return null; }
+
+        var keuze = null;
+        var stempel = null;
+        if (ruw === 'toegestaan') {
+          keuze = { meting: true, advertenties: true };
+        } else if (ruw === 'geweigerd') {
+          keuze = { meting: false, advertenties: false };
+        } else {
+          var o = null;
+          try { o = JSON.parse(ruw); } catch (e) { return null; }
+          if (!o || typeof o !== 'object') { return null; }
+          keuze = { meting: !!o.meting, advertenties: !!o.advertenties };
+          stempel = o.op;
+        }
+
+        /* Een stempel uit de toekomst is geen stempel. Dat gebeurt als de klok
+           van het toestel verzet is sinds de keuze, of als er met de opslag
+           geknoeid is; in beide gevallen valt er geen leeftijd uit te rekenen.
+           Een dag speling, want een klok die een uur voorloopt mag de balk niet
+           laten terugkomen. */
+        var nu = Date.now();
+        var bruikbaar = typeof stempel === 'number' && isFinite(stempel)
+                        && stempel <= nu + 86400000;
+
+        if (bruikbaar && (nu - stempel) >= this.GELDIG_MS) {
+          /* Verlopen. De waarde gaat weg in plaats van te blijven staan: anders
+             wordt bij elk bezoek opnieuw dezelfde verlopen keuze beoordeeld, en
+             staat er een toestemming in de opslag die nergens meer voor telt. */
+          try { localStorage.removeItem('youbo-toestemming'); } catch (e) {}
+          return null;
+        }
+
+        if (!bruikbaar) {
+          /* Geen bruikbare datum. Dat zijn de twee oude tekstwaarden van vóór
+             2026-11-16 en de JSON zonder stempel van de dag daarna. Die keuzes
+             zijn echt gemaakt, dus worden ze niet weggegooid — ze krijgen nu
+             een datum en tellen vanaf hier mee voor de termijn.
+
+             Dat rekent hun leeftijd te gunstig: wie in oktober toestemde,
+             begint vandaag opnieuw aan zes maanden. Dat scheelt hooguit de paar
+             weken dat deze pagina bestaat, en het alternatief was iedereen die
+             al gekozen heeft nog eens lastigvallen om een termijn te halen die
+             niemand nog kon overschrijden.
+
+             Lukt het schrijven niet, dan blijft de waarde zonder datum staan en
+             wordt ze bij het volgende bezoek opnieuw gehonoreerd. Dat is geen
+             lek maar een browser die niets laat bewaren, en daar is de keuze
+             sowieso niet vast te houden. */
+          this.bewaarOpslag(keuze);
+        }
+
+        return keuze;
       },
 
       init() {
@@ -1917,7 +2005,7 @@ tailwind.config = {
         this.meting = keuze.meting;
         this.advertenties = keuze.advertenties;
         this.paneel = false;
-        try { localStorage.setItem('youbo-toestemming', JSON.stringify(keuze)); } catch (e) {}
+        this.bewaarOpslag(keuze);
         if (keuze.meting || keuze.advertenties) {
           laadMeettags(keuze);
         } else {
