@@ -250,9 +250,19 @@ ok('de echte conversie is de eerste: demo_aanvraag_bevestigd',
    lkRegels.length ? lkRegels[0][1] : '');
 const CONVERSIE_ID = lkRegels.length ? lkRegels[0][2] : '';
 ok('en ze draagt een id van louter cijfers', /^[0-9]+$/.test(CONVERSIE_ID), `'${CONVERSIE_ID}'`);
-ok('de nog niet aangemaakte conversies staan leeg, dus stuurt de pagina ze niet',
-   lkRegels.slice(1).every((m) => m[2] === ''),
-   lkRegels.slice(1).map((m) => `${m[1]}='${m[2]}'`).join(' '));
+/* Elk ingevuld nummer moet louter cijfers zijn, en wat leeg staat hoort leeg
+   te blijven tot er bij LinkedIn een conversie voor bestaat. Tot 2026-11-17
+   stond hier "alles na de eerste is leeg"; dat was waar zolang er één conversie
+   was, maar het is niet de regel. De regel is: geen enkel id in deze tabel mag
+   vervormd zijn, want een id met een spatie of een aanhalingsteken erin is bij
+   LinkedIn stil ongeldig. */
+ok('elk ingevuld conversie-id bestaat uit louter cijfers',
+   lkRegels.every((m) => m[2] === '' || /^[0-9]+$/.test(m[2])),
+   lkRegels.map((m) => `${m[1]}='${m[2]}'`).join(' '));
+ok('en de twee trechterstappen staan nog leeg — daar bestaat geen conversie voor',
+   lkRegels.filter((m) => ['demo_formulier_verstuurd', 'demo_knop_geklikt'].indexOf(m[1]) !== -1)
+     .every((m) => m[2] === ''),
+   lkRegels.map((m) => `${m[1]}='${m[2]}'`).join(' '));
 
 /* Elke haak in de HTML moet een naam hebben. Dit is de poort die het goedkoopst
    vangt dat iemand een knop bijzet zonder de naamtabel aan te vullen. */
