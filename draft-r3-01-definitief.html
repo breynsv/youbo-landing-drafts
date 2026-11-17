@@ -4618,15 +4618,32 @@ tailwind.config = {
          gebeurt of alleen niets gemeten wordt.
 
          Het openen van een case gebeurt veel vaker dan een demo-aanvraag, en
-         het zegt iets: iemand wil weten wat Youbo bij een ander deed. Vul hier
-         het id in dat Campaign Manager geeft bij een nieuwe conversie van het
-         type Insight Tag JavaScript-event, en hij vertrekt vanaf dat moment
-         vanzelf — deze tabel is de enige plek waar dat geregeld hoeft te
-         worden.
+         het zegt iets: iemand wil weten wat Youbo bij een ander deed.
+
+         HIJ HEEFT ÉÉN DAG GESTAAN (30489036) EN IS WEER WEGGEHAALD, op
+         2026-11-17. Niet omdat de meting niet werkte — ze werkte, live
+         nagemeten — maar omdat het de verkeerde ingreep was. Beide campagnes
+         hebben als doelstelling Website conversion, en LinkedIn stuurt de
+         levering naar de conversies die aan de campagne hangen. Een
+         case-opening is veel makkelijker te halen dan een demo-aanvraag, dus
+         zou de campagne gaan zoeken naar mensen die wel een pdf openklikken en
+         nooit een demo vragen. Dan ziet het dashboard er beter uit terwijl het
+         resultaat slechter wordt.
+
+         Loskoppelen van de campagnes lost dat niet op: een conversie die aan
+         geen enkele campagne hangt, wordt er ook niet aan toegewezen, en dan
+         staat er in het campagnerapport alsnog niets — precies waarvoor het
+         bedoeld was.
+
+         Wat er wél is: GA4 meet deze opening al, met de naam van de klant
+         erbij. Bij veertien kliks is het toewijzingsvoordeel van LinkedIn
+         theoretisch. Komt er ooit echt volume, dan is dit het ene veld dat
+         ingevuld moet worden — en dan is het een beslissing in plaats van een
+         gok.
 
          Zolang hij leeg staat gaat er niets naar LinkedIn, en blijft de
          case-opening alleen in GA4 staan. */
-      case_pdf_geopend:         '30489036'    /* aangemaakt 2026-11-17 — de zachte conversie */
+      case_pdf_geopend:         ''    /* bv. '12345681' — zie de nota hierboven */
     };
 
     var DEDUP_MS = 500;
