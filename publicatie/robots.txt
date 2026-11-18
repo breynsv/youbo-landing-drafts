@@ -1,0 +1,28 @@
+# demo.youbo.io — productie. (De robots.txt in de wortel van de repo hoort bij
+# de draftsite en verbiedt alles; die gaat hier bewust NIET mee.)
+User-agent: *
+Allow: /
+Disallow: /bedankt
+
+# AI-zoekmachines expliciet welkom
+User-agent: GPTBot
+Allow: /
+Disallow: /bedankt
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /bedankt
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /bedankt
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /bedankt
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /bedankt
+
+Sitemap: https://demo.youbo.io/sitemap.xml
