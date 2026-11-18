@@ -63,7 +63,7 @@ on:
       # dat niet op: de oude case blijft op de server staan, er is geen
       # mislukte publicatie en dus ook geen melding.
       - 'cases/**'
-      - 'publicatie/web.config'
+      - 'publicatie/**'
       - 'publiceer.mjs'
       - 'build-faq.mjs'
       - 'build-inhoud.mjs'

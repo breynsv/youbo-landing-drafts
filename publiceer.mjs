@@ -98,6 +98,7 @@ const ROUTES = new Set(['/', '/index.html', '/bedankt', '/bedankt/', '/bedankt.h
 
 const STANDAARD_UIT = 'publicatie-uit';
 const WEBCONFIG_BRON = join(hier, 'publicatie', 'web.config');
+export const WORTELBESTANDEN = ['robots.txt', 'sitemap.xml', 'llms.txt'];
 // ─────────────────────────────────────────────────────────────────────────────
 
 const argv = process.argv.slice(2);
@@ -470,10 +471,22 @@ function zonderCommentaar(html, naam) {
   return html.replace(/<!--[\s\S]*?-->/g, '');
 }
 
+// ── De vindbaarheidsbestanden moeten er zijn, en de robots.txt mag niet remmen ─
+for (const naam of WORTELBESTANDEN) {
+  if (!existsSync(join(hier, 'publicatie', naam))) stop(`publicatie/${naam} ontbreekt`);
+}
+if (/^\s*Disallow:\s*\/\s*$/m.test(readFileSync(join(hier, 'publicatie', 'robots.txt'), 'utf8'))) {
+  stop('publicatie/robots.txt verbiedt de hele site (Disallow: /) — dat is de draftversie');
+}
+
 // ── Samenstellen ────────────────────────────────────────────────────────────
 const lijst = [
   ...PAGINAS.map((p) => ({ van: p.bron, naar: p.doel })),
   { van: relative(hier, WEBCONFIG_BRON), naar: 'web.config' },
+  // De vindbaarheidsbestanden voor demo.youbo.io (offerte: robots.txt,
+  // sitemap.xml, llms.txt). Ze komen uit publicatie/ en NIET uit de wortel:
+  // de robots.txt daar hoort bij de draftsite en verbiedt alles.
+  ...WORTELBESTANDEN.map((naam) => ({ van: posix.join('publicatie', naam), naar: naam })),
   ...[...bestanden.keys()].sort().map((p) => ({ van: p, naar: p })),
 ];
 

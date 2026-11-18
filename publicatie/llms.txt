@@ -1,0 +1,25 @@
+# Youbo
+
+> Youbo is software om loonsverhogingen, bonussen en promoties te beheren in één platform voor hr, managers en finance — in plaats van in Excel. De loonsverhogingen, bonussen en promoties van meer dan 30.000 medewerkers in 25 landen worden met Youbo beheerd.
+
+## Wat Youbo doet
+
+- Hr en managers werken samen in één platform, zonder spreadsheets te splitsen en te consolideren.
+- Realtime budgetinzicht: wat al is toegekend en hoeveel ruimte er nog is, per budget (loonsverhoging, bonus, promotie) en in totaal.
+- Automatische verdeelsuggesties volgens loonbanden, prestatiescores, budgetten en andere parameters.
+- Volgt de eigen loonregels, formules en goedkeuringsflows van de organisatie; de organisatie bepaalt wie wat ziet.
+- Gepersonaliseerde rewardletters in één klik.
+- Helpt bij de Europese loontransparantierichtlijn (EU Pay Transparency): loonverschillen opsporen, beslissingen onderbouwen en traceerbaar maken, rapporten genereren.
+- Koppelt met bestaande hr-tools: payroll, tijdsregistratie, performancemanagement en core hr (bv. SAP SuccessFactors, Workday).
+- Inzetbaar in meerdere landen, met meerdere munteenheden en hiërarchische niveaus, en beschikbaar in de meest courante talen.
+
+## Praktisch
+
+- Opstart: gemiddeld 10 tot 12 weken tussen eerste contact en eerste beloningsronde, met een vaste contactpersoon.
+- Prijs: eenmalige opstartkost plus een jaarlijkse licentie, afhankelijk van de omvang van de organisatie en de gewenste ondersteuning.
+- Demo aanvragen: https://demo.youbo.io/
+
+## Links
+
+- [Demo aanvragen](https://demo.youbo.io/): overzicht van Youbo, klantcases en veelgestelde vragen (Nederlands)
+- [Youbo-website](https://www.youbo.io/)
