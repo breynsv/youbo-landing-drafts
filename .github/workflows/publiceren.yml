@@ -72,6 +72,14 @@ on:
       - 'lees-yaml.js'
       - 'stamp-version.mjs'
       - 'check-drafts.mjs'
+      # Sinds 2026-11-18 de gebouwde CSS in plaats van de Tailwind-CDN: de bron,
+      # de config, het bouwscript, het resultaat en de vastgezette versies.
+      - 'css/**'
+      - 'tailwind.config.js'
+      - 'bouw-css.mjs'
+      - 'assets/css/**'
+      - 'package.json'
+      - 'package-lock.json'
       - 'VERSION'
       - '.github/workflows/publiceren.yml'
 
@@ -130,6 +138,23 @@ jobs:
       - name: 1 · Bouwen — de FAQ in de HTML en de versiestempel erop
         id: bouwen
         run: node stamp-version.mjs
+
+      # De CSS. Sinds 2026-11-18 laden de pagina's geen Tailwind-CDN meer maar
+      # een gebouwde stylesheet (bouw-css.mjs). Hij wordt HIER opnieuw gebouwd,
+      # na stap 1, zodat wat er naar de server gaat altijd uit de huidige bron
+      # komt — ook als iemand een klasse toevoegde en vergat te bouwen. Het
+      # script zet de nieuwe bestandsnaam (met hash) zelf in de pagina's, en
+      # publiceer.mjs neemt het bestand mee omdat de pagina het linkt.
+      #
+      # Eerst --check, maar die mag NIET falen: een achterlopende CSS in git
+      # raakt alleen de draftsite op Cloudflare, niet deze publicatie. Het
+      # wordt een waarschuwing in de run, zodat het opvalt zonder een opslag
+      # van Jana tegen te houden.
+      - name: 1 · Bouwen — de CSS uit css/ en tailwind.config.js
+        id: css
+        run: |
+          node bouw-css.mjs --check || echo "::warning title=CSS achter in git::De gebouwde CSS in assets/css/ liep achter op de bron. Deze publicatie bouwt hem zelf opnieuw, maar de draftsite toont de oude tot iemand npm run build:css draait en commit."
+          node bouw-css.mjs
 
       - name: 2 · Nakijken — komt de gebouwde pagina overeen met faq.yml
         id: faq_controle
@@ -215,7 +240,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           STAPPEN: >-
-            bouwen=${{ steps.bouwen.outcome }};faq_controle=${{ steps.faq_controle.outcome
+            bouwen=${{ steps.bouwen.outcome }};css=${{ steps.css.outcome }};faq_controle=${{ steps.faq_controle.outcome
             }};pagina_controle=${{ steps.pagina_controle.outcome }};samenstellen=${{
             steps.samenstellen.outcome }};doelmap=${{ steps.doelmap.outcome
             }};uploaden=${{ steps.uploaden.outcome }}

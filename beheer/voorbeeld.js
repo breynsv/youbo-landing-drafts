@@ -27,16 +27,19 @@
  *     klanten, contact en faq. De verzameling heet "landingspagina" en komt in
  *     geen enkele registratie voor.
  *  2. Het voorbeeld draait in een iframe met alleen de stijlen die wij meegeven.
- *     De pagina krijgt haar opmaak van de Tailwind-CDN plus een eigen
- *     `<style type="text/tailwindcss">`-blok, en dat is een SCRIPT dat bij het
- *     laden CSS maakt. Zoiets kun je niet als stylesheet meegeven.
+ *     Tot 2026-11-18 kreeg de pagina haar opmaak van de Tailwind-CDN, een
+ *     SCRIPT dat bij het laden CSS maakt — zoiets kun je niet als stylesheet
+ *     meegeven. Sinds die dag is het een gewone, gebouwde stylesheet
+ *     (assets/css/landing.<hash>.css, zie bouw-css.mjs), maar het voorbeeld
+ *     blijft hem uit de pagina knippen in plaats van hem zelf te noemen: zo
+ *     wijst het altijd naar dezelfde build als de pagina.
  *
  * DAAROM EEN IFRAME MET DE ECHTE KOP EN DE ECHTE BLOKKEN VAN DE PAGINA
  *
  * Het voorbeeld is geen nabootsing van de pagina maar een stuk ván de pagina:
  * dit bestand haalt draft-r3-01-definitief.html op, knipt daar de kop uit (de
- * Tailwind-CDN, de tokens van de huisstijl, het hele tailwindcss-blok, de
- * lettertypen en Alpine), knipt de blokken uit die bij dit bestand horen, en zet
+ * lettertypen, de <link> naar de gebouwde stylesheet, het blokje met het
+ * aantal logo's, en Alpine), knipt de blokken uit die bij dit bestand horen, en zet
  * die in een iframe. De tekst erin komt uit inhoud-opmaak.js en faq-opmaak.js —
  * dezelfde bestanden waarmee de bouw de echte pagina maakt.
  *
@@ -72,8 +75,8 @@
  * En daarom staat er een CSP in het voorbeelddocument. Die scripts laden na
  * "Toestaan" de meettags van Google en LinkedIn, en het beheerscherm is geen
  * bezoeker: een klik in een voorbeeldvenster hoort geen meting op de echte site
- * te veroorzaken. De CSP laat precies de twee CDN's en de lettertypen door die
- * de pagina nodig heeft en verder niets. Klopt die lijst ooit niet meer, dan
+ * te veroorzaken. De CSP laat precies de stylesheet van deze site, Alpine en de
+ * lettertypen door die de pagina nodig heeft en verder niets. Klopt die lijst ooit niet meer, dan
  * ziet het voorbeeld er anders uit dan de pagina en gaat toets-voorbeeld.mjs
  * rood — dat is de gekozen bewaking.
  *
@@ -100,7 +103,10 @@ export const PAGINA_URL = new URL('../draft-r3-01-definitief.html', import.meta.
 // een, dan stopt het voorbeeld met een duidelijke melding.
 const ANKERS = {
   lettertypen: '<link rel="preconnect" href="https://fonts.googleapis.com">',
-  tailwindCss: '<style type="text/tailwindcss">',
+  // De gebouwde stylesheet (bouw-css.mjs), en direct erachter het <style>-blok
+  // met het aantal logo's dat build-inhoud.mjs zet. Samen zijn ze de opmaak.
+  stylesheet: '<link rel="stylesheet" href="assets/css/landing.',
+  logoEinde: '/* LOGO-AANTAL:EINDE */',
   lijstBegin: '<!-- FAQ-LIJST:BEGIN',
   lijstEinde: '<!-- FAQ-LIJST:EINDE -->',
 };
@@ -117,11 +123,13 @@ function eis(voorwaarde, bericht) {
  */
 export function knipSchil(html) {
   const a = html.indexOf(ANKERS.lettertypen);
-  const b = html.indexOf(ANKERS.tailwindCss);
+  const b = html.indexOf(ANKERS.stylesheet);
   eis(a !== -1, 'de lettertype-regels staan niet meer in de pagina');
-  eis(b > a, 'het tailwindcss-blok staat niet meer na de lettertypen');
-  const c = html.indexOf('</style>', b);
-  eis(c !== -1, 'het tailwindcss-blok wordt niet afgesloten');
+  eis(b > a, 'de stylesheet van de pagina staat niet meer na de lettertypen');
+  const l = html.indexOf(ANKERS.logoEinde, b);
+  eis(l !== -1, 'het blok met het aantal logo\'s staat niet meer na de stylesheet');
+  const c = html.indexOf('</style>', l);
+  eis(c !== -1, 'het blok met het aantal logo\'s wordt niet afgesloten');
   const kop = html.slice(a, c + '</style>'.length);
 
   const alpine = html.match(ALPINE_SCRIPTS) ?? [];
@@ -304,12 +312,12 @@ const NOTA_BLOKKEN = 'Dit zijn de stukken van de pagina die je hier beheert, in 
 const TUSSEN = 'Op de site staat hier een stuk dat je in een ander bestand beheert.';
 
 // Waarom een CSP: zie de kop van dit bestand. Alleen wat de pagina echt nodig
-// heeft — de Tailwind-CDN, Alpine, de lettertypen en de beelden van deze site.
+// heeft — de stylesheet en de beelden van deze site, Alpine en de lettertypen.
 // Geen meettag, geen pixel, geen verbinding naar buiten.
 const CSP = [
   "default-src 'none'",
-  "script-src 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net",
-  "style-src 'unsafe-inline' https://fonts.googleapis.com",
+  "script-src 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src https://fonts.gstatic.com",
   "img-src 'self' data: blob:",
   "connect-src 'self'",

@@ -621,8 +621,18 @@ for (const file of drafts) {
   // --- Deliverables -----------------------------------------------------------
   if (!/^<!DOCTYPE html>\s*<!--[\s\S]{0,200}CONCEPT:/i.test(html))
     errors.push('no CONCEPT note comment at the top of the file');
-  if (!/prefers-reduced-motion/i.test(html)) warns.push('no prefers-reduced-motion handling');
-  if (!/cdn\.tailwindcss\.com/.test(html)) warns.push('not using the Tailwind CDN');
+  /* Sinds 2026-11-18 laden de drie productiepagina's geen Tailwind-CDN meer
+     maar een gebouwde stylesheet uit assets/css/ (bouw-css.mjs). Die telt hier
+     mee als de stijl van de pagina — en hij moet dan wel bestaan. */
+  const eigenStijl = [...html.matchAll(/<link\b[^>]*\brel="stylesheet"[^>]*\bhref="(assets\/css\/[^"]+\.css)"/g)]
+    .map((m) => m[1]);
+  let stijlTekst = '';
+  for (const href of eigenStijl) {
+    if (!existsSync(join(here, href))) errors.push(`linked stylesheet ${href} does not exist — run npm run build:css`);
+    else stijlTekst += readFileSync(join(here, href), 'utf8');
+  }
+  if (!/prefers-reduced-motion/i.test(html + stijlTekst)) warns.push('no prefers-reduced-motion handling');
+  if (!/cdn\.tailwindcss\.com/.test(html) && !eigenStijl.length) warns.push('neither the Tailwind CDN nor a built stylesheet');
 
   // --- Interne links -----------------------------------------------------------
   // Een draft verwees naar /cookies, /privacy en /voorwaarden; alle drie 404. De echte

@@ -91,6 +91,10 @@ const STAPPEN = {
     wat: 'de pagina met de nieuwe tekst maken',
     meestal: 'er staat iets in een antwoord dat de bouw niet aanvaardt — een `<`, of een leeg antwoord. Dat is geen defect maar een weigering: tekst uit een invulveld mag geen HTML worden.',
   },
+  'css': {
+    wat: 'de stylesheet van de pagina bouwen (Tailwind)',
+    meestal: 'een fout in css/landing.css of css/licht.css — een @apply met een klasse die niet bestaat, of een haakje te veel. Geen fout in de tekst uit /beheer/: die raakt de CSS niet.',
+  },
   'faq_controle': {
     wat: 'nakijken of de gebouwde pagina overeenkomt met de tekst uit /beheer/',
     meestal: 'de bouwstap heeft de nieuwe tekst niet in de pagina gezet. Dat is een fout in de pijplijn zelf, niet in de tekst.',
