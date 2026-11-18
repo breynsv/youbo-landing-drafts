@@ -7,6 +7,13 @@
     "yaml": "^2.9.1"
   },
   "dependencies": {
-    "esbuild": "^0.28.2"
+    "autoprefixer": "10.6.2",
+    "esbuild": "^0.28.2",
+    "postcss": "8.5.32",
+    "tailwindcss": "3.4.17"
+  },
+  "scripts": {
+    "build:css": "node bouw-css.mjs",
+    "check:css": "node bouw-css.mjs --check"
   }
 }

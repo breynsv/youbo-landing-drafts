@@ -403,7 +403,8 @@ function cssZonderCommentaar(css, naam) {
        niets meer passen.
 
        Een handmatige uitzonderingslijst zou de volgende keer verouderd zijn.
-       Dus leest deze stap eerst alle script- en stijlblokken en houdt elk
+       Dus leest deze stap eerst alle script- en stijlblokken, en de eigen
+       stylesheets die de pagina linkt (assets/css/), en houdt elk
        data-attribuut dat daar genoemd wordt. Wat de pagina zelf nergens
        gebruikt, mag weg. */
 function zonderBouwgereedschap(html) {
@@ -420,8 +421,21 @@ function zonderBouwgereedschap(html) {
     stukken.push(m);
     return `\u0000BLOK${stukken.length - 1}\u0000`;
   });
+  /* Én de eigen stylesheets die de pagina linkt. Sinds 2026-11-18 staat de CSS
+     niet meer in een <style>-blok maar in assets/css/ (bouw-css.mjs). Zonder
+     deze regel zag deze stap `p[data-herhaal-nr]` niet meer, haalde ze het
+     attribuut weg, en stonden de vier stapnummers van de rondleiding op desktop
+     in de verkeerde rij — zonder dat er iets faalde. Zo gemeten, zo hersteld. */
+  const stijlbladen = [...uit.matchAll(/<link\b[^>]*\brel="stylesheet"[^>]*>/gi)]
+    .map((m) => (m[0].match(/\bhref="([^"]+)"/) || [])[1])
+    .filter((h) => h && !/^[a-z]+:|^\/\//i.test(h))
+    .map((h) => {
+      const pad = join(hier, h.replace(/^\//, '').split(/[?#]/)[0]);
+      if (!existsSync(pad)) stop(`de pagina linkt een stylesheet die er niet is: ${h}`);
+      return readFileSync(pad, 'utf8');
+    });
   const gebruikt = new Set();
-  for (const blok of stukken) {
+  for (const blok of [...stukken, ...stijlbladen]) {
     for (const m of blok.matchAll(/data-[a-z][a-z0-9-]*/gi)) gebruikt.add(m[0].toLowerCase());
   }
   uit = uit.replace(/\s+(data-(?:inhoud-[a-z-]+|herhaal[a-z-]*))(?:="[^"]*")?/gi,

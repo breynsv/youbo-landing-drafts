@@ -39,7 +39,12 @@ import { join, extname } from 'node:path';
 import { chromium } from 'playwright';
 
 const WORTEL = new URL('./publicatie-uit/', import.meta.url).pathname;
-const TYPEN = { '.html':'text/html', '.svg':'image/svg+xml', '.webp':'image/webp', '.png':'image/png' };
+/* De typen die IIS uitlevert, gelezen uit de web.config die meegaat — niet met
+   de hand herhaald. Met een eigen lijstje hier kreeg de gebouwde stylesheet
+   (assets/css/, sinds 2026-11-18) een 404 van dit servertje terwijl web.config
+   hem wél kende: dan meet deze toets een lijst die nergens bestaat. */
+const TYPEN = Object.fromEntries([...readFileSync(new URL('./publicatie/web.config', import.meta.url), 'utf8')
+  .matchAll(/<mimeMap\s+fileExtension="([^"]+)"\s+mimeType="([^"]+)"/g)].map((m) => [m[1].toLowerCase(), m[2]]));
 
 const srv = createServer((req, res) => {
   let p = decodeURI(req.url.split('?')[0]);

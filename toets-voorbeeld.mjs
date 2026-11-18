@@ -196,9 +196,9 @@ try {
     const s = await mod.haalSchil();
     return {
       kopLengte: s.kop.length,
-      tailwind: s.kop.includes('cdn.tailwindcss.com'),
-      tokens: s.kop.includes("brand:   { DEFAULT: '#0af29f'"),
-      tailwindBlok: s.kop.includes('<style type="text/tailwindcss">'),
+      stylesheet: /<link rel="stylesheet" href="assets\/css\/landing\.[0-9a-f]{10}\.css">/.test(s.kop),
+      geenCdn: !s.kop.includes('cdn.tailwindcss.com'),
+      logoAantal: /\.logo-balk \{ --logo-n: \d+; \}/.test(s.kop),
       lettertype: s.kop.includes('fonts.googleapis.com'),
       alpine: s.alpine,
       sectie: s.voor.slice(0, 120),
@@ -220,9 +220,9 @@ try {
     };
   }, { origin: ORIGIN, velden });
 
-  ok('de Tailwind-CDN van de pagina komt mee', schil.tailwind);
-  ok('de huisstijltokens komen mee (het groen, letterlijk uit de pagina)', schil.tokens);
-  ok('het hele tailwindcss-blok komt mee', schil.tailwindBlok);
+  ok('de gebouwde stylesheet van de pagina komt mee', schil.stylesheet);
+  ok('en niet meer de Tailwind-CDN', schil.geenCdn);
+  ok('het aantal logo\'s komt mee (anders loopt de marquee op een ander tempo)', schil.logoAantal);
   ok('de lettertypen komen mee', schil.lettertype);
   ok('Alpine komt mee, anders klapt er niets open',
      /alpinejs/.test(schil.alpine) && /collapse/.test(schil.alpine));

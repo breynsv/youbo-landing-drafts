@@ -253,8 +253,10 @@ function maakWegwerpMetPublicatie() {
      bestandenInBronnen() hierboven vindt ze niet, en dan viel publiceer.mjs in
      deze wegwerpmap over tien bestanden die in de echte map wél bestaan. */
   cpSync(join(hier, 'cases'), join(map, 'cases'), { recursive: true });
-  mkdirSync(join(map, 'publicatie'), { recursive: true });
-  cpSync(join(hier, 'publicatie', 'web.config'), join(map, 'publicatie', 'web.config'));
+  /* De hele map, niet alleen web.config: sinds PR #2 neemt publiceer.mjs ook
+     robots.txt, sitemap.xml en llms.txt daaruit mee, en stopt het als ze
+     ontbreken. Met alleen web.config faalde deze toets daarop, ook op main. */
+  cpSync(join(hier, 'publicatie'), join(map, 'publicatie'), { recursive: true });
   mkdirSync(join(map, 'content', 'media'), { recursive: true });
   cpSync(join(hier, 'content', 'media', 'LEESMIJ.txt'),
          join(map, 'content', 'media', 'LEESMIJ.txt'));
